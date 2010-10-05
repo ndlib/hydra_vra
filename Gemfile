@@ -35,6 +35,7 @@ gem 'trollop'
 gem 'webrat'
 gem 'will_paginate'
 gem 'xml-simple'
+gem 'yard'
 
 source 'http://gemcutter.org'
 
