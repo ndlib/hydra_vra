@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<vra xmlns="http://www.vraweb.org/vracore4.htm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.vraweb.org/vracore4.htm http://gort.ucsd.edu/escowles/vracore4/vra-4.0.xsd">
+  <work id="w_0001" refid="001" source="Prémontré Architectural Sites Collection, University Libraries of Notre Dame">
+    <agentSet>
+      <display>Order of Prémontré</display>
+      <agent>
+        <role vocab="AAT" refid="300188572">sponsor</role>
+      </agent>
+    </agentSet>
+    <culturalContextSet>
+      <culturalContext vocab="other">Premonstratensian</culturalContext>
+      <culturalContext vocab="other">Norbertine</culturalContext>
+    </culturalContextSet>
+    <dateSet>
+       <display>1128-present</display>
+       <date type="activity"></date>
+    </dateSet>
+    <descriptionSet>
+      <description>Diocese of Innsbruck.  Current Order house. Founded as a daughter house of the abbey at Roth.</description>
+      <description>Saint Chapter Houses; Altars; Retables; Martyrs </description>
+    </descriptionSet>
+    <locationSet>
+     <display>Bavariae  (Austria)</display>
+      <location type="other"><name type="geographic" vocab="local">Bavariae </name></location>  
+      <location type="site"><name type="geographic" vocab="TGN" refid="1000062">Austria (nation)</name></location>
+    </locationSet>
+    <subjectSet>
+      <display>Hll. Laurentius und Stephanus (S. Laurence; S. Stephen)</display>
+      <subject>
+      <term type="personalName" vocab="local">Hll. Laurentius und Stephanus</term>
+      </subject>
+      <subject>
+      <term type="personalName" vocab="ICONCLASS" refid="11H(Laurence)">S. Lawrence</term>
+      <term type="personalName" vocab="ICONCLASS" refid="11H(Stephen)">S. Stephen</term>
+      <term type="personalName" vocab="ICONCLASS" refid=""></term>
+      <term type="personalName" vocab="ICONCLASS" refid=""></term>
+      </subject>
+      </subjectSet>
+    <titleSet>
+      <display>Wilten</display>
+      <title type="descriptive">Wilten</title>
+      <title type="other" pref="false">Wilten</title>
+    </titleSet>
+    <worktypeSet>
+       <display>abbey</display>
+       <worktype vocab="AAT" refid="300000642">abbey</worktype>
+    </worktypeSet>
+  </work>   
+  <image>
+    <descriptionSet>
+      <display>Printed on the back of the photographic print: Foto-Popp, Straubing</display>
+      <description>Foto-Popp, Straubing</description> 
+    </descriptionSet>
+    <inscriptionSet>
+      <inscription>
+        <text type="signature">Without signature.</text>
+      </inscription>
+      <inscription>
+	<text type="text">Wilten; capitulum</text>
+      </inscription>
+    </inscriptionSet>
+    <locationSet>
+      <display>Medieval Institute, University of Notre Dame, South Bend, IN, USA</display>
+      <location type="repository">
+        <name type="corporate">Medieval Institute, University of Notre Dame</name>
+        <name type="geographic" vocab="TGN" refid="7014320">South Bend</name>
+        <name type="geographic" vocab="TGN" refid="7007252">Indiana (state)</name>
+        <name type="geographic" vocab="TGN" refid="7012149">United States (nation)</name>
+      </location>
+    </locationSet>
+    <relationSet>
+      <relation type="imageOf" relids="w_0001">Wilten</relation>
+    </relationSet>
+    <rightsSet>
+      <display>Contact Robert R. Coleman, Project Director, or Marina Smyth, Medieval Studies Librarian, for more information. Contact Information: 715 Hesburgh Library, Notre Dame IN, 46556, Robert.R.Coleman.1@nd.edu, Marina.B.Smyth.2@nd.edu</display>
+      <notes>Contact Information: Dr. Robert R. Coleman or Dr. Marina Smyth, 715 Hesburgh Library, Notre Dame IN, 46556, Robert.R.Coleman.1@nd.edu, Marina.B.Smyth.2@nd.edu</notes>
+      <rights type="publicDomain"><text>Contact Robert R. Coleman, Project Director, or Marina Smyth, Medieval Studies Librarian, for more information.</text></rights>
+    </rightsSet>
+    <titleSet>
+      <display>Chapter House.  Interior view of a longitudinal room with a central colonnade. The ceiling is vaulted with sexpartite lierne vaults.  Against the far wall is an altar with retable.</display>
+      <title type="descriptive">Chapter House.  Interior view of a longitudinal room with a central colonnade. The ceiling is vaulted with sexpartite lierne vaults.  Against the far wall is an altar with retable.</title>
+    </titleSet>
+    <worktypeSet>
+      <display>photographic postcard</display>
+      <worktype vocab="aat" refid="300192703">photographic postcard</worktype>
+    </worktypeSet>
+  </image>
+  <image id="i_0001" refid="001">
+    <measurementsSet>
+      <measurements type="resolution" unit="ppi">200</measurements>
+    </measurementsSet>
+    <relationSet>
+      <relation type="imageOf" relids="w_0001">Wilten</relation>
+    </relationSet>
+    <titleSet>
+      <display>general view</display>
+      <title type="generalView">general view</title>
+    </titleSet>
+    <worktypeSet>
+      <display>digital image</display>
+      <worktype vocab="AAT" refid="300215302">digital image</worktype>
+    </worktypeSet>
+  </image>
+  <image id="i_0001tmb" refid="001tmb">
+    <relationSet>
+      <relation type="imageOf" relids="w_0001">Wilten</relation>
+    </relationSet>
+    <titleSet>
+      <display>general view</display>
+      <title type="generalView">general view</title>
+    </titleSet>
+    <worktypeSet>
+      <display>digital image (thumbnail)</display>
+      <worktype vocab="AAT" refid="300215302">digital image</worktype>
+    </worktypeSet>
+  </image>
+</vra>
