@@ -9,6 +9,8 @@ class Image < ActiveFedora::Base
   class Hydra::Image::NoFileError < RuntimeError; end;
   class Hydra::Image::UnknownImageType < RuntimeError; end;
 
+  DEFAULT_IMAGE_DATASTREAMS = ["MASTER","MAX","THUMBNAIL","SCREEN"]
+
   DS_DEFAULTS = {
     :max => {:op => "convert", :convertTo => "jpg"},
     :thumbnail => {:op => "resize",:newWidth=> 100},
@@ -30,7 +32,7 @@ class Image < ActiveFedora::Base
         attrs.delete(:stream)
         self.image = data, attrs[:image_type]
       else
-        raise Hydra::Image::NoFileError, "No file indicated."
+        #raise Hydra::Image::NoFileError, "No file indicated."
       end
     end
   end
@@ -81,16 +83,16 @@ class Image < ActiveFedora::Base
     save
   end
 
-  def thumbnail
-    datastreams["THUMBNAIL"].content
-  end
+  DEFAULT_IMAGE_DATASTREAMS.each do |m|
+    class_eval <<-EOM
+      def has_#{m.downcase}?
+        self.datastreams.keys.include? "#{m}"
+      end
 
-  def screen
-    datastreams["SCREEN"].content
-  end
-
-  def max
-    datastreams["MAX"].content
+      def #{m.downcase}
+        datastreams["#{m}"].content if has_#{m.downcase}?
+      end
+    EOM
   end
 
   private
@@ -110,11 +112,11 @@ class Image < ActiveFedora::Base
   end
 
   def generate_derivatives
-    [:max,:thumbnail,:screen].each {|ds| derivative_datastream ds }
+    DEFAULT_IMAGE_DATASTREAMS.each {|ds| derivative_datastream ds.downcase.to_sym }
   end
 
   def delete_file_datastreams
-    ["MASTER","MAX","THUMBNAIL","SCREEN"].each {|ds_name| datastreams[ds_name].delete if datastreams.has_key? ds_name}
+    DEFAULT_IMAGE_DATASTREAMS.each {|ds_name| datastreams[ds_name].delete if datastreams.has_key? ds_name}
   end
 
   def derivation_url ds_name, opts={}
@@ -124,9 +126,13 @@ class Image < ActiveFedora::Base
     else
       opts_array=[]
       opts.merge!(:url => datastream_url(source_ds_name)).each{|k,v| opts_array << "#{k}=#{v}" }
-      url = "http://localhost:8983/imagemanip/ImageManipulation?" + opts_array.join("&")
+      url = "#{admin_site}imagemanip/ImageManipulation?" + opts_array.join("&")
     end
     return url
+  end
+
+  def admin_site
+    Fedora::Repository.send(:connection).site.to_s.gsub(/fedora$/,"")
   end
 
   def string_to_file blob, suffix, ext=nil
