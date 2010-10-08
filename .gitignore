@@ -25,4 +25,4 @@ rerun.txt
 .rvmrc
 
 /.bundle
-.idea/
+.idea/*
