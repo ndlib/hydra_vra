@@ -1,0 +1,16 @@
+%form#document_metadata{ :action=>url_for(:action=>"update", :controller=>"assets", :content_type=>"vra_sample"), :method=>"post","data-resourceType"=>"vra_sample", "accept-charset"=>"utf-8"}
+  %fieldset#title_fields
+    %legend Title
+    %input#content_type{:type=>"hidden", :name=>"content_type", :value=>"hydrangea_article"}
+    %dl
+      %dt
+        = fedora_field_label("descMetadata", [:reference_location, :location_local_name], "Title:")
+      %dd.title
+        = fedora_text_field(@document_fedora,"descMetadata", [:reference_location, :location_local_name], :multiple=>false)
+    
+      %dt
+        = fedora_field_label("descMetadata", [:work, :source], "Source:")
+      %dd.language
+        = fedora_text_field(@document_fedora,"descMetadata", [:work, :source], :multiple=>false)
+  
+   

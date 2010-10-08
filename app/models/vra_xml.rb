@@ -142,13 +142,13 @@ class VraXml < ActiveFedora::NokogiriDatastream
               t.locationSet{
                 t.display
                 t.location(:type=>"local")
-                t.name(:type=>"geographic", :vocap=>"")
+                t.name(:type=>"geographic", :vocab=>"")
               }
 
               t.subjectSet{
                 t.display
                 t.subject{
-                  t.term(:type=>"personalName")
+                  t.term(:type=>"SubjectName")
                 }                
               }
 

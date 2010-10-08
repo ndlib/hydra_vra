@@ -1,4 +1,3 @@
-<<<<<<< HEAD:vendor/plugins/hydra_repository/lib/hydra/image.rb
 # Hydra::Image
 #
 # Default content datastreams: MASTER, MAX, THUMBNAIL, SCREEN
@@ -24,8 +23,6 @@
 # hi.send(:generate_derivatives)
 #
 
-=======
->>>>>>> banufork/master:vendor/plugins/hydra_repository/lib/hydra/image.rb
 require "hydra"
 require "httparty"
 
@@ -45,19 +42,11 @@ class Image < ActiveFedora::Base
     :screen => {:op => "resize", :newWidth => 960}
   }
 
-<<<<<<< HEAD:vendor/plugins/hydra_repository/lib/hydra/image.rb
   attr_accessor :derivations, :generate_derived_images
 
   def initialize( attrs={})
     existing_image = true if attrs[:pid]
     @generate_derived_images = attrs[:derivatives] ? attrs[:derivatives] : false
-=======
-  attr_accessor :derivations
-
-  def initialize( attrs={})
-    existing_image = true if attrs[:pid]
-    @generate_derivatives = attrs[:derivatives] ? attrs[:derivatives] : false
->>>>>>> banufork/master:vendor/plugins/hydra_repository/lib/hydra/image.rb
     super
     unless existing_image
       if attrs.has_key?(:file) #&& attrs[:file].class == File
@@ -100,11 +89,7 @@ class Image < ActiveFedora::Base
     end
     save
     File.delete(image_file.path) if needs_cleanup
-<<<<<<< HEAD:vendor/plugins/hydra_repository/lib/hydra/image.rb
     generate_derivatives if @generate_derived_images
-=======
-    generate_derivatives if @generate_derivatives
->>>>>>> banufork/master:vendor/plugins/hydra_repository/lib/hydra/image.rb
   end
 
   def ds_options
@@ -152,11 +137,7 @@ class Image < ActiveFedora::Base
   end
 
   def generate_derivatives
-<<<<<<< HEAD:vendor/plugins/hydra_repository/lib/hydra/image.rb
     DEFAULT_IMAGE_DATASTREAMS.each {|ds| derivative_datastream ds.downcase.to_sym unless ds == "MASTER"}
-=======
-    DEFAULT_IMAGE_DATASTREAMS.each {|ds| derivative_datastream ds.downcase.to_sym }
->>>>>>> banufork/master:vendor/plugins/hydra_repository/lib/hydra/image.rb
   end
 
   def delete_file_datastreams
@@ -176,11 +157,7 @@ class Image < ActiveFedora::Base
   end
 
   def admin_site
-<<<<<<< HEAD:vendor/plugins/hydra_repository/lib/hydra/image.rb
     Fedora::Repository.instance.send(:connection).site.to_s.gsub(/fedora$/,"")
-=======
-    Fedora::Repository.send(:connection).site.to_s.gsub(/fedora$/,"")
->>>>>>> banufork/master:vendor/plugins/hydra_repository/lib/hydra/image.rb
   end
 
   def string_to_file blob, suffix, ext=nil
@@ -193,11 +170,7 @@ class Image < ActiveFedora::Base
   end
 
   def datastream_url ds_name="MASTER"
-<<<<<<< HEAD:vendor/plugins/hydra_repository/lib/hydra/image.rb
     "#{admin_site}fedora/objects/#{pid}/datastreams/#{ds_name}/content"
-=======
-    "http://127.0.0.1:8983/fedora/objects/#{pid}/datastreams/#{ds_name}/content"
->>>>>>> banufork/master:vendor/plugins/hydra_repository/lib/hydra/image.rb
   end
 
 end
