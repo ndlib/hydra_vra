@@ -69,13 +69,15 @@ Blacklight.configure(:shared) do |config|
     :field_names => ["date_t",
       "title_t",
       "medium_t",
-      "location_t"
+      "location_t",
+      "id"
       ],
     :labels => {
       "date_t"=>"Date",
       "title_t"=>"Title",
       "medium_t"=>"Content Type",
-      "location_t"=>"Location"
+      "location_t"=>"Location",
+      "id"=>"test"
     },
     :limits=> {nil=>10}
   }
