@@ -8,13 +8,41 @@ class VraXml < ActiveFedora::NokogiriDatastream
     t.reference_location(:path=>"location"){
       t.location_local_name(:path=>"name", :attributes=>{:type=>"geographic", :vocab=>"local"} )
       t.location_site_name(:path=>"name", :attributes=>{:type=>"geographic", :vocab=>"TGN"} ) #Not sure how these work?????
-
     }
 
-    t.reference_subject_term(:path=>"term") {
-      t.subject_type(:path=>{:attribute =>"type"})
-      t.location_vocab(:path=>{:attribute =>"vocab"})
-      t.location_refid(:path=>{:attribute =>"refid"})
+    t.reference_title(:path=>"title"){
+      t.relation_type(:path=>{:attribute =>"type"})      
+    }
+
+    t.reference_subject_term{
+      t.subject_authors(:path=>"term", :attribute =>{:type=>"personalName", :vocab=>"local"})
+      t.subject_author_names(:path=>"term", :attribute =>{:type=>"personalName", :vocab=>"ICONCLASS"})
+    }
+
+    t.reference_subject(:path=>"subject"){
+      t.reference_authors(:path=>"term") {
+        t.author_refid(:path=>{:attribute => "refid"})
+      }
+    }
+
+    t.reference_work_type(:path=>"worktype"){
+      t.reference_work_type_vocab(:path=>{:attribute =>"vocab"})
+      t.reference_work_refid(:path=>{:attribute =>"refid"})
+    }
+
+    t.reference_relation(:path=>"relation"){
+      t.relation_type(:path=>{:attribute =>"type"})
+      t.relation_id(:path=>{:attribute =>"relids"})
+    }
+
+    t.reference_rights(:path=>"right"){
+      t.rights_type(:path=>{:attribute => "type"})
+      t.reference_text(:path=>"text")
+    }
+
+    t.reference_measurements(:path=>"measurements"){
+      t.measurements_type(:path=>{:attribute =>"type"})
+      t.measurements_unit(:path=>{:attribute =>"unit"})
     }
 
     t.work(:path=>"work"){
@@ -34,10 +62,7 @@ class VraXml < ActiveFedora::NokogiriDatastream
       t.cultural_context_set(:path=>"culturalContextSet"){        
         t.cultural_context(:path=>"culturalContext"){
           t.cultural_vocab(:path=>{:attribute =>"vocab"})
-        }
-        t.cultural_context(:path=>"culturalContext"){
-          t.cultural_vocab(:path=>{:attribute =>"vocab"})
-        }
+        }        
       }
 
       t.date_set(:path=>"dateSet"){
@@ -58,35 +83,27 @@ class VraXml < ActiveFedora::NokogiriDatastream
       }
 
       t.subject_set(:path=>"subjectSet"){
-        t.subject_display(:path=>"display")
+        t.subject_display(:ref=>[:reference_display])
         t.subject(:path=>"subject"){
           t.subject_term(:ref=>[:reference_subject_term])
-        }
-        t.subject(:path=>"subject"){
-          t.subject_term(:ref=>[:reference_subject_term])
-          t.subject_term(:ref=>[:reference_subject_term])
-          t.subject_term(:ref=>[:reference_subject_term])
-          t.subject_term(:ref=>[:reference_subject_term])
-        }
+        }        
       }
 
       t.title_set(:path=>"titleSet"){
-        t.title_display(:path=>"display")
-        t.title(:path=>"title"){
-          t.title_type(:path=>{:attribute =>"type"})
-          t.title_type(:path=>{:attribute =>"type"})
-        }
+        t.title_display(:ref=>[:reference_display])
+        t.title(:ref=>[:reference_title])
       }
 
       t.work_type_set(:path=>"worktypeSet"){
-        t.work_type_display(:path=>"display")
-        t.work_type(:path=>"worktype"){
-          t.work_type_vocab(:path=>{:attribute =>"vocab"})
-          t.work_refid(:path=>{:attribute =>"refid"})
-        }
+        t.work_type_display(:ref=>[:reference_display])
+        t.work_type(:ref=>[:reference_work_type])
       }
     }
     t.image(:path=>"image"){
+
+       t.measurement_set(:path=>"measurementsSet"){
+        t.measurements(:ref=>[:reference_measurements])
+      }
 
       t.description_set(:path=>"descriptionSet"){
         t.description_display(:ref=>[:reference_display])
@@ -102,11 +119,28 @@ class VraXml < ActiveFedora::NokogiriDatastream
 
       t.location_set(:path=>"locationSet"){
         t.location_display(:ref=>[:reference_display])
-        t.location(:ref=>[:reference_location])
-        t.location(:ref=>[:reference_location])
+        t.location(:ref=>[:reference_location])        
       }
 
+      t.relation_set(:path=>"relationSet"){        
+        t.relation(:ref=>[:reference_relation])
+      }
 
+      t.rights_set(:path=>"rightsSet"){
+        t.rights_display(:path=>"display")
+        t.notes(:path=>"notes")
+        t.rights(:ref=>[:reference_rights])
+      }
+
+      t.title_set(:path=>"titleSet"){
+        t.title_display(:ref=>[:reference_display])
+        t.title(:ref=>[:reference_title])
+      }
+
+      t.work_type_set(:path=>"worktypeSet"){
+        t.work_type_display(:ref=>[:reference_display])
+        t.work_type(:ref=>[:reference_work_type])
+      }
     }
 
   end

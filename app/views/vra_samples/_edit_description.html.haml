@@ -1,7 +1,7 @@
 %form#document_metadata{ :action=>url_for(:action=>"update", :controller=>"assets", :content_type=>"vra_sample"), :method=>"post","data-resourceType"=>"vra_sample", "accept-charset"=>"utf-8"}
   %fieldset#title_fields
     %legend Title
-    %input#content_type{:type=>"hidden", :name=>"content_type", :value=>"hydrangea_article"}
+    %input#content_type{:type=>"hidden", :name=>"content_type", :value=>"vra_sample"}
     %dl
       %dt
         = fedora_field_label("descMetadata", [:reference_location, :location_local_name], "Title:")

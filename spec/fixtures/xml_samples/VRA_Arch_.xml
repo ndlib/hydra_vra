@@ -28,13 +28,13 @@ xsi:schemaLocation="http://www.vraweb.org/vracore4.htm http://gort.ucsd.edu/esco
     <subjectSet>
       <display>Hll. Laurentius und Stephanus (S. Laurence; S. Stephen)</display>
       <subject>
-      <term type="personalName" vocab="local">Hll. Laurentius und Stephanus</term>
+		<term type="personalName" vocab="local">Hll. Laurentius und Stephanus</term>
       </subject>
       <subject>
-      <term type="personalName" vocab="ICONCLASS" refid="11H(Laurence)">S. Lawrence</term>
-      <term type="personalName" vocab="ICONCLASS" refid="11H(Stephen)">S. Stephen</term>      
+		<term type="personalName" vocab="ICONCLASS" refid="11H(Laurence)">S. Lawrence</term>
+		<term type="personalName" vocab="ICONCLASS" refid="11H(Stephen)">S. Stephen</term>      
       </subject>
-      </subjectSet>
+    </subjectSet>
     <titleSet>
       <display>Wilten</display>
       <title type="descriptive">Wilten</title>
