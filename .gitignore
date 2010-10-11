@@ -23,6 +23,7 @@ rerun.txt
 .project
 .buildpath
 .rvmrc
+.idea
 
 /.bundle
 .idea/*
