@@ -1,0 +1,46 @@
+- image = show_image
+- image_counter = show_image_counter
+- image_title = "#{get_values_from_datastream(@document_fedora,'descMetadata', [{:image=>image_counter}, :title_set, :title_display])}"
+- base_id = "image_#{image_counter}"
+
+- unless get_values_from_datastream(@document_fedora,"descMetadata", [{:image => image_counter}, :title_set, :title_display]).first.empty?
+  %fieldset#image_fields
+  %legend Image Details
+  %dl
+    - unless get_values_from_datastream(@document_fedora,"descMetadata", [{:image => image_counter}, :title_set, :title_display]).first.empty?
+      %dt.title
+        = fedora_field_label("descMetadata", [{:image => image_counter}, :title_set, :title_display], "Title:")
+      %dd
+        = get_values_from_datastream(@document_fedora,"descMetadata", [{:image => image_counter}, :title_set, :title_display])
+    - unless get_values_from_datastream(@document_fedora,"descMetadata", [{:image => image_counter}, :description_set, :description_display]).first.empty?
+      %dt.description
+        = fedora_field_label("descMetadata", [{:image => image_counter}, :description_set, :description_display], "Description:")
+      %dd
+        = get_values_from_datastream(@document_fedora,"descMetadata", [{:image => image_counter}, :description_set, :description_display])
+    - unless get_values_from_datastream(@document_fedora,"descMetadata", [{:image => image_counter}, :inscription_set]).first.empty?
+      %dt.inscription
+        = fedora_field_label("descMetadata", [{:image => image_counter}, :inscription_set, :inscription, :inscription_text], "Inscription:")
+      %dd
+        = get_values_from_datastream(@document_fedora,"descMetadata", [{:image => image_counter}, :inscription_set, :inscription, :inscription_text])
+        = get_values_from_datastream(@document_fedora,"descMetadata", [{:image => image_counter}, :inscription_set, :inscription, :inscription_signature])
+    - unless get_values_from_datastream(@document_fedora,"descMetadata", [{:image => image_counter}, :location_set, :location_display]).first.empty?
+      %dt.location
+        = fedora_field_label("descMetadata", [{:image => image_counter}, :location_set, :location_display], "Location:")
+      %dd
+        = get_values_from_datastream(@document_fedora,"descMetadata", [{:image => image_counter}, :location_set, :location_display])
+    - unless get_values_from_datastream(@document_fedora,"descMetadata", [{:image => image_counter}, :work_type_set, :work_type_display]).first.empty?
+      %dt.worktype
+        = fedora_field_label("descMetadata", [{:image => image_counter}, :work_type_set, :work_type_display], "Work Type:")
+      %dd
+        = get_values_from_datastream(@document_fedora,"descMetadata", [{:image => image_counter}, :work_type_set, :work_type_display])
+    - unless get_values_from_datastream(@document_fedora,"descMetadata", [{:image => image_counter}, :measurement_set, :measurements]).first.empty?
+      %dt.measurements
+        = fedora_field_label("descMetadata", [{:image => image_counter}, :measurement_set, :measurements], "Measurements:")
+      %dd
+        = get_values_from_datastream(@document_fedora,"descMetadata", [{:image => image_counter}, :measurement_set, :measurements])
+    - unless get_values_from_datastream(@document_fedora,"descMetadata", [{:image => image_counter}, :rights_set, :rights_display]).first.empty?
+      %dt.rights
+        = fedora_field_label("descMetadata", [{:image => image_counter}, :rights_set, :rights_display], "Contact Infomation:")
+      %dd
+        = get_values_from_datastream(@document_fedora,"descMetadata", [{:image => image_counter}, :rights_set, :rights_display])
+
