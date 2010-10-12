@@ -2,7 +2,7 @@
 - person_counter = show_person_counter
 - person_name = "#{get_values_from_datastream(@document_fedora,'descMetadata', [{:person=>person_counter}, :first_name])} #{get_values_from_datastream(@document_fedora,'descMetadata', [{:person=>person_counter}, :last_name])}"
 - base_id = "person_#{person_counter}"
-
+#{show_person_counter}
 - unless ( get_values_from_datastream(@document_fedora,"descMetadata", [{:person=>person_counter}, :last_name]).first.empty? || get_values_from_datastream(@document_fedora,"descMetadata", [{:person=>person_counter}, :first_name]).first.empty? )
   %li
     %dl.person.contributor{:id=>base_id}
