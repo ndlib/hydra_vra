@@ -59,11 +59,12 @@ class VraXml < ActiveFedora::NokogiriDatastream
         }
       }
 
-      t.cultural_context_set(:path=>"culturalContextSet"){        
-        t.cultural_context(:path=>"culturalContext"){
+      t.culturalContextSet{        
+        t.culturalContext{
           t.cultural_vocab(:path=>{:attribute =>"vocab"})
         }        
       }
+      t.cultural_tag(:path=>"culturalContextSet", :default_content_path=>"culturalContext")
 
       t.date_set(:path=>"dateSet"){
         t.date_display(:ref=>[:reference_display])
@@ -72,9 +73,10 @@ class VraXml < ActiveFedora::NokogiriDatastream
         }
       }
 
-      t.description_set(:path=>"descriptionSet"){
-        t.description(:path=>"description")
+      t.descriptionSet{
+        t.description
       }
+      t.description_tag(:path=>"descriptionSet", :default_content_path=>"description")
 
       t.location_set(:path=>"locationSet"){
         t.location_display(:ref=>[:reference_display])

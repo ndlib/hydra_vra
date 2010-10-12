@@ -2,8 +2,12 @@
 <project version="4">
   <component name="ChangeListManager" verified="true">
     <list default="true" id="9004759c-909b-4d65-ba7a-a4a0147f4b11" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/vendor/plugins/hydrangea_articles/app/views/hydrangea_articles/_edit_description.html.haml" afterPath="$PROJECT_DIR$/vendor/plugins/hydrangea_articles/app/views/hydrangea_articles/_edit_description.html.haml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/vra_samples/_edit_description.html.haml" afterPath="$PROJECT_DIR$/app/views/vra_samples/_edit_description.html.haml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/vra_xml.rb" afterPath="$PROJECT_DIR$/app/models/vra_xml.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/deploy.rb" afterPath="$PROJECT_DIR$/config/deploy.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/vra_samples/_show_description.html.haml" afterPath="$PROJECT_DIR$/app/views/vra_samples/_show_description.html.haml" />
     </list>
     <ignored path=".idea/workspace.xml" />
     <ignored path="hydrangea.iws" />
@@ -79,10 +83,10 @@
   <component name="FileColors" enabled="true" enabledForTabs="true" />
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="vra_xml.rb" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="vra_xml.rb" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/models/vra_xml.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="166" column="34" selection-start="5618" selection-end="5618" vertical-scroll-proportion="2.0479043">
+            <state line="64" column="83" selection-start="2359" selection-end="2359" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -106,10 +110,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="_edit_description.html.haml" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="_edit_description.html.haml" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/views/vra_samples/_edit_description.html.haml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="14" column="151" selection-start="786" selection-end="786" vertical-scroll-proportion="0.0">
+            <state line="50" column="151" selection-start="2505" selection-end="2505" vertical-scroll-proportion="0.8719512">
               <folding />
             </state>
           </provider>
@@ -142,14 +146,14 @@
         <option value="$PROJECT_DIR$/vendor/plugins/hydrangea_articles/app/views/hydrangea_articles/_show.html.haml" />
         <option value="$PROJECT_DIR$/app/views/vra_samples/show.html.haml" />
         <option value="$PROJECT_DIR$/app/views/vra_samples/_show.html.haml" />
-        <option value="$PROJECT_DIR$/app/views/vra_samples/_edit_description.html.haml" />
-        <option value="$PROJECT_DIR$/app/models/vra_xml.rb" />
         <option value="$PROJECT_DIR$/vendor/plugins/hydra_repository/app/controllers/catalog_controller.rb" />
         <option value="$PROJECT_DIR$/vendor/plugins/hydrangea_articles/app/views/hydrangea_articles/_show_description.html.haml" />
         <option value="$PROJECT_DIR$/vendor/plugins/hydrangea_articles/app/views/contributors/_show_person.html.haml" />
         <option value="$PROJECT_DIR$/app/views/vra_samples/_show_description.html.haml" />
         <option value="$PROJECT_DIR$/app/views/vra_samples/_show_image.html.haml" />
         <option value="$PROJECT_DIR$/config/deploy.rb" />
+        <option value="$PROJECT_DIR$/app/models/vra_xml.rb" />
+        <option value="$PROJECT_DIR$/app/views/vra_samples/_edit_description.html.haml" />
       </list>
     </option>
   </component>
@@ -512,7 +516,7 @@
     <supportedVersion>125</supportedVersion>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="27" width="1680" height="994" extended-state="1" />
+    <frame x="0" y="27" width="1680" height="994" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -654,16 +658,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/vra_samples/_edit_description.html.haml">
+    <entry file="file://$PROJECT_DIR$/app/models/vra_xml.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="151" selection-start="786" selection-end="786" vertical-scroll-proportion="0.0">
+        <state line="64" column="83" selection-start="2359" selection-end="2359" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/models/vra_xml.rb">
+    <entry file="file://$PROJECT_DIR$/app/views/vra_samples/_edit_description.html.haml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="166" column="34" selection-start="5618" selection-end="5618" vertical-scroll-proportion="2.0479043">
+        <state line="50" column="151" selection-start="2505" selection-end="2505" vertical-scroll-proportion="0.8719512">
           <folding />
         </state>
       </provider>

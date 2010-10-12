@@ -50,11 +50,12 @@
     /       = original_url[:label]
     /   %dd#original_url
     /     = original_url[:field]
-
+  
   %fieldset#topic_fields
     %legend Topics
     %dl
       %dt
+
         = fedora_field_label("descMetadata", [:subject, :topic], "Topic Tags:")
         = fedora_text_field_insert_link "descMetadata", [:subject, :topic]
       %dd#topic_tag.topic_tag

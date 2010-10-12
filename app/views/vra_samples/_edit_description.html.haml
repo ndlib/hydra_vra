@@ -4,13 +4,49 @@
     %input#content_type{:type=>"hidden", :name=>"content_type", :value=>"vra_sample"}
     %dl
       %dt
-        = fedora_field_label("descMetadata", [:reference_location, :location_local_name], "Title:")
+        = fedora_field_label("descMetadata", [:work, :title_set, :title_display], "Title:")
       %dd.title
-        = fedora_text_field(@document_fedora,"descMetadata", [:reference_location, :location_local_name], :multiple=>false)
+        = fedora_text_field(@document_fedora,"descMetadata", [:work, :title_set, :title_display], :multiple=>false)
     
       %dt
         = fedora_field_label("descMetadata", [:work, :source], "Source:")
-      %dd.language
+      %dd.source
         = fedora_text_field(@document_fedora,"descMetadata", [:work, :source], :multiple=>false)
+
+      %dt
+        = fedora_field_label("descMetadata", [:work, :subject_set, :subject_display], "Subject:")
+      %dd.subject
+        = fedora_text_field(@document_fedora,"descMetadata", [:work, :subject_set, :subject_display])
+
+      %dt
+        = fedora_field_label("descMetadata", [:work, :agent_set, :agent_display], "Agent:")
+      %dd.agent_title
+        = fedora_text_field(@document_fedora,"descMetadata", [:work, :agent_set, :agent_display])
+
+      %dt
+        = fedora_field_label("descMetadata", [:work, :cultural_context_set], "Culture:")
+      %dd.culture
+        = fedora_text_field(@document_fedora,"descMetadata", [:work, :culturalContextSet, :culturalContext], :multiple=>true)
+
+      %dt
+        = fedora_field_label("descMetadata", [:work, :date_set], "Date:")
+      %dd.date
+        = fedora_text_field(@document_fedora,"descMetadata", [:work, :date_set], :multiple=>false)
+
+      %dt
+        = fedora_field_label("descMetadata", [:work, :description_set, :description], "Description:")
+      %dd.description
+        = fedora_text_field(@document_fedora,"descMetadata", [:work, :descriptionSet, :description], :multiple=>true)
+        = fedora_text_field_insert_link "descMetadata", [:work, :descriptionSet, :description]
+
+      %dt
+        = fedora_field_label("descMetadata", [:work, :work_type_set, :work_type_display], "Work Type:")
+      %dd.title
+        = fedora_text_field(@document_fedora,"descMetadata", [:work, :work_type_set, :work_type_display])
+
+      %dt
+        = fedora_field_label("descMetadata", [:reference_location, :location_local_name], "Location:")
+      %dd.location
+        = fedora_text_field(@document_fedora,"descMetadata", [:reference_location, :location_local_name], :multiple=>true) 
   
    
