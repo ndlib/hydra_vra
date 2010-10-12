@@ -36,6 +36,48 @@ task :after_update_code do
   run "ln -nfs #{deploy_to}/shared/config/solr.yml #{release_path}/config/solr.yml"
 end
 
+
+# List all tasks from RAILS_ROOT using: cap -T
+
+#############################################################
+#  Application
+#############################################################
+
+set :application, 'Hydrangea'
+
+#############################################################
+#  Settings
+#############################################################
+
+default_run_options[:pty] = true
+set :use_sudo, false
+
+#############################################################
+#  Subversion
+#############################################################
+
+set :scm, :subversion
+set :svn_username, 'rails'
+set :svn_password, 'r91lsf0rl1b'
+set :repository,   "https://svn.library.nd.edu/svn_deploy/svn_ndlibs_devel/applications/#{application}/trunk --username #{svn_username} --password #{svn_password}"
+
+#############################################################
+#  Environments
+#############################################################
+
+desc "Setup for the Staging environment"
+task :staging do
+  set :rails_env,      'staging'
+  set :scm_command,    '/usr/bin/svn'
+  set :rake,           '/shared/ruby/bin/rake'
+  set :deploy_to,      "/data/web_root/htdocs/rails_apps/#{application}"
+  set :user,           'rails'
+  set :domain,         'ambrosiana.library.nd.edu'
+  set :site_url,       'afmstaging.library.nd.edu'
+
+  server "#{user}@#{domain}", :app, :web, :db, :primary => true
+end
+
 # ========================
 # For mod_rails apps
 # ========================
