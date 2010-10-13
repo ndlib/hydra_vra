@@ -19,12 +19,12 @@ tmp/**/*
 tmp/performance 
 
 rerun.txt
-
 .project
 .buildpath
 .rvmrc
-.idea/
-.idea/*
 /.bundle
-
+.svn
+.svn/*
+**/.svn
+.idea/*.xml
 
