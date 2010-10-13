@@ -156,18 +156,19 @@ class VraXml < ActiveFedora::NokogiriDatastream
            "xsi:schemaLocation"=>"http://www.vraweb.org/vracore4.htm http://gort.ucsd.edu/escowles/vracore4/vra-4.0.xsd") {
              t.work(:id=>"", :refid=>"", :source=>"") {
                t.agentSet{
-                 t.display
-                   t.agent{
-                   t.role
-                   }
+                 t.display_
+                 t.agent{
+                 t.role
+                 }
                }
 
               t.culturalContextSet{
+                t.display_
                 t.culturalContext
               }
 
               t.dateSet{
-                t.display
+                t.display_
                 t.date(:type =>"activity")
               }
 
@@ -176,37 +177,37 @@ class VraXml < ActiveFedora::NokogiriDatastream
               }
 
               t.locationSet{
-                t.display
+                t.display_
                 t.location(:type=>"local")
                 t.name(:type=>"geographic", :vocab=>"")
               }
 
               t.subjectSet{
-                t.display
+                t.display_
                 t.subject{
                   t.term(:type=>"SubjectName")
                 }                
               }
 
               t.titleSet{
-                t.display
+                t.display_
                 t.title(:type=>"")
               }
 
               t.worktypeSet{
-                t.display
+                t.display_
                 t.worktype(:vocab=>"")
             }
                
           }
           t.image(:id=>"", :refid=>"") {
                t.measurementsSet{
-                 t.display
+                 t.display_
                    t.measurementsSet(:type=>"resoultion", :unit=>"ppi")
                }
 
               t.relationSet{
-                t.display
+                t.display_
                 t.relation(:type =>"")
               }
 
@@ -216,7 +217,7 @@ class VraXml < ActiveFedora::NokogiriDatastream
               }
 
               t.worktypeSet{
-                t.display
+                t.display_
                 t.worktype(:vocab=>"", :refid=>"")
             }
 
