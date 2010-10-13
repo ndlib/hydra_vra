@@ -43,7 +43,7 @@
 #  Application
 #############################################################
 
-set :application, 'Hydrangea'
+set :application, 'hydrangea'
 
 #############################################################
 #  Settings
@@ -140,3 +140,6 @@ namespace :deploy do
     run "echo $PATH"
   end
 end
+
+after 'deploy:update_code', 'deploy:migrate', 'deploy:symlink_shared'
+after 'deploy', 'deploy:cleanup'
