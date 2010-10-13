@@ -2,12 +2,11 @@
 <project version="4">
   <component name="ChangeListManager" verified="true">
     <list default="true" id="9004759c-909b-4d65-ba7a-a4a0147f4b11" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/vendor/plugins/hydrangea_articles/app/views/hydrangea_articles/_edit_description.html.haml" afterPath="$PROJECT_DIR$/vendor/plugins/hydrangea_articles/app/views/hydrangea_articles/_edit_description.html.haml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/vra_samples/_edit_description.html.haml" afterPath="$PROJECT_DIR$/app/views/vra_samples/_edit_description.html.haml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/vra_xml.rb" afterPath="$PROJECT_DIR$/app/models/vra_xml.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/deploy.rb" afterPath="$PROJECT_DIR$/config/deploy.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/vra_samples/_show.html.haml" afterPath="$PROJECT_DIR$/app/views/vra_samples/_show.html.haml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/deploy.rb" afterPath="$PROJECT_DIR$/config/deploy.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/vra_samples/_show_description.html.haml" afterPath="$PROJECT_DIR$/app/views/vra_samples/_show_description.html.haml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/hydrangea.iml" afterPath="$PROJECT_DIR$/.idea/hydrangea.iml" />
     </list>
     <ignored path=".idea/workspace.xml" />
     <ignored path="hydrangea.iws" />
@@ -28,52 +27,52 @@
   <component name="DisabledGemRequirementsHolder">
     <module name="hydrangea">
       <requirement>
-        <dependency name="rdoc" version="2.4.3" bound="EQUAL" git="false" />
-      </requirement>
-      <requirement>
-        <dependency name="hanna" version="0.1.12" bound="EQUAL" url="http://gemcutter.org" lib="hanna/rdoctask" git="false" />
-      </requirement>
-      <requirement>
-        <dependency name="sqlite3-ruby" version="0" bound="GREATER_OR_EQUAL" lib="sqlite3" git="false" />
-      </requirement>
-      <requirement>
         <dependency name="jdbc-sqlite3" version="3.6.3.054" bound="EQUAL" git="false" />
-      </requirement>
-      <requirement>
-        <dependency name="unicode" version="0" bound="GREATER_OR_EQUAL" git="false" />
-      </requirement>
-      <requirement>
-        <dependency name="sqlite3-ruby" version="0" bound="GREATER_OR_EQUAL" git="false" />
-      </requirement>
-      <requirement>
-        <dependency name="test-unit" version="1.2.3" bound="EQUAL" git="false" />
-      </requirement>
-      <requirement>
-        <dependency name="ActiveRecord-JDBC" version="0.5" bound="EQUAL" lib="jdbc_adapter" git="false" />
-      </requirement>
-      <requirement>
-        <dependency name="activerecord-jdbc-adapter" version="0.9.2" bound="EQUAL" lib="jdbc_adapter" git="false" />
       </requirement>
       <requirement>
         <dependency name="cucumber" version="0.6.2" bound="EQUAL" git="false" />
       </requirement>
       <requirement>
-        <dependency name="hanna" version="0.1.12" bound="EQUAL" git="false" />
-      </requirement>
-      <requirement>
-        <dependency name="activerecord-jdbc-adapter" version="0.9.2" bound="EQUAL" git="false" />
-      </requirement>
-      <requirement>
         <dependency name="activerecord-jdbcsqlite3-adapter" version="0.9.2" bound="EQUAL" git="false" />
       </requirement>
       <requirement>
-        <dependency name="ActiveRecord-JDBC" version="0.5" bound="EQUAL" git="false" />
+        <dependency name="ActiveRecord-JDBC" version="0.5" bound="EQUAL" lib="jdbc_adapter" git="false" />
+      </requirement>
+      <requirement>
+        <dependency name="jdbc-sqlite3" version="3.6.3.054" bound="EQUAL" lib="jdbc/sqlite3" git="false" />
+      </requirement>
+      <requirement>
+        <dependency name="hanna" version="0.1.12" bound="EQUAL" url="http://gemcutter.org" lib="hanna/rdoctask" git="false" />
+      </requirement>
+      <requirement>
+        <dependency name="unicode" version="0" bound="GREATER_OR_EQUAL" git="false" />
       </requirement>
       <requirement>
         <dependency name="activerecord-jdbcsqlite3-adapter" version="0.9.2" bound="EQUAL" lib="active_record/connection_adapters/jdbcsqlite3_adapter" git="false" />
       </requirement>
       <requirement>
-        <dependency name="jdbc-sqlite3" version="3.6.3.054" bound="EQUAL" lib="jdbc/sqlite3" git="false" />
+        <dependency name="ActiveRecord-JDBC" version="0.5" bound="EQUAL" git="false" />
+      </requirement>
+      <requirement>
+        <dependency name="rdoc" version="2.4.3" bound="EQUAL" git="false" />
+      </requirement>
+      <requirement>
+        <dependency name="sqlite3-ruby" version="0" bound="GREATER_OR_EQUAL" git="false" />
+      </requirement>
+      <requirement>
+        <dependency name="activerecord-jdbc-adapter" version="0.9.2" bound="EQUAL" git="false" />
+      </requirement>
+      <requirement>
+        <dependency name="activerecord-jdbc-adapter" version="0.9.2" bound="EQUAL" lib="jdbc_adapter" git="false" />
+      </requirement>
+      <requirement>
+        <dependency name="sqlite3-ruby" version="0" bound="GREATER_OR_EQUAL" lib="sqlite3" git="false" />
+      </requirement>
+      <requirement>
+        <dependency name="test-unit" version="1.2.3" bound="EQUAL" git="false" />
+      </requirement>
+      <requirement>
+        <dependency name="hanna" version="0.1.12" bound="EQUAL" git="false" />
       </requirement>
     </module>
   </component>
@@ -86,25 +85,25 @@
       <file leaf-file-name="vra_xml.rb" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/models/vra_xml.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="64" column="83" selection-start="2359" selection-end="2359" vertical-scroll-proportion="0.0">
+            <state line="94" column="23" selection-start="3272" selection-end="3285" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Capfile" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Capfile">
+      <file leaf-file-name="image.rb" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/vendor/plugins/hydra_repository/lib/hydra/image.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+            <state line="48" column="4" selection-start="1315" selection-end="1315" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="deploy.rb" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/config/deploy.rb">
+      <file leaf-file-name="_show_description.html.haml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/views/vra_samples/_show_description.html.haml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="45" column="25" selection-start="1673" selection-end="1673" vertical-scroll-proportion="0.0">
+            <state line="51" column="46" selection-start="2936" selection-end="2946" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -113,14 +112,41 @@
       <file leaf-file-name="_edit_description.html.haml" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/views/vra_samples/_edit_description.html.haml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="50" column="151" selection-start="2505" selection-end="2505" vertical-scroll-proportion="0.8719512">
+            <state line="8" column="114" selection-start="545" selection-end="561" vertical-scroll-proportion="0.14962594">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="_edit.html.haml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/views/vra_samples/_edit.html.haml">
+      <file leaf-file-name="_show.html.haml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/views/vra_samples/_show.html.haml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="13" column="21" selection-start="428" selection-end="435" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="vra_sample.rb" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/models/vra_sample.rb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="12" column="57" selection-start="452" selection-end="452" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="_user_util_links.html.haml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/views/_user_util_links.html.haml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="23" column="5" selection-start="790" selection-end="965" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="_index.html.haml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/views/vra_samples/_index.html.haml">
           <provider selected="true" editor-type-id="text-editor">
             <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
               <folding />
@@ -145,15 +171,15 @@
         <option value="$PROJECT_DIR$/spec/models/vra_sample_spec.rb" />
         <option value="$PROJECT_DIR$/vendor/plugins/hydrangea_articles/app/views/hydrangea_articles/_show.html.haml" />
         <option value="$PROJECT_DIR$/app/views/vra_samples/show.html.haml" />
-        <option value="$PROJECT_DIR$/app/views/vra_samples/_show.html.haml" />
         <option value="$PROJECT_DIR$/vendor/plugins/hydra_repository/app/controllers/catalog_controller.rb" />
         <option value="$PROJECT_DIR$/vendor/plugins/hydrangea_articles/app/views/hydrangea_articles/_show_description.html.haml" />
         <option value="$PROJECT_DIR$/vendor/plugins/hydrangea_articles/app/views/contributors/_show_person.html.haml" />
-        <option value="$PROJECT_DIR$/app/views/vra_samples/_show_description.html.haml" />
         <option value="$PROJECT_DIR$/app/views/vra_samples/_show_image.html.haml" />
-        <option value="$PROJECT_DIR$/config/deploy.rb" />
         <option value="$PROJECT_DIR$/app/models/vra_xml.rb" />
         <option value="$PROJECT_DIR$/app/views/vra_samples/_edit_description.html.haml" />
+        <option value="$PROJECT_DIR$/app/views/vra_samples/_show_description.html.haml" />
+        <option value="$PROJECT_DIR$/config/deploy.rb" />
+        <option value="$PROJECT_DIR$/app/views/vra_samples/_show.html.haml" />
       </list>
     </option>
   </component>
@@ -191,7 +217,7 @@
     </navigator>
     <panes>
       <pane id="RailsProjectView" />
-      <pane id="Favorites" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -225,6 +251,148 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="plugins" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="hydrangea" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="hydrangea" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="vendor" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="plugins" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="hydrangea_articles" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="hydrangea" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="hydrangea" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="vendor" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="plugins" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="hydrangea_articles" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="views" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="hydrangea_articles" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="hydrangea" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="hydrangea" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="vendor" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="plugins" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="hydrangea_articles" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="views" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="hydrangea" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="hydrangea" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="vendor" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="plugins" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="hydrangea_articles" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="hydrangea" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="hydrangea" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="vendor" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="plugins" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="hydrangea_articles" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="controllers" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -302,15 +470,15 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
+      <pane id="Favorites" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="options.splitter.main.proportions" value="0.3" />
-    <property name="options.lastSelected" value="org.jetbrains.plugins.ruby.settings.RubyIdeSdkConfigurable" />
     <property name="recentsLimit" value="5" />
-    <property name="options.searchVisible" value="true" />
+    <property name="options.lastSelected" value="org.jetbrains.plugins.ruby.settings.RubyIdeSdkConfigurable" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="RunManager" selected="Rails.Development: hydrangea">
     <configuration default="true" type="RakeRunConfigurationType" factoryName="Rake">
@@ -521,11 +689,11 @@
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20631067" sideWeight="0.7076566" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3294903" sideWeight="0.4675174" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20631067" sideWeight="0.28422275" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3294903" sideWeight="0.52436197" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.46388263" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.46287704" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -568,106 +736,112 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/vendor/plugins/white_list/README">
+    <entry file="file://$PROJECT_DIR$/config/deploy.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="103" selection-start="237" selection-end="237" vertical-scroll-proportion="0.113851994" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vendor/plugins/hydrangea_articles/app/controllers/contributors_controller.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="26" selection-start="121" selection-end="121" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vendor/plugins/hydra_repository/app/helpers/application_helper.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="64" column="26" selection-start="2219" selection-end="2219" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vendor/plugins/hydrangea_articles/app/views/contributors/_show_person.html.haml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="22" selection-start="11" selection-end="22" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vendor/plugins/hydra_repository/lib/hydra/mods_article.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vendor/plugins/hydrangea_articles/app/views/hydrangea_articles/_show.html.haml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="73" selection-start="307" selection-end="307" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vendor/plugins/hydrangea_articles/app/views/hydrangea_articles/_show_description.html.haml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="0" selection-start="701" selection-end="759" vertical-scroll-proportion="-0.5070093">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vendor/plugins/hydrangea_articles/app/views/contributors/_show_organization.html.haml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="100" selection-start="875" selection-end="883" vertical-scroll-proportion="0.4906542" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vendor/plugins/hydrangea_articles/app/views/hydrangea_articles/_show_journal.html.haml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="2" selection-start="114" selection-end="254" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/vra_samples/_show_description.html.haml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="41" column="100" selection-start="2320" selection-end="2320" vertical-scroll-proportion="1.4369159">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/vra_samples/_show_image.html.haml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="35" column="132" selection-start="2904" selection-end="2904" vertical-scroll-proportion="0.7196262">
+        <state line="141" column="3" selection-start="4965" selection-end="4965" vertical-scroll-proportion="2.1231885">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Capfile">
       <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/plugins/hydrangea_articles/app/views/hydrangea_articles/_edit_journal.html.haml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-0.46853146">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/plugins/hydrangea_articles/app/views/hydrangea_articles/_show.html.haml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="8" column="73" selection-start="307" selection-end="307" vertical-scroll-proportion="0.2919708">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/plugins/hydrangea_articles/app/views/hydrangea_articles/_show_description.html.haml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="15" column="0" selection-start="701" selection-end="759" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/plugins/hydra_repository/app/controllers/assets_controller.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="96" column="20" selection-start="3943" selection-end="3943" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/plugins/hydra_repository/lib/hydra/assets_controller_helper.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="49" selection-start="216" selection-end="228" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/vra_samples/_index.html.haml">
+      <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/config/deploy.rb">
+    <entry file="file://$PROJECT_DIR$/vendor/plugins/hydrangea_articles/app/views/hydrangea_articles/_edit_description.html.haml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="45" column="25" selection-start="1673" selection-end="1673" vertical-scroll-proportion="0.0">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-0.27182046">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/vra_samples/_edit.html.haml">
+    <entry file="file://$PROJECT_DIR$/vendor/plugins/hydra_repository/lib/hydra/image.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+        <state line="48" column="4" selection-start="1315" selection-end="1315" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/vra_samples/_show.html.haml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="21" selection-start="428" selection-end="435" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/_user_util_links.html.haml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="23" column="5" selection-start="790" selection-end="965" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/models/vra_xml.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="64" column="83" selection-start="2359" selection-end="2359" vertical-scroll-proportion="0.0">
+        <state line="94" column="23" selection-start="3272" selection-end="3285" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/models/vra_sample.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="57" selection-start="452" selection-end="452" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/vra_samples/_show_description.html.haml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="51" column="46" selection-start="2936" selection-end="2946" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/views/vra_samples/_edit_description.html.haml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="50" column="151" selection-start="2505" selection-end="2505" vertical-scroll-proportion="0.8719512">
+        <state line="8" column="114" selection-start="545" selection-end="561" vertical-scroll-proportion="0.14962594">
           <folding />
         </state>
       </provider>

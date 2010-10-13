@@ -19,11 +19,11 @@
       %dd.agent_title
         = get_values_from_datastream(@document_fedora,"descMetadata", [:work, :agent_set, :agent_display])
 
-    - unless get_values_from_datastream(@document_fedora,"descMetadata", [:work, :cultural_context_set]).first.empty?
+    - unless get_values_from_datastream(@document_fedora,"descMetadata", [:work, :culturalContextSet, :culturalContext]).first.empty?
       %dt
         = fedora_field_label("descMetadata", [:work, :cultural_context_set], "Culture:")
       %dd.culture
-        = get_values_from_datastream(@document_fedora,"descMetadata", [:work, :cultural_context_set])
+        = get_values_from_datastream(@document_fedora,"descMetadata", [:work, :culturalContextSet, :culturalContext])
 
     - unless get_values_from_datastream(@document_fedora,"descMetadata", [:work, :date_set]).first.empty?
       %dt
@@ -31,11 +31,11 @@
       %dd.date
         = get_values_from_datastream(@document_fedora,"descMetadata", [:work, :date_set])
 
-    - unless get_values_from_datastream(@document_fedora,"descMetadata", [:work, :description_set]).first.empty?
+    - unless get_values_from_datastream(@document_fedora,"descMetadata", [:work, :descriptionSet, :description]).first.empty?
       %dt
         = fedora_field_label("descMetadata", [:work, :description_set], "Description:")
       %dd.description
-        = get_values_from_datastream(@document_fedora,"descMetadata", [:work, :description_set])
+        = get_values_from_datastream(@document_fedora,"descMetadata", [:work, :descriptionSet, :description])
 
     - unless get_values_from_datastream(@document_fedora,"descMetadata", [:work, :work_type_set, :work_type_display]).first.empty?
       %dt
