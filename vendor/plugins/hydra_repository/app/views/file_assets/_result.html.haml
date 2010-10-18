@@ -19,3 +19,22 @@
       - else
         - file_asset_url = asset_file_asset_path(@container.pid, result["id"])        
       %a.destroy_file_asset{:href=>file_asset_url, :title=>"Remove file"} X
+
+%tr.file_asset
+  %td
+  %td
+    =link_to "Metadata", file_asset_path("changeme:20".to_sym)
+  %td
+  %td
+  %td
+    - dt = DateTime.parse(result[ solr_name("system_create", :date)] )
+    = dt.strftime("%Y-%m-%d %I:%M%p UTC")
+  %td
+    - if editor?
+      - if @container.nil?
+        - file_asset_url = file_asset_path(result["id"])
+      - else
+        - file_asset_url = asset_file_asset_path(@container.pid, result["id"])
+
+      
+   

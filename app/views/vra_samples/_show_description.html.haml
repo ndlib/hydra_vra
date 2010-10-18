@@ -48,7 +48,7 @@
         = fedora_field_label("descMetadata", [:reference_location, :location_local_name], "Location:")
       %dd.location
         = get_values_from_datastream(@document_fedora,"descMetadata", [:reference_location, :location_local_name])
-  %ol
+  %ol    
     = render :partial=>"vra_samples/show_image", :collection=>@document_fedora.datastreams_in_memory["descMetadata"].find_by_terms(:image)
       
 

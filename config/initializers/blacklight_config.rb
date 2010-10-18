@@ -70,14 +70,16 @@ Blacklight.configure(:shared) do |config|
       "title_t",
       "medium_t",
       "location_t",
-      "id"
+      "id",
+      "active_fedora_model_s"
       ],
     :labels => {
       "date_t"=>"Date",
       "title_t"=>"Title",
       "medium_t"=>"Content Type",
       "location_t"=>"Location",
-      "id"=>"test"
+      "id"=>"Pid",
+      "active_fedora_model_s"=>"Model"
     },
     :limits=> {nil=>10}
   }

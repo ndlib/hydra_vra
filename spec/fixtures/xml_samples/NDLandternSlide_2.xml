@@ -1,0 +1,742 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<vra xmlns="http://www.vraweb.org/vracore4.htm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.vraweb.org/vracore4.htm http://gort.ucsd.edu/escowles/vracore4/vra-4.0.xsd">
+	<work id="w_2" source="Notre Dame VCat Database" refid="2">
+
+		<agentSet>
+			<display>Carlo Maderno (Italian architect, ca. 1556 -1629); Donato Bramante (Italian architect, 1444-1514); Michelangelo Buonarroti (Italian architect, 1475-1564); Pirro Ligorio (Italian architect, ca.1500-1583) and others</display>
+			<notes/>
+			<agent>
+				<name vocab="ULAN" refid="500007668" type="personal">Maderno, Carlo</name>
+				<dates type="life">
+				<earliestDate>1556</earliestDate>
+				<latestDate>1629</latestDate>
+				</dates>
+				<culture>Italian</culture>
+				<role>architect</role>
+			</agent>
+			<agent>
+				<name vocab="ULAN" refid="500019098" type="personal">Bramante, Donato</name>
+				<dates type="life">
+				<earliestDate>1444</earliestDate>
+				<latestDate>1514</latestDate>
+				</dates>
+				<culture>Italian</culture>
+				<role>architect</role>
+			</agent>
+			<agent>
+				<name vocab="ULAN" refid="500018431" type="personal">Ligorio, Pirro</name>
+				<dates type="life">
+				<earliestDate>1500</earliestDate>
+				<latestDate>1583</latestDate>
+				</dates>
+				<culture>Italian</culture>
+				<role>architect</role>
+			</agent>
+
+			<agent>
+				<name vocab="ULAN" refid="500010654" type="personal">Buonarroti, Michelangelo</name>
+				<dates type="life">
+				<earliestDate>1475</earliestDate>
+				<latestDate>1564</latestDate>
+				</dates>
+				<culture>Italian</culture>
+				<role>architect</role>
+			</agent>
+		</agentSet>
+
+		<dateSet>
+			<display>ca. 1506-1616  (creation)</display>
+			<date type="creation">
+				<earliestDate>1506</earliestDate>
+				<latestDate>1616</latestDate>
+			</date>
+		</dateSet>
+		<descriptionSet>
+			<description>
+				Bramante was hired by Julius II to begin a radical reconstruction, to replace Old Saint Peter's, and intensive planning by Bramante, Giuliano da Sangallo and Fra Giovanni Giocondo preceded the laying of the foundation stone on 18 April 1506. Since Bramante's first designs of 1506, half a dozen architects had worked under five successive popes, all bringing their own revisions with them. In the 18 remaining years of his life Michelangelo succeeded in 'uniting into a whole the great body of that machine' (Vasari), ensuring that the crossing and dome would follow his overall design, even though the façade and nave remained unresolved. His new design, as presented in the engravings (1569) by Etienne Dupérac, took the form of a centralized building over a Greek cross. The façade was built between 1607 and 1625, and the nave was finally consecrated in 1626; the confessio was built to Maderno's design in 1615-1616.
+			</description>
+		</descriptionSet>
+
+		<locationSet>
+			<display>Rome (Vatican City), Santa Sede (Holy See), Italy</display>
+			<notes>Piazza San Pietro</notes>
+			<location type="site">
+				<name type="geographic" vocab="TGN" refid="7001168" extent="inhabited place">Rome (Vatican City)</name>
+				<name type="geographic" vocab="TGN" refid="7001168" extent="country">Santa Sede (Holy See)</name>
+				<name type="geographic" vocab="TGN" refid="1000080" extent="nation">Italy</name>
+				<name type="geographic" vocab="TGN" refid="1000003" extent="continent">Europe</name>
+			</location>
+		</locationSet>
+
+		<materialSet>
+			<display>marble</display>
+			<notes/>
+			<material/>
+		</materialSet>
+
+		<sourceSet>
+			<display>Grove Art Online; http://www.oxfordartonline.com/ (accessed 5/27/2010)</display>
+			<notes/>
+			<source/>
+		</sourceSet>
+
+		<stylePeriodSet>
+			<display>Renaissance</display>
+			<stylePeriod vocab="AAT" refid="300021140">Renaissance</stylePeriod>
+		</stylePeriodSet>
+
+		<subjectSet>
+			<display>architecture; rulers and leaders; saints; Julius II, Pope, 1443-1513; Peter, the Apostle, Saint</display>
+			<notes/>
+			<subject>
+				<term type="personalName" vocab="LCNAF" refid="n 80030746">Julius II, Pope, 1443-1513</term>
+			</subject>
+			<subject>
+				<term type="personalName" vocab="LCNAF" refid="n 79022118">Peter, the Apostle, Saint</term>
+			</subject>
+		</subjectSet>
+		
+		<techniqueSet>
+			<display>construction (assembling)</display>
+			<notes/>
+			<technique vocab="AAT" refid="300054608">construction (assembling)</technique>
+		</techniqueSet>
+
+		<titleSet>
+			<display>Saint Peter's Basilica</display>
+			<title type="cited" pref="true" xml:lang="en">Saint Peter's Basilica</title>
+			<title type="cited" pref="false" xml:lang="en">St. Peter's Basilica</title>
+			<title type="cited" pref="false" xml:lang="it">San Pietro in Vaticano</title>
+		</titleSet>
+
+		<worktypeSet>
+			<display>buildings; basilicas; buildings; religious buildings; churches; cathedrals</display>
+			<worktype vocab="AAT" refid="300170443">basilica</worktype>
+			<worktype vocab="AAT" refid="300007501">cathedral</worktype>
+		</worktypeSet>
+		
+	</work>
+
+	<image id="i_1008" refid="1008" source="University of Notre Dame, Architecture Library">
+
+		<dateSet>
+			<display>2007 (creation)</display>
+			<notes/>
+			<date/>
+		</dateSet>
+
+		<measurementsSet>
+			<display>18 MB</display>
+			<notes/>
+			<measurements/>
+		</measurementsSet>
+
+		<relationSet>
+			<relation type="imageOf" refid="2" source="Notre Dame VCat Database"/>
+		</relationSet>
+
+		<rightsSet>
+			<display>scans retain Creative Commons license</display>
+			<rights/>
+		</rightsSet>
+
+		<sourceSet>
+			<display>University of Notre Dame, Hesburgh Library</display>
+			<source>
+				<name/>
+				<refid type="other"/>
+			</source>
+		</sourceSet>
+
+		<subjectSet>
+			<display>architectural elements; coffered ceiling; hallway; portals; pediments; interior</display>
+			<notes/>
+			<subject>
+				<term type="descriptiveTopic" vocab="AAT" refid="300000885">architectural elements</term>
+			</subject>
+		</subjectSet>
+
+		<techniqueSet>
+			<display>digital imaging</display>
+			<notes/>
+			<technique/>
+		</techniqueSet>
+
+		<titleSet>
+			<display>View of portico</display>
+			<title type="partialView">View of portico</title>
+		</titleSet>
+
+	</image>
+
+	<image id="i_1009" refid="1009" source="University of Notre Dame, Architecture Library">
+
+		<dateSet>
+
+			<display>2007 (creation)</display>
+
+			<notes/>
+
+			<date/>
+
+		</dateSet>
+
+		<descriptionSet>
+
+			<description>One of two colossal basins, completed 1725 by Agostino Cornacchini; this one is on the south side of the nave.</description>
+
+		</descriptionSet>
+
+		<measurementsSet>
+
+			<display>18 MB</display>
+
+			<notes/>
+
+			<measurements/>
+
+		</measurementsSet>
+
+		<relationSet>
+
+			<relation type="imageOf" refid="2" source="Notre Dame VCat Database"/>
+
+		</relationSet>
+
+		<rightsSet>
+
+			<display>scans retain Creative Commons license</display>
+
+			<rights/>
+
+		</rightsSet>
+
+		<sourceSet>
+
+			<display>University of Notre Dame, Hesburgh Library</display>
+
+			<source>
+
+				<name/>
+
+				<refid type="other"/>
+
+			</source>
+
+		</sourceSet>
+
+		<subjectSet>
+
+			<display>Angels; Benedict XIII, Pope, 1649-1730; interior; putti; memorial plaque</display>
+
+			<notes/>
+
+			<subject>
+
+				<term type="iconographicTopic" vocab="LCSAF" refid="sh 85005001">Angels</term>
+
+			</subject>
+
+			<subject>
+
+				<term type="personalName" vocab="LCNAF" refid="n 88274527">Benedict XIII, Pope, 1649-1730</term>
+
+			</subject>
+
+		</subjectSet>
+
+		<techniqueSet>
+
+			<display>digital imaging</display>
+
+			<notes/>
+
+			<technique/>
+
+		</techniqueSet>
+
+		<titleSet>
+
+			<display>Angels and Holy Water basin </display>
+
+			<title type="partialView">Angels and Holy Water basin </title>
+
+		</titleSet>
+
+	</image>
+
+	<image id="i_1011" refid="1011" source="University of Notre Dame, Architecture Library">
+
+		<dateSet>
+
+			<display>2007 (creation)</display>
+
+			<notes/>
+
+			<date/>
+
+		</dateSet>
+
+		<measurementsSet>
+
+			<display>18 MB</display>
+
+			<notes/>
+
+			<measurements/>
+
+		</measurementsSet>
+
+		<relationSet>
+
+		<	relation type="imageOf" refid="2" source="Notre Dame VCat Database"/>
+
+		</relationSet>
+
+		<rightsSet>
+
+			<display>scans retain Creative Commons license</display>
+
+			<rights/>
+
+		</rightsSet>
+
+		<sourceSet>
+
+			<display>University of Notre Dame, Hesburgh Library</display>
+
+			<source>
+
+				<name/>
+
+				<refid type="other"/>
+
+			</source>
+
+		</sourceSet>
+
+		<techniqueSet>
+
+			<display>digital imaging</display>
+
+			<notes/>
+
+			<technique/>
+
+		</techniqueSet>
+
+		<titleSet>
+
+			<display>Overall view of facade viewed from the Piazza San Pietro</display>
+
+			<title type="generalView">Overall view of facade viewed from the Piazza San Pietro</title>
+
+		</titleSet>
+
+	</image>
+
+	<image id="i_1018" refid="1018" source="University of Notre Dame, Architecture Library">
+
+		<dateSet>
+
+			<display>2007 (creation)</display>
+
+			<notes/>
+
+			<date/>
+
+		</dateSet>
+
+		<measurementsSet>
+
+			<display>18 MB</display>
+
+			<notes/>
+
+			<measurements/>
+
+		</measurementsSet>
+
+		<relationSet>
+
+			<relation type="imageOf" refid="2" source="Notre Dame VCat Database"/>
+
+		</relationSet>
+
+		<rightsSet>
+
+			<display>scans retain Creative Commons license</display>
+
+			<rights/>
+
+		</rightsSet>
+
+		<sourceSet>
+
+			<display>University of Notre Dame, Hesburgh Library</display>
+
+			<source>
+
+				<name/>
+
+				<refid type="other"/>
+
+			</source>
+
+		</sourceSet>
+
+		<subjectSet>
+
+			<display>architectural elements; altars; interior</display>
+
+			<notes/>
+
+			<subject>
+
+				<term type="descriptiveTopic" vocab="AAT" refid="300000885">architectural elements</term>
+
+			</subject>
+
+		</subjectSet>
+
+		<techniqueSet>
+
+			<display>digital imaging</display>
+
+			<notes/>
+
+			<technique/>
+
+		</techniqueSet>
+
+		<titleSet>
+
+			<display>View of Papal Altar</display>
+
+			<title type="partialView">View of Papal Altar</title>
+
+		</titleSet>
+
+	</image>
+
+	<image id="i_1032" refid="1032" source="University of Notre Dame, Architecture Library">
+
+		<dateSet>
+
+			<display>2007 (creation)</display>
+
+			<notes/>
+
+			<date/>
+
+		</dateSet>
+
+		<measurementsSet>
+
+			<display>18 MB</display>
+
+			<notes/>
+
+			<measurements/>
+
+		</measurementsSet>
+
+		<relationSet>
+
+			<relation type="imageOf" refid="2" source="Notre Dame VCat Database"/>
+
+		</relationSet>
+
+		<rightsSet>
+
+			<display>scans retain Creative Commons license</display>
+
+			<rights/>
+
+		</rightsSet>
+
+		<sourceSet>
+
+			<display>University of Notre Dame, Hesburgh Library</display>
+
+			<source>
+
+				<name/>
+
+				<refid type="other"/>
+
+			</source>
+
+		</sourceSet>
+
+		<subjectSet>
+
+			<display>Bernini, Gian Lorenzo</display>
+
+			<notes/>
+
+			<subject>
+
+				<term type="personalName" vocab="ULAN" refid="500032022">Bernini, Gian Lorenzo</term>
+
+			</subject>
+
+		</subjectSet>
+
+		<techniqueSet>
+
+			<display>digital imaging</display>
+
+			<notes/>
+
+			<technique/>
+
+		</techniqueSet>
+
+		<titleSet>
+
+			<display>View of the crossing from the transept, with the baldacchino at center</display>
+
+			<title type="generalView">View of the crossing from the transept, with the baldacchino at center</title>
+
+		</titleSet>
+
+	</image>
+
+	<image id="i_1033" refid="1033" source="University of Notre Dame, Architecture Library">
+
+		<dateSet>
+
+			<display>2007 (creation)</display>
+
+			<notes/>
+
+			<date/>
+
+		</dateSet>
+
+		<measurementsSet>
+
+			<display>18 MB</display>
+
+			<notes/>
+
+			<measurements/>
+
+		</measurementsSet>
+
+		<relationSet>
+
+			<relation type="imageOf" refid="2" source="Notre Dame VCat Database"/>
+
+		</relationSet>
+
+		<rightsSet>
+
+			<display>scans retain Creative Commons license</display>
+
+			<rights/>
+
+		</rightsSet>
+
+		<sourceSet>
+
+			<display>University of Notre Dame, Hesburgh Library</display>
+
+			<source>
+
+				<name/>
+
+				<refid type="other"/>
+
+			</source>
+
+		</sourceSet>
+
+		<subjectSet>
+
+			<display>Bernini, Gian Lorenzo</display>
+
+			<notes/>
+
+			<subject>
+
+			<term type="personalName" vocab="ULAN" refid="500032022">Bernini, Gian Lorenzo</term>
+
+			</subject>
+
+		</subjectSet>
+
+		<techniqueSet>
+
+			<display>digital imaging</display>
+
+			<notes/>
+
+			<technique/>
+
+		</techniqueSet>
+
+		<titleSet>
+
+			<display>View of the crossing from the transept, with the baldacchino at center</display>
+
+			<title type="partialView">View of the crossing from the transept, with the baldacchino at center</title>
+
+		</titleSet>
+
+	</image>
+
+	<image id="i_1178" refid="1178" source="University of Notre Dame, Architecture Library">
+
+		<dateSet>
+
+			<display>2007 (creation)</display>
+
+			<notes/>
+
+			<date/>
+
+		</dateSet>
+
+		<descriptionSet>
+
+			<description>Rome, Italy - Basilica di San Pietro - Pius VII's Tomb</description>
+
+		</descriptionSet>
+
+		<measurementsSet>
+
+			<display>18 MB</display>
+
+			<notes/>
+
+			<measurements/>
+
+		</measurementsSet>
+
+		<relationSet>
+
+			<relation type="imageOf" refid="2" source="Notre Dame VCat Database"/>
+
+		</relationSet>
+
+		<rightsSet>
+
+			<display>scans retain Creative Commons license</display>
+
+			<rights/>
+
+		</rightsSet>
+
+		<sourceSet>
+
+			<display>University of Notre Dame, Hesburgh Library</display>
+
+			<source>
+
+				<name/>
+
+				<refid type="other"/>
+
+			</source>
+
+		</sourceSet>
+
+		<techniqueSet>
+
+			<display>digital imaging</display>
+
+			<notes/>
+
+			<technique/>
+
+		</techniqueSet>
+
+		<titleSet>
+
+			<display>Overall view, imaged from lantern slide</display>
+
+			<title type="generalView">Overall view, imaged from lantern slide</title>
+
+		</titleSet>
+
+	</image>
+
+	<image id="i_1183" refid="1183" source="University of Notre Dame, Architecture Library">
+
+		<dateSet>
+
+			<display>2007 (creation)</display>
+
+			<notes/>
+
+			<date/>
+
+		</dateSet>
+
+		<descriptionSet>
+
+			<description>Duplicate view of 1018</description>
+
+		</descriptionSet>
+
+		<measurementsSet>
+
+			<display>18 MB</display>
+
+			<notes/>
+
+			<measurements/>
+
+		</measurementsSet>
+
+		<relationSet>
+
+			<relation type="imageOf" refid="2" source="Notre Dame VCat Database"/>
+
+		</relationSet>
+
+		<rightsSet>
+
+			<display>scans retain Creative Commons license</display>
+
+			<rights/>
+
+		</rightsSet>
+
+		<sourceSet>
+
+			<display>University of Notre Dame, Hesburgh Library</display>
+
+			<source>
+
+				<name/>
+
+				<refid type="other"/>
+
+			</source>
+
+		</sourceSet>
+
+		<techniqueSet>
+
+			<display>digital imaging</display>
+
+			<notes/>
+
+			<technique/>
+
+		</techniqueSet>
+
+		<titleSet>
+
+			<display>Papal altar</display>
+
+			<title type="generalView">Papal altar</title>
+
+		</titleSet>
+
+	</image>
+</vra>	

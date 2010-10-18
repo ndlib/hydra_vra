@@ -6,6 +6,7 @@
 - unless get_values_from_datastream(@document_fedora,"descMetadata", [{:image => image_counter}, :title_set, :title_display]).first.empty?
   %fieldset#image_fields
   %legend Image Details
+  %h2.section-title Image Description
   %dl
     - unless get_values_from_datastream(@document_fedora,"descMetadata", [{:image => image_counter}, :title_set, :title_display]).first.empty?
       %dt.title

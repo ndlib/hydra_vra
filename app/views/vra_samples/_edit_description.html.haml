@@ -19,9 +19,15 @@
         = fedora_text_field(@document_fedora,"descMetadata", [:work, :subject_set, :subject_display])
 
       %dt
-        = fedora_field_label("descMetadata", [:work, :agent_set, :agent_display], "Agent:")
-      %dd.agent_title
+        = fedora_field_label("descMetadata", [:work, :agent_set, :agent_display], "Agent Name:")
+      %dd.agent_name
         = fedora_text_field(@document_fedora,"descMetadata", [:work, :agent_set, :agent_display])
+
+      %dt
+        = fedora_field_label("descMetadata", [:work, :agent_set, :agent], "Agent:")
+      %dd.agent
+        = fedora_text_field(@document_fedora,"descMetadata", [:work, :agent_set, :agent], :mulitple=>true)
+
 
       %dt
         = fedora_field_label("descMetadata", [:work, :cultural_context_set], "Culture:")
@@ -42,7 +48,7 @@
       %dt
         = fedora_field_label("descMetadata", [:work, :work_type_set, :work_type_display], "Work Type:")
       %dd.title
-        = fedora_text_field(@document_fedora,"descMetadata", [:work, :work_type_set, :work_type_display])
+        = fedora_text_area(@document_fedora,"descMetadata", [:work, :work_type_set, :work_type_display])
 
       %dt
         = fedora_field_label("descMetadata", [:reference_location, :location_local_name], "Location:")

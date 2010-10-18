@@ -7,7 +7,7 @@ class VraXml < ActiveFedora::NokogiriDatastream
 
     t.reference_location(:path=>"location"){
       t.location_local_name(:path=>"name", :attributes=>{:type=>"geographic", :vocab=>"local"} )
-      t.location_site_name(:path=>"name", :attributes=>{:type=>"geographic", :vocab=>"TGN"} ) #Not sure how these work?????
+      t.location_site_name(:path=>"name", :attributes=>{:type=>"geographic", :vocab=>"TGN"} ) 
     }
 
     t.reference_title(:path=>"title"){
@@ -53,6 +53,17 @@ class VraXml < ActiveFedora::NokogiriDatastream
       t.agent_set(:path=>"agentSet"){
         t.agent_display(:ref=>[:reference_display])
         t.agent(:path=>"agent"){
+          t.name {
+          t.name_vocab(:path=>{:attribute =>"vocab"})
+          t.name_refid(:path=>{:attribute =>"refid"})
+          t.name_type(:path=>{:attribute =>"type"})
+          }
+          t.dates{
+            t.life(:path=>{:attribute =>"life"})
+            t.earliestDate
+            t.latestDate
+          }
+          t.culture
           t.agent_role(:path=>"role")
           t.agent_vocab(:path=>{:attribute =>"vocab"})
           t.role_refid(:path=>{:attribute =>"refid"})
@@ -69,7 +80,9 @@ class VraXml < ActiveFedora::NokogiriDatastream
       t.date_set(:path=>"dateSet"){
         t.date_display(:ref=>[:reference_display])
         t.date(:path=>"date"){
-          t.date_type(:path=>{:attribute =>"type"})          
+          t.date_type(:path=>{:attribute =>"type"})
+          t.earliest_date(:path=>"earliestDate")
+          t.latest_date(:path=>"latestDate")
         }
       }
 
@@ -80,8 +93,7 @@ class VraXml < ActiveFedora::NokogiriDatastream
 
       t.location_set(:path=>"locationSet"){
         t.location_display(:ref=>[:reference_display])
-        t.location(:ref=>[:reference_location])
-        t.location(:ref=>[:reference_location])
+        t.location(:ref=>[:reference_location])        
       }
 
       t.subject_set(:path=>"subjectSet"){
