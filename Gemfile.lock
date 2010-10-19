@@ -131,8 +131,8 @@ DEPENDENCIES
   rcov
   rsolr
   rsolr-ext
-  rspec (< 2.0.0)
-  rspec-rails (< 2.0.0)
+  rspec
+  rspec-rails
   ruby-debug
   ruby-debug-base
   solr-ruby

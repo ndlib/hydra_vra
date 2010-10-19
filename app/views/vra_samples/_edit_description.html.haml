@@ -4,6 +4,11 @@
     %input#content_type{:type=>"hidden", :name=>"content_type", :value=>"vra_sample"}
     %dl
       %dt
+        = fedora_field_label("descMetadata", [:work], "Work:")
+      %dd#work{"data-datastream-name"=>"descMetadata"}
+        = fedora_text_area(@document_fedora,"descMetadata", [:work], :multiple=>false)
+
+      %dt
         = fedora_field_label("descMetadata", [:work, :title_set, :title_display], "Title:")
       %dd.title
         = fedora_text_field(@document_fedora,"descMetadata", [:work, :title_set, :title_display], :multiple=>false)
@@ -41,13 +46,12 @@
 
       %dt
         = fedora_field_label("descMetadata", [:work, :description_set, :description], "Description:")
-      %dd.description
-        = fedora_text_field(@document_fedora,"descMetadata", [:work, :descriptionSet, :description], :multiple=>true)
-        = fedora_text_field_insert_link "descMetadata", [:work, :descriptionSet, :description]
-
+      %dd#description{"data-datastream-name"=>"descMetadata"}
+        = fedora_text_area(@document_fedora,"descMetadata", [:work, :descriptionSet, :description], :multiple=>true)
+        = fedora_text_field_insert_link "descMetadata", [:work, :descriptionSet, :description]       
       %dt
         = fedora_field_label("descMetadata", [:work, :work_type_set, :work_type_display], "Work Type:")
-      %dd.title
+      %dd#worktype{"data-datastream-name"=>"descMetadata"}
         = fedora_text_area(@document_fedora,"descMetadata", [:work, :work_type_set, :work_type_display])
 
       %dt
