@@ -1,0 +1,46 @@
+<% agents = edit_agent %>
+<% agent_counter = edit_agent_counter %>
+<% base_id = "agent_#{agent_counter}" %>
+<li>
+  <fieldset>
+  <dl class="person" id="<%= base_id %>">
+  <dt>
+    <%= fedora_field_label("descMetadata", [:work,  :agent_set, {:agent => agent_counter}, :name], "Agent Name:") %>
+  </dt>
+  <dd>
+    <%= fedora_text_field(@document_fedora,"descMetadata", [:work,  :agent_set, {:agent => agent_counter},:name], :multiple=>true) %>
+  </dd>
+  <dt>
+    <%= fedora_field_label("descMetadata", [:work,  :agent_set, {:agent => agent_counter}, :name], "Agent Ref id:") %>
+  </dt>
+  <dd class="agent">
+    <%= fedora_text_field(@document_fedora,"descMetadata", [:work,  :agent_set, {:agent => agent_counter},:name, :name_refid], :multiple=>true) %>
+  </dd>
+  <dt>
+    <%= fedora_field_label("descMetadata", [:work,  :agent_set, {:agent => agent_counter}, :dates, :earliestDate], "Start Year:") %>
+  </dt>
+  <dd class="agent">
+    <%= fedora_text_field(@document_fedora,"descMetadata", [:work,  :agent_set, {:agent => agent_counter}, :dates, :earliestDate], :multiple=>true) %>
+  </dd>
+  <dt>
+    <%= fedora_field_label("descMetadata", [:work,  :agent_set, {:agent => agent_counter}, :dates, :latestDate], "End Year:") %>
+  </dt>
+  <dd class="agent">
+    <%= fedora_text_field(@document_fedora,"descMetadata", [:work,  :agent_set, {:agent => agent_counter}, :dates, :latestDate], :multiple=>true) %>
+  </dd>
+  <dt>
+    <%= fedora_field_label("descMetadata", [:work,  :agent_set, {:agent => agent_counter}, :culture], "Culture:") %>
+  </dt>
+  <dd class="agent">
+    <%= fedora_text_field(@document_fedora,"descMetadata", [:work,  :agent_set, {:agent => agent_counter}, :culture], :multiple=>true) %>
+  </dd>
+  <dt>
+    <%= fedora_field_label("descMetadata", [:work,  :agent_set, {:agent => agent_counter}, :agent_role], "Role:") %>
+  </dt>
+  <dd class="agent">
+    <%= fedora_text_field(@document_fedora,"descMetadata", [:work,  :agent_set, {:agent => agent_counter}, :agent_role], :multiple=>true) %>
+  </dd>
+  </dl>
+  </fieldset>
+</li>
+
