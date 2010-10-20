@@ -301,9 +301,6 @@
     <orderEntry type="library" scope="PROVIDED" name="[gem] rack-test (v0.5.6, /home/blakshmi/.rvm/gems/ree-1.8.7-2010.02@hydra/gems/rack-test-0.5.6)" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="[gem] webrat (v0.7.1, /home/blakshmi/.rvm/gems/ree-1.8.7-2010.02@hydra/gems/webrat-0.7.1)" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="[gem] marc (v0.3.0, /home/blakshmi/.rvm/gems/ree-1.8.7-2010.02@hydra/gems/marc-0.3.0)" level="application" />
-    <orderEntry type="library" name="[gem] haml (v2.2.24, null)" level="application" />
-    <orderEntry type="library" name="[gem] linecache19 (v0.5.11, null)" level="application" />
-    <orderEntry type="library" name="[gem] hanna (v0.1.12, null)" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="[gem] net-ssh (v2.0.23, /home/blakshmi/.rvm/gems/ree-1.8.7-2010.02@hydra/gems/net-ssh-2.0.23)" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="[gem] net-sftp (v2.0.5, /home/blakshmi/.rvm/gems/ree-1.8.7-2010.02@hydra/gems/net-sftp-2.0.5)" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="[gem] capistrano (v2.5.19, /home/blakshmi/.rvm/gems/ree-1.8.7-2010.02@hydra/gems/capistrano-2.5.19)" level="application" />
@@ -352,6 +349,12 @@
     <orderEntry type="library" scope="PROVIDED" name="[gem] activeresource (v3.0.0, /home/blakshmi/.rvm/gems/ree-1.8.7-2010.02@hydra/gems/activeresource-3.0.0)" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="[gem] json (v1.4.6, /home/blakshmi/.rvm/gems/ree-1.8.7-2010.02@hydra/gems/json-1.4.6)" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="[gem] thor (v0.14.3, /home/blakshmi/.rvm/gems/ree-1.8.7-2010.02@hydra/gems/thor-0.14.3)" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="[gem] rcov (v0.9.7.1, /home/blakshmi/.rvm/gems/ree-1.8.7-2010.02@hydra/gems/rcov-0.9.7.1)" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="[gem] haml (v2.2.19, /home/blakshmi/.rvm/gems/ree-1.8.7-2010.02@hydra/gems/haml-2.2.19)" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="[gem] webrat (v0.7.0, /home/blakshmi/.rvm/gems/ree-1.8.7-2010.02@hydra/gems/webrat-0.7.0)" level="application" />
+    <orderEntry type="library" name="[gem] haml (v2.2.24, null)" level="application" />
+    <orderEntry type="library" name="[gem] linecache19 (v0.5.11, null)" level="application" />
+    <orderEntry type="library" name="[gem] hanna (v0.1.12, null)" level="application" />
   </component>
 </module>
 

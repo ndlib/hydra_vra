@@ -238,4 +238,20 @@ end
     end
     return builder.doc
   end
+
+  # Generates a new agent node
+    def self.agent_template
+      builder = Nokogiri::XML::Builder.new do |xml|
+        xml.agent{
+          xml.name(:type=>"personal", :vocab=>"ULAN")
+            xml.dates(:type=>"life"){
+            xml.earliestDate
+            xml.latestDate
+            }
+            xml.role
+            xml.culture
+          }
+      end
+      return builder.doc.root
+    end
 end
