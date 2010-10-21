@@ -17,5 +17,12 @@ class VraSample < ActiveFedora::Base
     m.field 'agent', :string
     m.field 'description', :string
   end
+
+  # Call insert_contributor on the descMetadata datastream
+  def insert_new_node(type, opts)
+    ds = self.datastreams_in_memory["descMetadata"]
+    node, index = ds.insert_node(type, opts)
+    return node, index
+  end
   
 end

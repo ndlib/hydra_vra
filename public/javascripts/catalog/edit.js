@@ -24,6 +24,8 @@
       setUpSliders();
       setUpNewPermissionsForm();
       $("#add-contributor-box").hydraNewContributorForm();
+      $("#add-agent-box").hydraNewAgentForm();
+      $("#add-image-box").hydraNewImageForm();
       $("a.inline").fancybox({
       		'hideOnContentClick': true,
       		'autoDimensions' : false

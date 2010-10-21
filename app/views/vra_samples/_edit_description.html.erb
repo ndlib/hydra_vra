@@ -1,4 +1,4 @@
-<form id="document_metadata" action="<%= url_for(:action=>"update", :controller=>"assets", :content_type=>"hydrangea_article")%>" method="post" data-resourceType="vra_sample" accept-charset="utf-8">
+<form id="document_metadata" action="<%= url_for(:action=>"update", :controller=>"assets", :content_type=>"vra_sample")%>" method="post" data-resourceType="vra_sample" accept-charset="utf-8">
   <fieldset id="work_fields">
     <legend> Title </legend>
       <input id="content_type" type="hidden" name="content_type" value="vra_sample" />
@@ -33,16 +33,13 @@
     <fieldset id="agent_fields">
     <legend>Agents Description</legend>
       <ol>
-        <%= render :partial=>"vra_samples/edit_agent", :collection=>@document_fedora.datastreams_in_memory["descMetadata"].find_by_terms(:work, :agent_set, :agent) %>
+        <%= render :partial=>"agents/edit_agent", :collection=>@document_fedora.datastreams_in_memory["descMetadata"].find_by_terms(:work, :agent_set, :agent) %>
       </ol>
      <%# Button for adding person/conference/organization %>
     <% if params[:action] == "edit" %>
       <% format = document_partial_name(@document) %>
       <div id="add-agent-box">
         <input id="re-run-add-agent-action" type="button" value="Add a agent" />
-        <ul id="add-contributor-menu">
-          <li id="add_person">Add a agent</li>
-        </ul>
       </div>
     <% end %>
     </fieldset>
@@ -79,6 +76,20 @@
       <dd class="location">
         <%= fedora_text_field(@document_fedora,"descMetadata", [:reference_location, :location_local_name], :multiple=>true)%>
       </dd>
+    </fieldset>
+    <fieldset id="image_fields">
+    <legend>Image Description</legend>
+      <%# Button for adding image tag %>
+      <% if params[:action] == "edit" %>
+        <% format = document_partial_name(@document) %>
+        <div id="add-image-box">
+          <input id="re-run-add-image-action" type="button" value="Add a Image Tag" />
+        </div>
+      <% end %>
+      <ol>
+        <%= render :partial=>"images/edit_image_tag", :collection=>@document_fedora.datastreams_in_memory["descMetadata"].find_by_terms(:image) %>
+      </ol>
+
     </fieldset>
   </form>
   
