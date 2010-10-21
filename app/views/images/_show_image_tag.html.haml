@@ -34,11 +34,11 @@
         = fedora_field_label("descMetadata", [{:image => image_counter}, :work_type_set, :work_type_display], "Work Type:")
       %dd
         = get_values_from_datastream(@document_fedora,"descMetadata", [{:image => image_counter}, :work_type_set, :work_type_display])
-    - unless get_values_from_datastream(@document_fedora,"descMetadata", [{:image => image_counter}, :measurement_set, :measurements]).first.empty?
+    - unless get_values_from_datastream(@document_fedora,"descMetadata", [{:image => image_counter}, :measurement_set, :measurements_display]).first.empty?
       %dt.measurements
-        = fedora_field_label("descMetadata", [{:image => image_counter}, :measurement_set, :measurements], "Measurements:")
+        = fedora_field_label("descMetadata", [{:image => image_counter}, :measurement_set, :measurements_display], "Measurements:")
       %dd
-        = get_values_from_datastream(@document_fedora,"descMetadata", [{:image => image_counter}, :measurement_set, :measurements])
+        = get_values_from_datastream(@document_fedora,"descMetadata", [{:image => image_counter}, :measurement_set, :measurements_display])
     - unless get_values_from_datastream(@document_fedora,"descMetadata", [{:image => image_counter}, :rights_set, :rights_display]).first.empty?
       %dt.rights
         = fedora_field_label("descMetadata", [{:image => image_counter}, :rights_set, :rights_display], "Contact Infomation:")

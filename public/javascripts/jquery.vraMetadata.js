@@ -18,7 +18,7 @@
    };
 
      addAgent: function(type) {
-       var content_type = $("form#new_contributor > input#content_type").first().attr("value");
+       var content_type = $("form#new_agent > input#content_type").first().attr("value");
        var contributors_group_selector = "."+type+".contributor";
 
        var url = $("form#new_agent").attr("action");
