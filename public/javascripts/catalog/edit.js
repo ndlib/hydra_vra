@@ -50,6 +50,7 @@
       //   e.preventDefault();
       // });
       $(".contributor a.destructive").hydraContributorDeleteButton();
+      $(".agent_set a.destructive").agentDeleteButton();
       
       $metaDataForm.delegate('select.metadata-dd', 'change', function(e) {
         saveSelect(this);

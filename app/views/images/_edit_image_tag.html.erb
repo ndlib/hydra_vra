@@ -37,10 +37,6 @@
           <%= fedora_field_label("descMetadata", [{:image=>image_counter}, :measurement_set, :measurements], "Measurements:") %>
           <%= fedora_text_field(@document_fedora,"descMetadata", [{:image=>image_counter}, :measurement_set, :measurements], :multiple=>false) %>
         </li>
-        <!--<li class="relation_display">-->
-          <!--<%# fedora_field_label("descMetadata", [{:image=>image_counter}, :relation_set, :relation_display], "Relation Display:") %>-->
-          <!--<%# fedora_text_field(@document_fedora,"descMetadata", [{:image=>image_counter}, :relation_set, :relation_display], :multiple=>false) %>-->
-        <!--</li>-->
         <li class="relation">
           <%= fedora_field_label("descMetadata", [{:image=>image_counter}, :relation_set, :relation], "Relationm:") %>
           <%= fedora_text_field(@document_fedora,"descMetadata", [{:image=>image_counter}, :relation_set, :relation], :multiple=>false) %>
@@ -111,5 +107,5 @@
   </dd>
   </dl>
 </li>
-<hr>
+<hr/>
 

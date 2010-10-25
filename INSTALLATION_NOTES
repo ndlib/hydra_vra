@@ -1,0 +1,7 @@
+Gems
+====
+On Ubuntu systems curb requires libcurl3, libcurl3-gnutls, and libcurl4-openssl-dev to be installed:
+ $ sudo apt-get install libcurl3 libcurl3-gnutls libcurl4-openssl-dev
+
+The most recent version of ruby-debug-base19 that works with Ruby 1.9.1p378 is version 0.11.23
+ $ gem install ruby-debug-base19 --version=0.11.23

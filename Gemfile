@@ -14,7 +14,8 @@ gem 'facets', '2.8.4'
 gem 'haml'
 gem 'httparty'
 gem 'json_pure', '>1.4.3'
-gem RUBY_VERSION.to_f < 1.9 ? 'linecache': 'linecache19' 
+gem 'linecache19', :platforms => :ruby_19
+gem 'linecache',   :platforms => :ruby_18
 gem 'marc'
 gem 'mime-types'
 gem 'multipart-post'
@@ -41,8 +42,14 @@ source 'http://gemcutter.org'
 gem 'block_helpers'
 
 group :development, :test do
-  gem RUBY_VERSION.to_f < 1.9 ? 'ruby-debug' : 'ruby-debug19'
-  gem RUBY_VERSION.to_f < 1.9 ? 'ruby-debug-base' : 'ruby-debug-base19'  
+  if RUBY_PATCHLEVEL == 378
+    gem 'ruby-debug-base19', '=0.11.23', :platforms => :ruby_19
+  else
+    gem 'ruby-debug-base19', :platforms => :ruby_19
+  end
+  gem 'ruby-debug19',    :platforms => :ruby_19
+  gem 'ruby-debug-base', :platforms => :ruby_18
+  gem 'ruby-debug',      :platforms => :ruby_18
   gem 'rspec'
   gem 'rspec-rails'
   gem 'mocha'

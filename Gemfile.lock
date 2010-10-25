@@ -20,6 +20,7 @@ GEM
     activeresource (2.3.10)
       activesupport (= 2.3.10)
     activesupport (2.3.10)
+    archive-tar-minitar (0.5.2)
     authlogic (2.1.6)
       activesupport
     block_helpers (0.3.3)
@@ -48,6 +49,8 @@ GEM
     json (1.4.6)
     json_pure (1.4.6)
     linecache (0.43)
+    linecache19 (0.5.11)
+      ruby_core_source (>= 0.1.4)
     marc (0.4.1)
     mime-types (1.16)
     mocha (0.9.8)
@@ -82,6 +85,16 @@ GEM
       ruby-debug-base (~> 0.10.3.0)
     ruby-debug-base (0.10.3)
       linecache (>= 0.3)
+    ruby-debug-base19 (0.11.24)
+      columnize (>= 0.3.1)
+      linecache19 (>= 0.5.11)
+      ruby_core_source (>= 0.1.4)
+    ruby-debug19 (0.11.6)
+      columnize (>= 0.3.1)
+      linecache19 (>= 0.5.11)
+      ruby-debug-base19 (>= 0.11.19)
+    ruby_core_source (0.1.4)
+      archive-tar-minitar (>= 0.5.2)
     solr-ruby (0.0.8)
     solrizer (0.2.0)
       active-fedora (>= 1.1.5)
@@ -118,6 +131,7 @@ DEPENDENCIES
   httparty
   json_pure (> 1.4.3)
   linecache
+  linecache19
   marc
   mime-types
   mocha
@@ -135,6 +149,8 @@ DEPENDENCIES
   rspec-rails
   ruby-debug
   ruby-debug-base
+  ruby-debug-base19
+  ruby-debug19
   solr-ruby
   solrizer (>= 0.2.0)
   sqlite3-ruby

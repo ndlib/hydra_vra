@@ -81,7 +81,7 @@
      addContributor: function(type) {
        var content_type = $("form#new_contributor > input#content_type").first().attr("value");
        var contributors_group_selector = "."+type+".contributor";
-        alert("contributors_group_selector->"+contributors_group_selector)
+       
        var url = $("form#new_contributor").attr("action");
 
        $.post(url, {contributor_type: type, content_type: content_type},function(data) {
@@ -474,9 +474,9 @@
    */
    $.fn.hydraNewContributorForm = function(settings) {
      var config = {};
-
+ 
      if (settings) $.extend(config, settings);
-
+ 
      this.each(function() {
        $("#re-run-add-contributor-action", this).click(function() {
          $.fn.hydraMetadata.addContributor("person");
@@ -491,9 +491,9 @@
          $.fn.hydraMetadata.addContributor("conference");
        });
      });
-
+ 
      return this;
-
+ 
    };
    
    $.fn.hydraAddTextFieldAddButton = function(settings) {

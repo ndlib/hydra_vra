@@ -432,8 +432,10 @@ end
   # Remove the contributor entry identified by @contributor_type and @index
   def remove_node(node_type, index)
     #TODO: Added code to remove any given node
-    #self.find_by_terms( {node_type.to_sym => index.to_i} ).first.remove
-    #self.dirty = true
+    temp=self.find_by_terms(:work,:agent_set,node_type.to_sym)[index.to_i]
+    puts "Term to delete: #{temp.inspect}"
+    temp.remove
+    self.dirty = true
   end
 
 end

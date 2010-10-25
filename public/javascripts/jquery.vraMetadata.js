@@ -29,10 +29,26 @@
      return this;
    };
 
+   $.fn.agentDeleteButton = function(settings) {
+     var config = {};
+
+     if (settings) $.extend(config, settings);
+
+     this.each(function() {
+       $(this).unbind('click.hydra').bind('click.hydra', function(e) {
+          $.fn.vraMetadata.deleteAgent(this, e);
+          e.preventDefault();
+        })
+     });
+
+     return this;
+
+   };
+
    $.fn.vraMetadata = {
      addAgent: function(type) {
        var content_type = $("form#new_agent > input#content_type").first().attr("value");
-       var agent_selector = ".person";
+       var agent_selector = ".agent_set";
        //alert("contributors_group_selector->"+agent_selector);
        var url = $("form#new_agent").attr("action");
        //alert("What is select" + $(agent_selector).last());
@@ -41,60 +57,44 @@
          $(agent_selector).last().after(data);
          $inserted = $(agent_selector).last();
          $(".editable-container", $inserted).hydraTextField();
-         //$("a.destructive", $inserted).hydraAgentDeleteButton();
+         $("a.destructive", $inserted).agentDeleteButton();
        });
      },
 
      addImageTag: function(type) {
        var content_type = $("form#new_agent > input#content_type").first().attr("value");
        var image_selector = ".image_tag";
-       //alert("contributors_group_selector->"+agent_selector);
        var url = $("form#new_image_tag").attr("action");
-       alert("What is select" + $(image_selector).last());
 
        $.post(url, {tag_type:type, content_type: content_type},function(data) {
          $(image_selector).last().after(data);
          $inserted = $(image_selector).last();
          $(".editable-container", $inserted).hydraTextField();
-         //$("a.destructive", $inserted).hydraAgentDeleteButton();
+         $("a.destructive", $inserted).agentDeleteButton();
        });
-     }
+     },
 
-     /*TODO deleteContributor: function(element) {
-       var content_type = $("form#new_contributor > input#content_type").first().attr("value");
+     deleteAgent: function(element) {
+       var content_type = $("form#new_agent > input#content_type").first().attr("value");
        var url = $(element).attr("href");
-       var $contributorNode = $(element).closest(".contributor")
-
+       var $agentNode = $(element).closest(".agent")
+       alert("Content type"+content_type);
        $.ajax({
          type: "DELETE",
          url: url,
          dataType: "html",
          beforeSend: function() {
-   				$contributorNode.animate({'backgroundColor':'#fb6c6c'},300);
+            alert("change color")
+   			$agentNode.animate({'backgroundColor':'#fb6c6c'},300);
          },
-   			 success: function() {
-           $contributorNode.slideUp(300,function() {
-             $contributorNode.remove();
-   				});
+         success: function() {
+           alert("trying to hide")
+           $agentNode.slideUp(300,function() {
+             $agentNode.remove();
+           });
          }
        });
-     }*/
-
-   };
-
-   $.fn.hydraAgentDeleteButton = function(settings) {
-     var config = {};
-
-     if (settings) $.extend(config, settings);
-
-     this.each(function() {
-       $(this).unbind('click.hydra').bind('click.hydra', function(e) {
-          $.fn.hydraMetadata.deleteContributor(this, e);
-          e.preventDefault();
-        })
-     });
-
-     return this;
+     }
 
    };
 

@@ -1,19 +1,19 @@
 module Hydra
-class ModsArticle < ActiveFedora::NokogiriDatastream
-
+class ModsArticle < ActiveFedora::NokogiriDatastream       
+  
   set_terminology do |t|
     t.root(:path=>"mods", :xmlns=>"http://www.loc.gov/mods/v3", :schema=>"http://www.loc.gov/standards/mods/v3/mods-3-2.xsd")
 
     t.title_info(:path=>"titleInfo") {
       t.main_title(:path=>"title", :label=>"title")
       t.language(:path=>{:attribute=>"lang"})
-    }
-    t.abstract
+    } 
+    t.abstract   
     t.subject {
       t.topic
-    }
-    t.topic_tag(:path=>"subject", :default_content_path=>"topic")
-    # This is a mods:name. The underscore is purely to avoid namespace conflicts.
+    }      
+    t.topic_tag(:path=>"subject", :default_content_path=>"topic")           
+    # This is a mods:name.  The underscore is purely to avoid namespace conflicts.
     t.name_ {
       # this is a namepart
       t.namePart(:index_as=>[:searchable, :displayable, :facetable, :sortable], :required=>:true, :type=>:string, :label=>"generic name")
@@ -28,7 +28,7 @@ class ModsArticle < ActiveFedora::NokogiriDatastream
       t.first_name(:path=>"namePart", :attributes=>{:type=>"given"}, :label=>"first name")
       t.terms_of_address(:path=>"namePart", :attributes=>{:type=>"termsOfAddress"})
     }
-    # lookup :person, :first_name
+    # lookup :person, :first_name        
     t.person(:ref=>:name, :attributes=>{:type=>"personal"})
     t.organization(:ref=>:name, :attributes=>{:type=>"corporate"})
     t.conference(:ref=>:name, :attributes=>{:type=>"conference"})
@@ -58,9 +58,9 @@ class ModsArticle < ActiveFedora::NokogiriDatastream
       }
     }
   end
-
+  
     # accessor :title, :term=>[:mods, :title_info, :main_title]
-
+    
     # Generates an empty Mods Article (used when you call ModsArticle.new without passing in existing xml)
     def self.xml_template
       builder = Nokogiri::XML::Builder.new do |xml|
@@ -117,8 +117,8 @@ class ModsArticle < ActiveFedora::NokogiriDatastream
         }
       end
       return builder.doc
-    end
-
+    end    
+    
     # Generates a new Person node
     def self.person_template
       builder = Nokogiri::XML::Builder.new do |xml|
@@ -133,7 +133,7 @@ class ModsArticle < ActiveFedora::NokogiriDatastream
       end
       return builder.doc.root
     end
-
+    
     # Generates a new Organization node
     # Uses mods:name[@type="corporate"]
     def self.organization_template
@@ -142,12 +142,12 @@ class ModsArticle < ActiveFedora::NokogiriDatastream
           xml.namePart
           xml.role {
             xml.roleTerm(:authority=>"marcrelator", :type=>"text")
-          }
+          }                          
         }
       end
       return builder.doc.root
     end
-
+    
     # Generates a new Conference node
     def self.conference_template
       builder = Nokogiri::XML::Builder.new do |xml|
@@ -155,16 +155,16 @@ class ModsArticle < ActiveFedora::NokogiriDatastream
           xml.namePart
           xml.role {
             xml.roleTerm(:authority=>"marcrelator", :type=>"text")
-          }
+          }                          
         }
       end
       return builder.doc.root
     end
-
+    
     # Inserts a new contributor (mods:name) into the mods document
     # creates contributors of type :person, :organization, or :conference
     def insert_contributor(type, opts={})
-      case type.to_sym
+      case type.to_sym 
       when :person
         node = Hydra::ModsArticle.person_template
         nodeset = self.find_by_terms(:person)
@@ -179,7 +179,7 @@ class ModsArticle < ActiveFedora::NokogiriDatastream
         node = nil
         index = nil
       end
-
+      
       unless nodeset.nil?
         if nodeset.empty?
           self.ng_xml.root.add_child(node)
@@ -190,16 +190,16 @@ class ModsArticle < ActiveFedora::NokogiriDatastream
         end
         self.dirty = true
       end
-
+      
       return node, index
     end
-
+    
     # Remove the contributor entry identified by @contributor_type and @index
     def remove_contributor(contributor_type, index)
       self.find_by_terms( {contributor_type.to_sym => index.to_i} ).first.remove
       self.dirty = true
     end
-
+    
     def self.common_relator_terms
        {"aut" => "Author",
         "clb" => "Collaborator",
@@ -212,7 +212,7 @@ class ModsArticle < ActiveFedora::NokogiriDatastream
         "trl" => "Translator",
         }
     end
-
+    
     def self.person_relator_terms
       {"aut" => "Author",
        "clb" => "Collaborator",
@@ -227,20 +227,20 @@ class ModsArticle < ActiveFedora::NokogiriDatastream
        "trl" => "Translator"
        }
     end
-
+    
     def self.conference_relator_terms
       {
         "hst" => "Host"
       }
     end
-
+    
     def self.organization_relator_terms
       {
         "fnd" => "Funder",
         "hst" => "Host"
       }
     end
-
+    
     def self.dc_relator_terms
        {"acp" => "Art copyist",
         "act" => "Actor",
@@ -456,6 +456,6 @@ class ModsArticle < ActiveFedora::NokogiriDatastream
         "wde" => "Wood -engraver",
         "wit" => "Witness"}
       end
-
+    
 end
 end

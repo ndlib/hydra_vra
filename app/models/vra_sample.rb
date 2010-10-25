@@ -24,5 +24,12 @@ class VraSample < ActiveFedora::Base
     node, index = ds.insert_node(type, opts)
     return node, index
   end
+
+  # Call remove_contributor on the descMetadata datastream
+  def remove_agent(type, index)
+    ds = self.datastreams_in_memory["descMetadata"]
+    result = ds.remove_node(type,index)
+    return result
+  end
   
 end
