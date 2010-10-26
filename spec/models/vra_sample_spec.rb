@@ -2,14 +2,14 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 require "active_fedora"
 require "nokogiri"
 
-describe VraSample do
+describe Location do
   
   before(:each) do
     Fedora::Repository.stubs(:instance).returns(stub_everything())
-    @article = VraSample.new
+    @article = Location.new
   end
   
-  describe "insert_contributor" do
+  describe "insert_agent" do
     it "should generate a new contributor of type (type) into the current xml, treating strings and symbols equally to indicate type, and then mark the datastream as dirty" do
       vra_ds = @article.datastreams_in_memory["descMetadata"]
       vra_ds.expects(:insert_contributor).with("person",{})
@@ -17,7 +17,7 @@ describe VraSample do
     end
   end
   
-  describe "remove_contributor" do
+  describe "remove_agent" do
     it "should remove the corresponding contributor from the xml and then mark the datastream as dirty" do
       vra_ds = @article.datastreams_in_memory["descMetadata"]
       vra_ds.expects(:remove_contributor).with("person","3")

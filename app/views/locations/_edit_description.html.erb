@@ -1,7 +1,7 @@
-<form id="document_metadata" action="<%= url_for(:action=>"update", :controller=>"assets", :content_type=>"vra_sample")%>" method="post" data-resourceType="vra_sample" accept-charset="utf-8">
+<form id="document_metadata" action="<%= url_for(:action=>"update", :controller=>"assets", :content_type=>"location")%>" method="post" data-resourceType="location" accept-charset="utf-8">
   <fieldset id="work_fields">
     <legend> Work </legend>
-      <input id="content_type" type="hidden" name="content_type" value="vra_sample" />
+      <input id="content_type" type="hidden" name="content_type" value="location" />
     <dl>
       <dt>
         <%= fedora_field_label("descMetadata", [:work, :title_set, :title_display], "Title:") %>

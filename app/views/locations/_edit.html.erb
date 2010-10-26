@@ -37,7 +37,7 @@
 
     <div id="accordion">
       <h2 class="section-title"><a href="#">Description</a></h2>
-      <%= render :partial => 'location/edit_description' %>
+      <%= render :partial => 'locations/edit_description' %>
       <h2 class="section-title"><a href="#">Upload Files</a></h2>
       <div id="uploads" data-pid=<%= params[:id] %>></div>
       <h2 class="section-title"><a href="#">Set permissions</a></h2>
@@ -51,12 +51,12 @@
     // accordion section un-hides it, so I stuck it here for now. -MZ
     %>
     <form id="new_agent" action="<%=url_for(:action=>"create", :controller=>"agents", :asset_id=>params[:id]) %>" method="post" style="display:none;">
-      <input id="content_type" type="hidden" name="content_type" value="vra_sample" />
+      <input id="content_type" type="hidden" name="content_type" value="location" />
       <input type="submit" value="Add Agent" />
     </form>
 
     <form id="new_image_tag" action="<%=url_for(:action=>"create", :controller=>"images_tag", :asset_id=>params[:id]) %>" method="post" style="display:none;">
-      <input id="content_type" type="hidden" name="content_type" value="vra_sample" />
+      <input id="content_type" type="hidden" name="content_type" value="location" />
       <input type="submit" value="Add Image Tag" />
     </form>
   </div>
