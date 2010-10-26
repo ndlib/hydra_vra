@@ -1,16 +1,13 @@
-require "hydra"
+require 'hydra'
 
-class HydrangeaDataset < ActiveFedora::Base
-  
+class GenericContent < ActiveFedora::Base
   include Hydra::ModelMethods
-  
-  has_relationship "parts", :is_part_of, :inbound => true
+  include Hydra::GenericContent
   
   # Uses the Hydra Rights Metadata Schema for tracking access permissions & copyright
   has_metadata :name => "rightsMetadata", :type => Hydra::RightsMetadata 
-  
-  # Uses the Hydra MODS Article profile for tracking most of the descriptive metadata
-  has_metadata :name => "descMetadata", :type => Hydra::ModsDataset
+
+  has_metadata :name => "descMetadata", :type => ActiveFedora::QualifiedDublinCoreDatastream
 
   # A place to put extra metadata values
   has_metadata :name => "properties", :type => ActiveFedora::MetadataDatastream do |m|
@@ -18,7 +15,7 @@ class HydrangeaDataset < ActiveFedora::Base
     m.field 'depositor', :string
   end
   
-  # A place to put extra extra metadata values
-  has_metadata :name => "hydraDataset", :type => HydraDatasetDs
-  
+  def initialize( attrs={} )
+    super
+  end
 end
