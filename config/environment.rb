@@ -28,7 +28,8 @@ Rails::Initializer.run do |config|
   # :all can be used as a placeholder for all plugins not explicitly named
   config.plugin_paths += ["#{RAILS_ROOT}/vendor/plugins/blacklight/vendor/plugins"]  
   config.plugins = %W(engines blacklight acts_as_taggable_on_steroids resource_controller haml fluid-infusion hydra_repository stanford_salt white_list hydrangea_articles hydrangea_datasets)
-  
+
+
   # Add additional load paths for your own custom dirs
   # config.load_paths += %W( #{RAILS_ROOT}/extras )
 
@@ -65,5 +66,12 @@ Rails::Initializer.run do |config|
   
   # Make Active Record use UTC-base instead of local time
   # config.active_record.default_timezone = :utc
-  
+
 end
+
+# == Apply to all actions in all controllers:
+
+   ApplicationController.before_filter do |controller|
+     controller.javascript_includes << "jquery.vraMetadata.js"
+   end
+

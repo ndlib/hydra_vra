@@ -3,9 +3,11 @@ module ApplicationHelper
   #include Stanford::SolrHelper # this is already included by the SearchworksHelper
   include HydraHelper
   
+=begin
   def application_name
     'Hydrangea (Hydra Demo App)'
   end
+=end
   
   def get_data_with_linked_label(doc, label, field_string, opts={})
    
