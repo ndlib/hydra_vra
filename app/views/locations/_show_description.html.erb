@@ -1,4 +1,4 @@
-%fieldset#title_fields
+<fieldset id="title_fields">
   %legend Work Description
   %dl
     - unless get_values_from_datastream(@document_fedora,"descMetadata", [:work, :title_set, :title_display]).first.empty?
@@ -48,6 +48,7 @@
         = fedora_field_label("descMetadata", [:reference_location, :location_local_name], "Location:")
       %dd.location
         = get_values_from_datastream(@document_fedora,"descMetadata", [:reference_location, :location_local_name])
+  </fieldset>
   %ol
     = render :partial=>"images/show_image_tag", :collection=>@document_fedora.datastreams_in_memory["descMetadata"].find_by_terms(:image)
       
