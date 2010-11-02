@@ -37,9 +37,11 @@
 
     <div id="accordion">
       <h2 class="section-title"><a href="#">Description</a></h2>
-      <%= render :partial => 'locations/edit_description' %>
-      <h2 class="section-title"><a href="#">Upload Files</a></h2>
-      <div id="uploads" data-pid=<%= params[:id] %>></div>
+      <%# debug get_values_from_datastream(@document_fedora,"descMetadata", [:work]).first %>
+      <%# debug datastreams_in_memory.inspect %>
+      <%= render :partial => "shared/edit_description", :locals => {:content => 'location', :document_fedora => @document_fedora} %>
+      <h2 class="section-title"><a href="#">Add Relationships</a></h2>
+      <div id="lot" data-pid=<%= params[:id] %>></div>
       <h2 class="section-title"><a href="#">Set permissions</a></h2>
       <div id="permissions">
         <%= render :partial => "permissions/index", :locals => {:document => document, :asset_id=>params[:id]} %>
@@ -66,4 +68,5 @@
   <%#= render :partial=>'facets' %>
   <%= delete_asset_link(params[:id], "article") %>
 <% end %>
-<%= async_load_tag(asset_file_assets_path(params[:id], :layout=>"false"), 'uploads') %>
+<%= async_load_tag(lots_path(params[:id], :layout=>"false"), 'lot') %>
+

@@ -1,11 +1,12 @@
 require "hydra"
 
-class Location < ActiveFedora::Base
+class Building < ActiveFedora::Base
 
   include Hydra::ModelMethods
 
   has_relationship "images", :is_part_of, :inbound => true
-  has_relationship "agents", :has_member, :inbound => true
+  has_relationship "agents", :has_member, :type=>Agent, :inbound => true
+  has_relationship "lot", :has_part, :type=>Lot, :inbound=>true
 
   # Uses the Hydra Rights Metadata Schema for tracking access permissions & copyright
   has_metadata :name => "rightsMetadata", :type => Hydra::RightsMetadata
