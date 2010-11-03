@@ -1,6 +1,6 @@
 require "hydra"
 
-class Location < ActiveFedora::Base
+class Agent < ActiveFedora::Base
 
   include Hydra::ModelMethods
 

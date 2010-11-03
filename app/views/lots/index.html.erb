@@ -1,5 +1,17 @@
 <h2 class="section-title">Lot</h2>
-<%# link_to 'create new lot', new_lot_path(:target_content_type => "building", :target_pid=>params[:id])%>
- <a id="add_lot" class="create_lot" href="<%= lots_path(:target_content_type=> "building", :target_pid=>params[:id], :key=>"test") %>"> Add new Lot</a>
+ <%= debug @building.lot_list.first.pid %>
+ <%# TODO reduce the amount of logic in this view -%>
+<%- unless @building.lot_list.empty? -%>
+  <% lots = @building.lot_list %>
+  <h3>This Building has <%= lots.count %> lots associated with it.</h3>
+  <ul id="related-lots">
+    <%- lots.each do |lot| -%>
+      <li>
+      <%= link_to "Pid: #{lot.pid}", lot_path(lot.pid, :building_pid=>params[:id] )%>
+      </li>
+    <%- end -%>
+  </ul>
+<%- end -%>
+ <a id="add_lot" class="create_lot" href=# action="<%= lots_path(:building_content_type=> "building", :key=>"test") %>"> Add new Lot</a>
 
     

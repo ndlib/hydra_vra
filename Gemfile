@@ -2,20 +2,20 @@ source 'http://rubygems.org'
 
 gem 'rails', '>=2.3.5', '<3.0.0'
 
-gem 'active-fedora', '1.2.6'  
+gem 'active-fedora', :git=>"git://github.com/rickjohnson/active_fedora.git"
 gem 'authlogic', '>=0.1.0'
+gem 'block_helpers'
 gem 'builder'
 gem 'columnize'
 gem 'crack'
-gem 'curb'
+gem 'curb', '<=0.6.9' #versions above this fail to complie on the cluster
 gem 'database_cleaner'
 gem 'diff-lcs'
 gem 'facets', '2.8.4'
 gem 'haml'
 gem 'httparty'
 gem 'json_pure', '>1.4.3'
-gem 'linecache19', :platforms => :ruby_19
-gem 'linecache',   :platforms => :ruby_18
+gem 'linecache'
 gem 'marc'
 gem 'mime-types'
 gem 'multipart-post'
@@ -38,25 +38,26 @@ gem 'webrat'
 gem 'will_paginate'
 gem 'xml-simple'
 
-
-source 'http://gemcutter.org'
-
-gem 'block_helpers'
-
-group :development, :test do
-  if RUBY_PATCHLEVEL == 378
-    gem 'ruby-debug-base19', '=0.11.23', :platforms => :ruby_19
-  else
-    gem 'ruby-debug-base19', :platforms => :ruby_19
-  end
-  gem 'ruby-debug19',    :platforms => :ruby_19
-  gem 'ruby-debug-base', :platforms => :ruby_18
-  gem 'ruby-debug',      :platforms => :ruby_18
-  gem 'rspec'
-  gem 'rspec-rails'
+group :development do
+  gem 'ruby-debug'
+  gem 'ruby-debug-base'
+  gem 'rspec', '<2.0.0'  
+  gem 'rspec-rails', '<2.0.0' # rspec-rails 2.0.0 requires Rails 3.
   gem 'mocha'
   gem 'cucumber'
   gem 'cucumber-rails'
   gem 'gherkin'
-  #gem 'test-unit', '= 1.2.3'
 end
+
+# Bundler 1.0 does not ingore groups of gems
+# Uncomment the test group locally to run tests
+#group :test do
+#  gem 'ruby-debug'
+#  gem 'ruby-debug-base'
+#  gem 'rspec', '<2.0.0'  
+#  gem 'rspec-rails', '<2.0.0' # rspec-rails 2.0.0 requires Rails 3.
+#  gem 'mocha'
+#  gem 'cucumber'
+#  gem 'cucumber-rails'
+#  gem 'gherkin'
+#end

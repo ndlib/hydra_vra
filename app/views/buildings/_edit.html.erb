@@ -39,9 +39,9 @@
       <h2 class="section-title"><a href="#">Description</a></h2>
       <%# debug get_values_from_datastream(@document_fedora,"descMetadata", [:work]).first %>
       <%# debug datastreams_in_memory.inspect %>
-      <%= render :partial => "shared/edit_description", :locals => {:content => 'location', :document_fedora => @document_fedora} %>
+      <%= render :partial => "shared/edit_description", :locals => {:content => 'building', :document_fedora => @document_fedora} %>
       <h2 class="section-title"><a href="#">Add Relationships</a></h2>
-      <div id="lot" data-pid=<%= params[:id] %>></div>
+      <div id="lot" data-pid=<%= params[:id] %>>Lot Selection</div>
       <h2 class="section-title"><a href="#">Set permissions</a></h2>
       <div id="permissions">
         <%= render :partial => "permissions/index", :locals => {:document => document, :asset_id=>params[:id]} %>
@@ -68,5 +68,5 @@
   <%#= render :partial=>'facets' %>
   <%= delete_asset_link(params[:id], "article") %>
 <% end %>
-<%= async_load_tag(lots_path(params[:id], :layout=>"false"), 'lot') %>
+<%= async_load_tag(lots_path(:building_id=>params[:id], :layout=>"false"), 'lot') %>
 

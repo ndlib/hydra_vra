@@ -26,6 +26,7 @@
       $("#add-contributor-box").hydraNewContributorForm();
       $("#add-agent-box").hydraNewAgentForm();
       $("#add-image-box").hydraNewImageForm();
+      $("#lot").lotCreateButton();
       $("a.inline").fancybox({
       		'hideOnContentClick': true,
       		'autoDimensions' : false
@@ -56,6 +57,7 @@
       $(".contributor a.destructive").hydraContributorDeleteButton();
       $(".agent_set a.destructive").agentDeleteButton();
       $(".grant a.destructive").hydraGrantDeleteButton();
+      //$("a.create_lot").lotCreateButton();
 
       $metaDataForm.delegate('select.metadata-dd', 'change', function(e) {
         saveSelect(this);

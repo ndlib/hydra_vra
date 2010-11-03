@@ -9,12 +9,12 @@
 
      this.each(function() {
        $("#re-run-add-agent-action", this).click(function() {
-         alert("Need add new agent tag");
+         //alert("Need add new agent tag");
          $.fn.vraMetadata.addAgent("agent");
        });
      });
      return this;
-   };
+  };
 
    $.fn.hydraNewImageForm = function(settings) {
      var config = {};
@@ -22,7 +22,7 @@
 
      this.each(function() {
        $("#re-run-add-image-action", this).click(function() {
-         alert("Need add new image tag");
+         //alert("Need add new image tag");
          $.fn.vraMetadata.addImageTag("image_tag");
        });
      });
@@ -31,18 +31,28 @@
 
    $.fn.agentDeleteButton = function(settings) {
      var config = {};
-
      if (settings) $.extend(config, settings);
-
      this.each(function() {
        $(this).unbind('click.hydra').bind('click.hydra', function(e) {
           $.fn.vraMetadata.deleteAgent(this, e);
           e.preventDefault();
         })
      });
-
      return this;
 
+   };
+
+   $.fn.lotCreateButton = function(settings) {
+     var config = {};
+     //alert("lotCreateButtton")
+     if (settings) $.extend(config, settings);
+     this.each(function() {
+       $("#add_lot", this).click(function() {
+         //alert("Calling create lot on click")
+         $.fn.vraMetadata.createLot(this);
+       });
+     });
+     return this;
    };
 
    $.fn.vraMetadata = {
@@ -84,15 +94,35 @@
          url: url,
          dataType: "html",
          beforeSend: function() {
-            alert("change color")
+            //alert("change color")
    			$agentNode.animate({'backgroundColor':'#fb6c6c'},300);
          },
          success: function() {
-           alert("trying to hide")
+           //alert("trying to hide")
            $agentNode.slideUp(300,function() {
              $agentNode.remove();
            });
          }
+       });
+     },
+
+     createLot: function(el) {
+       var $fileAssetNode = $(el).closest(".lot_asset");
+       var url = $(el).attr("action");
+       var pid = $("div#lot").attr("data-pid");
+       var params =  "&building_pid="+pid;
+        url=url+params;
+        //alert("URL is "+url);
+       $.ajax({
+         type: "post",
+         url: url,
+         beforeSend: function() {
+                //alert("going to create lot ");
+   				$fileAssetNode.animate({'backgroundColor':'#fb6c6c'},300);
+   			},
+   			success: function() {
+   				//alert("created lot successfully");
+			}
        });
      }
 

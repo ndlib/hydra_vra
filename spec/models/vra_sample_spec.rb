@@ -2,11 +2,11 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 require "active_fedora"
 require "nokogiri"
 
-describe Location do
+describe Building do
   
   before(:each) do
     Fedora::Repository.stubs(:instance).returns(stub_everything())
-    @article = Location.new
+    @article = Building.new
   end
   
   describe "insert_agent" do

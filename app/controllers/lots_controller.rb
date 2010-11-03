@@ -11,10 +11,12 @@ class LotsController < ApplicationController
   
   
   def index
+    logger.error("Index param: #{params.inspect}")
     if params[:layout] == "false"
       # action = "index_embedded"
       layout = false
     end
+    @building=Building.load_instance(params[:building_id])
     render :action=>params[:action], :layout=>layout
   end
   
@@ -43,10 +45,11 @@ class LotsController < ApplicationController
       logger.debug "Created Lot with pid #{@lot.pid}."
     else
       logger.debug "Lot is create already. So load the obj"
-      @lot=load_instance("lot",lot_pid)
+      @lot=load_instance("Lot",lot_pid)
     end
-    add_named_relationship(params[:target_content_type], params[:target_pid])
-    render :nothing => true
+    add_named_relationship(params[:building_content_type], params[:building_pid])
+     #render :action => 'index', :layout=>false
+    render :text => "Successfull added relationship betweeb #{params[:building_pid]} and #{@lot.pid}."
   end
 
   def lot_available(pid)
@@ -57,14 +60,14 @@ class LotsController < ApplicationController
     object = content_model.split('::').inject(Kernel) {|scope, const_name|
     content_model_type = scope.const_get(const_name)}
     unless content_model_type.nil?
-      logger.debug "#{content_model_type} methods: #{content_model_type.class.methods.sort.inspect}"
+      #logger.debug "#{content_model_type} methods: #{content_model_type.class.methods.sort.inspect}"
       raise "Content model Lot does not implement find_by_fields_by_solr" unless content_model_type.respond_to?(:find_by_fields_by_solr)
       results = content_model_type.find_by_fields_by_solr(args,opts)
       if results.nil? || results.hits.nil? || results.hits.empty? || results.hits.first[SOLR_DOCUMENT_ID].nil?
-        logger.error("Result is empty need to create new obj")
+        #logger.debug("Result is empty need to create new obj")
         return false
       else
-        logger.error("result from solr: #{results.inspect}")
+        #logger.debug("result from solr: #{results.inspect}")
         return true
       end
     end
@@ -120,7 +123,7 @@ class LotsController < ApplicationController
     #namespace="ARCH-SEASIDE"
     #content_model="Lot"
     #pid=namespace << ":" << content_model << key
-    pid="changme:61"
+    pid="changeme:61"
     logger.error ("Pid of the Lot to add relationship: #{pid}")
     return pid
   end
@@ -140,32 +143,6 @@ class LotsController < ApplicationController
   
   
   def show
-    @file_asset = FileAsset.find(params[:id])
-    if (@file_asset.nil?)
-      logger.warn("No such file asset: " + params[:id])
-      flash[:notice]= "No such file asset."
-      redirect_to(:action => 'index', :q => nil , :f => nil)
-    else
-      # get array of parent (container) objects for this FileAsset
-      @id_array = @file_asset.containers(:response_format => :id_array)
-      @downloadable = false
-      # A FileAsset is downloadable iff the user has read or higher access to a parent
-      @id_array.each do |pid|
-        @response, @document = get_solr_response_for_doc_id(pid)
-        if reader?
-          @downloadable = true
-          break
-        end
-      end
-
-      if @downloadable
-        if @file_asset.datastreams_in_memory.include?("DS1")
-          send_datastream @file_asset.datastreams_in_memory["DS1"]
-        end
-      else
-        flash[:notice]= "You do not have sufficient access privileges to download this document, which has been marked private."
-        redirect_to(:action => 'index', :q => nil , :f => nil)
-      end
-    end
+     redirect_to(:action => 'index', :q => nil , :f => nil)
   end
 end

@@ -20,6 +20,8 @@ class Building < ActiveFedora::Base
     m.field 'description', :string
   end
 
+  alias_method :id, :pid
+
   # Call insert_contributor on the descMetadata datastream
   def insert_new_node(type, opts)
     ds = self.datastreams_in_memory["descMetadata"]
@@ -32,6 +34,10 @@ class Building < ActiveFedora::Base
     ds = self.datastreams_in_memory["descMetadata"]
     result = ds.remove_node(type,index)
     return result
+  end
+
+  def lot_list
+    lot.any? ? lot : nil
   end
 
 end

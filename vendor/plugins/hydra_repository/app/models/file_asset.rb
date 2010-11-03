@@ -40,6 +40,7 @@ class FileAsset < ActiveFedora::Base
   def add_file_datastream(file, opts={})
     super
     if file.respond_to?(:size)
+      logger.error("File methods: #{file.content_type.inspect}")
       size = bits_to_human_readable(file.size)
     elsif file.kind_of?(File)
       size = bits_to_human_readable(File.size(file))

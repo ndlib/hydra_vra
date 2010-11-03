@@ -1,19 +1,29 @@
 development:
   default:
     url: http://localhost:8983/solr/development
+    #url: http://fedorapprd.library.nd.edu:8080/fedora_solr/arch-seaside
   fulltext:
     url: http://localhost:8983/solr/development
+    #url: http://fedorapprd.library.nd.edu:8080/fedora_solr/arch-seaside
 test: &TEST
   default:
     url: http://localhost:8983/solr/development
   fulltext:
     url: http://localhost:8983/solr/development
+staging:
+  default:
+    url: http://localhost:8983/solr/staging
+  fulltext:
+    url: http://localhost:8983/solr/staging
+pre_production:
+  default:
+    url: http://fedorapprd.library.nd.edu:8080/fedora_solr/arch-seaside
+  fulltext:
+    url: http://fedorapprd.library.nd.edu:8080/fedora_solr/arch-seaside
 production:
   default:
     url: http://your.production.server:8080/bl_solr/core0 
   fulltext:
     url: http://your.production.server:8080/bl_solr/core1
-cucumber:
-  <<: *TEST
 cucumber:
   <<: *TEST
