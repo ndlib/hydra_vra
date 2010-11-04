@@ -38,6 +38,7 @@ module HydraAssetsHelper
     count = 0
     obj = load_af_instance_from_solr(document)
     count += obj.file_objects.length unless obj.nil?
+    logger.error("Count: #{count}")
     count
   end
 end
