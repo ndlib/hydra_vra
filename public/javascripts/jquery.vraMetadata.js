@@ -39,18 +39,35 @@
         })
      });
      return this;
-
    };
 
    $.fn.lotCreateButton = function(settings) {
      var config = {};
-     //alert("lotCreateButtton")
+     alert("lotCreateButtton")
      if (settings) $.extend(config, settings);
      this.each(function() {
        $("#add_lot", this).click(function() {
-         //alert("Calling create lot on click")
+         var lot_key = $("input#lot_key").first().attr("value");
+         alert("Lot key enter: "+ lot_key)
+         if (lot_key == "" || lot_key.length ==0) {
+            alert("Please enter lot id before adding new lot")
+            return false;
+         }
+         alert("Calling create lot on click")
          $.fn.vraMetadata.createLot(this);
        });
+     });
+     return this;
+   };
+
+    $.fn.lotDeleteButton = function(settings) {
+     var config = {};
+     if (settings) $.extend(config, settings);
+     this.each(function() {
+       $(this).unbind('click.hydra').bind('click.hydra', function(e) {
+          $.fn.vraMetadata.deleteAgent(this, e);
+          e.preventDefault();
+        })
      });
      return this;
    };
@@ -107,22 +124,35 @@
      },
 
      createLot: function(el) {
-       var $fileAssetNode = $(el).closest(".lot_asset");
+       var lot_id = $("input#lot_key").first().attr("value");
+       alert("Lot id: "+lot_id)
        var url = $(el).attr("action");
        var pid = $("div#lot").attr("data-pid");
-       var params =  "&building_pid="+pid;
+       var params =  "&building_pid="+pid+"&key="+lot_id;
         url=url+params;
-        //alert("URL is "+url);
-       $.ajax({
+        alert("URL is "+url);
+       var lot_selector = ".lot_tag";
+       /*$.ajax({
          type: "post",
          url: url,
          beforeSend: function() {
                 //alert("going to create lot ");
    				$fileAssetNode.animate({'backgroundColor':'#fb6c6c'},300);
    			},
-   			success: function() {
-   				//alert("created lot successfully");
-			}
+            success: function() {
+                alert("created lot successfully");
+                $(lot_selector).last().after(data);
+                $inserted = $(lot_selector).last();
+                $(".editable-container", $inserted).hydraTextField();
+                $("a.destructive", $inserted).lotDeleteButton();
+            }
+       });         */
+       $.post(url, function(data){
+         alert("created lot successfully");
+         $(lot_selector).last().after(data);
+         $inserted = $(lot_selector).last();
+         $(".editable-container", $inserted).hydraTextField();
+         $("a.destructive", $inserted).lotDeleteButton();
        });
      }
 

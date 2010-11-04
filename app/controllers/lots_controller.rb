@@ -48,8 +48,9 @@ class LotsController < ApplicationController
       @lot=load_instance("Lot",lot_pid)
     end
     add_named_relationship(params[:building_content_type], params[:building_pid])
-     #render :action => 'index', :layout=>false
-    render :text => "Successfull added relationship betweeb #{params[:building_pid]} and #{@lot.pid}."
+    #render :action => 'index', :layout=>false
+    render :partial=>partial_name, :locals=>{"edit_#{ct}".to_sym =>inserted_node, "edit_#{ct}_counter".to_sym =>new_node_index}, :layout=>false
+    #render :text => "Successfull added relationship betweeb #{params[:building_pid]} and #{@lot.pid}."
   end
 
   def lot_available(pid)
@@ -120,10 +121,10 @@ class LotsController < ApplicationController
   end
 
   def generate_pid(key)
-    #namespace="ARCH-SEASIDE"
-    #content_model="Lot"
-    #pid=namespace << ":" << content_model << key
-    pid="changeme:61"
+    namespace="ARCH-SEASIDE"
+    content_model="Lot"
+    pid=namespace << ":" << content_model << key
+    #pid="changeme:61"
     logger.error ("Pid of the Lot to add relationship: #{pid}")
     return pid
   end
