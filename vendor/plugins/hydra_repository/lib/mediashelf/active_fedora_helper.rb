@@ -38,7 +38,12 @@ module MediaShelf
         logger.error("looks like name error")
         return false
     end
-    
+
+    def load_af_instance_from_solr(doc)
+      pid = doc[:id] ? doc[:id] : doc[:id.to_s]
+      pid ? ActiveFedora::Base.load_instance_from_solr(pid,doc) : nil
+    end
+
     private
   
     def require_fedora
