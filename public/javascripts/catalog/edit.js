@@ -26,7 +26,7 @@
       $("#add-contributor-box").hydraNewContributorForm();
       $("#add-agent-box").hydraNewAgentForm();
       $("#add-image-box").hydraNewImageForm();
-      $("#lot").lotCreateButton();
+      $("#add-lot-div").lotCreateButton();
       $("a.inline").fancybox({
       		'hideOnContentClick': true,
       		'autoDimensions' : false
@@ -56,8 +56,9 @@
       // });
       $(".contributor a.destructive").hydraContributorDeleteButton();
       $(".agent_set a.destructive").agentDeleteButton();
+      $(".image_tag a.destructive").imageDeleteButton();
       $(".grant a.destructive").hydraGrantDeleteButton();
-      //$("a.create_lot").lotCreateButton();
+      $(".lot_tag a.destructive").lotDeleteButton();
 
       $metaDataForm.delegate('select.metadata-dd', 'change', function(e) {
         saveSelect(this);

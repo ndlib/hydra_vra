@@ -33,7 +33,7 @@
       </ul>
     <% if ( (params[:action] == "edit" || params[:action] == "create")) %>
         <%= field_selectors_for("descMetadata", [{:agent=>agent_counter}]) %>
-        <a class="destructive destroy_agent" href="<%= agent_path(@document_fedora.pid, :agent=>agent_counter) %>" title="Delete test"> Delete</a>
+        <a class="destructive destroy_agent" href="<%= agent_path(@document_fedora.pid, :agent=>agent_counter) %>" title="Delete Image"> Delete</a>
     <% end %>
   </dd>
   </dl>

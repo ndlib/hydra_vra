@@ -41,7 +41,8 @@
       <%# debug datastreams_in_memory.inspect %>
       <%= render :partial => "shared/edit_description", :locals => {:content => 'building', :document_fedora => @document_fedora} %>
       <h2 class="section-title"><a href="#">Add Relationships</a></h2>
-      <div id="lot" data-pid=<%= params[:id] %>><%= async_load_tag(lots_path(:building_id=>params[:id], :layout=>"false"), 'lot') %></div>
+      <div id="lot" data-pid="<%= params[:id] %>" data-content-type="building">
+      </div>
       <h2 class="section-title"><a href="#">Set permissions</a></h2>
       <div id="permissions">
         <%= render :partial => "permissions/index", :locals => {:document => document, :asset_id=>params[:id]} %>
@@ -53,12 +54,12 @@
     // accordion section un-hides it, so I stuck it here for now. -MZ
     %>
     <form id="new_agent" action="<%=url_for(:action=>"create", :controller=>"agents", :asset_id=>params[:id]) %>" method="post" style="display:none;">
-      <input id="content_type" type="hidden" name="content_type" value="location" />
+      <input id="content_type" type="hidden" name="content_type" value="building" />
       <input type="submit" value="Add Agent" />
     </form>
 
     <form id="new_image_tag" action="<%=url_for(:action=>"create", :controller=>"images_tag", :asset_id=>params[:id]) %>" method="post" style="display:none;">
-      <input id="content_type" type="hidden" name="content_type" value="location" />
+      <input id="content_type" type="hidden" name="content_type" value="building" />
       <input type="submit" value="Add Image Tag" />
     </form>
   </div>
@@ -66,7 +67,9 @@
 <% sidebar_items << capture do %>
   <%#= render :partial=>"catalog/_show_partials/facets", :locals=>{:document=>document, :facets_display_heading => "This document refers to:"} %>
   <%#= render :partial=>'facets' %>
-  <%= delete_asset_link(params[:id], "article") %>
+  <%= delete_asset_link(params[:id], "VRA Document") %>
 <% end %>
+
 <%# async_load_tag(lots_path(:building_id=>params[:id], :layout=>"false"), 'lot') %>
+<%= async_load_tag(lots_path(:building_id=>params[:id], :layout=>"false"), 'lot') %>
 

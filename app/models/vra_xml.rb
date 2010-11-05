@@ -210,7 +210,13 @@ end
           t.agentSet{
             t.display_
             t.agent{
-            t.role
+              t.name(:type=>"personal", :vocab=>"ULAN", :refid=>"")
+              t.dates(:type=>"life"){
+                t.earliestDate
+                t.latestDate
+              }
+              t.role
+              t.culture
             }
           }
 
@@ -255,7 +261,7 @@ end
         t.image(:id=>"", :refid=>"", :source=>"") {
 
           t.dateSet{
-              t.display_
+            t.display_
           }
 
           t.measurementsSet{
@@ -291,7 +297,7 @@ end
           t.subjectSet{
             t.display_
             t.subject{
-              t.term
+              t.term(:type=>"", :refid=>"", :vocab=>"")
             }
           }
 
@@ -429,13 +435,20 @@ end
     return node, index
   end
 
-  # Remove the contributor entry identified by @contributor_type and @index
+  # Remove the Image or agent entry identified by @node_type and @index
   def remove_node(node_type, index)
     #TODO: Added code to remove any given node
-    temp=self.find_by_terms(:work,:agent_set,node_type.to_sym)[index.to_i]
-    puts "Term to delete: #{temp.inspect}"
-    temp.remove
-    self.dirty = true
+    case node_type.to_sym
+       when :agent
+        remove_node = self.find_by_terms(:work,:agent_set, :agent)[index.to_i]
+      when :image
+        remove_node = self.find_by_terms(:image)[index.to_i]
+    end
+    unless remove_node.nil?
+      puts "Term to delete: #{remove_node.inspect}"
+      remove_node.remove
+      self.dirty = true
+    end
   end
 
 end

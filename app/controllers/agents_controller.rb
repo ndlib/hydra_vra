@@ -21,6 +21,7 @@ class AgentsController < ApplicationController
     logger.error("AfModel: #{af_model}")
     @document_fedora.remove_agent("agent", params[:agent])
     result = @document_fedora.save
-    render :text=>result.inspect
+    logger.error("Result: #{result.inspect}")
+    render :text=> "Agent Node delete successfully"
   end
 end

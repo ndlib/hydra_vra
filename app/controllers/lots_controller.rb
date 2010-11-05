@@ -1,3 +1,5 @@
+require 'mediashelf/active_fedora_helper'
+
 class LotsController < ApplicationController
   
   include Hydra::AssetsControllerHelper
@@ -5,11 +7,23 @@ class LotsController < ApplicationController
   include Hydra::RepositoryController  
   include MediaShelf::ActiveFedoraHelper
   include Blacklight::SolrHelper
-  
+  include WhiteListHelper
+  include Blacklight::CatalogHelper
+
+  helper :hydra, :metadata, :infusion_view
   before_filter :require_fedora
   before_filter :require_solr, :only=>[:index, :create, :show, :destroy]
-  
-  
+
+  def check_required_params(required_params)
+  not_found = ""
+  if required_params.respond_to?(:each)
+    required_params.each do |param|
+      not_found = not_found.concat("#{param} parameter is required\n") unless params.has_key?(param)
+    end
+  end
+  raise not_found if not_found.length > 0
+  end
+
   def index
     logger.error("Index param: #{params.inspect}")
     if params[:layout] == "false"
@@ -17,6 +31,7 @@ class LotsController < ApplicationController
       layout = false
     end
     @building=Building.load_instance(params[:building_id])
+    logger.error("Building pid: #{@building.pid}")
     render :action=>params[:action], :layout=>layout
   end
   
@@ -39,9 +54,9 @@ class LotsController < ApplicationController
       end
       attributes[:pid] = attributes[:pid]["0"] if attributes.has_key?(:pid) && attributes[:pid].is_a?(Hash) && attributes[:pid].has_key?("0")
       @lot = create_instance("Lot", attributes)
-      @lot.update_indexed_attributes(attributes)
-      @lot.save
       apply_depositor_metadata(@lot)
+      @lot.save
+      @lot.update_indexed_attributes(attributes)
       logger.debug "Created Lot with pid #{@lot.pid}."
     else
       logger.debug "Lot is create already. So load the obj"
@@ -49,8 +64,15 @@ class LotsController < ApplicationController
     end
     add_named_relationship(params[:building_content_type], params[:building_pid])
     #render :action => 'index', :layout=>false
-    render :partial=>partial_name, :locals=>{"edit_#{ct}".to_sym =>inserted_node, "edit_#{ct}_counter".to_sym =>new_node_index}, :layout=>false
+    render :partial=>"lots/index", :locals=>{"lots".to_sym =>@object.lot_list}, :layout=>false
     #render :text => "Successfull added relationship betweeb #{params[:building_pid]} and #{@lot.pid}."
+  end
+
+  def destroy
+    check_required_params([:content_model,:id,:building_content_type,:building_pid])
+    @lot=load_instance(params[:content_model],params[:id])
+    remove_named_relationship(params[:building_content_type], params[:building_pid])
+    render :text => "Deleted #{params[:id]} from realtionships from #{params[:building_pid]}."
   end
 
   def lot_available(pid)
@@ -106,6 +128,34 @@ class LotsController < ApplicationController
     end
   end
 
+
+
+  def remove_named_relationship(target_content_type, target_pid)
+    if @lot.nil?
+      raise "Lot object with content model"
+    else
+      if @lot.respond_to?(:remove_named_relationship)
+        if @lot.is_named_relationship?(target_content_type,true)
+          #check object for added relationship
+          #check if :type is defined for this relationship, if so instantiate with that type
+          unless @lot.named_relationship_type(target_content_type).nil?
+            @object = load_instance(@lot.named_relationship_type(target_content_type).to_s,target_pid)
+          end
+          if @object.nil?
+            raise "Fedora object not found for content model #{@lot.named_relationship_type(target_content_type).to_s} and pid #{target_pid}"
+          else
+        	@lot.remove_named_relationship(target_content_type,@object)
+        	@lot.save
+          end
+        else
+          raise "Outbound named relationship #{target_content_type} does not exist for Content model: #{@lot.class}"
+        end
+      else
+        raise "Content model: #{@lot.class} does not implement remove_named_relationship"
+      end
+    end
+  end
+
   def load_instance(content_model, pid)
     begin
       #use reflection to instantiate object
@@ -128,20 +178,7 @@ class LotsController < ApplicationController
     logger.error ("Pid of the Lot to add relationship: #{pid}")
     return pid
   end
-  # Common destroy method for all AssetsControllers 
-  def destroy
-    # The correct implementation, with garbage collection:
-    # if params.has_key?(:container_id)
-    #   container = ActiveFedora::Base.load_instance(params[:container_id]) 
-    #   container.file_objects_remove(params[:id])
-    #   FileAsset.garbage_collect(params[:id])
-    # else
-    
-    # The dirty implementation (leaves relationship in container object, deletes regardless of whether the file object has other containers)
-    ActiveFedora::Base.load_instance(params[:id]).delete 
-    render :text => "Deleted #{params[:id]} from #{params[:container_id]}."
-  end
-  
+  # Common destroy method for all AssetsControllers
   
   def show
      redirect_to(:action => 'index', :q => nil , :f => nil)

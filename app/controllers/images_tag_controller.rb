@@ -16,9 +16,10 @@ class ImagesTagController < ApplicationController
   end
   def destroy
     af_model = retrieve_af_model(params[:content_type], :default=>Building)
-    @document_fedora = af_model.find(params[:asset_id])
-    @document_fedora.remove_image(params[:contributor_type], params[:index])
+    @document_fedora = af_model.find(params[:id])
+    @document_fedora.remove_image("image", params[:image])
     result = @document_fedora.save
-    render :text=>result.inspect
+    logger.error("Result: #{result.inspect}")
+    render :text=> "Image Node delete successfully"
   end
 end

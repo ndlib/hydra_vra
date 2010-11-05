@@ -65,6 +65,10 @@
   </dl>
 
   <ol>
+    <%= render :partial=>"agents/show_agent", :collection=>@document_fedora.datastreams_in_memory["descMetadata"].find_by_terms(:work, :agent_set, :agent) %>
+  </ol>
+
+  <ol>
     <%= render :partial=>"images/show_image_tag", :collection=>@document_fedora.datastreams_in_memory["descMetadata"].find_by_terms(:image) %>
   </ol>
 </fieldset>

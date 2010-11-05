@@ -38,7 +38,7 @@
           <%= fedora_text_field(@document_fedora,"descMetadata", [{:image=>image_counter}, :measurement_set, :measurements], :multiple=>false) %>
         </li>
         <li class="relation">
-          <%= fedora_field_label("descMetadata", [{:image=>image_counter}, :relation_set, :relation], "Relationm:") %>
+          <%= fedora_field_label("descMetadata", [{:image=>image_counter}, :relation_set, :relation], "Relation:") %>
           <%= fedora_text_field(@document_fedora,"descMetadata", [{:image=>image_counter}, :relation_set, :relation], :multiple=>false) %>
         </li>
         <li class="rights_display">
@@ -54,26 +54,28 @@
           <%= fedora_text_field(@document_fedora,"descMetadata", [{:image=>image_counter}, :subject_set, :subject_display], :multiple=>false) %>
         </li>
         <li class="subject">
-          <%= fedora_field_label("descMetadata", [{:image=>image_counter}, :subject_set, :subject], "Subject:") %>
+          <%= fedora_field_label("descMetadata", [{:image=>image_counter}, :subject_set, :subject], "Subject Description") %>
             <ul>
               <li class="subject_term">
                 <%= fedora_field_label("descMetadata", [{:image=>image_counter}, :subject_set, :subject, :subject_term], "Subject Term:") %>
                 <%= fedora_text_field(@document_fedora,"descMetadata", [{:image=>image_counter}, :subject_set, :subject, :subject_term], :multiple=>false) %>
               </li>
-              <li class="term_type">
-                <%= fedora_field_label("descMetadata", [{:image=>image_counter}, :subject_set, :subject, :subject_term, :subject_term_type], "Term Type:") %>
-                <%= fedora_text_field(@document_fedora,"descMetadata", [{:image=>image_counter}, :subject_set, :subject, :subject_term, :subject_term_type], :multiple=>false) %>
-              </li>
-              <li class="term_vocab">
-                <%= fedora_field_label("descMetadata", [{:image=>image_counter}, :subject_set, :subject, :subject_term, :subject_term_vocab], "Term Vocab:") %>
-                <%= fedora_text_field(@document_fedora,"descMetadata", [{:image=>image_counter}, :subject_set, :subject, :subject_term, :subject_term_vocab], :multiple=>false) %>
-              </li>
-              <li class="term_id">
-                <%= fedora_field_label("descMetadata", [{:image=>image_counter}, :subject_set, :subject, :subject_term, :subject_term_refid], "Term Id:") %>
-                <%= fedora_text_field(@document_fedora,"descMetadata", [{:image=>image_counter}, :subject_set, :subject, :subject_term, :subject_term_refid], :multiple=>false) %>
-              </li>
+              <label> List of Term Attributes</label>
+                  <li class="term_type">
+                    <%= fedora_field_label("descMetadata", [{:image=>image_counter}, :subject_set, :subject, :subject_term, :subject_term_type], "Term Type:") %>
+                    <%= fedora_text_field(@document_fedora,"descMetadata", [{:image=>image_counter}, :subject_set, :subject, :subject_term, :subject_term_type], :multiple=>false) %>
+                  </li>
+                  <li class="term_vocab">
+                    <%= fedora_field_label("descMetadata", [{:image=>image_counter}, :subject_set, :subject, :subject_term, :subject_term_vocab], "Term Vocab:") %>
+                    <%= fedora_text_field(@document_fedora,"descMetadata", [{:image=>image_counter}, :subject_set, :subject, :subject_term, :subject_term_vocab], :multiple=>false) %>
+                  </li>
+                  <li class="term_id">
+                    <%= fedora_field_label("descMetadata", [{:image=>image_counter}, :subject_set, :subject, :subject_term, :subject_term_refid], "Term Id:") %>
+                    <%= fedora_text_field(@document_fedora,"descMetadata", [{:image=>image_counter}, :subject_set, :subject, :subject_term, :subject_term_refid], :multiple=>false) %>
+                  </li>
             </ul>
         </li>
+        <br>
         <li class="technique_display">
           <%= fedora_field_label("descMetadata", [{:image=>image_counter}, :technique_set, :technique_display], "Technique Display:") %>
           <%= fedora_text_field(@document_fedora,"descMetadata", [{:image=>image_counter}, :technique_set, :technique_display], :multiple=>false) %>
@@ -87,7 +89,7 @@
           <%= fedora_text_field(@document_fedora,"descMetadata", [{:image=>image_counter}, :source_set, :source_display], :multiple=>false) %>
         </li>
         <li class="source">
-          <%= fedora_field_label("descMetadata", [{:image=>image_counter}, :source_set, :source], "Source:") %>
+          <%= fedora_field_label("descMetadata", [{:image=>image_counter}, :source_set, :source], "Source Description") %>
             <ul>
               <li class="source_name">
                 <%= fedora_field_label("descMetadata",[{:image=>image_counter}, :source_set, :source, :name], "Name:") %>
@@ -104,6 +106,10 @@
             </ul>
         </li>
     </ul>
+    <% if ( (params[:action] == "edit" || params[:action] == "create")) %>
+        <%= field_selectors_for("descMetadata", [{:image=>image_counter}]) %>
+        <a class="destructive destroy_image" href="<%= images_tag_path(@document_fedora.pid, :image=>image_counter) %>" title="Delete Image"> Delete</a>
+    <% end %>
   </dd>
   </dl>
 </li>

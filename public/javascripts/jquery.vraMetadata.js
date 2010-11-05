@@ -33,8 +33,22 @@
      var config = {};
      if (settings) $.extend(config, settings);
      this.each(function() {
+       //alert("Agent this function");
        $(this).unbind('click.hydra').bind('click.hydra', function(e) {
           $.fn.vraMetadata.deleteAgent(this, e);
+          e.preventDefault();
+        })
+     });
+     return this;
+   };
+
+   $.fn.imageDeleteButton = function(settings) {
+     var config = {};
+     if (settings) $.extend(config, settings);
+     this.each(function() {
+       //alert("Image this function");
+       $(this).unbind('click.hydra').bind('click.hydra', function(e) {
+          $.fn.vraMetadata.deleteImage(this, e);
           e.preventDefault();
         })
      });
@@ -43,17 +57,17 @@
 
    $.fn.lotCreateButton = function(settings) {
      var config = {};
-     alert("lotCreateButtton")
+     //alert("lotCreateButtton")
      if (settings) $.extend(config, settings);
      this.each(function() {
        $("#add_lot", this).click(function() {
          var lot_key = $("input#lot_key").first().attr("value");
-         alert("Lot key enter: "+ lot_key)
+         //alert("Lot key enter: "+ lot_key)
          if (lot_key == "" || lot_key.length ==0) {
             alert("Please enter lot id before adding new lot")
             return false;
          }
-         alert("Calling create lot on click")
+         //alert("Calling create lot on click")
          $.fn.vraMetadata.createLot(this);
        });
      });
@@ -61,13 +75,18 @@
    };
 
     $.fn.lotDeleteButton = function(settings) {
+     //alert("lotDeleteButtton"+ this)
      var config = {};
      if (settings) $.extend(config, settings);
+     //alert("before this function");
      this.each(function() {
+       //alert("this function");
+       //$("#destroy_lot", this).click(function() {
        $(this).unbind('click.hydra').bind('click.hydra', function(e) {
-          $.fn.vraMetadata.deleteAgent(this, e);
-          e.preventDefault();
-        })
+         alert("calling deleteLot");
+         $.fn.vraMetadata.deleteLot(this, e);
+         e.preventDefault();
+       })
      });
      return this;
    };
@@ -89,7 +108,7 @@
      },
 
      addImageTag: function(type) {
-       var content_type = $("form#new_agent > input#content_type").first().attr("value");
+       var content_type = $("form#new_image_tag > input#content_type").first().attr("value");
        var image_selector = ".image_tag";
        var url = $("form#new_image_tag").attr("action");
 
@@ -104,8 +123,9 @@
      deleteAgent: function(element) {
        var content_type = $("form#new_agent > input#content_type").first().attr("value");
        var url = $(element).attr("href");
-       var $agentNode = $(element).closest(".agent")
-       alert("Content type"+content_type);
+       var $agentNode = $(element).closest(".agent_set")
+       //alert("Content type"+content_type);
+       url=url+"&content_type="+content_type
        $.ajax({
          type: "DELETE",
          url: url,
@@ -123,38 +143,74 @@
        });
      },
 
+     deleteImage: function(element) {
+       var content_type = $("form#new_image_tag > input#content_type").first().attr("value");
+       var url = $(element).attr("href");
+       var $imageNode = $(element).closest(".image_tag")
+       //alert("Content type"+content_type);
+       url=url+"&content_type="+content_type
+       $.ajax({
+         type: "DELETE",
+         url: url,
+         dataType: "html",
+         beforeSend: function() {
+            //alert("change color")
+   			$imageNode.animate({'backgroundColor':'#fb6c6c'},300);
+         },
+         success: function() {
+           //alert("trying to hide")
+           $imageNode.slideUp(300,function() {
+             $imageNode.remove();
+           });
+         }
+       });
+     },
+
      createLot: function(el) {
        var lot_id = $("input#lot_key").first().attr("value");
-       alert("Lot id: "+lot_id)
+       //alert("Lot id: "+lot_id)
        var url = $(el).attr("action");
        var pid = $("div#lot").attr("data-pid");
        var params =  "&building_pid="+pid+"&key="+lot_id;
         url=url+params;
-        alert("URL is "+url);
+        //alert("URL is "+url);
        var lot_selector = ".lot_tag";
-       /*$.ajax({
-         type: "post",
-         url: url,
-         beforeSend: function() {
-                //alert("going to create lot ");
-   				$fileAssetNode.animate({'backgroundColor':'#fb6c6c'},300);
-   			},
-            success: function() {
-                alert("created lot successfully");
-                $(lot_selector).last().after(data);
-                $inserted = $(lot_selector).last();
-                $(".editable-container", $inserted).hydraTextField();
-                $("a.destructive", $inserted).lotDeleteButton();
-            }
-       });         */
        $.post(url, function(data){
-         alert("created lot successfully");
+         //alert("created lot successfully");
          $(lot_selector).last().after(data);
          $inserted = $(lot_selector).last();
          $(".editable-container", $inserted).hydraTextField();
          $("a.destructive", $inserted).lotDeleteButton();
        });
+     },
+
+     deleteLot: function(element) {
+       alert("Into Delete Lot"+$(element).html)
+       var $lotNode = $(element).closest(".lot_tag")
+       var url = $(element).attr("href");
+       var building_pid = $("div#lot").attr("data-pid");
+       var building_content_type = $("div#lot").attr("data-content-type");
+       var content_model="Lot"
+       var params =  "?content_model="+content_model+"&building_pid="+building_pid+"&building_content_type="+building_content_type;
+       url=url+params;
+       alert("URL: "+url);
+       $.ajax({
+         type: "DELETE",
+         url: url,
+         dataType: "html",
+         beforeSend: function() {
+            alert("change color")
+   			$lotNode.animate({'backgroundColor':'#fb6c6c'},300);
+         },
+         success: function() {
+           alert("trying to hide")
+           $lotNode.slideUp(300,function() {
+             $lotNode.remove();
+           });
+         }
+       });
      }
+
 
    };
 

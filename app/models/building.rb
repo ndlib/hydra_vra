@@ -36,6 +36,12 @@ class Building < ActiveFedora::Base
     return result
   end
 
+  def remove_image(type, index)
+    ds = self.datastreams_in_memory["descMetadata"]
+    result = ds.remove_node(type,index)
+    return result
+  end
+
   def lot_list
     lot.any? ? lot : nil
   end
