@@ -1,0 +1,59 @@
+<% agents = show_agent %>
+<% agent_counter = show_agent_counter %>
+<% base_id = "agent_#{agent_counter}" %>
+<% agent_name = "#{get_values_from_datastream(@document_fedora,'descMetadata', [:work,  :agent_set, {:agent => agent_counter},:name])}" %>
+<fieldset id="agent_fields">
+  <legend>Agent Description</legend>
+    <dl>
+      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:work,  :agent_set, {:agent => agent_counter}, :name]).first.empty?%>
+          <dt class="agent_name">
+            <%= fedora_field_label("descMetadata", [:work,  :agent_set, {:agent => agent_counter}, :name], "Agent Name:") %>
+          </dt>
+          <dd>
+            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:work,  :agent_set, {:agent => agent_counter}, :name])%>
+          </dd>
+      <%end%>
+      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:work,  :agent_set, {:agent => agent_counter},:name, :name_refid]).first.empty?%>
+          <dt class="agent_id">
+            <%= fedora_field_label("descMetadata", [:work,  :agent_set, {:agent => agent_counter},:name, :name_refid], "Agent Id:") %>
+          </dt>
+          <dd>
+            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:work,  :agent_set, {:agent => agent_counter}, :name, :name_refid])%>
+          </dd>
+      <%end%>
+      <% unless get_values_from_datastream(@document_fedora,"descMetadata",  [:work,  :agent_set, {:agent => agent_counter}, :dates, :earliestDate]).first.empty?%>
+          <dt class="agent_birth_date">
+            <%= fedora_field_label("descMetadata", [:work,  :agent_set, {:agent => agent_counter}, :dates, :earliestDate], "Agent Earliest Date:") %>
+          </dt>
+          <dd>
+            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:work,  :agent_set, {:agent => agent_counter}, :dates, :earliestDate])%>
+          </dd>
+      <%end%>
+      <% unless get_values_from_datastream(@document_fedora,"descMetadata",  [:work,  :agent_set, {:agent => agent_counter}, :dates, :latestDate]).first.empty?%>
+          <dt class="agent_late_date">
+            <%= fedora_field_label("descMetadata", [:work,  :agent_set, {:agent => agent_counter}, :dates, :latestDate], "Agent Latest Date:") %>
+          </dt>
+          <dd>
+            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:work,  :agent_set, {:agent => agent_counter}, :dates, :latestDate])%>
+          </dd>
+      <%end%>
+      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:work,  :agent_set, {:agent => agent_counter}, :culture]).first.empty?%>
+          <dt class="agent_culture">
+            <%= fedora_field_label("descMetadata", [:work,  :agent_set, {:agent => agent_counter}, :culture], "Agent Culture:") %>
+          </dt>
+          <dd>
+            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:work,  :agent_set, {:agent => agent_counter}, :culture])%>
+          </dd>
+      <%end%>
+      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:work,  :agent_set, {:agent => agent_counter}, :agent_role]).first.empty?%>
+          <dt class="agent_role">
+            <%= fedora_field_label("descMetadata", [:work,  :agent_set, {:agent => agent_counter}, :agent_role], "Agent Role:") %>
+          </dt>
+          <dd>
+            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:work,  :agent_set, {:agent => agent_counter}, :agent_role])%>
+          </dd>
+      <%end%>
+    </dl>
+</fieldset>
+
+
