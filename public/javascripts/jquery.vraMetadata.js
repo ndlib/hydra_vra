@@ -6,7 +6,6 @@
      var config = {};
       //alert("Init HydraNewAgent");
      if (settings) $.extend(config, settings);
-
      this.each(function() {
        $("#re-run-add-agent-action", this).click(function() {
          //alert("Need add new agent tag");
@@ -21,6 +20,7 @@
      if (settings) $.extend(config, settings);
 
      this.each(function() {
+       alert("Add agent this function");
        $("#re-run-add-image-action", this).click(function() {
          //alert("Need add new image tag");
          $.fn.vraMetadata.addImageTag("image_tag");
@@ -29,6 +29,43 @@
      return this;
    };
 
+   $.fn.lotCreateButton = function(settings) {
+     var config = {};
+     //alert("lotCreateButtton")
+     if (settings) $.extend(config, settings);
+     this.each(function() {
+       $("#add_lot", this).click(function() {
+         var lot_key = $("input#lot_key").first().attr("value");
+         //alert("Lot key enter: "+ lot_key)
+         if (lot_key == "" || lot_key.length ==0) {
+            alert("Please enter lot id before adding new lot")
+            return false;
+         }
+         //alert("Calling create lot on click")
+         $.fn.vraMetadata.createLot(this);
+       });
+     });
+     return this;
+   };
+
+   /*$.fn.lotCreateButton = function(settings) {
+     var config = {};
+     alert("lotCreateButtton")
+     if (settings) $.extend(config, settings);
+     this.each(function() {
+       alert("this lotCreateButtton")
+       $("re-run-add-lot-action", this).click(function() {
+         var lot_key = $("input#lot_key").first().attr("value");
+         alert("Lot key enter: "+ lot_key)
+         if (lot_key == "" || lot_key.length ==0) {
+            alert("Please enter lot id before adding new lot")
+            return false;
+         };
+         $.fn.vraMetadata.createLot(this)
+       });
+     });
+     return this;
+   };*/
    $.fn.agentDeleteButton = function(settings) {
      var config = {};
      if (settings) $.extend(config, settings);
@@ -55,35 +92,14 @@
      return this;
    };
 
-   $.fn.lotCreateButton = function(settings) {
-     var config = {};
-     //alert("lotCreateButtton")
-     if (settings) $.extend(config, settings);
-     this.each(function() {
-       $("#add_lot", this).click(function() {
-         var lot_key = $("input#lot_key").first().attr("value");
-         //alert("Lot key enter: "+ lot_key)
-         if (lot_key == "" || lot_key.length ==0) {
-            alert("Please enter lot id before adding new lot")
-            return false;
-         }
-         //alert("Calling create lot on click")
-         $.fn.vraMetadata.createLot(this);
-       });
-     });
-     return this;
-   };
-
-    $.fn.lotDeleteButton = function(settings) {
-     //alert("lotDeleteButtton"+ this)
+   $.fn.lotDeleteButton = function(settings) {
+     //alert("lotDeleteButtton")
      var config = {};
      if (settings) $.extend(config, settings);
      //alert("before this function");
      this.each(function() {
        //alert("this function");
-       //$("#destroy_lot", this).click(function() {
        $(this).unbind('click.hydra').bind('click.hydra', function(e) {
-         alert("calling deleteLot");
          $.fn.vraMetadata.deleteLot(this, e);
          e.preventDefault();
        })
@@ -169,23 +185,24 @@
      createLot: function(el) {
        var lot_id = $("input#lot_key").first().attr("value");
        //alert("Lot id: "+lot_id)
-       var url = $(el).attr("action");
+       var url = $("input#create_lot_url").first().attr("value");//$(el).attr("action");
        var pid = $("div#lot").attr("data-pid");
        var params =  "&building_pid="+pid+"&key="+lot_id;
-        url=url+params;
-        //alert("URL is "+url);
-       var lot_selector = ".lot_tag";
+       url=url+params;
+       var lot_selector = ".lot_remove_test";
+       var $lotNode = $(el).closest(".lot_remove_test");
+       //alert("create Lot url"+url);
        $.post(url, function(data){
-         //alert("created lot successfully");
          $(lot_selector).last().after(data);
          $inserted = $(lot_selector).last();
          $(".editable-container", $inserted).hydraTextField();
          $("a.destructive", $inserted).lotDeleteButton();
+         $lotNode.remove()
        });
      },
 
      deleteLot: function(element) {
-       alert("Into Delete Lot"+$(element).html)
+       //alert("Into Delete Lot"+$(element).html)
        var $lotNode = $(element).closest(".lot_tag")
        var url = $(element).attr("href");
        var building_pid = $("div#lot").attr("data-pid");
@@ -193,17 +210,17 @@
        var content_model="Lot"
        var params =  "?content_model="+content_model+"&building_pid="+building_pid+"&building_content_type="+building_content_type;
        url=url+params;
-       alert("URL: "+url);
+       //alert("URL: "+url);
        $.ajax({
          type: "DELETE",
          url: url,
          dataType: "html",
          beforeSend: function() {
-            alert("change color")
+            //alert("change color")
    			$lotNode.animate({'backgroundColor':'#fb6c6c'},300);
          },
          success: function() {
-           alert("trying to hide")
+           //alert("trying to hide")
            $lotNode.slideUp(300,function() {
              $lotNode.remove();
            });

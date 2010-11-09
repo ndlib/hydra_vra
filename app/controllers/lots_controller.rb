@@ -32,7 +32,7 @@ class LotsController < ApplicationController
     end
     @building=Building.load_instance(params[:building_id])
     logger.error("Building pid: #{@building.pid}")
-    render :action=>params[:action], :layout=>layout
+    render :partial=>"lots/index", :layout=>layout
   end
   
   def new
@@ -63,7 +63,7 @@ class LotsController < ApplicationController
       @lot=load_instance("Lot",lot_pid)
     end
     add_named_relationship(params[:building_content_type], params[:building_pid])
-    #render :action => 'index', :layout=>false
+    @building=Building.load_instance(params[:building_pid])
     render :partial=>"lots/index", :locals=>{"lots".to_sym =>@object.lot_list}, :layout=>false
     #render :text => "Successfull added relationship betweeb #{params[:building_pid]} and #{@lot.pid}."
   end
