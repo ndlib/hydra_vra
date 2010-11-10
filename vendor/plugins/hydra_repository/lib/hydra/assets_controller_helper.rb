@@ -44,6 +44,73 @@ module Hydra::AssetsControllerHelper
      
   end
 
+  def add_named_relationship(asset, target_content_type, target_pid)
+    if asset.nil?
+      raise "Assest Missing"
+    else
+      if asset.respond_to?(:add_named_relationship)
+        if asset.is_named_relationship?(target_content_type,true)
+          #check if :type is defined for this relationship, if so instantiate with that type
+          unless asset.named_relationship_type(target_content_type).nil?
+          	@object = load_instance(asset.named_relationship_type(target_content_type).to_s,target_pid)
+          end
+          #check object for added relationship
+          if @object.nil?
+            raise "Unable to find fedora object with pid #{target_pid} to add to pid: #{@lot.pid} as #{target_content_type}"
+          else
+        	asset.add_named_relationship(target_content_type,@object)
+        	asset.save
+          end
+        else
+          raise "outbound relationship: #{target_content_type} does not exist for content model: #{asset.class}"
+        end
+      else
+        raise "Content model: #{asset.class} does not implement add_named_relationship"
+      end
+    end
+  end
+
+  def remove_named_relationship(asset, target_content_type, target_pid)
+    if asset.nil?
+      raise "asset missing"
+    else
+      if asset.respond_to?(:remove_named_relationship)
+        if asset.is_named_relationship?(target_content_type,true)
+          #check object for added relationship
+          #check if :type is defined for this relationship, if so instantiate with that type
+          unless asset.named_relationship_type(target_content_type).nil?
+            @object = load_instance(@lot.named_relationship_type(target_content_type).to_s,target_pid)
+          end
+          if @object.nil?
+            raise "Fedora object not found for content model #{@lot.named_relationship_type(target_content_type).to_s} and pid #{target_pid}"
+          else
+        	asset.remove_named_relationship(target_content_type,@object)
+        	asset.save
+          end
+        else
+          raise "Outbound named relationship #{target_content_type} does not exist for Content model: #{asset.class}"
+        end
+      else
+        raise "Content model: #{asset.class} does not implement remove_named_relationship"
+      end
+    end
+  end
+
+  def load_instance(content_model, pid)
+    begin
+      #use reflection to instantiate object
+      object = content_model.split('::').inject(Kernel) {|scope, const_name|
+      scope.const_get(const_name)}.load_instance(pid)
+    rescue
+      raise "Fedora Object not found for content model #{content_model} and pid #{pid}"
+    end
+
+    #check that has model matches class
+    object.assert_kind_of_model('Fedora Object', object, object.class)
+    return object
+  end
+
+
   # moved destringify into OM gem. 
   # ie.  OM.destringify( params )
   # Note: OM now handles destringifying params internally.  You probably don't have to do it!
