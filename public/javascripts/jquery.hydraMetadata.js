@@ -233,7 +233,7 @@
        var field_selectors = $("input.fieldselector[rel="+$editNode.attr("rel")+"]").fieldSerialize();
 
        var params = field_param + "&" + content_type_param + "&" + field_selectors + "&_method=put";
-
+         
        $.ajax({
          type: "PUT",
          url: url,
@@ -376,8 +376,8 @@
       var field_selectors = $("input.fieldselector[rel="+$editNode.attr("rel")+"]").fieldSerialize();
 
       //Field Selectors are the only update params to be passed in the url
-      var assetUrl = $closestForm.attr("action")  + "&" + field_selectors;
-      var submitUrl = $.fn.hydraMetadata.appendFormat(assetUrl, {format: "textile"}) 
+      var assetUrl = $closestForm.attr("action") + "&" + field_selectors;
+      var submitUrl = $.fn.hydraMetadata.appendFormat(assetUrl, {format: "textile"});
 
       // These params are all you need to load the value from AssetsController.show
       // Note: the field value must match the field name in solr (minus the solr suffix)

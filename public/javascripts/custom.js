@@ -20,7 +20,9 @@ Hydrangea.FileUploader = function() {
 
   return {
     setUp: function() {
+      //TODO: DRY this up.
       $("a#toggle-uploader").live('click', Hydrangea.FileUploader.toggle);
+      $("a#toggle-uploader-generic").live('click', Hydrangea.FileUploader.toggleGeneric);
       pid = $("div#uploads").attr("data-pid");
 
     },
@@ -31,6 +33,16 @@ Hydrangea.FileUploader = function() {
       } else {
         $("a#toggle-uploader").html("Upload files");
         $("div#uploader").html("");
+      }
+      return false;
+    },
+    toggleGeneric: function() {
+      if ($("a#toggle-uploader-generic").html().trim() === "Upload file") {
+        $("a#toggle-uploader-generic").html("Hide file uploader");
+        $("form.fl-progEnhance-enhanced").show();
+      } else {
+        $("a#toggle-uploader-generic").html("Upload file");
+        $("form.fl-progEnhance-enhanced").hide();
       }
       return false;
     }
@@ -45,8 +57,17 @@ jQuery(document).ready(function($) {
 	    clearStyle: false,
 	    collapsible: false,
 	    active: 0,
-	    icons: false
+	    icons: false,
+			fillSpace: true	
 	});	
+	$(function() {
+			$("#accordion").resizable({
+				minHeight: 140,
+				resize: function() {
+					$( "#accordion" ).accordion( "resize" );
+				}
+			});
+		});
 	
 	
 	// FORM BEHAVIOR	
