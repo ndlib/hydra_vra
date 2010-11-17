@@ -22,14 +22,14 @@ class Building < ActiveFedora::Base
 
   alias_method :id, :pid
 
-  # Call insert_contributor on the descMetadata datastream
+  # Call insert_node on the descMetadata datastream
   def insert_new_node(type, opts)
     ds = self.datastreams_in_memory["descMetadata"]
     node, index = ds.insert_node(type, opts)
     return node, index
   end
 
-  # Call remove_contributor on the descMetadata datastream
+  # Call remove_agent node on the descMetadata datastream
   def remove_agent(type, index)
     ds = self.datastreams_in_memory["descMetadata"]
     result = ds.remove_node(type,index)

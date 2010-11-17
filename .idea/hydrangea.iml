@@ -12,265 +12,271 @@
   <component name="GemRequirementsHolder" version="3">
     <requirement>
       <requirement>
-        <dependency name="RedCloth" version="0" bound="GREATER_OR_EQUAL" git="false" doRequire="true" />
+        <dependency name="RedCloth" version="0" bound="GREATER_OR_EQUAL" git="false" path="false" doRequire="true" />
       </requirement>
       <source from="Gemfile" />
     </requirement>
     <requirement>
       <requirement>
-        <dependency name="active-fedora" version="0" bound="GREATER_OR_EQUAL" git="true" doRequire="true" />
+        <dependency name="active-fedora" version="0" bound="GREATER_OR_EQUAL" git="true" path="false" doRequire="true" />
       </requirement>
       <source from="Gemfile" />
     </requirement>
     <requirement>
       <requirement>
-        <dependency name="authlogic" version="0.1.0" bound="GREATER_OR_EQUAL" git="false" doRequire="true" />
+        <dependency name="authlogic" version="0.1.0" bound="GREATER_OR_EQUAL" git="false" path="false" doRequire="true" />
       </requirement>
       <source from="Gemfile" />
     </requirement>
     <requirement>
       <requirement>
-        <dependency name="block_helpers" version="0" bound="GREATER_OR_EQUAL" git="false" doRequire="true" />
+        <dependency name="block_helpers" version="0" bound="GREATER_OR_EQUAL" git="false" path="false" doRequire="true" />
       </requirement>
       <source from="Gemfile" />
     </requirement>
     <requirement>
       <requirement>
-        <dependency name="builder" version="0" bound="GREATER_OR_EQUAL" git="false" doRequire="true" />
+        <dependency name="builder" version="0" bound="GREATER_OR_EQUAL" git="false" path="false" doRequire="true" />
       </requirement>
       <source from="Gemfile" />
     </requirement>
     <requirement>
       <requirement>
-        <dependency name="columnize" version="0" bound="GREATER_OR_EQUAL" git="false" doRequire="true" />
+        <dependency name="columnize" version="0" bound="GREATER_OR_EQUAL" git="false" path="false" doRequire="true" />
       </requirement>
       <source from="Gemfile" />
     </requirement>
     <requirement>
       <requirement>
-        <dependency name="crack" version="0" bound="GREATER_OR_EQUAL" git="false" doRequire="true" />
+        <dependency name="crack" version="0" bound="GREATER_OR_EQUAL" git="false" path="false" doRequire="true" />
       </requirement>
       <source from="Gemfile" />
     </requirement>
     <requirement>
       <requirement>
-        <dependency name="cucumber" version="0" bound="GREATER_OR_EQUAL" git="false" doRequire="true" />
+        <dependency name="cucumber" version="0" bound="GREATER_OR_EQUAL" git="false" path="false" doRequire="true" />
       </requirement>
       <source from="Gemfile" />
     </requirement>
     <requirement>
       <requirement>
-        <dependency name="cucumber-rails" version="0" bound="GREATER_OR_EQUAL" git="false" doRequire="true" />
+        <dependency name="cucumber-rails" version="0" bound="GREATER_OR_EQUAL" git="false" path="false" doRequire="true" />
       </requirement>
       <source from="Gemfile" />
     </requirement>
     <requirement>
       <requirement>
-        <dependency name="curb" version="0.6.9" bound="LESS_OR_EQUAL" git="false" doRequire="true" />
+        <dependency name="curb" version="0.6.9" bound="LESS_OR_EQUAL" git="false" path="false" doRequire="true" />
       </requirement>
       <source from="Gemfile" />
     </requirement>
     <requirement>
       <requirement>
-        <dependency name="database_cleaner" version="0" bound="GREATER_OR_EQUAL" git="false" doRequire="true" />
+        <dependency name="database_cleaner" version="0" bound="GREATER_OR_EQUAL" git="false" path="false" doRequire="true" />
       </requirement>
       <source from="Gemfile" />
     </requirement>
     <requirement>
       <requirement>
-        <dependency name="diff-lcs" version="0" bound="GREATER_OR_EQUAL" git="false" doRequire="true" />
+        <dependency name="diff-lcs" version="0" bound="GREATER_OR_EQUAL" git="false" path="false" doRequire="true" />
       </requirement>
       <source from="Gemfile" />
     </requirement>
     <requirement>
       <requirement>
-        <dependency name="facets" version="2.8.4" bound="EQUAL" git="false" doRequire="true" />
+        <dependency name="facets" version="2.8.4" bound="EQUAL" git="false" path="false" doRequire="true" />
       </requirement>
       <source from="Gemfile" />
     </requirement>
     <requirement>
       <requirement>
-        <dependency name="gherkin" version="0" bound="GREATER_OR_EQUAL" git="false" doRequire="true" />
+        <dependency name="fastercsv" version="0" bound="GREATER_OR_EQUAL" git="false" path="false" doRequire="true" />
       </requirement>
       <source from="Gemfile" />
     </requirement>
     <requirement>
       <requirement>
-        <dependency name="haml" version="0" bound="GREATER_OR_EQUAL" git="false" doRequire="true" />
+        <dependency name="gherkin" version="0" bound="GREATER_OR_EQUAL" git="false" path="false" doRequire="true" />
       </requirement>
       <source from="Gemfile" />
     </requirement>
     <requirement>
       <requirement>
-        <dependency name="httparty" version="0" bound="GREATER_OR_EQUAL" git="false" doRequire="true" />
+        <dependency name="haml" version="0" bound="GREATER_OR_EQUAL" git="false" path="false" doRequire="true" />
       </requirement>
       <source from="Gemfile" />
     </requirement>
     <requirement>
       <requirement>
-        <dependency name="json_pure" version="1.4.3" bound="GREATER" git="false" doRequire="true" />
+        <dependency name="httparty" version="0" bound="GREATER_OR_EQUAL" git="false" path="false" doRequire="true" />
       </requirement>
       <source from="Gemfile" />
     </requirement>
     <requirement>
       <requirement>
-        <dependency name="linecache" version="0" bound="GREATER_OR_EQUAL" git="false" doRequire="true" />
+        <dependency name="json_pure" version="1.4.3" bound="GREATER" git="false" path="false" doRequire="true" />
       </requirement>
       <source from="Gemfile" />
     </requirement>
     <requirement>
       <requirement>
-        <dependency name="marc" version="0" bound="GREATER_OR_EQUAL" git="false" doRequire="true" />
+        <dependency name="linecache" version="0" bound="GREATER_OR_EQUAL" git="false" path="false" doRequire="true" />
       </requirement>
       <source from="Gemfile" />
     </requirement>
     <requirement>
       <requirement>
-        <dependency name="mime-types" version="0" bound="GREATER_OR_EQUAL" git="false" doRequire="true" />
+        <dependency name="marc" version="0" bound="GREATER_OR_EQUAL" git="false" path="false" doRequire="true" />
       </requirement>
       <source from="Gemfile" />
     </requirement>
     <requirement>
       <requirement>
-        <dependency name="mocha" version="0" bound="GREATER_OR_EQUAL" git="false" doRequire="true" />
+        <dependency name="mime-types" version="0" bound="GREATER_OR_EQUAL" git="false" path="false" doRequire="true" />
       </requirement>
       <source from="Gemfile" />
     </requirement>
     <requirement>
       <requirement>
-        <dependency name="multipart-post" version="0" bound="GREATER_OR_EQUAL" git="false" doRequire="true" />
+        <dependency name="mocha" version="0" bound="GREATER_OR_EQUAL" git="false" path="false" doRequire="true" />
       </requirement>
       <source from="Gemfile" />
     </requirement>
     <requirement>
       <requirement>
-        <dependency name="nokogiri" version="0" bound="GREATER_OR_EQUAL" git="false" doRequire="true" />
+        <dependency name="multipart-post" version="0" bound="GREATER_OR_EQUAL" git="false" path="false" doRequire="true" />
       </requirement>
       <source from="Gemfile" />
     </requirement>
     <requirement>
       <requirement>
-        <dependency name="om" version="1.0.0" bound="GREATER_OR_EQUAL" git="false" doRequire="true" />
+        <dependency name="nokogiri" version="0" bound="GREATER_OR_EQUAL" git="false" path="false" doRequire="true" />
       </requirement>
       <source from="Gemfile" />
     </requirement>
     <requirement>
       <requirement>
-        <dependency name="rack" version="0" bound="GREATER_OR_EQUAL" git="false" doRequire="true" />
+        <dependency name="om" version="1.0.0" bound="GREATER_OR_EQUAL" git="false" path="false" doRequire="true" />
       </requirement>
       <source from="Gemfile" />
     </requirement>
     <requirement>
       <requirement>
-        <dependency name="rack-test" version="0" bound="GREATER_OR_EQUAL" git="false" doRequire="true" />
+        <dependency name="rack" version="0" bound="GREATER_OR_EQUAL" git="false" path="false" doRequire="true" />
       </requirement>
       <source from="Gemfile" />
     </requirement>
     <requirement>
       <requirement>
-        <dependency name="rails" version="0" bound="GREATER_OR_EQUAL" git="false" doRequire="true" />
+        <dependency name="rack-test" version="0" bound="GREATER_OR_EQUAL" git="false" path="false" doRequire="true" />
       </requirement>
       <source from="Gemfile" />
     </requirement>
     <requirement>
       <requirement>
-        <dependency name="rake" version="0" bound="GREATER_OR_EQUAL" git="false" doRequire="true" />
+        <dependency name="rails" version="0" bound="GREATER_OR_EQUAL" git="false" path="false" doRequire="true" />
       </requirement>
       <source from="Gemfile" />
     </requirement>
     <requirement>
       <requirement>
-        <dependency name="rcov" version="0" bound="GREATER_OR_EQUAL" git="false" doRequire="true" />
+        <dependency name="rake" version="0" bound="GREATER_OR_EQUAL" git="false" path="false" doRequire="true" />
       </requirement>
       <source from="Gemfile" />
     </requirement>
     <requirement>
       <requirement>
-        <dependency name="rsolr" version="0" bound="GREATER_OR_EQUAL" git="false" doRequire="true" />
+        <dependency name="rcov" version="0" bound="GREATER_OR_EQUAL" git="false" path="false" doRequire="true" />
       </requirement>
       <source from="Gemfile" />
     </requirement>
     <requirement>
       <requirement>
-        <dependency name="rsolr-ext" version="0" bound="GREATER_OR_EQUAL" git="false" doRequire="true" />
+        <dependency name="rsolr" version="0" bound="GREATER_OR_EQUAL" git="false" path="false" doRequire="true" />
       </requirement>
       <source from="Gemfile" />
     </requirement>
     <requirement>
       <requirement>
-        <dependency name="rspec" version="2.0.0" bound="LESS" git="false" doRequire="true" />
+        <dependency name="rsolr-ext" version="0" bound="GREATER_OR_EQUAL" git="false" path="false" doRequire="true" />
       </requirement>
       <source from="Gemfile" />
     </requirement>
     <requirement>
       <requirement>
-        <dependency name="rspec-rails" version="2.0.0" bound="LESS" git="false" doRequire="true" />
+        <dependency name="rspec" version="2.0.0" bound="LESS" git="false" path="false" doRequire="true" />
       </requirement>
       <source from="Gemfile" />
     </requirement>
     <requirement>
       <requirement>
-        <dependency name="ruby-debug" version="0" bound="GREATER_OR_EQUAL" git="false" doRequire="true" />
+        <dependency name="rspec-rails" version="2.0.0" bound="LESS" git="false" path="false" doRequire="true" />
       </requirement>
       <source from="Gemfile" />
     </requirement>
     <requirement>
       <requirement>
-        <dependency name="ruby-debug-base" version="0" bound="GREATER_OR_EQUAL" git="false" doRequire="true" />
+        <dependency name="ruby-debug" version="0" bound="GREATER_OR_EQUAL" git="false" path="false" doRequire="true" />
       </requirement>
       <source from="Gemfile" />
     </requirement>
     <requirement>
       <requirement>
-        <dependency name="solr-ruby" version="0" bound="GREATER_OR_EQUAL" git="false" doRequire="true" />
+        <dependency name="ruby-debug-base" version="0" bound="GREATER_OR_EQUAL" git="false" path="false" doRequire="true" />
       </requirement>
       <source from="Gemfile" />
     </requirement>
     <requirement>
       <requirement>
-        <dependency name="solrizer" version="0.3.1" bound="GREATER_OR_EQUAL" git="false" doRequire="true" />
+        <dependency name="solr-ruby" version="0" bound="GREATER_OR_EQUAL" git="false" path="false" doRequire="true" />
       </requirement>
       <source from="Gemfile" />
     </requirement>
     <requirement>
       <requirement>
-        <dependency name="solrizer-fedora" version="0" bound="GREATER_OR_EQUAL" git="false" doRequire="true" />
+        <dependency name="solrizer" version="0.3.1" bound="GREATER_OR_EQUAL" git="false" path="false" doRequire="true" />
       </requirement>
       <source from="Gemfile" />
     </requirement>
     <requirement>
       <requirement>
-        <dependency name="sqlite3-ruby" version="0" bound="GREATER_OR_EQUAL" git="false" doRequire="true" />
+        <dependency name="solrizer-fedora" version="0" bound="GREATER_OR_EQUAL" git="false" path="false" doRequire="true" />
       </requirement>
       <source from="Gemfile" />
     </requirement>
     <requirement>
       <requirement>
-        <dependency name="term-ansicolor" version="0" bound="GREATER_OR_EQUAL" git="false" doRequire="true" />
+        <dependency name="sqlite3-ruby" version="0" bound="GREATER_OR_EQUAL" git="false" path="false" doRequire="true" />
       </requirement>
       <source from="Gemfile" />
     </requirement>
     <requirement>
       <requirement>
-        <dependency name="trollop" version="0" bound="GREATER_OR_EQUAL" git="false" doRequire="true" />
+        <dependency name="term-ansicolor" version="0" bound="GREATER_OR_EQUAL" git="false" path="false" doRequire="true" />
       </requirement>
       <source from="Gemfile" />
     </requirement>
     <requirement>
       <requirement>
-        <dependency name="webrat" version="0" bound="GREATER_OR_EQUAL" git="false" doRequire="true" />
+        <dependency name="trollop" version="0" bound="GREATER_OR_EQUAL" git="false" path="false" doRequire="true" />
       </requirement>
       <source from="Gemfile" />
     </requirement>
     <requirement>
       <requirement>
-        <dependency name="will_paginate" version="0" bound="GREATER_OR_EQUAL" git="false" doRequire="true" />
+        <dependency name="webrat" version="0" bound="GREATER_OR_EQUAL" git="false" path="false" doRequire="true" />
       </requirement>
       <source from="Gemfile" />
     </requirement>
     <requirement>
       <requirement>
-        <dependency name="xml-simple" version="0" bound="GREATER_OR_EQUAL" git="false" doRequire="true" />
+        <dependency name="will_paginate" version="0" bound="GREATER_OR_EQUAL" git="false" path="false" doRequire="true" />
+      </requirement>
+      <source from="Gemfile" />
+    </requirement>
+    <requirement>
+      <requirement>
+        <dependency name="xml-simple" version="0" bound="GREATER_OR_EQUAL" git="false" path="false" doRequire="true" />
       </requirement>
       <source from="Gemfile" />
     </requirement>
@@ -397,6 +403,13 @@
     <orderEntry type="library" scope="PROVIDED" name="[gem] haml (v3.0.23, /home/blakshmi/.rvm/gems/ree-1.8.7-2010.02@hydra/gems/haml-3.0.23)" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="[gem] sqlite3-ruby (v1.3.2, /home/blakshmi/.rvm/gems/ree-1.8.7-2010.02@hydra/gems/sqlite3-ruby-1.3.2)" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="[gem] curb (v0.6.9, /home/blakshmi/.rvm/gems/ree-1.8.7-2010.02@hydra/gems/curb-0.6.9)" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="[gem] fastercsv (v1.5.3, /home/blakshmi/.rvm/gems/ree-1.8.7-2010.02@hydra/gems/fastercsv-1.5.3)" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="[gem] ruby-debug (v0.10.4, /home/blakshmi/.rvm/gems/ree-1.8.7-2010.02@hydra/gems/ruby-debug-0.10.4)" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="[gem] ruby-debug-base (v0.10.4, /home/blakshmi/.rvm/gems/ree-1.8.7-2010.02@hydra/gems/ruby-debug-base-0.10.4)" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="[gem] columnize (v0.3.2, /home/blakshmi/.rvm/gems/ree-1.8.7-2010.02@hydra/gems/columnize-0.3.2)" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="[gem] cucumber (v0.9.4, /home/blakshmi/.rvm/gems/ree-1.8.7-2010.02@hydra/gems/cucumber-0.9.4)" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="[gem] cucumber (v0.9.4, /home/blakshmi/.rvm/gems/ree-1.8.7-2010.02@hydra/gems/cucumber-0.9.4)" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="[gem] ruby-debug-base (v0.10.4, /home/blakshmi/.rvm/gems/ree-1.8.7-2010.02@hydra/gems/ruby-debug-base-0.10.4)" level="application" />
   </component>
 </module>
 

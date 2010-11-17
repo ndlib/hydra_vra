@@ -91,7 +91,7 @@ describe VraSample do
 
   describe ".update_indexed_attributes" do
     it "should work for all of the fields we want to display" do
-      [ [:work, :agent_set],[:work, :agent_set,:agent], [:work, :agent_set,:agent,:name], [:work, :agent_set,{:agent=>0},:name]] .each do |pointer|
+      [ [:work, :agent_set,:agent_display], [:work, :agent_set,{:agent=>0},:name]] .each do |pointer|
         test_val = "#{pointer.last.to_s} value"
         @vra_doc.update_indexed_attributes( {pointer=>{"0"=>test_val}} )
         @vra_doc.get_values(pointer).first.should == test_val

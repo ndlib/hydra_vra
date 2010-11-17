@@ -12,6 +12,7 @@ gem 'curb', '<=0.6.9' #versions above this fail to complie on the cluster
 gem 'database_cleaner'
 gem 'diff-lcs'
 gem 'facets', '2.8.4'
+gem 'fastercsv'
 gem 'haml'
 gem 'httparty'
 gem 'json_pure', '>1.4.3'

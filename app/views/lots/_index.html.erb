@@ -1,7 +1,7 @@
 <div class="lot_remove_test">
     <h2 class="section-title">Lot</h2>
     <%# debug @building.lot_list.first.pid %>
-    <%- unless @building.lot_list.empty? -%>
+    <%- unless @building.lot_list.blank? -%>
     <fieldset>
       <% lots = @building.lot_list %>
       <h3>This Building has <%= lots.count %> lots associated with it.</h3>

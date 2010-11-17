@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/rickjohnson/active_fedora.git
-  revision: 4156ff3f88124453e164fd092099410be4d28ed6
+  revision: 590f55f50c5a9dfae82e7dee03bd8f9db96df33c
   specs:
     active-fedora (1.2.6)
       activeresource (< 3.0.0)
@@ -31,9 +31,9 @@ GEM
     block_helpers (0.3.3)
       activesupport (>= 2.0)
     builder (2.1.2)
-    columnize (0.3.1)
+    columnize (0.3.2)
     crack (0.1.8)
-    cucumber (0.9.3)
+    cucumber (0.9.4)
       builder (~> 2.1.2)
       diff-lcs (~> 1.1.2)
       gherkin (~> 2.2.9)
@@ -45,6 +45,7 @@ GEM
     database_cleaner (0.6.0)
     diff-lcs (1.1.2)
     facets (2.8.4)
+    fastercsv (1.5.3)
     gherkin (2.2.9)
       json (~> 1.4.6)
       term-ansicolor (~> 1.0.5)
@@ -84,10 +85,10 @@ GEM
     rspec-rails (1.3.3)
       rack (>= 1.0.0)
       rspec (= 1.3.1)
-    ruby-debug (0.10.3)
+    ruby-debug (0.10.4)
       columnize (>= 0.1)
-      ruby-debug-base (~> 0.10.3.0)
-    ruby-debug-base (0.10.3)
+      ruby-debug-base (~> 0.10.4.0)
+    ruby-debug-base (0.10.4)
       linecache (>= 0.3)
     solr-ruby (0.0.8)
     solrizer (0.3.1)
@@ -124,6 +125,7 @@ DEPENDENCIES
   database_cleaner
   diff-lcs
   facets (= 2.8.4)
+  fastercsv
   gherkin
   haml
   httparty

@@ -32,7 +32,7 @@ class LotsController < ApplicationController
       layout = false
     end
     @building=Building.load_instance(params[:building_id])
-    logger.error("Building pid: #{@building.pid}")
+    logger.error("Building pid: #{@building.pid}, lot_list is blank: #{@building.lot_list.blank?}")
     render :partial=>"lots/index", :layout=>layout
   end
   
@@ -45,16 +45,9 @@ class LotsController < ApplicationController
     unless attributes.has_key?(:label)
       attributes[:label] = "Lot"
     end
-    lot_pid=  generate_pid(params[:key])
-    if (!asset_available(lot_pid))
-      attributes["pid"]=  lot_pid
-      attributes.merge!({:new_object=>true})
-      if attributes.has_key?("pid")
-        attributes.merge!({:pid=>attributes["pid"]})
-        attributes[:pid] = attributes["pid"]
-      end
-      attributes[:pid] = attributes[:pid]["0"] if attributes.has_key?(:pid) && attributes[:pid].is_a?(Hash) && attributes[:pid].has_key?("0")
-      @lot = create_instance("Lot", attributes)
+    lot_pid=  generate_pid(params[:key], 'Lot')
+    if (!asset_available(lot_pid, "Lot" ))
+      @lot = Lot.new({:pid=>lot_pid})
       apply_depositor_metadata(@lot)
       @lot.save
       @lot.update_indexed_attributes(attributes)
@@ -78,11 +71,6 @@ class LotsController < ApplicationController
 
   def show
      redirect_to(:action => 'index', :q => nil , :f => nil)
-  end
-
-  def create_instance(content_model,attributes={})
-    content_model.split('::').inject(Kernel) {|scope, const_name|
-    scope.const_get(const_name)}.new(attributes)
   end
 
 end
