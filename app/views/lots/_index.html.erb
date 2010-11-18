@@ -1,0 +1,32 @@
+<div class="lot_remove_test">
+    <h2 class="section-title">Lot</h2>
+    <%# debug @building.lot_list.first.pid %>
+    <%- unless @building.lot_list.blank? -%>
+    <fieldset>
+      <% lots = @building.lot_list %>
+      <h3>This Building has <%= lots.count %> lots associated with it.</h3>
+      <dl class="related-lots">
+        <%- lots.each do |lot| -%>
+          <dd class="lot_tag">
+          <%# link_to "#{lot.pid}", lot_path(lot.pid)%>
+          <%= lot.pid%>
+          <a id="remove_lot" class="destructive destroy_lot" href="<%=lot_path(lot.pid)%>" title="Remove lot"> Delete</a>
+          </dd>
+        <%- end -%>
+      </dl>
+    </fieldset>
+    <%- end -%>
+
+    <div id="add-lot-div">
+      <label>Lot key: </label>
+      <input id="lot_key" type="text"/>
+      <input id="create_lot_url" type="hidden" name="url" value="<%= lots_path(:building_content_type=> "building") %>" />
+      <a id="add_lot" class="create_lot" href=# action="<%= lots_path(:building_content_type=> "building", :key=>"test") %>"> Add new Lot</a>
+      <!-- <input id="re-run-add-lot-action" type="button" value="Add a lot" /> -->
+    </div>
+</div>
+
+
+
+
+    

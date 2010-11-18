@@ -9,6 +9,8 @@ require 'active-fedora'
 ENABLE_SOLR_UPDATES=true
 ActiveFedora.init
 
+
+
 #
 # Loads EAD descriptors 
 # Attempts to parse any xml files in lib/stanford/ead/

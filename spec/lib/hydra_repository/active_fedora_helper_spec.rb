@@ -36,5 +36,26 @@ describe MediaShelf::ActiveFedoraHelper do
       fed_af_obj.inbound_relationships.should == solr_af_obj.inbound_relationships
     end
   end
+
+
+  describe "add_named_relationship" do
+    before(:each) do
+      class FakeModel < ActiveFedora::Base
+        has_relationship "rel1", :is_part_of, :type=>FakeModel
+        has_relationship "rel2", :has_part
+      end
+    end
+    it "should add relationship if type is defined" do
+      @test_object = FakeModel.new
+      @test_object.save
+      @test_object1 = FakeModel.new
+      @test_object1.save
+      relationship_name="rel1"
+      pid=@test_object1.pid
+      helper.add_named_relationship(@test_object,relationship_name,pid)
+      puts "Relationships: #{@test_object.named_relationship(relationship_name)}"
+      @test_object.named_relationship(relationship_name) == "rel1"
+    end
+  end
   
 end

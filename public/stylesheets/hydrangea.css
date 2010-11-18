@@ -103,9 +103,16 @@ dd ol li, dd ul li {
 }
 
 dd li {
-	width: 175px;
+	width: 400px;
 }
 
+dl#index_list dt {
+  margin-top: 0;
+}
+
+dl#index_list dd {
+  margin-top: 0;
+}
 /* Multiple fields in one line */
 
 .multi_inline ul, fieldset ol {

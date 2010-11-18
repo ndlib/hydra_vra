@@ -40,8 +40,7 @@ module Hydra::AssetsControllerHelper
       end
     end
     
-    return args
-     
+    return args     
   end
 
   # moved destringify into OM gem. 
@@ -70,6 +69,5 @@ module Hydra::AssetsControllerHelper
 
     end
     h
-  end
-  
+  end  
 end

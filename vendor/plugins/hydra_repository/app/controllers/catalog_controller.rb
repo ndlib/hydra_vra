@@ -38,10 +38,10 @@ class CatalogController
       logger.error("Unparseable search error: #{params.inspect}" ) 
       flash[:notice] = "Sorry, I don't understand your search." 
       redirect_to :action => 'index', :q => nil , :f => nil
-    rescue 
-      logger.error("Unknown error: #{params.inspect}" ) 
-      flash[:notice] = "Sorry, you've encountered an error. Try a different search." 
-      redirect_to :action => 'index', :q => nil , :f => nil
+    #rescue
+      #logger.error("Unknown error: #{params.inspect}" )
+      #flash[:notice] = "Sorry, you've encountered an error. Try a different search."
+      #redirect_to :action => 'index', :q => nil , :f => nil
   end
     
   def show_with_customizations
@@ -53,6 +53,7 @@ class CatalogController
       the_model = DcDocument
     end
     @document_fedora = the_model.load_instance(params[:id])
+    #logger.debug("Fedora Xml: #{@document_fedora.inspect}")
     params = {:qt=>"dismax",:q=>"*:*",:rows=>"0",:facet=>"true", :facets=>{:fields=>Blacklight.config[:facet][:field_names]}}
     @facet_lookup = Blacklight.solr.find params
     enforce_read_permissions

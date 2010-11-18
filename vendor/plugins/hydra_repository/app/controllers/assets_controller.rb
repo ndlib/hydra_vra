@@ -53,7 +53,6 @@ class AssetsController < ApplicationController
         af_model = HydrangeaArticle
       end
       @document = af_model.find(params[:id])
-            
       updater_method_args = prep_updater_method_args(params)
     
       logger.debug("attributes submitted: #{updater_method_args.inspect}")
@@ -92,8 +91,10 @@ class AssetsController < ApplicationController
     
     def new
       af_model = retrieve_af_model(params[:content_type])
+      logger.error("Content Type: #{af_model}")
       if af_model
         @asset = af_model.new
+        logger.error("New Asset: #{@asset.inspect}")
         apply_depositor_metadata(@asset)
         set_collection_type(@asset, params[:content_type])
         @asset.save

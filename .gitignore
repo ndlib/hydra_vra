@@ -20,10 +20,11 @@ tmp/performance
 
 rerun.txt
 
+db/schema.rb
+
 .project
 .buildpath
 .rvmrc
-
 /.bundle
 .idea/
 spec/fixtures/Seaside Architect.csv

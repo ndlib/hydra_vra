@@ -233,7 +233,7 @@
        var field_selectors = $("input.fieldselector[rel="+$editNode.attr("rel")+"]").fieldSerialize();
 
        var params = field_param + "&" + content_type_param + "&" + field_selectors + "&_method=put";
-       
+         
        $.ajax({
          type: "PUT",
          url: url,
@@ -374,7 +374,7 @@
       // collect submit parameters.  These should probably be shoved into a data hash instead of a url string...
       // var field_param = $editNode.fieldSerialize();
       var field_selectors = $("input.fieldselector[rel="+$editNode.attr("rel")+"]").fieldSerialize();
-      
+
       //Field Selectors are the only update params to be passed in the url
       var assetUrl = $closestForm.attr("action") + "&" + field_selectors;
       var submitUrl = $.fn.hydraMetadata.appendFormat(assetUrl, {format: "textile"});

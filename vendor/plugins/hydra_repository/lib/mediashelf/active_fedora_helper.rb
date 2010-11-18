@@ -19,18 +19,23 @@ module MediaShelf
   module ActiveFedoraHelper
 
     def retrieve_af_model(class_name, opts={})
+      logger.error("class_name: #{class_name}")
       if !class_name.nil?
         klass = Module.const_get(class_name.camelcase)
+        logger.error("class_name: #{klass}")
       else
         klass = nil
       end
-      #klass.included_modules.include?(ActiveFedora::Model)  
+      logger.error("klass: #{klass}")
+      #klass.included_modules.include?(ActiveFedora::Model)
       if klass.is_a?(Class) && klass.superclass == ActiveFedora::Base
         return klass
       else
+        logger.error("klass is not a class or its superclass is: #{klass.superclass}")
         return opts.fetch(:default, false)
       end
-      rescue NameError
+    rescue NameError
+        logger.error("looks like name error")
         return false
     end
 
