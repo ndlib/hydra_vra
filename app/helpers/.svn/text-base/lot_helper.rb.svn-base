@@ -1,0 +1,6 @@
+
+module LotHelper
+
+
+
+end
