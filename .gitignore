@@ -25,3 +25,6 @@ rerun.txt
 .rvmrc
 
 /.bundle
+.idea/
+spec/fixtures/Seaside Architect.csv
+spec/fixtures/seaside.csv
