@@ -28,3 +28,9 @@ rerun.txt
 .idea/
 spec/fixtures/Seaside Architect.csv
 spec/fixtures/seaside.csv
+
+.svn
+**/.svn/**
+.svn/
+jetty
+jetty/
