@@ -31,10 +31,12 @@ task :staging do
   set :rails_env,      'staging'
   set :scm_command,    '/usr/bin/svn'
   set :rake,           '/shared/ruby/bin/rake'
+  set :bundler,        '/shared/ruby/bin/bundle'
   set :deploy_to,      "/data/web_root/htdocs/rails_apps/#{application}"
   set :user,           'rails'
   set :domain,         'ambrosiana.library.nd.edu'
   set :site_url,       'afmstaging.library.nd.edu'
+  set :app_server,     'passenger' 
 
   server "#{user}@#{domain}", :app, :web, :db, :primary => true
 end
@@ -45,10 +47,12 @@ task :pre_production do
   # NOTE the local svn command must also be available at the remote svn command path, a symlink may be necessary
   set :scm_command,    '/shared/svn/binaries/bin/svn'
   set :rake,           '/shared/ruby187/bin/rake'
+  set :bundler,        '/shared/ruby187/bin/bundle'
   set :deploy_to,      "/shared/ruby_server_pprd/data/app_home/#{application}"
   set :user,           'rubypprd'
   set :domain,         'rbpprd.library.nd.edu'
   set :site_url,       'afmpprd.library.nd.edu'
+  set :app_server,     'thin' 
 
   server "#{user}@#{domain}", :app, :web, :db, :primary => true
 end
@@ -58,20 +62,32 @@ end
 #############################################################
 
 namespace :deploy do
-  desc "Start application in Passenger"
+  desc "Start application"
   task :start, :roles => :app do
-    #run "touch #{current_path}/tmp/restart.txt"
-    run "/shared/ruby_server_pprd/admin/start_stop_hydrangea.sh start"
+    case app_server
+    when "passenger"
+      run "touch #{current_path}/tmp/restart.txt"
+    when "thin"
+      run "/shared/ruby_server_pprd/admin/start_stop_hydrangea.sh start"
+    end
   end
 
-  desc "Restart application in Passenger"
+  desc "Restart application"
   task :restart, :roles => :app do
-    #run "touch #{current_path}/tmp/restart.txt"
-    run "/shared/ruby_server_pprd/admin/start_stop_hydrangea.sh restart"
+    case app_server
+    when "passenger"
+      run "touch #{current_path}/tmp/restart.txt"
+    when "thin"
+      run "/shared/ruby_server_pprd/admin/start_stop_hydrangea.sh restart"
+    end
   end
 
+  desc "Stop application"
   task :stop, :roles => :app do
-     run "/shared/ruby_server_pprd/admin/start_stop_hydrangea.sh stop"
+    case app_server
+    when "thin"
+      run "/shared/ruby_server_pprd/admin/start_stop_hydrangea.sh stop"
+    end
   end
 
   desc "Symlink shared configs and folders on each release."
@@ -92,11 +108,16 @@ namespace :deploy do
     run "ln -nfs #{shared_path}/db/#{rails_env}.sqlite3 #{release_path}/db/#{rails_env}.sqlite3"
   end
 
+  desc "Install gems in Gemfile"
+  task :bundle_install, :roles => :app do
+    run "#{bundler} install"
+  end
+
   desc "Spool up Passenger spawner to keep user experience speedy"
   task :kickstart, :roles => :app do
     run "curl -I http://#{site_url}"
   end
 end
 
-after 'deploy:update_code', 'deploy:symlink_shared', 'deploy:migrate'
+after 'deploy:update_code', 'deploy:symlink_shared', 'deploy:bundle_install', 'deploy:migrate'
 after 'deploy', 'deploy:cleanup'
