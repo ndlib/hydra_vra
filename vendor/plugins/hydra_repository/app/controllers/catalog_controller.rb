@@ -38,10 +38,10 @@ class CatalogController
       logger.error("Unparseable search error: #{params.inspect}" ) 
       flash[:notice] = "Sorry, I don't understand your search." 
       redirect_to :action => 'index', :q => nil , :f => nil
-    rescue 
-      logger.error("Unknown error: #{params.inspect}" ) 
-      flash[:notice] = "Sorry, you've encountered an error. Try a different search." 
-      redirect_to :action => 'index', :q => nil , :f => nil
+    #rescue
+      #logger.error("Unknown error: #{params.inspect}" )
+      #flash[:notice] = "Sorry, you've encountered an error. Try a different search."
+      #redirect_to :action => 'index', :q => nil , :f => nil
   end
     
   def show_with_customizations
