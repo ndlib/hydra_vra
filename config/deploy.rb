@@ -110,7 +110,7 @@ namespace :deploy do
 
   desc "Install gems in Gemfile"
   task :bundle_install, :roles => :app do
-    run "#{bundler} install"
+    run "cd #{release_path} && #{bundler} install"
   end
 
   desc "Spool up Passenger spawner to keep user experience speedy"
