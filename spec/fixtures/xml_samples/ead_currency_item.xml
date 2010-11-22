@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<?xml-stylesheet type="text/xsl" href="eadprint-su-nobreaks.xsl"?>
+<ead xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  xmlns="urn:isbn:1-931666-00-8" xsi:schemaLocation="urn:isbn:1-931666-00-8 http://www.loc.gov/ead/ead.xsd" audience="external" relatedencoding="MARC21">
+  <eadheader findaidstatus="edited-full-draft" langencoding="iso639-2b" audience="internal" id="a0" repositoryencoding="iso15511" scriptencoding="iso15924" dateencoding="iso8601" relatedencoding="MARC21" countryencoding="iso3166-1">
+    <eadid encodinganalog="856" publicid="???" countrycode="US" mainagencycode="inndhl">american_colonial_currency</eadid>
+    <filedesc>
+      <titlestmt>
+        <titleproper type="filing"> 
+	Guide to the American Colonial Currency Collection
+	</titleproper>
+	<author>
+	  Louis Jordan
+	</author>
+      </titlestmt>
+      <publicationstmt>
+        <publisher>Department of Special Collections, Hesburgh Libraries of Notre Dame</publisher>
+	<address><addressline>102 Hesburgh Library, Notre Dame, IN 46556</addressline></address>
+	<date era="ce" calendar="gregorian">October 2010</date>
+      </publicationstmt>
+    </filedesc> 
+    <profiledesc>
+      <creation>Finding aid encoded in EAD, version 2002 by Tracy Bergstrom,
+      <date normal="2010">2010</date>
+      </creation>
+      <langusage>Finding aid written in
+      <language langcode="eng" encodinganalog="546">English</language>
+      </langusage>
+    </profiledesc>	
+  </eadheader> 
+  <frontmatter>
+  <titlepage>
+  <titleproper>Guide to the American Colonial Currency Collection</titleproper>
+  </titlepage>
+  </frontmatter>
+  <archdesc type="register" level="collection" relatedencoding="MARC21">
+    <did>
+      <head>Collection Summary</head>
+      <unittitle label="Title:" encodinganalog="245$a">
+        American Colonial Currency Collection
+      </unittitle>
+      <unitid encodinganalog="590" countrycode="US" repositorycode="inndhl">COL</unitid>
+        <unitdate type="bulk" normal="1700/1800"> [bulk: 1700-1800]</unitdate>
+        <langmaterial label="Language:">
+        <language langcode="spa">Collection material in English and French.</language>
+      </langmaterial>
+      <repository label="Repository:" encodinganalog="852">
+        <corpname>University of Notre Dame. <subarea>Hesburgh Libraries, Department of Special Collections. </subarea></corpname>
+	<address><addressline>102 Hesburgh Library, Notre Dame, IN 46556</addressline></address>
+      </repository>
+    </did>
+    <accessrestrict encodinganalog="506">
+      <head>Restrictions</head>
+      <p>There are no access restrictions on this collection.</p>
+    </accessrestrict>
+   <acqinfo encodinganalog="583">
+     <head>Acquisition and Processing Note</head>
+     <p>The Inquisition collection is described by Louis Jordan as materials are acquired. </p>
+   </acqinfo>
+   <prefercite encodinganalog="524">
+      <head>Preferred Citation</head>
+      <p>Researchers wishing to cite this collection should include the following information: Department of Special Collections, Hesburgh Libraries of Notre Dame. </p>
+   </prefercite>
+   <dsc type="combined">
+      <head>List of Items</head>
+<c01 level="item">
+	 <did>
+	  <unitid identifier="##CollectionID##">##AbbreviatedTitle##</unitid>
+	  <origination><persname role="printer">##Printer##</persname><persname role="engraver">##Engraver##</persname></origination>
+	  <unittitle>##IssueDisplayDate##
+	  <imprint><geogname>##PrintingLocation##</geogname>: <publisher>##GeographicIssuer## Currency.</publisher></imprint>
+	  <unitdate era="ce" calendar="gregorian">##Title##</unitdate></unittitle> 
+	  <physdesc></physdesc>
+	 </did>
+	 <scopecontent><p>##Description##</p></scopecontent>
+	 <odd><p>##DataDisplay##</p></odd>
+         <controlaccess><genreform>##CulturalContext##</genreform></controlaccess>
+   <c02>
+         <did>
+	  <unitid>##CollectionItem::CollectionItemID##</unitid>
+	  <origination><persname role="signer" normal="##Signer::SignerName##">##CollectionItem::DisplaySigners##</persname></origination>
+	  <unittitle label="##CollectionItem::DisplayTitle##">##CollectionItem::Title##
+	  <num type="serial">##CollectionItem::SerialNumber##</num></unittitle> 
+	  <physdesc><dimensions>##CollectionItem::DisplayText##</dimensions></physdesc>
+	 </did>
+	 <scopecontent><p>##CollectionItem::Description##</p></scopecontent>
+	 <odd><p>##CollectionItem::PlateLetter##</p></odd>
+         <controlaccess><genreform>##CollectionItem::PageTurn##</genreform></controlaccess>
+	 <acqinfo><p>##CollectionItem::Provenance##</p></acqinfo>
+	 <daogrp>
+			<daoloc href="##Image::ImageTitle##"/>
+			<daoloc href="##Image::ImageTitle##"/>
+			<daoloc href="##Image::ImageTitle##"/>
+			<daoloc href="##Image::ImageTitle##"/>
+	</daogrp>
+   </c02>   
+</c01>
+</dsc>
+</archdesc>
+</ead>
