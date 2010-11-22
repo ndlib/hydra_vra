@@ -17,7 +17,7 @@ staging:
     url: http://localhost:8983/solr/staging
 pre_production:
   fedora:
-    url: https://fedoraAdmin:3Wic4uXy@fedorapprd.library.nd.edu:8443/fedora
+    url: https://fedorapprd.library.nd.edu:8443/fedora
     user: fedoraAdmin
     access_url: https://fedorapprd.library.nd.edu:8443/fedora
   solr:

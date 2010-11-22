@@ -1,6 +1,7 @@
 source 'http://rubygems.org'
 
 gem 'rails', '>=2.3.5', '<3.0.0'
+
 gem 'active-fedora', '1.2.7'
 gem 'authlogic', '>=0.1.0'
 gem 'block_helpers'
@@ -38,7 +39,7 @@ gem 'webrat'
 gem 'will_paginate'
 gem 'xml-simple'
 
-group :development do
+group :development, :test do
   gem 'ruby-debug'
   gem 'ruby-debug-base'
   gem 'rspec', '<2.0.0'  
@@ -49,15 +50,6 @@ group :development do
   gem 'gherkin'
 end
 
-# Bundler 1.0 does not ingore groups of gems
-# Uncomment the test group locally to run tests
-#group :test do
-#  gem 'ruby-debug'
-#  gem 'ruby-debug-base'
-#  gem 'rspec', '<2.0.0'  
-#  gem 'rspec-rails', '<2.0.0' # rspec-rails 2.0.0 requires Rails 3.
-#  gem 'mocha'
-#  gem 'cucumber'
-#  gem 'cucumber-rails'
-#  gem 'gherkin'
-#end
+group :pre_production do
+  gem 'thin'
+end
