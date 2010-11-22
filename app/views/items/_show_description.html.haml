@@ -1,0 +1,50 @@
+%fieldset#title_fields
+  %legend Title
+  %dl
+    - unless get_values_from_datastream(@document_fedora,"descMetadata", [:archive_desc, :dsc, :c01, :c02, :did, :unittitle]).first.empty?
+      %dt
+        = fedora_field_label("descMetadata", [:archive_desc, :dsc, :c01, :c02, :did, :unittitle], "Title:")
+      %dd.title
+        = get_values_from_datastream(@document_fedora,"descMetadata", [:archive_desc, :dsc, :c01, :c02, :did, :unittitle])
+        
+    - unless get_values_from_datastream(@document_fedora,"descMetadata", [:archive_desc, :dsc, :c01, :c02, :did, :unitid]).first.empty?
+      %dt
+        = fedora_field_label("descMetadata", [:archive_desc, :dsc, :c01, :c02, :did, :unitid], "ID:")
+      %dd.unitid
+        = get_values_from_datastream(@document_fedora,"descMetadata", [:archive_desc, :dsc, :c01, :c02, :did, :unitid])
+        
+    - unless get_values_from_datastream(@document_fedora,"descMetadata", [:archive_desc, :dsc, :c01, :c02, :did, :origination, :persname]).first.empty?
+      %dt
+        = fedora_field_label("descMetadata", [:archive_desc, :dsc, :c01, :c02, :did, :origination, :persname], "Authors:")
+      %dd.person
+        = get_values_from_datastream(@document_fedora,"descMetadata", [:archive_desc, :dsc, :c01, :c02, :did, :origination, :persname])
+        
+    - unless get_values_from_datastream(@document_fedora,"descMetadata", [:archive_desc, :dsc, :c01, :c02, :did, :physdesc, :dimensions]).first.empty?
+      %dt
+        = fedora_field_label("descMetadata", [:archive_desc, :dsc, :c01, :c02, :did, :physdesc, :dimensions], "Physical Description:")
+      %dd.physdesc
+        = get_values_from_datastream(@document_fedora,"descMetadata", [:archive_desc, :dsc, :c01, :c02, :did, :physdesc, :dimensions])
+        
+    - unless get_values_from_datastream(@document_fedora,"descMetadata", [:archive_desc, :dsc, :c01, :c02, :controlaccess, :genreform]).first.empty?
+      %dt
+        = fedora_field_label("descMetadata", [:archive_desc, :dsc, :c01, :c02, :controlaccess, :genreform], "Genre Form:")
+      %dd.controlaccess
+        = get_values_from_datastream(@document_fedora,"descMetadata", [:archive_desc, :dsc, :c01, :c02, :controlaccess, :genreform])
+        
+    - unless get_values_from_datastream(@document_fedora,"descMetadata", [:archive_desc, :dsc, :c01, :c02, :acqinfo]).first.empty?
+      %dt
+        = fedora_field_label("descMetadata", [:archive_desc, :dsc, :c01, :c02, :acqinfo], "Acquisition Information:")
+      %dd.acqinfo
+        = get_values_from_datastream(@document_fedora,"descMetadata", [:archive_desc, :dsc, :c01, :c02, :acqinfo])
+        
+    - unless get_values_from_datastream(@document_fedora,"descMetadata", [:archive_desc, :dsc, :c01, :c02, :scopecontent]).first.empty?
+      %dt
+        = fedora_field_label("descMetadata", [:archive_desc, :dsc, :c01, :c02, :scopecontent], "Description:")
+      %dd.scopecontent
+        = get_values_from_datastream(@document_fedora,"descMetadata", [:archive_desc, :dsc, :c01, :c02, :scopecontent])
+    
+    - unless get_values_from_datastream(@document_fedora,"descMetadata", [:archive_desc, :dsc, :c01, :c02, :daogrp, :daoloc, :daoloc_href]).first.empty?
+      %dt
+        = fedora_field_label("descMetadata", [:archive_desc, :dsc, :c01, :c02, :daogrp, :daoloc, :daoloc_href], "Images:")
+      %dd.image
+        = get_values_from_datastream(@document_fedora,"descMetadata", [:archive_desc, :dsc, :c01, :c02, :daogrp, :daoloc, :daoloc_href])
