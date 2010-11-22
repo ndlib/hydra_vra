@@ -2,9 +2,11 @@ class EadXml < ActiveFedora::NokogiriDatastream
   set_terminology do |t|
     t.root(:path=>'ead', :xmlns=>"urn:isbn:1-931666-00-8", :schema=>"urn:isbn:1-931666-00-8 http://www.loc.gov/ead/ead.xsd")
     
-    t.person_ref(:path=>'origination'){
-      t.persname
+    t.person_ref(:path=>'persname'){
+      t.person_role(:path=>{:attribute=>"role"})
+      t.person_name(:path=>{:attribute=>"normal"})
     }
+    t.p_ref(:path=>'p')
     t.eadid_ref(:path=>'eadheader'){
       t.eadid
     }
@@ -12,41 +14,111 @@ class EadXml < ActiveFedora::NokogiriDatastream
       t.dimensions
     }
     t.scopecontent_ref(:path=>'scopecontent'){
-      t.p(:path=>'p')
+      t.scope_p(:ref=>[:p_ref])
     }
     t.controlaccess_ref(:path=>'controlaccess'){
       t.genreform
     }
     t.acqinfo_ref(:path=>'acqinfo'){
-      t.p(:path=>'p')
+      t.acqinfo_p(:ref=>[:p_ref])
     }
     t.odd_ref(:path=>'odd'){
-      t.p(:path=>'p')
+      t.odd_p(:ref=>[:p_ref])
     }
     t.daogrp_ref(:path=>'daogrp'){
       t.daoloc{
         t.daoloc_href(:path=>{:attribute=>"href"})
       }
     }
-    t.title_ref(:path=>'unittitle'){
-      t.num(:path=>'num')
+    t.unit_title_ref(:path=>'unittitle'){
+      t.label(:path=>{:attribute=>"label"})
+      t.encoding(:path=>{:attribute=>"encodinganalog"})
+      t.imprint{
+        t.geogname
+        t.publisher
+      }
+      t.unit_date_ref(:path=>'unitdate'){
+        t.era(:path=>{:attribute=>"era"})
+        t.calendar(:path=>{:attribute=>"label"})
+      }
+      t.num{
+        t.num_type(:path=>{:attribute=>"type"})
+      }
     }
-    t.id_ref(:path=>'unitid')
 
-    t.archive_desc(:path=>'archdesc', :attributes=>{:level=>"collection"}){
-      t.dsc(:path=>'dsc'){
-        t.c01(:path=>'c01'){
-          t.c02(:path=>'c02'){
-          	t.did(:path=>'did'){
-          	  t.origination(:ref=>[:person_ref]){
-          	    t.persname(:path=>'persname', :attributes=>{:role=>"signer"})
-          	  }
-          	  t.physdesc(:ref=>[:physdesc_ref])
-          	  t.unittitle(:ref=>[:title_ref]){
-                t.num(:ref=>[:num])
-              }
-          	  t.unitid(:ref=>[:id_ref])
-          	}
+    t.did_ref(:path=>'did'){
+      t.head
+      t.unitid
+      t.origination{
+        t.person_name(:ref=>[:person_ref])
+      }
+      t.unittitle(:ref=>[:unit_title_ref])      
+      t.physdesc(:ref=>[:physdesc_ref])
+    }
+
+    t.archive_desc(:path=>'archdesc'){
+      t.level(:path=>{:attribute =>"level"})
+      t.related_encoding(:path=>{:attribute =>"relatedencoding"})
+      t.did{
+        t.head
+        t.unittitle(:ref=>[:unit_title_ref])
+        t.archive_unit_id(:path=>'unitid'){
+          t.encoding(:path=>{:attribute=>"encodinganalog"})
+          t.country_code(:path=>{:attribute=>"countrycode"})
+          t.repository_code(:path=>{:attribute=>"repositorycode"})
+        }
+        t.archive_unit_date(:path=>'unitdate'){
+          t.type_(:path=>{:attribute=>"type"})
+          t.range(:path=>{:attribute=>"normal"})
+        }
+        t.archive_lang(:path=>'langmaterial'){
+          t.label(:path=>{:attribute=>"label"})
+          t.language_{
+            t.language_code(:path=>{:attribute=>"langcode"})
+          }
+        }
+
+        t.archive_repository(:path=>'repository'){
+          t.label(:path=>{:attribute=>"label"})
+          t.encoding(:path=>{:attribute=>"encodinganalog"})
+          t.corpname{
+            t.subarea
+          }
+          t.address{
+            t.addressline
+          }
+        }
+      }
+
+      t.archive_access(:path=>'accessrestrict'){
+        t.encoding(:path=>{:attribute=>"encodinganalog"})
+        t.heading(:path=>'head')
+        t.p(:ref=>[:p_ref])
+      }
+
+      t.archive_acq(:path=>'acqinfo'){
+        t.encoding(:path=>{:attribute=>"encodinganalog"})
+        t.heading(:path=>'head')
+        t.p(:ref=>[:p_ref])
+      }
+
+      t.archive_citation(:path=>'prefercite'){
+        t.encoding(:path=>{:attribute=>"encodinganalog"})
+        t.heading(:path=>'head')
+        t.p(:ref=>[:p_ref])
+      }
+
+      t.dsc{
+        t.type_(:path=>{:attribute =>"type"})
+        t.type_heading(:path=>'head')
+        t.sub_collection(:path=>'c01'){
+          t.sub_collection_level(:path=>{:attribute =>"level"})
+          t.did(:ref=>[:did_ref])
+          t.scopecontent(:ref=>[:scopecontent_ref])
+          t.odd(:ref=>[:odd_ref])
+          t.controlaccess(:ref=>[:controlaccess_ref])
+          t.item(:path=>'c02'){
+          	t.did(:ref=>[:did_ref])
           	t.scopecontent(:ref=>[:scopecontent_ref])
             t.odd(:ref=>[:odd_ref])
           	t.controlaccess(:ref=>[:controlaccess_ref])
