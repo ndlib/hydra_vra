@@ -1,40 +1,0 @@
-10
-
-dir
-4923
-https://svn.library.nd.edu/svn/svn_ndlibs_devel/applications/hydrangea/trunk/app
-https://svn.library.nd.edu/svn/svn_ndlibs_devel
-
-
-
-2010-10-13T17:46:53.396632Z
-4923
-blakshmi@ND.EDU
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-5ef3608a-f4f6-4e01-b92d-dac3b1100c16
-
-controllers
-dir
-
-helpers
-dir
-
-models
-dir
-
-views
-dir
-
