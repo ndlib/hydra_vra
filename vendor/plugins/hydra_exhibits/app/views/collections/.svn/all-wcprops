@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/svn_ndlibs_devel/!svn/ver/5251/applications/hydrangea/trunk/app/views/buildings
+END
+_show.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/svn_ndlibs_devel/!svn/ver/5251/applications/hydrangea/trunk/app/views/buildings/_show.html.erb
+END
+_edit.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/svn_ndlibs_devel/!svn/ver/5339/applications/hydrangea/trunk/app/views/buildings/_edit.html.erb
+END
+_index.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/svn_ndlibs_devel/!svn/ver/5290/applications/hydrangea/trunk/app/views/buildings/_index.html.erb
+END
+_show_permissions.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/svn_ndlibs_devel/!svn/ver/5251/applications/hydrangea/trunk/app/views/buildings/_show_permissions.html.erb
+END
