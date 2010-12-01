@@ -5,6 +5,8 @@ class Collection < ActiveFedora::Base
   include Hydra::ModelMethods
 
   has_bidirectional_relationship "items", :has_member, :is_member_of #, :type=>Item
+
+  has_bidirectional_relationship  "description",   :has_description, :is_description_of
     
   # Uses the Hydra Rights Metadata Schema for tracking access permissions & copyright
   has_metadata :name => "rightsMetadata", :type => Hydra::RightsMetadata 

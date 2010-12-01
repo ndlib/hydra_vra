@@ -69,13 +69,17 @@ Blacklight.configure(:shared) do |config|
     :field_names => ["date_t",
       "title_t",
       "medium_t",
-      "location_t"
+      "location_t",
+      "id",
+      "active_fedora_model_s"
       ],
     :labels => {
       "date_t"=>"Date",
       "title_t"=>"Title",
       "medium_t"=>"Content Type",
-      "location_t"=>"Location"
+      "location_t"=>"Location",
+      "id"=>"Pid",
+      "active_fedora_model_s"=>"Model"
     },
     :limits=> {nil=>10}
   }
@@ -87,12 +91,16 @@ Blacklight.configure(:shared) do |config|
       "date_t",
       "title_t",
       "medium_t",
-      "location_t"],
+      "location_t",
+      "id",
+      "active_fedora_model_s"],
     :labels => {
       "date_t"=>"Date",
       "title_t"=>"Title",
       "medium_t"=>"Content Type",
-      "location_t"=>"Location"
+      "location_t"=>"Location",
+      "id"=>"Pid",
+      "active_fedora_model_s"=>"Model"
     }
   }
 

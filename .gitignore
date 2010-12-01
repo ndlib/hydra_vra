@@ -28,3 +28,4 @@ rerun.txt
 .idea/
 spec/fixtures/Seaside Architect.csv
 spec/fixtures/seaside.csv
+vendor/plugins/hydra_exhibits/app/models/ead_xml_banu.rb

@@ -118,7 +118,7 @@ class EadXml < ActiveFedora::NokogiriDatastream
     t.dsc(:ref=>[:dsc_ref])
     
   end
-  def self.xml_template
+  def self.full_xml_template
       builder = Nokogiri::XML::Builder.new do |t|
         t.ead(:version=>"1.0", "xmlns:xlink"=>"http://www.w3.org/1999/xlink",
               "xmlns:xsi"=>"http://www.w3.org/2001/XMLSchema-instance",
@@ -246,7 +246,7 @@ class EadXml < ActiveFedora::NokogiriDatastream
     end
     return builder.doc
   end
-  def self.collection_template
+  def self.xml_template
     builder = Nokogiri::XML::Builder.new do |t|
       t.dsc("xmlns:xlink"=>"http://www.w3.org/1999/xlink", "xmlns:xsi"=>"http://www.w3.org/2001/XMLSchema-instance",
               "xmlns"=>"urn:isbn:1-931666-00-8"){
