@@ -17,7 +17,7 @@
 
 - if current_user
   %div#create-asset-box
-    %input#re-run-action{:type => "button", :value => "Add new Currency", :onclick => "javascript:location.href = '#{url_for(:action => "new", :controller => "assets", :content_type => "item")}'"}
+    %input#re-run-action{:type => "button", :value => "Add new Currency", :onclick => "javascript:location.href = '#{url_for(:action => "new", :controller => "assets", :content_type => "component")}'"}
     %button#select-asset{:type => "button"} Select type of content to create
     %ul#create-asset-menu
-      %li{:onclick => "javascript:createAssetNavigateTo(this, '#{url_for(:action => "new", :controller => "assets", :content_type => "item")}');"} Add new Currency
+      %li{:onclick => "javascript:createAssetNavigateTo(this, '#{url_for(:action => "new", :controller => "assets", :content_type => "component")}');"} Add new Currency
