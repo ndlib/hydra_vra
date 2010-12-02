@@ -54,7 +54,7 @@ class LotsController < ApplicationController
       logger.debug "Created Lot with pid #{@lot.pid}."
     else
       logger.debug "Lot is create already. So load the obj"
-      @lot=load_instance("Lot",lot_pid)
+      @lot=Lot.load_instance(lot_pid)
     end
     add_named_relationship(@lot, params[:building_content_type], params[:building_pid])
     @building=Building.load_instance(params[:building_pid])
@@ -64,7 +64,8 @@ class LotsController < ApplicationController
 
   def destroy
     check_required_params([:content_model,:id,:building_content_type,:building_pid])
-    @lot=load_instance(params[:content_model],params[:id])
+    af_model = retrieve_af_model(params[:content_model])
+    @lot=af_model.load_instance(params[:id])
     remove_named_relationship(@lot, params[:building_content_type], params[:building_pid])
     render :text => "Deleted #{params[:id]} from realtionships from #{params[:building_pid]}."
   end

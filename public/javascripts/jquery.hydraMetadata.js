@@ -350,7 +350,7 @@
    * Initialize the element as a Hydra Editable TextileField (textile-processed textarea)
    */
    $.fn.hydraTextileField = function(settings) {
-       alert("Intialize text area")
+       //alert("Intialize text area")
      /*var config = {
        method    : "PUT",
        indicator : "<img src='/images/ajax-loader.gif'>",
@@ -597,7 +597,7 @@
  
      this.each(function() {
        $(this).unbind('click.hydra').bind('click.hydra', function(e) {
-           alert("On click Text area here");
+           //alert("On click Text area here");
          $.fn.hydraMetadata.insertTextileField(this, e);
          e.preventDefault();
        });
