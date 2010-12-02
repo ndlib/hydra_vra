@@ -43,13 +43,16 @@
         <%= fedora_field_label("descMetadata", [:work, :description_set, :description], "Description:")  %>
       </dt>
       <dd id="description">
-        <%= fedora_text_area(document_fedora,"descMetadata", [:work, :descriptionSet, :description], :multiple=>true) %>
+        <%=fedora_text_area(document_fedora,"descMetadata", [:work, :descriptionSet, :description], :multiple=>true) %>
+        <!--<textarea style="width: 100%;" rows="6" cols="50" class="ckeditor is-ckeditor">
+           <%#get_values_from_datastream(document_fedora,"descMetadata", [:work, :descriptionSet, :description])%>
+         </textarea> -->
         <%= fedora_text_field_insert_link "descMetadata", [:work, :descriptionSet, :description], :label=>"description"%>
       </dd>
       <dt>
         <%= fedora_field_label("descMetadata", [:work, :work_type_set, :work_type_display], "Work Type:")%>
       </dt>
-      <dd id="worktype">
+      <dd id="worktype" class="ckeditor">
         <%= fedora_text_area(document_fedora,"descMetadata", [:work, :work_type_set, :work_type_display])%>
       </dd>
       <dt>
@@ -57,7 +60,7 @@
       </dt>
        <dd id="location">
         <%= fedora_text_field(document_fedora,"descMetadata", [:reference_location, :location_local_name])%>
-      </dd>
+      </dd>      
     </dl>
     </fieldset>
     <fieldset id="agent_fields">

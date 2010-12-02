@@ -40,6 +40,7 @@
      *  Insert a Hydra editable textile field
      */
      insertTextileField: function(element, event) {
+         alert("Insert Text area here");
        var fieldName = $(element).closest("dt").next('dd').attr("id");
        var datastreamName = $(element).closest("dt").next('dd').attr("data-datastream-name");
        var $values_list = $(element).closest("dt").next("dd").find("ol");
@@ -61,7 +62,7 @@
            // tooltip   : "Click to edit #{field_name.gsub(/_/, ' ')}...",
            placeholder : "click to edit",
            onblur    : "ignore",
-           name      : "asset["+fieldName+"]["+new_value_index+"]",
+           name      : "asset["+fieldName+"]["+new_value_index+"]",           
            id        : "field_id",
            height    : "100",
            loadurl  : assetUrl+"?datastream="+datastreamName+"&field="+fieldName+"&field_index="+new_value_index
@@ -344,22 +345,42 @@
      return this;
  
    };
-   
+   var editor
    /*
    * Initialize the element as a Hydra Editable TextileField (textile-processed textarea)
    */
    $.fn.hydraTextileField = function(settings) {
-     var config = {
+       alert("Intialize text area")
+     /*var config = {
        method    : "PUT",
        indicator : "<img src='/images/ajax-loader.gif'>",
        type      : "textarea",
        submit    : "OK",
        cancel    : "Cancel",
        placeholder : "click to edit",
-       tooltip   : "Click to edit ...",
+       tooltip   : "Click to edit this is the tooltip...",
        onblur    : "ignore",
        id        : "field_id",
        height    : "100"
+     };*/
+
+      var config = {
+       method    : "PUT",
+       indicator : "<img src='/images/ajax-loader.gif'>",
+       type      : "ckeditor",
+       submit    : "OK",
+       cancel    : "Cancel",
+       placeholder : "click to edit",
+       tooltip   : "Click to edit this is the tooltip...",
+       onblur    : "ignore",
+       id        : "field_id",       
+       height    : "100",
+       ckeditor  : { toolbar:
+                        [
+                            ['Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink'],
+                            ['UIColor']
+                        ]
+                     }
      };
  
      if (settings) $.extend(config, settings);
@@ -390,11 +411,16 @@
       var nodeSpecificSettings = {
         tooltip   : "Click to edit "+$this.attr("id")+" ...",
         name      : name,
-        loadurl  : assetUrl + "?" + $.param(load_params)
+        loadurl   : assetUrl + "?" + $.param(load_params)
       };
 
       $textNode.editable(submitUrl, $.extend(nodeSpecificSettings, config));
       $editNode.hide();
+      /*$(".textile-text", this).click( function() {
+        // Live handler called.
+         alert("Live click event" +$textNode)
+        editor = CKEDITOR.replace( $textNode )
+      });*/
      });
       
      return this;
@@ -571,6 +597,7 @@
  
      this.each(function() {
        $(this).unbind('click.hydra').bind('click.hydra', function(e) {
+           alert("On click Text area here");
          $.fn.hydraMetadata.insertTextileField(this, e);
          e.preventDefault();
        });

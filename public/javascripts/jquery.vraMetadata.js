@@ -132,7 +132,7 @@
          $(image_selector).last().after(data);
          $inserted = $(image_selector).last();
          $(".editable-container", $inserted).hydraTextField();
-         $("a.destructive", $inserted).agentDeleteButton();
+         $("a.destructive", $inserted).imageDeleteButton();
        });
      },
 
