@@ -20,7 +20,7 @@
      if (settings) $.extend(config, settings);
 
      this.each(function() {
-       alert("Add image this function");
+       //alert("Add image this function");
        $("#re-run-add-image-action", this).click(function() {
          //alert("Need add new image tag");
          $.fn.vraMetadata.addImageTag("image_tag");
@@ -70,7 +70,7 @@
      var config = {};
      if (settings) $.extend(config, settings);
      this.each(function() {
-       alert("Agent this function");
+       //alert("Agent this function");
        $(this).unbind('click.hydra').bind('click.hydra', function(e) {
           $.fn.vraMetadata.deleteAgent(this, e);
           e.preventDefault();
