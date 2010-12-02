@@ -201,7 +201,7 @@
     </requirement>
     <requirement>
       <requirement>
-        <dependency name="nokogiri" version="0" bound="GREATER_OR_EQUAL" git="false" path="false" doRequire="true" />
+        <dependency name="nokogiri" version="1.4.3.1" bound="EQUAL" git="false" path="false" doRequire="true" />
       </requirement>
       <source from="Gemfile" />
     </requirement>
@@ -438,6 +438,10 @@
     <orderEntry type="library" scope="PROVIDED" name="[gem] gherkin (v2.2.9, /home/blakshmi/.rvm/gems/ree-1.8.7-2010.02@hydra/gems/gherkin-2.2.9)" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="[gem] cucumber (v0.8.5, /home/blakshmi/.rvm/gems/ree-1.8.7-2010.02@hydra/gems/cucumber-0.8.5)" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="[gem] gherkin (v2.2.9, /home/blakshmi/.rvm/gems/ree-1.8.7-2010.02@hydra/gems/gherkin-2.2.9)" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="[gem] thin (v1.2.7, /home/blakshmi/.rvm/gems/ree-1.8.7-2010.02@hydra/gems/thin-1.2.7)" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="[gem] mocha (v0.9.10, /home/blakshmi/.rvm/gems/ree-1.8.7-2010.02@hydra/gems/mocha-0.9.10)" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="[gem] daemons (v1.1.0, /home/blakshmi/.rvm/gems/ree-1.8.7-2010.02@hydra/gems/daemons-1.1.0)" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="[gem] eventmachine (v0.12.10, /home/blakshmi/.rvm/gems/ree-1.8.7-2010.02@hydra/gems/eventmachine-0.12.10)" level="application" />
   </component>
 </module>
 

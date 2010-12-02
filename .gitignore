@@ -5,7 +5,10 @@ nohup.out
 *.log
 *~
 *.swp
-
+.idea/hydrangea.iml
+.idea/*
+jetty/*
+jetty
 vendor/plugins/haml/init.rb
 
 log/*

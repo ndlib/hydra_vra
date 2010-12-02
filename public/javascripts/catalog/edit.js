@@ -27,6 +27,7 @@
       $("#add-agent-box").hydraNewAgentForm();
       $("#add-image-box").hydraNewImageForm();
       $("#add-lot-div").lotCreateButton();
+      $(".lot_tag").lotDeleteButton();
       $("a.inline").fancybox({
       		'hideOnContentClick': true,
       		'autoDimensions' : false
@@ -57,8 +58,7 @@
       $(".contributor a.destructive").hydraContributorDeleteButton();
       $(".agent_set a.destructive").agentDeleteButton();
       $(".image_tag a.destructive").imageDeleteButton();
-      $(".grant a.destructive").hydraGrantDeleteButton();
-      $(".lot_tag a.destructive").lotDeleteButton();
+      $(".grant a.destructive").hydraGrantDeleteButton();      
 
       $metaDataForm.delegate('select.metadata-dd', 'change', function(e) {
         saveSelect(this);

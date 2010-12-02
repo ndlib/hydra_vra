@@ -15,4 +15,5 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :lots
   map.login "login", :controller => "webauth_sessions", :action => "new"
   map.logout "logout", :controller => "webauth_sessions", :action => "destroy"
+  map.superuser 'superuser', :controller => 'user_sessions', :action => 'superuser'
 end

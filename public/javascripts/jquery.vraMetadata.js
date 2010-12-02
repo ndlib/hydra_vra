@@ -7,8 +7,8 @@
       //alert("Init HydraNewAgent");
      if (settings) $.extend(config, settings);
      this.each(function() {
-       $("#re-run-add-agent-action", this).click(function() {
          //alert("Need add new agent tag");
+       $("#re-run-add-agent-action", this).click(function() {
          $.fn.vraMetadata.addAgent("agent");
        });
      });
@@ -20,7 +20,7 @@
      if (settings) $.extend(config, settings);
 
      this.each(function() {
-       alert("Add image this function");
+       //alert("Add image this function");
        $("#re-run-add-image-action", this).click(function() {
          //alert("Need add new image tag");
          $.fn.vraMetadata.addImageTag("image_tag");
@@ -33,8 +33,8 @@
      var config = {};
      //alert("lotCreateButtton")
      if (settings) $.extend(config, settings);
-     this.each(function() {
-       $("#add_lot", this).click(function() {
+        $("#add_lot", this).live("click", function(){
+         alert("lotCreateButtton live")
          var lot_key = $("input#lot_key").first().attr("value");
          //alert("Lot key enter: "+ lot_key)
          if (lot_key == "" || lot_key.length ==0) {
@@ -44,33 +44,27 @@
          //alert("Calling create lot on click")
          $.fn.vraMetadata.createLot(this);
        });
-     });
-     return this;
-   };
-
-   /*$.fn.lotCreateButton = function(settings) {
-     var config = {};
-     alert("lotCreateButtton")
-     if (settings) $.extend(config, settings);
-     this.each(function() {
-       alert("this lotCreateButtton")
-       $("re-run-add-lot-action", this).click(function() {
+   /*this.each(function() {
+       $("#add_lot", this).click(function(e) {
          var lot_key = $("input#lot_key").first().attr("value");
-         alert("Lot key enter: "+ lot_key)
+         //alert("Lot key enter: "+ lot_key)
          if (lot_key == "" || lot_key.length ==0) {
             alert("Please enter lot id before adding new lot")
             return false;
-         };
-         $.fn.vraMetadata.createLot(this)
+         }
+         //alert("Calling create lot on click")
+         $.fn.vraMetadata.createLot(this);
+           e.preventDefault();
        });
-     });
+     });*/
      return this;
-   };*/
+   };
+
    $.fn.agentDeleteButton = function(settings) {
      var config = {};
      if (settings) $.extend(config, settings);
      this.each(function() {
-       alert("Agent this function");
+       //alert("Agent this function");
        $(this).unbind('click.hydra').bind('click.hydra', function(e) {
           $.fn.vraMetadata.deleteAgent(this, e);
           e.preventDefault();
@@ -93,17 +87,22 @@
    };
 
    $.fn.lotDeleteButton = function(settings) {
-     //alert("lotDeleteButtton")
+     alert("lotDeleteButtton")
      var config = {};
      if (settings) $.extend(config, settings);
      //alert("before this function");
-     this.each(function() {
+     /*this.each(function() {
        //alert("this function");
        $(this).unbind('click.hydra').bind('click.hydra', function(e) {
          $.fn.vraMetadata.deleteLot(this, e);
          e.preventDefault();
        })
-     });
+     });*/
+      $("a.destroy_lot", this).live("click", function(){
+         alert("lotDeleteButtton live")
+         $.fn.vraMetadata.deleteLot(this);
+         //e.preventDefault();
+      });      
      return this;
    };
 
@@ -132,7 +131,7 @@
          $(image_selector).last().after(data);
          $inserted = $(image_selector).last();
          $(".editable-container", $inserted).hydraTextField();
-         $("a.destructive", $inserted).agentDeleteButton();
+         $("a.destructive", $inserted).imageDeleteButton();
        });
      },
 
@@ -202,9 +201,9 @@
      },
 
      deleteLot: function(element) {
-       //alert("Into Delete Lot"+$(element).html)
+       alert("Into Delete Lot"+$(element))
        var $lotNode = $(element).closest(".lot_tag")
-       var url = $(element).attr("href");
+       var url = $(element).attr("action");
        var building_pid = $("div#lot").attr("data-pid");
        var building_content_type = $("div#lot").attr("data-content-type");
        var content_model="Lot"

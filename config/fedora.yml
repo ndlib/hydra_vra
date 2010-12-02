@@ -1,10 +1,8 @@
 development:
   fedora:
-    url: http://fedoraAdmin:fedoraAdmin@127.0.0.1:8983/fedora
-    #url: https://fedoraAdmin:3Wic4uXy@fedorapprd.library.nd.edu:8443/fedora
+    url: http://fedoraAdmin:fedoraAdmin@127.0.0.1:8983/fedora  
   solr:
     url: http://localhost:8983/solr/development
-    #url: http://fedorapprd.library.nd.edu:8080/fedora_solr/arch-seaside
 test: &TEST  
   fedora:
     url: http://fedoraAdmin:fedoraAdmin@127.0.0.1:8983/fedora
@@ -17,7 +15,7 @@ staging:
     url: http://localhost:8983/solr/staging
 pre_production:
   fedora:
-    url: https://fedorapprd.library.nd.edu:8443/fedora
+    url: https://fedoraAdmin:3Wic4uXy@fedorapprd.library.nd.edu:8443/fedora
     user: fedoraAdmin
     access_url: https://fedorapprd.library.nd.edu:8443/fedora
   solr:

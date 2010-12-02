@@ -10,7 +10,7 @@
           <dd class="lot_tag">
           <%# link_to "#{lot.pid}", lot_path(lot.pid)%>
           <%= lot.pid%>
-          <a id="remove_lot" class="destructive destroy_lot" href="<%=lot_path(lot.pid)%>" title="Remove lot"> Delete</a>
+          <a id="remove_lot" class="destructive destroy_lot" href=# action="<%=lot_path(lot.pid)%>" title="Remove lot"> Delete</a>
           </dd>
         <%- end -%>
       </dl>

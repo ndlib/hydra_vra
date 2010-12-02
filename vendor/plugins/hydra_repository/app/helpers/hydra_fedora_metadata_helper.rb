@@ -56,7 +56,7 @@ module HydraFedoraMetadataHelper
       base_id = generate_base_id(field_name, current_value, field_values, opts)
       name = "asset[#{datastream_name}][#{field_name}][#{z}]"
       processed_field_value = white_list( RedCloth.new(current_value, [:sanitize_html]).to_html)
-      
+      logger.error("Text Area Processed field value: #{processed_field_value}")
       body << "<#{container_tag_type.to_s} class=\"field_value textile-container field\" id=\"#{base_id}-container\">"
         # Not sure why there is we're not allowing the for the first textile to be deleted, but this was in the original helper.
         body << "<a href=\"\" title=\"Delete '#{h(current_value)}'\" class=\"destructive field\">Delete</a>" unless z == 0
@@ -88,8 +88,9 @@ module HydraFedoraMetadataHelper
       field_values = get_values_from_datastream(resource, datastream_name, field_key, opts)
       
       body = ""
+      z = 0
       base_id = generate_base_id(field_name, field_values.first, field_values, opts.merge({:multiple=>false}))
-      name = "asset[#{datastream_name}][#{field_name}]"
+      name = "asset[#{datastream_name}][#{field_name}][#{z}]"
 
       body << "<select name=\"#{name}\" class=\"metadata-dd select-edit\" rel=\"#{field_name}\">"
         body << options_for_select(choices, field_values)
