@@ -201,7 +201,7 @@
     </requirement>
     <requirement>
       <requirement>
-        <dependency name="nokogiri" version="0" bound="GREATER_OR_EQUAL" git="false" path="false" doRequire="true" />
+        <dependency name="nokogiri" version="1.4.3.1" bound="EQUAL" git="false" path="false" doRequire="true" />
       </requirement>
       <source from="Gemfile" />
     </requirement>
