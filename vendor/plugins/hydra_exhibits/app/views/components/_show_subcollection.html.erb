@@ -1,0 +1,71 @@
+<fieldset id="item_fields">
+  <legend>Item Description</legend>
+    <dl>
+      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:dsc, :collection, :did, :unittitle]).first.empty?%>
+         <dt class="title">
+           <%= fedora_field_label("descMetadata", [:dsc, :collection, :did, :unittitle], "Title:")%>
+	     </dt>
+         <dd>
+           <%= get_values_from_datastream(@document_fedora,"descMetadata", [:dsc, :collection, :did, :unittitle])%>
+         </dd>
+      <%end%>
+      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:dsc, :collection, :did, :unitid]).first.empty?%>
+          <dt class="abbreviated_title">
+            <%= fedora_field_label("descMetadata", [:dsc, :collection, :did, :unitid], "Abbreviated Title:") %>
+          </dt>
+          <dd>
+            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:dsc, :collection, :did, :unitid])%>
+          </dd>
+      <%end%>
+      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:dsc, :collection, :did, :unitid, :unitid_identifier]).first.empty?%>
+          <dt class="subcollection_id">
+            <%= fedora_field_label("descMetadata", [:dsc, :collection, :did, :unitid, :unitid_identifier], "ID:") %>
+          </dt>
+          <dd>
+            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:dsc, :collection, :did, :unitid, :unitid_identifier])%>
+          </dd>
+      <%end%>
+      <% unless get_values_from_datastream(@document_fedora,"descMetadata",  [:dsc, :collection, :did, :origination, :printer]).first.empty?%>
+          <dt class="printer">
+            <%= fedora_field_label("descMetadata", [:dsc, :collection, :did, :origination, :printer], "Printer:") %>
+          </dt>
+          <dd>
+            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:dsc, :collection, :did, :origination, :printer])%>
+          </dd>
+      <%end%>
+      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:dsc, :collection, :did, :origination, :engraver]).first.empty?%>
+         <dt class="engraver">
+           <%= fedora_field_label("descMetadata", [:dsc, :collection, :did, :origination, :engraver], "Engraver:")%>
+	 </dt>
+         <dd>
+           <%= get_values_from_datastream(@document_fedora,"descMetadata", [:dsc, :collection, :did, :origination, :engraver])%>
+         </dd>
+     <%end%>
+     <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:dsc, :collection, :scopecontent]).first.empty?%>
+         <dt class="description">
+           <%= fedora_field_label("descMetadata", [:dsc, :collection, :scopecontent], "Description:")%>
+	 </dt>
+         <dd>
+           <%= get_values_from_datastream(@document_fedora,"descMetadata", [:dsc, :collection, :scopecontent])%>
+         </dd>
+     <%end%>
+      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:dsc, :collection, :odd]).first.empty?%>
+         <dt class="data_display">
+           <%= fedora_field_label("descMetadata", [:dsc, :collection, :odd], "Data Display:")%>
+	 </dt>
+         <dd>
+           <%= get_values_from_datastream(@document_fedora,"descMetadata", [:dsc, :collection, :odd])%>
+         </dd>
+     <%end%>
+      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:dsc, :collection, :controlaccess, :genreform]).first.empty?%>
+         <dt class="cultural_context">
+           <%= fedora_field_label("descMetadata", [:dsc, :collection, :controlaccess, :genreform], "Cultural Context:")%>
+	 </dt>
+         <dd>
+           <%= get_values_from_datastream(@document_fedora,"descMetadata", [:dsc, :collection, :controlaccess, :genreform])%>
+         </dd>
+     <%end%>
+    </dl>
+</fieldset>
+
+

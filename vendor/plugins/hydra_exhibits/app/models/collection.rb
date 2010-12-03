@@ -4,7 +4,7 @@ class Collection < ActiveFedora::Base
   
   include Hydra::ModelMethods
 
-  has_bidirectional_relationship "items", :has_member, :is_member_of #, :type=>Item
+  has_bidirectional_relationship "collection", :has_member, :is_member_of
     
   # Uses the Hydra Rights Metadata Schema for tracking access permissions & copyright
   has_metadata :name => "rightsMetadata", :type => Hydra::RightsMetadata 
@@ -20,6 +20,12 @@ class Collection < ActiveFedora::Base
     ds = self.datastreams_in_memory["descMetadata"]
     node, index = ds.insert_node(type, opts)
     return node, index
+  end
+  
+  def remove_image(type, index)
+    ds = self.datastreams_in_memory["descMetadata"]
+    result = ds.remove_node(type,index)
+    return result
   end
   
 end

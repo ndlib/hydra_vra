@@ -76,6 +76,7 @@ class EadXml < ActiveFedora::NokogiriDatastream
         }
         t.unittitle(:ref=>[:title_ref]){
           t.unittitle_label(:path=>{:attribute=>"label"})
+          t.num(:path=>'num')
         }
       }
       t.scopecontent
@@ -105,6 +106,7 @@ class EadXml < ActiveFedora::NokogiriDatastream
       t.head
       t.collection(:ref=>[:collection_ref])
     }
+    
     t.archive_desc(:path=>'archdesc', :attributes=>{:level=>"collection"}){
       t.did(:ref=>[:did_ref])
       t.accessrestrict(:ref=>[:accessrestrict_ref])
@@ -112,7 +114,33 @@ class EadXml < ActiveFedora::NokogiriDatastream
       t.prefercite(:ref=>[:prefercite_ref])
       t.dsc(:ref=>[:dsc_ref])
     }
-    
+    t.ead_header(:path=>'eadheader'){
+      t.eadid
+      t.filedesc(:path=>'filedesc'){
+        t.titlestmt(:path=>'titlestmt'){
+          t.titleproper
+          t.author
+        }
+        t.publicationstmt(:path=>'publicationstmt'){
+          t.publisher
+          t.address(:path=>'address_ref')
+          t.date
+        }
+      }
+      t.profiledesc(:path=>'profiledesc'){
+        t.creation(:path=>'creation'){
+          t.date
+        }
+        t.langusage(:path=>'langusage'){
+          t.language
+        }
+      }
+    }
+    t.frontmatter(:path=>'frontmatter'){
+      t.titlepage(:path=>'titlepage'){
+        t.titleproper
+      }
+    }
     t.collection(:ref=>[:collection_ref])
     t.item(:ref=>[:item_ref])
     t.dsc(:ref=>[:dsc_ref])
@@ -248,6 +276,73 @@ class EadXml < ActiveFedora::NokogiriDatastream
   end
   def self.collection_template
     builder = Nokogiri::XML::Builder.new do |t|
+      t.ead("xmlns:xlink"=>"http://www.w3.org/1999/xlink", "xmlns:xsi"=>"http://www.w3.org/2001/XMLSchema-instance",
+              "xmlns"=>"urn:isbn:1-931666-00-8"){
+        
+        t.eadheader{
+          t.eadid
+          t.filedesc{
+            t.titlestmt{
+              t.titleproper
+              t.author
+            }
+            t.publicationstmt{
+              t.publisher
+              t.address{
+                t.addressline
+              }
+            }
+          }
+          t.profiledesc{
+            t.creation{
+              t.date
+            }
+            t.langusage{
+              t.language
+            }
+          }
+        }
+        t.frontmatter{
+          t.titlepage{
+            t.titleproper
+          }
+        }
+        t.archdesc(:level=>"collection"){
+          t.did{
+            t.head
+            t.unittitle
+            t.unitid
+            t.unitdate
+            t.langmaterial{
+              t.language
+            }
+            t.repository{
+              t.corpname{
+                t.subarea
+              }
+              t.address{
+                t.addresslin
+              }
+            }
+          }
+          t.accessrestrict{
+            t.head
+            t.p
+          }
+          t.acqinfo{
+            t.head
+            t.p
+          }
+          t.prefercite{
+            t.head
+            t.p
+          }
+        }
+      }
+    end
+  end
+  def self.subcollection_template
+    builder = Nokogiri::XML::Builder.new do |t|
       t.dsc("xmlns:xlink"=>"http://www.w3.org/1999/xlink", "xmlns:xsi"=>"http://www.w3.org/2001/XMLSchema-instance",
               "xmlns"=>"urn:isbn:1-931666-00-8"){
         t.head
@@ -327,13 +422,16 @@ class EadXml < ActiveFedora::NokogiriDatastream
     case type.to_sym
       when :collection
         node = EadXml.collection_template
+        nodeset = self.find_by_terms(:eadheader)
+      when :subcollection
+        node = EadXml.subcollection_template
         nodeset = self.find_by_terms(:collection)
       when :item
         node = EadXml.item_template
         nodeset = self.find_by_terms(:archive_desc, :dsc, :collection, :item)
       when :image
         node = EadXml.image_template
-        nodeset = self.find_by_terms(:item, :daogrp, :daoloc)
+        nodeset = self.find_by_terms(:item, :daogrp, :daoloc, :daoloc_href)
       else
         ActiveFedora.logger.warn("#{type} is not a valid argument for EadXml.insert_node")
         node = nil
@@ -356,10 +454,12 @@ class EadXml < ActiveFedora::NokogiriDatastream
   def remove_node(node_type, index)
     #TODO: Added code to remove any given node
     case node_type.to_sym
-       when :collection
+       when :subcollection
         remove_node = self.find_by_terms(:archive_desc, :dsc, :collection)[index.to_i]
       when :item
         remove_node = self.find_by_terms(:archive_desc, :dsc, :collection, :item)[index.to_i]
+      when :image
+        remove_node = self.find_by_terms(:item, :daogrp, :daoloc, :daoloc_href)[index.to_i]
     end
     unless remove_node.nil?
       puts "Term to delete: #{remove_node.inspect}"
