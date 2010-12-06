@@ -11,7 +11,7 @@ class Collection < ActiveFedora::Base
   has_metadata :name => "rightsMetadata", :type => Hydra::RightsMetadata 
   
   # Uses the Hydra MODS Article profile for tracking most of the descriptive metadata
-  has_metadata :name => "descMetadata", :type => Hydra::EadXml
+  has_metadata :name => "descMetadata", :type => EadXml
 
   # A place to put extra metadata values
   has_metadata :name => "properties", :type => ActiveFedora::MetadataDatastream do |m|

@@ -18,19 +18,19 @@ class Component < ActiveFedora::Base
   has_metadata :name => "properties", :type => ActiveFedora::MetadataDatastream do |m|
   end
   
-  def initialize(attrs={})
-    unless attrs[:pid]
-      attrs = attrs.merge!({:pid=>Fedora::Repository.instance.nextid})  
-      @new_object=true
-    else
-      @new_object = attrs[:new_object] == false ? false : true
-    end
-    @inner_object = Fedora::FedoraObject.new(attrs)
-    @datastreams = {}
-    configure_defined_datastreams
-
-    @component_type = attrs[:component_type]
-  end
+#  def initialize(attrs={})
+#    unless attrs[:pid]
+#      attrs = attrs.merge!({:pid=>Fedora::Repository.instance.nextid})  
+#      @new_object=true
+#    else
+#      @new_object = attrs[:new_object] == false ? false : true
+#    end
+#    @inner_object = Fedora::FedoraObject.new(attrs)
+#    @datastreams = {}
+#    configure_defined_datastreams
+#
+#    @component_type = attrs[:component_type]
+#  end
   
   def insert_new_node(type, opts)
     ds = self.datastreams_in_memory["descMetadata"]

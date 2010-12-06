@@ -45,7 +45,7 @@ module Hydra::GenericImage
       end
       
       def #{ds_name}=(file)
-        create_or_update_datastream(file, "#{ds_name}")
+        create_or_update_datastream("#{ds_name}", file)
       end
       
       def derive_#{ds_name}
@@ -66,18 +66,25 @@ module Hydra::GenericImage
   end
   
   def derive_datastream ds_name
+    puts "ds_name = #{ds_name} ------ ds_name.to_sym = #{derivation_options[ds_name.to_sym]}"
     ds_location = derivation_url(ds_name.to_sym, derivation_options[ds_name.to_sym])
-    ds = ActiveFedora::Datastream.new(:dsid => ds_name, :label => ds_name, :dsLocation => ds_location, :controlGroup => "M", :mimeType => "image/jpeg")
+    ds = ActiveFedora::Datastream.new(:dsid => ds_name.upcase, :label => ds_name, :dsLocation => ds_location, :controlGroup => "M", :mimeType => "image/jpeg")
     add_datastream(ds)
     save
   end
 
   def derivation_url ds_name, opts={}
+    puts "ds_name: #{ds_name}"
+    puts "Keys: #{opts.keys}"
     source_ds_name = ds_name == :max ? "content" : "max"
-    raise "Oops! Cannot find source datastream." unless datastreams.keys.include? source_ds_name
-    if ds_name == :max && datastreams["content"].attributes["mimeType"] == "image/jpeg"
+    puts "Datastream keys: #{datastreams.keys}"
+    puts "Source DC: #{source_ds_name}"
+    raise "Oops! Cannot find source datastream." unless datastreams.keys.include? source_ds_name.upcase
+    if ds_name == :max && datastreams["content".upcase].attributes["mimeType"] == "image/jpeg"
+      puts "Passed if condition"
       url = datastream_url(source_ds_name)
     else
+      puts "Failed if condition"
       opts_array=[]
       opts.merge!(:url => datastream_url(source_ds_name)).each{|k,v| opts_array << "#{k}=#{v}" }
       url = "#{admin_site}imagemanip/ImageManipulation?" + opts_array.join("&")
@@ -94,7 +101,7 @@ module Hydra::GenericImage
   end
 
   def datastream_url ds_name="content"
-    "#{admin_site}fedora/objects/#{pid}/datastreams/#{ds_name}/content"
+    "#{admin_site}fedora/objects/#{pid}/datastreams/#{ds_name.upcase}/content"
   end
 
 end

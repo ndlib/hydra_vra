@@ -3,7 +3,7 @@ class EadXml < ActiveFedora::NokogiriDatastream
     t.root(:path=>'ead', :xmlns=>"urn:isbn:1-931666-00-8", :schema=>"urn:isbn:1-931666-00-8 http://www.loc.gov/ead/ead.xsd")
     
     t.did_ref(:path=>'did'){
-      t.head
+      t.head(:path=>'head')
       t.unittitle(:ref=>[:title_ref])
       t.unitid(:ref=>[:unitid_ref])
       t.unitdate
@@ -30,7 +30,7 @@ class EadXml < ActiveFedora::NokogiriDatastream
       t.unitid_identifier(:path=>{:attribute=>"identifier"})
     }
     t.lang_ref(:path=>'langmaterial'){
-      t.langauge
+      t.language
     }
     t.repo_ref(:path=>'repository'){
       t.corpname(:ref=>[:corpname_ref])
@@ -40,7 +40,7 @@ class EadXml < ActiveFedora::NokogiriDatastream
       t.subarea
     }
     t.address_ref(:path=>'address'){
-      t.addressline      
+      t.addressline
     }
     t.origination_ref(:path=>'origination'){
       t.persname(:path=>'persname'){
@@ -115,16 +115,18 @@ class EadXml < ActiveFedora::NokogiriDatastream
       t.dsc(:ref=>[:dsc_ref])
     }
     t.ead_header(:path=>'eadheader'){
-      t.eadid
+      t.eadid(:path=>'eadid')
       t.filedesc(:path=>'filedesc'){
         t.titlestmt(:path=>'titlestmt'){
-          t.titleproper
-          t.author
+          t.titleproper(:path=>'titleproper')
+          t.author(:path=>'author')
         }
         t.publicationstmt(:path=>'publicationstmt'){
-          t.publisher
-          t.address(:path=>'address_ref')
-          t.date
+          t.publisher(:path=>'publisher')
+          t.address(:path=>'address'){
+            t.addressline
+          }
+          t.date(:path=>'date')
         }
       }
       t.profiledesc(:path=>'profiledesc'){
@@ -146,18 +148,18 @@ class EadXml < ActiveFedora::NokogiriDatastream
     t.dsc(:ref=>[:dsc_ref])
     
   end
-  def self.full_xml_template
+  def self.xml_template
       builder = Nokogiri::XML::Builder.new do |t|
         t.ead(:version=>"1.0", "xmlns:xlink"=>"http://www.w3.org/1999/xlink",
               "xmlns:xsi"=>"http://www.w3.org/2001/XMLSchema-instance",
               "xmlns"=>"urn:isbn:1-931666-00-8",
               "xsi:schemaLocation"=>"urn:isbn:1-931666-00-8 http://www.loc.gov/ead/ead.xsd"){
               
-          t.eadheader{
-            t.eadid
+          t.eadheader(:findaidstatus=>"edited-full-draft", :langencoding=>"iso639-2b", :audience=>"internal", :id=>"a0", :repositoryencoding=>"iso15511", :scriptencoding=>"iso15924", :dateencoding=>"iso8601", :relatedencoding=>"MARC21", :countryencoding=>"iso3166-1"){
+            t.eadid(:encodinganalog=>"856", :publicid=>"???", :countrycode=>"US", :mainagencycode=>"inndhl")
             t.filedesc{
               t.titlestmt{
-                t.titleproper
+                t.titleproper(:type=>"filing")
                 t.author
               }
               t.publicationstmt{
@@ -165,6 +167,7 @@ class EadXml < ActiveFedora::NokogiriDatastream
                 t.address{
                   t.addressline
                 }
+                t.date(:era=>"ce", :calendar=>"gregorian")
               }
             }
             t.profiledesc{
@@ -172,7 +175,7 @@ class EadXml < ActiveFedora::NokogiriDatastream
                 t.date
               }
               t.langusage{
-                t.language
+                t.language(:langcode=>"eng", :encodinganalog=>"546")
               }
             }
           }
@@ -181,33 +184,33 @@ class EadXml < ActiveFedora::NokogiriDatastream
               t.titleproper
             }
           }
-          t.archdesc(:level=>"collection"){
+          t.archdesc(:type=>"register", :level=>"collection", :relatedencoding=>"MARC21"){
             t.did{
               t.head
-              t.unittitle
-              t.unitid
-              t.unitdate
-              t.langmaterial{
+              t.unittitle(:label=>"Title:", :encodinganalog=>"245$a")
+              t.unitid(:encodinganalog=>"590", :countrycode=>"US", :repositorycode=>"inndhl")
+              t.unitdate(:type=>"bulk", :normal=>"1700/1800")
+              t.langmaterial(:label=>"Language:"){
                 t.language
               }
-              t.repository{
+              t.repository(:label=>"Repository:", :encodinganalog=>"852"){
                 t.corpname{
                   t.subarea
                 }
                 t.address{
-                  t.addresslin
+                  t.addressline
                 }
               }
             }
-            t.accessrestrict{
+            t.accessrestrict(:encodinganalog=>"506"){
               t.head
               t.p
             }
-            t.acqinfo{
+            t.acqinfo(:encodinganalog=>"583"){
               t.head
               t.p
             }
-            t.prefercite{
+            t.prefercite(:encodinganalog=>"524"){
               t.head
               t.p
             }
@@ -274,72 +277,74 @@ class EadXml < ActiveFedora::NokogiriDatastream
     end
     return builder.doc
   end
-  def self.xml_template
+  def self.collection_template
     builder = Nokogiri::XML::Builder.new do |t|
       t.ead("xmlns:xlink"=>"http://www.w3.org/1999/xlink", "xmlns:xsi"=>"http://www.w3.org/2001/XMLSchema-instance",
               "xmlns"=>"urn:isbn:1-931666-00-8"){
         
-        t.eadheader{
-          t.eadid
-          t.filedesc{
-            t.titlestmt{
+        t.eadheader(:findaidstatus=>"edited-full-draft", :langencoding=>"iso639-2b", :audience=>"internal", :id=>"a0", :repositoryencoding=>"iso15511", :scriptencoding=>"iso15924", :dateencoding=>"iso8601", :relatedencoding=>"MARC21", :countryencoding=>"iso3166-1"){
+            t.eadid(:encodinganalog=>"856", :publicid=>"???", :countrycode=>"US", :mainagencycode=>"inndhl")
+            t.filedesc{
+              t.titlestmt{
+                t.titleproper(:type=>"filing")
+                t.author
+              }
+              t.publicationstmt{
+                t.publisher
+                t.address{
+                  t.addressline
+                }
+                t.date(:era=>"ce", :calendar=>"gregorian")
+              }
+            }
+            t.profiledesc{
+              t.creation{
+                t.date
+              }
+              t.langusage{
+                t.language(:langcode=>"eng", :encodinganalog=>"546")
+              }
+            }
+          }
+          t.frontmatter{
+            t.titlepage{
               t.titleproper
-              t.author
             }
-            t.publicationstmt{
-              t.publisher
-              t.address{
-                t.addressline
+          }
+          t.archdesc(:type=>"register", :level=>"collection", :relatedencoding=>"MARC21"){
+            t.did{
+              t.head
+              t.unittitle(:label=>"Title:", :encodinganalog=>"245$a")
+              t.unitid(:encodinganalog=>"590", :countrycode=>"US", :repositorycode=>"inndhl")
+              t.unitdate(:type=>"bulk", :normal=>"1700/1800")
+              t.langmaterial(:label=>"Language:"){
+                t.language
+              }
+              t.repository(:label=>"Repository:", :encodinganalog=>"852"){
+                t.corpname{
+                  t.subarea
+                }
+                t.address{
+                  t.addressline
+                }
               }
             }
-          }
-          t.profiledesc{
-            t.creation{
-              t.date
+            t.accessrestrict(:encodinganalog=>"506"){
+              t.head
+              t.p
             }
-            t.langusage{
-              t.language
+            t.acqinfo(:encodinganalog=>"583"){
+              t.head
+              t.p
             }
-          }
-        }
-        t.frontmatter{
-          t.titlepage{
-            t.titleproper
-          }
-        }
-        t.archdesc(:level=>"collection"){
-          t.did{
-            t.head
-            t.unittitle
-            t.unitid
-            t.unitdate
-            t.langmaterial{
-              t.language
+            t.prefercite(:encodinganalog=>"524"){
+              t.head
+              t.p
             }
-            t.repository{
-              t.corpname{
-                t.subarea
-              }
-              t.address{
-                t.addresslin
-              }
-            }
-          }
-          t.accessrestrict{
-            t.head
-            t.p
-          }
-          t.acqinfo{
-            t.head
-            t.p
-          }
-          t.prefercite{
-            t.head
-            t.p
-          }
         }
       }
     end
+    return builder.doc
   end
   def self.subcollection_template
     builder = Nokogiri::XML::Builder.new do |t|

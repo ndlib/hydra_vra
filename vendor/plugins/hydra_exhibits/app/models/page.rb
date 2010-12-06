@@ -19,9 +19,9 @@ class Page < ActiveFedora::Base
     m.field 'title', :string
   end
   
-  def initialize( attrs={} )
-    super
-  end
+#  def initialize( attrs={} )
+#    super
+#  end
   
   def create_or_update_datastream ds_name, file
     case file
