@@ -1,0 +1,9 @@
+<%= render :partial => "shared/collection_title" %>
+<h2>Subject Areas</h2>
+
+<dl class="listing">
+  <%- @genre_forms.each do |genre_form| -%>
+    <dt><%=link_to h( genre_form.name ), collection_genre_form_path( @collection, genre_form )%></dt>
+    <dd><%=h genre_form.description %></dd>
+  <%- end -%>
+</dl>

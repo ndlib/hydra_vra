@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!--[if ltIE 8 ]> <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" class="ie"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">  <!--<![endif]-->
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title><%= h(@page_title || application_name) %></title>
+    <link href="<%= url_for :controller=>'catalog',:action => 'opensearch', :format => 'xml', :only_path => false %>" title="<%= application_name%>" type="application/opensearchdescription+xml" rel="search"/>
+    <%= javascript_include_tag 'jquery-1.4.2.min',
+                               'jquery-ui-1.8.1.custom.min',
+                               'jquery.jcarousel.min',
+                               'jquery.lightbox-0.5.min',
+                               'jquery.cookie.min',
+                               'accordion',
+                               'application',
+                               'base',
+                               :charset => 'utf-8', :cache => 'cache/all' %>
+    <link href='http://fonts.googleapis.com/css?family=Crimson+Text' rel='stylesheet' type='text/css'/>
+    <%= stylesheet_link_tag 'jquery.ui-lightness',
+                            'jquery.lightbox-0.5',
+                            'jcarousel-skin',
+                            'screen',
+                            'blacklight',
+                            'ie',
+                            :media => 'screen,projection', :cache => 'cache/screen' %>
+    <%= stylesheet_link_tag 'print',  :media => 'print' %>
+  </head>
+  <%#- TODO programatically assign class name -%>
+  <body class="bp rbsc-inquisition">
+    <%= render :partial => 'shared/environment_notice' unless RAILS_ENV == 'production' || RAILS_ENV == 'development' -%>
+    <div id="wrapper">
+      <div id="header">
+        <div id="logo">
+          <%= link_to image_tag('rbsc_mark.png', :alt => 'Rare Books and Special Collections'), 'http://www.library.nd.edu/rarebooks/', :class=> 'image', :rel => 'external'  %>
+          <h2><a href="http://www.library.nd.edu/rarebooks/" rel="external">Rare Books &amp; Special Collections</a></h2>
+          <h3><a href="http://www.library.nd.edu/" rel="external">Hesburgh Libraries of Notre Dame</a></h3>
+        </div>
+        <div id="breadcrumb">
+          <p>
+            <span class="trail">
+              <a href="http://www.library.nd.edu/rarebooks/" class="rbsc-root">Rare Books &amp; Special Collections</a>&nbsp;&gt;&nbsp;	
+              <a href="http://www.library.nd.edu/rarebooks/digital_projects/" class="rbsc-root">Digital Projects</a>
+              <%= breadcrumb_builder %>
+            </span>
+            <span class="textsize">
+              <a href="#" class="smaller" title="Make text Smaller">&nbsp;</a>
+              <a href="#" class="normal" title="Make text Normal">&nbsp;</a>
+              <a href="#" class="larger" title="Make text Larger">&nbsp;</a>
+            </span>
+          </p>
+        </div>
+      </div>
+      <div id="navigation">
+        <p class="collection-image">&nbsp;</p>
+
+        <%= render :partial => 'shared/search_form' %>
+
+        <%- if params[:controller] == "catalog" -%>
+          <%# render :partial => 'shared/navigation' -%>
+          <div class="yui-b sidebar"><%= sidebar_items.join('') %></div>
+          <%- if params[:render_search].blank? -%>
+            <h3><%= link_to_browse %></h3>
+          <%- end -%>
+        <%- else -%>
+          <%= yield :sidebar %>
+        <%- end -%>
+        <h3><%= link_to 'View complete finding aid', "http://www.library.nd.edu/rarebooks/collections/ead_xml/inq_mcdevitt.html", {:rel=>'external'}%></h3>
+      </div>
+      <div class="section <%= yield :section_class %>">
+        <%= yield %>
+      </div>
+      <div id="footer">
+        <%= render :partial => 'shared/footer' -%>
+      </div>
+    </div>
+  </body>
+</html>
