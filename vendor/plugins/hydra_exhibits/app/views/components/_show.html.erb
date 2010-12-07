@@ -13,10 +13,11 @@
 
   <div id="accordion">
 <h2 class="section-title"><a href="#">Description</a></h2>
-
-<%= render :partial => "component/show_subcollection", :locals => {:content_type => "component", :label => "subcollection"} %>
-<%= render :partial => "component/show_item", :locals => {:content_type => "component", :label => "item"} %>
-
+	<%# if (params[:label].include? "item") %>
+		<%= render :partial => "components/show_item", :locals => {:content_type => "component", :label => "item", :document_fedora => @document_fedora} %>
+	<%# elsif (params[:label].include? "subcollection") %>
+		<%# render :partial => "components/show_subcollection", :locals => {:content_type => "component", :label => "subcollection"} %>
+	<%# end %>
     <h2 class="section-title"><a href="#">Content</a></h2>
 <%= render :partial => "generic_contents/show_content" %>
 

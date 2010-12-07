@@ -69,16 +69,16 @@
        <dd id="description">
         <%= fedora_text_area(document_fedora,"descMetadata", [:item, :scopecontent])%>
       </dd>
-<!--	  <dt>
-        <%= fedora_field_label("descMetadata", [:item, :daogrp, :daoloc], "Images:")%>
+	  <dt>
+        <%= fedora_field_label("descMetadata", [:item, :daogrp, :daoloc, :daoloc_href], "Images:")%>
       </dt>
        <dd id="images">
-        <%= fedora_text_field(document_fedora,"descMetadata", [:item, :daogrp, :daoloc])%>
+        <%= fedora_text_field(document_fedora,"descMetadata", [:item, :daogrp, :daoloc, :daoloc_href])%>
       </dd>
-    </dl> -->
+    </dl> 
   </fieldset>
-  
 </form>
+<!--
 <form id="document_metadata" action="<%= url_for(:action=>"create", :controller=>"images_tag", :content_type=>content, :label => "image")%>" method="post" data-resourceType="<%= content %>" accept-charset="utf-8">
   <fieldset id="image_fields">
     <legend>Images</legend>
@@ -86,11 +86,11 @@
         <%= render :partial=>"images/edit_image_tag", :collection=>document_fedora.datastreams_in_memory["descMetadata"].find_by_terms(:item, :daogrp, :daoloc, :daoloc_href) %>
       </ol>
       <%# Button for adding image tag %>
-      <% if params[:action] == "edit" %>
-        <% format = document_partial_name(@document) %>
+      <%# if params[:action] == "edit" %>
+        <%# format = document_partial_name(@document) %>
         <div id="add-image-box">
           <input id="re-run-add-image-action" type="button" value="Add Image Tag" />
         </div>
-      <% end %>
+      <%# end %>
   </fieldset>
-</form>
+</form> -->

@@ -47,7 +47,8 @@
       <h2 class="section-title"><a href="#">Description</a></h2>
       <%# debug get_values_from_datastream(@document_fedora,"descMetadata", [:work]).first %>
       <%# debug datastreams_in_memory.inspect %>      
-      <%= render :partial => "shared/edit_description", :locals => {:content => 'collection', :document_fedora => @document_fedora} %>
+      <% # = render :partial => "shared/edit_description", :locals => {:content => 'collection', :document_fedora => @document_fedora} %>
+      <%= render :partial => "collections/edit_collection", :locals => { :content => "collection", :label => "collection", :document_fedora => @document_fedora} %>
       <h2 class="section-title"><a href="#">Add Eassy </a></h2>
       <div id="lot" data-pid="<%= params[:id] %>" data-content-type="collection">
       </div>
