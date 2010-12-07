@@ -3,10 +3,9 @@ require "hydra"
 class Component < ActiveFedora::Base
   
   include Hydra::ModelMethods
-  has_bidirectional_relationship "member_of", :is_member_of, :has_member
-  has_bidirectional_relationship "parent_component", :is_subset_of, :has_subset
-  has_bidirectional_relationship "sub_components", :has_subset, :is_subset_of
-  has_bidirectional_relationship "page", :has_part_of, :is_part_of
+  include SubCollection
+  #just use parts relationship instead?
+  #has_bidirectional_relationship "page", :has_part_of, :is_part_of
  
   # Uses the Hydra Rights Metadata Schema for tracking access permissions & copyright
   has_metadata :name => "rightsMetadata", :type => Hydra::RightsMetadata 
