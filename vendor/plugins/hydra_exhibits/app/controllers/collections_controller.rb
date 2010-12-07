@@ -1,7 +1,12 @@
 require 'net/http'
+require 'mediashelf/active_fedora_helper'
+require "#{RAILS_ROOT}/vendor/plugins/hydra_exhibits/app/models/ead_xml.rb"
 
 class CollectionsController < ApplicationController
   caches_page :index, :show
+
+  include MediaShelf::ActiveFedoraHelper
+  before_filter :require_fedora, :require_solr
 
   def index
     @collections = Collection.find_by_solr(:all).hits.map{|result| Collection.load_instance_from_solr(result["id"])}
@@ -15,12 +20,12 @@ class CollectionsController < ApplicationController
 
   def show
     @collection = Collection.load_instance_from_solr(params[:id])
-    @sub_collections = sub_collections_in_collection
+    @members = members_of_collection
 
-    #call collection.essays once since querying solr everytime on inbound relationship
-    essays = @collection.essays
-    if essays.any?
-      @essay = essays.first
+    #call collection.discriptions once since querying solr everytime on inbound relationship
+    descriptions = @collection.descriptions
+    if descriptions.any?
+      @description = essays.first
     end
   end
 
@@ -106,12 +111,12 @@ class CollectionsController < ApplicationController
     cache_paths
   end
 
-  def sub_collections_in_collection
-    sub_collections = []
-    @collection.sub_collections_ids.each do |genre_id|
+  def members_of_collection
+    members = []
+    @collection.members_ids.each do |member_id|
       #pid = genre_id.split('/').last
-      genres << GenreForm.load_instance_from_solr(genre_id)
+      members << Component.load_instance_from_solr(member_id)
     end
-    genres
+    members
   end
 end

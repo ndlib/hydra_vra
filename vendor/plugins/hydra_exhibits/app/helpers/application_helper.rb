@@ -1,5 +1,6 @@
 require "#{RAILS_ROOT}/vendor/plugins/hydra_repository/lib/mediashelf/active_fedora_helper.rb"
 require "#{RAILS_ROOT}/vendor/plugins/hydra_repository/app/helpers/application_helper.rb"
+require "#{RAILS_ROOT}/vendor/plugins/hydra_exhibits/app/models/ead_xml.rb"
 
 module ApplicationHelper
 
@@ -36,5 +37,71 @@ module ApplicationHelper
 
     return false
   end
+
+    #
+  #  Link to the main browse page for the collection of items displayed
+  #
+  def link_to_browse()
+    models_for_url= []
+    values_for_url= []
+    path = ''
+#    if params[:genre_form_id]
+#      unless params[:collection_id]
+#        if !@collection.nil?
+#          params.merge!({:collection_id=>@collection.pid})
+#        elsif !@genre_form.nil?
+#          params.merge!({:collection_id=>@genre_form.parent_id})
+#        else
+#          @genre_form = Component.load_instance_from_solr(params[:member_id])
+#          params.merge!({:collection_id=>@genre_form.parent_id})
+#        end
+#      end
+#      models_for_url.push("collection")
+#      values_for_url.push(params[:collection_id])
+#      models_for_url.push("genre_form")
+#      values_for_url.push(params[:member_id])
+#      link_to "Browse related content", eval("#{models_for_url.join('_')}_path(\"#{values_for_url.join('", "')}\")")
+#    elsif params[:collection_id]
+#      models_for_url.push("collection")
+#      values_for_url.push(params[:collection_id])
+#      link_to "Return to collection home", eval("#{models_for_url.join('_')}_path(\"#{values_for_url.join('", "')}\")")
+#    else
+      link_to "Return to collection home", collections_path
+#    end
+    
+  end  
+
+  def breadcrumb_builder
+    breadcrumb_html = ''
+    models_for_url= []
+    values_for_url= []
+    
+    #['collection', 'component', 'page'].each do |model|
+    #  constantized_model = model.classify.constantize
+    #  key = "#{model}_id".to_sym
+    #  if params[key]
+    #    if params[:controller] == 'catalog' && model == 'item' 
+    #      target = constantized_model.load_instance_from_solr(params[key])
+    #      name   = target.respond_to?(:formatted_name) ? " &gt; #{target.formatted_name}" : " &gt; #{target.name}"
+    #      params[:render_search].blank? ? catalog_path(params[key]) : path = catalog_path(params[key], :render_search => 'false')
+    #      breadcrumb_html << link_to(name, path) 
+    #    else
+    #      models_for_url.push(model)
+    #      values_for_url.push(params[key])
+    #      target = constantized_model.load_instance_from_solr(params[key])
+    #      name   = target.respond_to?(:formatted_name) ? " &gt; #{target.formatted_name}" : " &gt; #{target.name}"
+    #      path   = "#{models_for_url.join('_')}_path(\"#{values_for_url.join('", "')}\")"
+    #      breadcrumb_html << "#{link_to name, eval(path) } "
+    #    end
+    #  elsif params[:id] && (params[:controller] == 'catalog' && model == params[:document_format] || params[:controller] == model.pluralize)
+    #    breadcrumb_html << " &gt; #{constantized_model.load_instance_from_solr(params[:id]).name}"
+    #  end 
+    #end 
+    return breadcrumb_html
+  end
+
+  def search_caption
+    @collection ? @collection.name : "All Collections"
+  end 
 
 end
