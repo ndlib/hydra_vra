@@ -2,9 +2,10 @@ require "hydra"
 
 class SubCollection < ActiveFedora::Base
 
-  include Collection
-
-  has_relationship "member_of", :is_member_of, :has_member
+  has_bidirectional_relationship "member_of", :is_member_of, :has_member
+  has_bidirectional_relationship "members", :has_member, :is_member_of
+  has_bidirectional_relationship "highlighted", :has_subset, :is_subset_of
+  has_bidirectional_relationship  "descriptions",   :has_description, :is_description_of
 
   #override the members and highlighted relationship methods
 
