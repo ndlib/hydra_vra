@@ -192,7 +192,7 @@ module BatchIngester
 #      pid= generate_pid(args[:pid_key], nil)
 #      if(!asset_available(pid,content_type))
         #hard coding the Eadid as there is only one Collection header at this point of time....
-        map = {"EAD_HEADER_0_EADID_S".downcase=>"american_colonial_currency"}
+        map = {"EAD_HEADER_0_EADID_T".downcase=>"american_colonial_currency"}
         result = Collection.find_by_fields_by_solr(map)
         puts "Length of the search result: #{result.to_a.size}"
         if(result.to_a.size > 0)
@@ -279,7 +279,7 @@ module BatchIngester
             item.datastreams["descMetadata"].ng_xml = EadXml.item_template
             item.save
             subcollection_pid = generate_pid("SUBCOLLECTION_#{args[:subcollection_id]}",nil)
-            item.subcomponents_append(subcollection_pid)
+            item.members_append(subcollection_pid)
             item.save
             disp = args[:display_title].nil? ? "" : args[:display_title]
             item.datastreams["rightsMetadata"].update_permissions({"group"=>{"archivist"=>"edit"}})

@@ -19,8 +19,8 @@ class ComponentsController < ApplicationController
         
         @response, @document = get_solr_response_for_doc_id
         pid = doc[:id] ? doc[:id] : doc[:id.to_s]
-        @sub_collection = (pid ? SubCollection.load_instance_from_solr(pid,@document) : nil)
-        @members = (@sub_collection.nil? [] : @members = @sub_collection.members)
+        pid ? @sub_collection = SubCollection.load_instance_from_solr(pid,@document) : @sub_collection = nil
+        #@sub_collection.nil? @members = [] : @members = @sub_collection.members
         # @document = SolrDocument.new(@response.docs.first)
         result = @document["#{params["field"]}_t"]
         # document_fedora = SaltDocument.load_instance(params[:id])

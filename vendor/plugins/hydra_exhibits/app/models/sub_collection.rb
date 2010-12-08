@@ -9,12 +9,12 @@ class SubCollection < ActiveFedora::Base
 
   #override the members and highlighted relationship methods
 
-  def facet_members
+  def filtered_members
     #if facet defined then return this list of things
     []
   end
 
-  def facet_highlighted
+  def filtered_highlighted
     #if facet defined for highlighted subset then use that list
     #filter would combine members facet (if defined) and highlighted facets,
     #or if not defined apply filter to relationship members list?
