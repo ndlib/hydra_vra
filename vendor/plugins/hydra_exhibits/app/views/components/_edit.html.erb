@@ -36,15 +36,11 @@
 
   	<div id="accordion">
 		<h2 class="section-title"><a href="#">Description</a></h2>
-		<% if (params[:label].include? "item") %>
+		<% if (!get_values_from_datastream(@document_fedora,"descMetadata", [:item]).first.empty?) %>
 			<%= render :partial => "components/edit_item", :locals => { :content => "component", :label => "item", :document_fedora => @document_fedora} %>
-		<% elsif (params[:label].include? "subcollection") %>
-			<%= render :partial => "components/edit_subcollection", :locals => { :content => "component", :label => "subcollection", :document_fedora => @document_fedora} %>
-		<% elsif (params[:label].include? "collection") %>
-			<%= render :partial => "collections/edit_collection", :locals => { :content => "collection", :label => "collection", :document_fedora => @document_fedora} %>
 		<% else %>
-			<%= render :partial => "images/edit_image", :locals => { :content => "component", :label => "image", :document_fedora => @document_fedora} %>
-		<% end %>
+			<%= render :partial => "components/edit_subcollection", :locals => { :content => "component", :label => "subcollection", :document_fedora => @document_fedora} %>
+                <% end %>
 	    <h2 class="section-title"><a href="#">Upload Content</a></h2>
     <div id="uploads" data-pid="<%= params[:id] %>">
 		<%= render :partial=>"fluid_infusion/uploader" %>
