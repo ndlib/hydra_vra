@@ -1,3 +1,17 @@
+GIT
+  remote: git://github.com/mediashelf/active_fedora.git
+  revision: fd8dc32b7eb55b9899b812b5d9e2c90e5a4b36dc
+  specs:
+    active-fedora (1.2.7)
+      activeresource (< 3.0.0)
+      mime-types (>= 1.16)
+      multipart-post
+      nokogiri
+      om (>= 1.0)
+      solr-ruby (>= 0.0.6)
+      solrizer (>= 0.3.0)
+      xml-simple (>= 1.0.12)
+
 GEM
   remote: http://rubygems.org/
   remote: http://gemcutter.org/
@@ -8,15 +22,6 @@ GEM
     actionpack (2.3.10)
       activesupport (= 2.3.10)
       rack (~> 1.1.0)
-    active-fedora (1.2.7)
-      activeresource (< 3.0.0)
-      mime-types (>= 1.16)
-      multipart-post
-      nokogiri
-      om (>= 1.0)
-      solr-ruby (>= 0.0.6)
-      solrizer (>= 0.3.0)
-      xml-simple (>= 1.0.12)
     activerecord (2.3.10)
       activesupport (= 2.3.10)
     activeresource (2.3.10)
@@ -55,8 +60,10 @@ GEM
       rake
     multipart-post (1.0.1)
     nokogiri (1.4.4)
-    om (1.0.0)
+    om (1.0.1)
       facets
+      facets
+      nokogiri
       nokogiri (>= 1.4.2)
     rack (1.1.0)
     rack-test (0.5.6)
@@ -106,7 +113,7 @@ PLATFORMS
 
 DEPENDENCIES
   RedCloth
-  active-fedora (= 1.2.7)
+  active-fedora!
   authlogic (>= 0.1.0)
   block_helpers
   builder
