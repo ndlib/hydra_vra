@@ -65,5 +65,9 @@ Rails::Initializer.run do |config|
   
   # Make Active Record use UTC-base instead of local time
   # config.active_record.default_timezone = :utc
-  
+
 end
+
+# ApplicationController.before_filter do |controller|
+ #    controller.javascript_includes << "jquery.hydraExhibit.js"
+  # end

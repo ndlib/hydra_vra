@@ -1,5 +1,5 @@
 (function($) {
- 
+
   
    $.fn.hydraMetadata = {
 
@@ -225,6 +225,7 @@
      *
      */
      saveEdit: function(editNode) {
+       alert("SaveEdit")
        $editNode = $(editNode);
        var $closestForm = $editNode.closest("form");
        var url = $closestForm.attr("action");
@@ -349,6 +350,7 @@
    * Initialize the element as a Hydra Editable TextileField (textile-processed textarea)
    */
    $.fn.hydraTextileField = function(settings) {
+       //alert("textile intialize")
      var config = {
        method    : "PUT",
        indicator : "<img src='/images/ajax-loader.gif'>",
@@ -365,6 +367,7 @@
      if (settings) $.extend(config, settings);
      
      this.each(function() {
+      //alert("textile each")
       var $this = $(this);
       var $editNode = $(".textile-edit", this).first();  
       var $textNode = $(".textile-text", this).first();  

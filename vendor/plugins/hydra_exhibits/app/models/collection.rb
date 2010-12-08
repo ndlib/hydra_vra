@@ -23,5 +23,9 @@ class Collection < ActiveFedora::Base
     node, index = ds.insert_node(type, opts)
     return node, index
   end
+
+  def description_list
+    description.any? ? description : nil
+  end
   
 end

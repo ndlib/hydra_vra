@@ -10,7 +10,8 @@ ActionController::Routing::Routes.draw do |map|
   # end
   map.resources :get, :only=>:show  
   map.resources :webauths, :protocol => ((defined?(SSL_ENABLED) and SSL_ENABLED) ? 'https' : 'http')
-  map.resources :essays
+
   map.login "login", :controller => "webauth_sessions", :action => "new"
   map.logout "logout", :controller => "webauth_sessions", :action => "destroy"
+  map.resources :essays
 end

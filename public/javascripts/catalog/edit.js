@@ -20,10 +20,12 @@
       bindDomEvents();
       $(".editable-container").hydraTextField();
       $(".textile-container").hydraTextileField();
+      $(".essay-textarea-container").essayTextareaField();
       setUpDatePicker();
       setUpSliders();
-      setUpNewPermissionsForm();
-      $("#add-contributor-box").hydraNewContributorForm();
+      setUpNewPermissionsForm();      
+      $("#add-contributor-box").hydraNewContributorForm();      
+      $("div.essay_div").insertTextareaValue();
       $("a.inline").fancybox({
       		'hideOnContentClick': true,
       		'autoDimensions' : false
@@ -36,7 +38,7 @@
         e.preventDefault();
       });
   	  $metaDataForm.delegate("a.addval.grant", "click", function(e) {
-				addGrant(this, e);
+	    addGrant(this, e);
         e.preventDefault();
       });
       $metaDataForm.delegate("a.addval.textarea", "click", function(e) {
@@ -47,6 +49,7 @@
         removeFieldValue(this, e);
         e.preventDefault();
       });
+
       // $metaDataForm.delegate("a.destructive.contributor", "click", function(e) {
       //   removeContributor(this, e);
       //   e.preventDefault();
@@ -54,6 +57,7 @@
       $(".contributor a.destructive").hydraContributorDeleteButton();
 
       $(".grant a.destructive").hydraGrantDeleteButton();
+
       
       $metaDataForm.delegate('select.metadata-dd', 'change', function(e) {
         saveSelect(this);
@@ -289,7 +293,7 @@
     // Hides the input.textile-edit
     // serializes applicable field selectors and adds them to the submit data
     // 
-  	function setUpTextileEditables() {
+  	function setUpTextileEditables() {         
       $('.textile-container', $el).each(function(index) {
         // var $textileContainer = $(this).closest("dd");
         var $textileContainer = $(this);  
@@ -379,13 +383,14 @@
     };
 
     function insertTextileValue(element, event) {
+        alert($(element).html)
       var fieldName = $(element).closest("dt").next('dd').attr("id");
       var datastreamName = $(element).closest("dt").next('dd').attr("data-datastream-name");
-      var $values_list = $(element).closest("dt").next("dd").find("ol");
+      var values_list = $(element).closest("dt").next("dd").find("ol");
       var new_value_index = values_list.children('li').size();
       var unique_id =  "asset_" + fieldName + "_" + new_value_index;
       
-      var assetUrl = $values_list.closest("form").attr("action");
+      var assetUrl = values_list.closest("form").attr("action");
 
       var $item = jQuery('<li class=\"field_value textile_value\" name="asset[' + fieldName + '][' + new_value_index + ']"><a href="" class="destructive"><img src="/images/delete.png" border="0" /></a><div class="textile" id="'+fieldName+'_'+new_value_index+'">click to edit</div></li>');
       $item.appendTo(values_list);
