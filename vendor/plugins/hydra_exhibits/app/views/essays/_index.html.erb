@@ -8,31 +8,19 @@
           <%= debug essays.count %>
           <h3>This asset has <%= essays.count %> essays associated with it.</h3>
           <dl class="related-essays">
-            <%- essays.each do |essay| -%>
-              <dt>
-                <label>Essay</label>
-              </dt>
-             <dd id="essay_text_area">
+            <%- essays.each do |essay| -%>              
+
                 <%=app_rich_text_area("essay",essay.pid, essay.essaydatastream_ids.first) %>
-             </dd>
+
             <%- end -%>
 
           </dl>
         </fieldset>
     <%- end -%>
-
-  <%= essay_text_area_insert_link "essaydatastream", {:label=>"Essay", :content_type=>"essay"}%>
-
-
     <div id="add-essay-div">
-
       <label>Essay Name: </label>
       <input id="essay_title" type="text"/>
-      <input id="create_essay_url" type="hidden" name="url" value="<%=url_for(:action => "index", :controller => "essay",:asset_id=>asset.pid, :layout=>"false")%>"/>
-    <%# essay_path(:asset_id=>params[:id] %>
-
-      <a id="add_essay" class="create_essay" href=#> Add Essay</a>
-      <!-- <input id="re-run-add-lot-action" type="button" value="Add a lot" /> -->
+      <%= essay_text_area_insert_link "essaydatastream", {:label=>"Essay", :content_type=>"essay"}%>  
     </div>
 </div>
 
