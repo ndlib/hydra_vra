@@ -3,7 +3,7 @@ class EadXml < ActiveFedora::NokogiriDatastream
     t.root(:path=>'ead', :xmlns=>"urn:isbn:1-931666-00-8", :schema=>"urn:isbn:1-931666-00-8 http://www.loc.gov/ead/ead.xsd")
     
     t.did_ref(:path=>'did'){
-      t.head
+      t.head(:path=>'head')
       t.unittitle(:ref=>[:title_ref])
       t.unitid(:ref=>[:unitid_ref])
       t.unitdate
@@ -30,7 +30,7 @@ class EadXml < ActiveFedora::NokogiriDatastream
       t.unitid_identifier(:path=>{:attribute=>"identifier"})
     }
     t.lang_ref(:path=>'langmaterial'){
-      t.langauge
+      t.language
     }
     t.repo_ref(:path=>'repository'){
       t.corpname(:ref=>[:corpname_ref])
@@ -40,7 +40,7 @@ class EadXml < ActiveFedora::NokogiriDatastream
       t.subarea
     }
     t.address_ref(:path=>'address'){
-      t.addressline      
+      t.addressline
     }
     t.origination_ref(:path=>'origination'){
       t.persname(:path=>'persname'){
@@ -76,6 +76,7 @@ class EadXml < ActiveFedora::NokogiriDatastream
         }
         t.unittitle(:ref=>[:title_ref]){
           t.unittitle_label(:path=>{:attribute=>"label"})
+          t.num(:path=>'num')
         }
       }
       t.scopecontent
@@ -105,6 +106,7 @@ class EadXml < ActiveFedora::NokogiriDatastream
       t.head
       t.collection(:ref=>[:collection_ref])
     }
+    
     t.archive_desc(:path=>'archdesc', :attributes=>{:level=>"collection"}){
       t.did(:ref=>[:did_ref])
       t.accessrestrict(:ref=>[:accessrestrict_ref])
@@ -112,24 +114,52 @@ class EadXml < ActiveFedora::NokogiriDatastream
       t.prefercite(:ref=>[:prefercite_ref])
       t.dsc(:ref=>[:dsc_ref])
     }
-    
+    t.ead_header(:path=>'eadheader'){
+      t.eadid(:path=>'eadid')
+      t.filedesc(:path=>'filedesc'){
+        t.titlestmt(:path=>'titlestmt'){
+          t.titleproper(:path=>'titleproper')
+          t.author(:path=>'author')
+        }
+        t.publicationstmt(:path=>'publicationstmt'){
+          t.publisher(:path=>'publisher')
+          t.address(:path=>'address'){
+            t.addressline
+          }
+          t.date(:path=>'date')
+        }
+      }
+      t.profiledesc(:path=>'profiledesc'){
+        t.creation(:path=>'creation'){
+          t.date
+        }
+        t.langusage(:path=>'langusage'){
+          t.language
+        }
+      }
+    }
+    t.frontmatter(:path=>'frontmatter'){
+      t.titlepage(:path=>'titlepage'){
+        t.titleproper
+      }
+    }
     t.collection(:ref=>[:collection_ref])
     t.item(:ref=>[:item_ref])
     t.dsc(:ref=>[:dsc_ref])
     
   end
-  def self.full_xml_template
+  def self.xml_template
       builder = Nokogiri::XML::Builder.new do |t|
         t.ead(:version=>"1.0", "xmlns:xlink"=>"http://www.w3.org/1999/xlink",
               "xmlns:xsi"=>"http://www.w3.org/2001/XMLSchema-instance",
               "xmlns"=>"urn:isbn:1-931666-00-8",
               "xsi:schemaLocation"=>"urn:isbn:1-931666-00-8 http://www.loc.gov/ead/ead.xsd"){
               
-          t.eadheader{
-            t.eadid
+          t.eadheader(:findaidstatus=>"edited-full-draft", :langencoding=>"iso639-2b", :audience=>"internal", :id=>"a0", :repositoryencoding=>"iso15511", :scriptencoding=>"iso15924", :dateencoding=>"iso8601", :relatedencoding=>"MARC21", :countryencoding=>"iso3166-1"){
+            t.eadid(:encodinganalog=>"856", :publicid=>"???", :countrycode=>"US", :mainagencycode=>"inndhl")
             t.filedesc{
               t.titlestmt{
-                t.titleproper
+                t.titleproper(:type=>"filing")
                 t.author
               }
               t.publicationstmt{
@@ -137,6 +167,7 @@ class EadXml < ActiveFedora::NokogiriDatastream
                 t.address{
                   t.addressline
                 }
+                t.date(:era=>"ce", :calendar=>"gregorian")
               }
             }
             t.profiledesc{
@@ -144,7 +175,7 @@ class EadXml < ActiveFedora::NokogiriDatastream
                 t.date
               }
               t.langusage{
-                t.language
+                t.language(:langcode=>"eng", :encodinganalog=>"546")
               }
             }
           }
@@ -153,33 +184,33 @@ class EadXml < ActiveFedora::NokogiriDatastream
               t.titleproper
             }
           }
-          t.archdesc(:level=>"collection"){
+          t.archdesc(:type=>"register", :level=>"collection", :relatedencoding=>"MARC21"){
             t.did{
               t.head
-              t.unittitle
-              t.unitid
-              t.unitdate
-              t.langmaterial{
+              t.unittitle(:label=>"Title:", :encodinganalog=>"245$a")
+              t.unitid(:encodinganalog=>"590", :countrycode=>"US", :repositorycode=>"inndhl")
+              t.unitdate(:type=>"bulk", :normal=>"1700/1800")
+              t.langmaterial(:label=>"Language:"){
                 t.language
               }
-              t.repository{
+              t.repository(:label=>"Repository:", :encodinganalog=>"852"){
                 t.corpname{
                   t.subarea
                 }
                 t.address{
-                  t.addresslin
+                  t.addressline
                 }
               }
             }
-            t.accessrestrict{
+            t.accessrestrict(:encodinganalog=>"506"){
               t.head
               t.p
             }
-            t.acqinfo{
+            t.acqinfo(:encodinganalog=>"583"){
               t.head
               t.p
             }
-            t.prefercite{
+            t.prefercite(:encodinganalog=>"524"){
               t.head
               t.p
             }
@@ -246,7 +277,76 @@ class EadXml < ActiveFedora::NokogiriDatastream
     end
     return builder.doc
   end
-  def self.xml_template
+  def self.collection_template
+    builder = Nokogiri::XML::Builder.new do |t|
+      t.ead("xmlns:xlink"=>"http://www.w3.org/1999/xlink", "xmlns:xsi"=>"http://www.w3.org/2001/XMLSchema-instance",
+              "xmlns"=>"urn:isbn:1-931666-00-8"){
+        
+        t.eadheader(:findaidstatus=>"edited-full-draft", :langencoding=>"iso639-2b", :audience=>"internal", :id=>"a0", :repositoryencoding=>"iso15511", :scriptencoding=>"iso15924", :dateencoding=>"iso8601", :relatedencoding=>"MARC21", :countryencoding=>"iso3166-1"){
+            t.eadid(:encodinganalog=>"856", :publicid=>"???", :countrycode=>"US", :mainagencycode=>"inndhl")
+            t.filedesc{
+              t.titlestmt{
+                t.titleproper(:type=>"filing")
+                t.author
+              }
+              t.publicationstmt{
+                t.publisher
+                t.address{
+                  t.addressline
+                }
+                t.date(:era=>"ce", :calendar=>"gregorian")
+              }
+            }
+            t.profiledesc{
+              t.creation{
+                t.date
+              }
+              t.langusage{
+                t.language(:langcode=>"eng", :encodinganalog=>"546")
+              }
+            }
+          }
+          t.frontmatter{
+            t.titlepage{
+              t.titleproper
+            }
+          }
+          t.archdesc(:type=>"register", :level=>"collection", :relatedencoding=>"MARC21"){
+            t.did{
+              t.head
+              t.unittitle(:label=>"Title:", :encodinganalog=>"245$a")
+              t.unitid(:encodinganalog=>"590", :countrycode=>"US", :repositorycode=>"inndhl")
+              t.unitdate(:type=>"bulk", :normal=>"1700/1800")
+              t.langmaterial(:label=>"Language:"){
+                t.language
+              }
+              t.repository(:label=>"Repository:", :encodinganalog=>"852"){
+                t.corpname{
+                  t.subarea
+                }
+                t.address{
+                  t.addressline
+                }
+              }
+            }
+            t.accessrestrict(:encodinganalog=>"506"){
+              t.head
+              t.p
+            }
+            t.acqinfo(:encodinganalog=>"583"){
+              t.head
+              t.p
+            }
+            t.prefercite(:encodinganalog=>"524"){
+              t.head
+              t.p
+            }
+        }
+      }
+    end
+    return builder.doc
+  end
+  def self.subcollection_template
     builder = Nokogiri::XML::Builder.new do |t|
       t.dsc("xmlns:xlink"=>"http://www.w3.org/1999/xlink", "xmlns:xsi"=>"http://www.w3.org/2001/XMLSchema-instance",
               "xmlns"=>"urn:isbn:1-931666-00-8"){
@@ -327,13 +427,16 @@ class EadXml < ActiveFedora::NokogiriDatastream
     case type.to_sym
       when :collection
         node = EadXml.collection_template
+        nodeset = self.find_by_terms(:eadheader)
+      when :subcollection
+        node = EadXml.subcollection_template
         nodeset = self.find_by_terms(:collection)
       when :item
         node = EadXml.item_template
         nodeset = self.find_by_terms(:archive_desc, :dsc, :collection, :item)
       when :image
         node = EadXml.image_template
-        nodeset = self.find_by_terms(:item, :daogrp, :daoloc)
+        nodeset = self.find_by_terms(:item, :daogrp, :daoloc, :daoloc_href)
       else
         ActiveFedora.logger.warn("#{type} is not a valid argument for EadXml.insert_node")
         node = nil
@@ -356,10 +459,12 @@ class EadXml < ActiveFedora::NokogiriDatastream
   def remove_node(node_type, index)
     #TODO: Added code to remove any given node
     case node_type.to_sym
-       when :collection
+       when :subcollection
         remove_node = self.find_by_terms(:archive_desc, :dsc, :collection)[index.to_i]
       when :item
         remove_node = self.find_by_terms(:archive_desc, :dsc, :collection, :item)[index.to_i]
+      when :image
+        remove_node = self.find_by_terms(:item, :daogrp, :daoloc, :daoloc_href)[index.to_i]
     end
     unless remove_node.nil?
       puts "Term to delete: #{remove_node.inspect}"

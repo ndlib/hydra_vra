@@ -1,0 +1,38 @@
+<%- content_for :sidebar do -%>
+  <%= render :partial => 'shared/navigation', :locals => {:genres => @genres, :current => @genre_form} -%>
+<%- end -%>
+
+<h1><%=h @genre_form.name %></h1>
+
+<p>
+  <%= @genre_form.description %>
+</p>
+
+<%- if @essay -%>
+  <h3><%= link_to "Essay: \"#{@essay.title}\"", collection_essay_path(params[:collection_id], @essay.pid, :genre_form_id => @genre_form) %></h3>
+  <p>
+    <%= @essay.introduction %>
+    <%= link_to "[Read the complete essay]", collection_essay_path(params[:collection_id], @essay.pid, :genre_form_id => @genre_form) %>
+  </p>
+<%- else -%>
+  <h3><%= "Essay forthcoming..." %></h3>
+<%- end -%>
+
+<h3><%= link_to "Complete list of sources related to <em>#{@genre_form.name}</em> at Notre Dame", catalog_index_path(:params => {"f[type_facet][]" => @genre_form.name}) %></h3>
+
+<hr />
+
+<h2>Featured sources</h2>
+
+<dl class="item-list">
+  <%- @highlighted_items.each do |item| -%>
+    <dt><%= link_to truncate(item.title, :length => 80), catalog_path(item, :render_search => 'false') %></dt>
+    <dd class="with-thumbnail">
+      <div class="thumbnail-container">
+        <%= link_to image_tag( item.pages.any? ? fedora_image_path(item.pages.first.id, :thumb) : '/images/no_thumbnail.png' ), catalog_path(item, :render_search => 'false') %>
+      </div>
+      <p class="attributes"><%= "#{item.author} #{truncate(item.title)} #{item.city}: #{item.date} #{item.holding_id}" %></p>
+      <p class="description"><%= "#{item.description}" %></p>
+    </dd>
+  <%- end -%>
+</dl>

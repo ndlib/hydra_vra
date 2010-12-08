@@ -53,7 +53,7 @@ class AssetsController < ApplicationController
         af_model = HydrangeaArticle
       end
       @document = af_model.find(params[:id])
-            
+      
       updater_method_args = prep_updater_method_args(params)
     
       logger.debug("attributes submitted: #{updater_method_args.inspect}")
@@ -91,14 +91,33 @@ class AssetsController < ApplicationController
     end
     
     def new
-      af_model = retrieve_af_model(params[:content_type])
+      content_type = params[:content_type]
+      af_model = retrieve_af_model(content_type)
       if af_model
-        @asset = af_model.new
-        apply_depositor_metadata(@asset)
-        set_collection_type(@asset, params[:content_type])
-        @asset.save
+        if(params[:label].include? "item")
+          @asset = af_model.new(:component_level => "c02")
+          @asset.datastreams["descMetadata"].ng_xml = EadXml.item_template
+          apply_depositor_metadata(@asset)
+          set_collection_type(@asset, params[:content_type])
+          @asset.save
+        elsif(params[:label].include? "subcomponent")
+          @asset = af_model.new(:component_level => "c01")
+          @asset.datastreams["descMetadata"].ng_xml = EadXml.collection_template
+          apply_depositor_metadata(@asset)
+          set_collection_type(@asset, params[:content_type])
+          @asset.save
+        end
       end
       redirect_to url_for(:action=>"edit", :controller=>"catalog", :id=>@asset.pid)
+#      logger.info("In the old Asset Controller....")
+#      af_model = retrieve_af_model(params[:content_type])
+#      if af_model
+#        @asset = af_model.new
+#        apply_depositor_metadata(@asset)
+#        set_collection_type(@asset, params[:content_type])
+#        @asset.save
+#      end
+#      redirect_to url_for(:action=>"edit", :controller=>"catalog", :id=>@asset.pid)
     end
     
     def destroy

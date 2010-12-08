@@ -1,0 +1,10 @@
+<h1>Special Collections</h1>
+
+<ul class="collection-list">
+  <%- @collections.each do |collection| -%>
+    <li>
+      <h2><%=link_to h( collection.name ), collection_path(collection) %></h2>
+      <p><%=h collection.description %></p>
+    </li>
+  <%- end -%>
+</ul>

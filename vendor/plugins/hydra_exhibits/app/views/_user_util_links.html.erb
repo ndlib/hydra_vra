@@ -7,10 +7,12 @@
 
 <%- if current_user -%>
   <div id="create-asset-box">
-    <input id="re-run-action" class="nobutton" type="button" onclick=" location.href='<%=url_for(:action => "new", :controller => "assets", :content_type => "collection")%>' " value="Add a currency collection"/>
+    <input id="re-run-action" class="nobutton" type="button" onclick=" location.href='<%=url_for(:action => "new", :controller => "components", :content_type => "component", :label => "subcollection")%>' " value="Add a currency collection"/>
     <button id="select-asset" type="button"> Select type of content to create</button>
         <ul id="create-asset-menu">
-          <li onclick=" location.href='<%=url_for(:action => "new", :controller => "assets", :content_type => "collection")%>' ">Add a currency collection</li>
+		  <li onclick=" location.href='<%=url_for(:action => "new", :controller => "components", :content_type => "collection", :label => "collection")%>' ">Add a collection</li>
+          <li onclick=" location.href='<%=url_for(:action => "new", :controller => "components", :content_type => "component", :label => "subcollection")%>' ">Add a subcollection</li>
+		  <li onclick=" location.href='<%=url_for(:action => "new", :controller => "components", :content_type => "component", :label => "item")%>' ">Add an item</li>
         </ul>
   </div>
 <%- end -%>
