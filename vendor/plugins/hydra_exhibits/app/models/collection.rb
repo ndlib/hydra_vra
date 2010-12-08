@@ -26,7 +26,7 @@ class Collection < ActiveFedora::Base
   end
 
   def description_list
-    description.any? ? description : nil
+    descriptions.any? ? descriptions : nil
   end
   
   def remove_image(type, index)
