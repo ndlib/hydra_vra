@@ -1,0 +1,44 @@
+<div class="essay_div">
+    <input id="show_essay_url" type="hidden" name="url" value="<%= essay_path(asset.pid) %>" />
+    <h2 class="section-title">Essay</h2>
+    <%= debug asset.pid %>
+    <%- unless asset.description_list.blank? -%>
+        <fieldset>
+          <% essays = asset.description_list %>
+          <%= debug essays.count %>
+          <h3>This asset has <%= essays.count %> essays associated with it.</h3>
+          <dl class="related-essays">
+            <%- essays.each do |essay| -%>
+              <dt>
+                <label>Essay</label>
+              </dt>
+             <dd id="essay_text_area">
+                <%=app_rich_text_area("essay",essay.pid, essay.essaydatastream_ids.first) %>
+             </dd>
+            <%- end -%>
+
+          </dl>
+        </fieldset>
+    <%- end -%>
+
+  <%= essay_text_area_insert_link "essaydatastream", {:label=>"Essay", :content_type=>"essay"}%>
+
+
+    <div id="add-essay-div">
+
+      <label>Essay Name: </label>
+      <input id="essay_title" type="text"/>
+      <input id="create_essay_url" type="hidden" name="url" value="<%=url_for(:action => "index", :controller => "essay",:asset_id=>asset.pid, :layout=>"false")%>"/>
+    <%# essay_path(:asset_id=>params[:id] %>
+
+      <a id="add_essay" class="create_essay" href=#> Add Essay</a>
+      <!-- <input id="re-run-add-lot-action" type="button" value="Add a lot" /> -->
+    </div>
+</div>
+
+
+
+
+
+
+

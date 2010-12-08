@@ -1,6 +1,6 @@
 require 'mediashelf/active_fedora_helper'
 
-class EassysController < ApplicationController
+class EssayController < ApplicationController
 
   include Hydra::AssetsControllerHelper
   include Hydra::FileAssetsHelper
@@ -10,6 +10,7 @@ class EassysController < ApplicationController
   include WhiteListHelper
   include Blacklight::CatalogHelper
   include ApplicationHelper
+  include EssayHelper
 
   helper :hydra, :metadata, :infusion_view
   before_filter :require_fedora
@@ -27,13 +28,15 @@ class EassysController < ApplicationController
 
   def index
     logger.error("Index param: #{params.inspect}")
-    if params[:layout] == "false"
-      # action = "index_embedded"
+    if params[:layout] == "false"      
       layout = false
     end
-    @building=Building.load_instance(params[:building_id])
-    logger.error("Building pid: #{@building.pid}, lot_list is blank: #{@building.lot_list.blank?}")
-    render :partial=>"lots/index", :layout=>layout
+    #@essay=Essay.load_instance(params[:id])
+    #@document_fedora = the_model.load_instance(params[:id])
+    @asset=Collection.load_instance(params[:collection_id])
+    essay_ids=@asset.description_inbound_ids
+    logger.error("pid: #{@asset.pid}")
+    render :partial=>"essays/index", :layout=>layout
   end
 
   def new
@@ -41,7 +44,7 @@ class EassysController < ApplicationController
   end
 
   def create
-    attributes = params
+=begin attributes = params
     unless attributes.has_key?(:label)
       attributes[:label] = "Essay"
     end
@@ -60,6 +63,21 @@ class EassysController < ApplicationController
     @building=Building.load_instance(params[:building_pid])
     render :partial=>"essays/index", :locals=>{"essays".to_sym =>@object.essay_list}, :layout=>false
     #render :text => "Successfull added relationship betweeb #{params[:building_pid]} and #{@lot.pid}."
+=end
+
+    @essay = create_and_save_essay_from_params
+    apply_depositor_metadata(@essay)
+    if !params[:collection_id].nil?
+      @collection =  ActiveFedora::Base.load_instance(params[:collection_id])
+      #@collection.file_objects_append(@file_asset)
+      @essay.description_of_append(@collection)
+      @essay.save
+      @collection.save
+    end
+    @document_fedora = Essay.load_instance(@essay.pid)
+    logger.debug "Essay Document: #{@document_fedora}"
+    logger.debug "Created #{@essay.pid}."
+    render :nothing => true
   end
 
   def destroy
