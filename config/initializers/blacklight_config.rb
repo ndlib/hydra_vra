@@ -71,7 +71,8 @@ Blacklight.configure(:shared) do |config|
       "medium_t",
       "location_t",
       "id",
-      "active_fedora_model_s"
+      "active_fedora_model_s",
+      "dsc_0_collection_0_did_0_unittitle_0_imprint_0_publisher_t"
       ],
     :labels => {
       "date_t"=>"Date",
@@ -79,7 +80,8 @@ Blacklight.configure(:shared) do |config|
       "medium_t"=>"Content Type",
       "location_t"=>"Location",
       "id"=>"Pid",
-      "active_fedora_model_s"=>"Model"
+      "active_fedora_model_s"=>"Model",
+      "dsc_0_collection_0_did_0_unittitle_0_imprint_0_publisher_t"=>"Publisher"
     },
     :limits=> {nil=>10}
   }
@@ -93,14 +95,16 @@ Blacklight.configure(:shared) do |config|
       "medium_t",
       "location_t",
       "id",
-      "active_fedora_model_s"],
+      "active_fedora_model_s",
+      "dsc_0_collection_0_did_0_unittitle_0_imprint_0_publisher_t"],
     :labels => {
       "date_t"=>"Date",
       "title_t"=>"Title",
       "medium_t"=>"Content Type",
       "location_t"=>"Location",
       "id"=>"Pid",
-      "active_fedora_model_s"=>"Model"
+      "active_fedora_model_s"=>"Model",
+      "dsc_0_collection_0_did_0_unittitle_0_imprint_0_publisher_t"=>"Publisher"
     }
   }
 
