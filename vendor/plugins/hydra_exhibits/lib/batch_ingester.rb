@@ -211,11 +211,16 @@ module BatchIngester
             update_fields(subcollection, [:dsc, :collection, :did, :unitid, :unitid_identifier], args[:subcollection_id])
             update_fields(subcollection, [:dsc, :collection, :did, :origination, :printer], args[:printer])
             update_fields(subcollection, [:dsc, :collection, :did, :origination, :engraver], args[:engraver])
+            #subcollection.update_indexed_attributes ({term=>{"0"=>value}} )
+            update_fields(subcollection, [:dsc, :collection, :did, :unittitle, :imprint, :publisher], args[:publisher])
             update_fields(subcollection, [:dsc, :collection, :did, :unittitle], args[:title])
             update_fields(subcollection, [:dsc, :collection, :scopecontent], utf_desc)
             update_fields(subcollection, [:dsc, :collection, :odd], args[:display])
             update_fields(subcollection, [:dsc, :collection, :controlaccess, :genreform], args[:genreform])
+            
+              
             subcollection.save
+            puts "\r\n#{subcollection.datastreams["descMetadata"].to_xml}\r\n"
           else
             objmap = result.to_a[0]
             puts "Subcollection already exists with Id: #{objmap["id"]}. Cannot create duplicate object"

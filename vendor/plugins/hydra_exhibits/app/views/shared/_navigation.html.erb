@@ -2,20 +2,11 @@
   	
   <!--currently just accounting for one level but might want to be more sophisticated and have something like expandable/collaspable tree-->
   <%- if members.any? %>
-      <%- members.each do |genre| -%>
-          <h3 class="facet-list<%= ((defined? current) && !current.nil? && current.id == member.id) ? " current" : "" %>" >
-            <%# member.name%>
-            <%= link_to member.name, collection_member_path(:id => member.id, :collection_id => @collection.id) %>
+      <%- members.each do |member| -%>
+          <h3>
+            <%=member%>
           </h3>
-        <%- if (defined? current) && !current.nil? && current.id == member.id %>
-          <ul class="highlighted-item">
-            <%- if member.descriptions.any? %>
-              <li>  <span class="selected"> <%= link_to "Essay", essay_path(@collection.id,member.descriptions.first.id,:member_id => current.id) %>  </span> </li>
-            <%- end -%>
-            <li> <span class="selected"> <%= link_to "All related items", catalog_index_path(:params => {"f[type_facet][]" => member.name}) %> </span> </li>
-          </ul>
-        <%- end -%>
-      <%- end -%>     
+       <%- end -%>     
   <%- end -%>
 </div>
 

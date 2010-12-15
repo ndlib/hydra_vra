@@ -18,6 +18,27 @@ class Collection < ActiveFedora::Base
   # A place to put extra metadata values
   has_metadata :name => "properties", :type => ActiveFedora::MetadataDatastream do |m|
   end
+
+  attr_accessor :facet_members
+
+  def facet_members(refresh=false)
+    if facet_members.nil? || refresh
+      facet_members = {}
+      browse_facets.each do |facet|
+        facet_members << facet
+      end
+      members.each do |member|
+        if member.responds_to? :facets
+          facet_members[facet].merge!({member.facets[facet]=>member})
+        end
+      end
+    end
+    facet_members
+  end
+
+  def browse_facets
+    ["dsc_0_collection_0_did_0_unittitle_0_imprint_0_publisher_t"]
+  end
   
   def insert_new_node(type, opts)
     ds = self.datastreams_in_memory["descMetadata"]

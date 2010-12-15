@@ -9,7 +9,7 @@ class EadXml < ActiveFedora::NokogiriDatastream
       t.unitdate
       t.lang(:ref=>[:lang_ref])
       t.repo(:ref=>[:repo_ref])
-      t.orignation(:ref=>[:origination_ref])
+      t.origination(:ref=>[:origination_ref])
       t.physdesc(:ref=>[:physdesc_ref])
     }
     t.title_ref(:path=>'unittitle'){
@@ -133,7 +133,7 @@ class EadXml < ActiveFedora::NokogiriDatastream
         t.creation(:path=>'creation'){
           t.date
         }
-        t.langusage(:path=>'langusage'){
+        t.language(:path=>'language'){
           t.language
         }
       }

@@ -3,9 +3,14 @@ require 'mediashelf/active_fedora_helper'
 require "#{RAILS_ROOT}/vendor/plugins/hydra_exhibits/app/models/ead_xml.rb"
 
 class CollectionsController < ApplicationController
+
   caches_page :index, :show
 
   include MediaShelf::ActiveFedoraHelper
+  include Blacklight::SolrHelper
+  include Hydra::RepositoryController
+  include Hydra::AccessControlsEnforcement
+
   before_filter :require_fedora, :require_solr
 
   def index
@@ -65,6 +70,27 @@ class CollectionsController < ApplicationController
     paths
   end
 
+   # Look up configged facet limit for given facet_field. If no
+  # limit is configged, may drop down to default limit (nil key)
+  # otherwise, returns nil for no limit config'ed. 
+  def facet_limit_for(facet_field)
+    limits_hash = facet_limit_hash
+    return nil unless limits_hash
+
+    limit = limits_hash[facet_field]
+    limit = limits_hash[nil] unless limit
+
+    return limit
+  end
+  helper_method :facet_limit_for
+  # Returns complete hash of key=facet_field, value=limit.
+  # Used by SolrHelper#solr_search_params to add limits to solr
+  # request for all configured facet limits.
+  def facet_limit_hash
+    Blacklight.config[:facet][:limits]           
+  end
+  helper_method :facet_limit_hash
+
   private
 
   def clear_collection_cache(collection_id)
@@ -113,9 +139,16 @@ class CollectionsController < ApplicationController
 
   def members_of_collection
     members = []
-    @collection.members_ids.each do |member_id|
-      #pid = genre_id.split('/').last
-      members << Component.load_instance_from_solr(member_id)
+    @extra_controller_params ||= {}
+    (@response, @document_list) = get_search_results( @extra_controller_params.merge!(:q=>build_lucene_query(params[:q])) )
+
+    @collection.browse_facets.each do |solr_fname|
+      display_facet = @response.facets.detect {|f| f.name == solr_fname}
+      unless display_facet.nil?
+        display_facet.items.each do |item|
+          members << item.value
+        end
+      end
     end
     members
   end
