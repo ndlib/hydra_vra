@@ -22,6 +22,18 @@ GEM
     actionpack (2.3.10)
       activesupport (= 2.3.10)
       rack (~> 1.1.0)
+<<<<<<< HEAD
+=======
+    active-fedora (1.2.7)
+      activeresource (< 3.0.0)
+      mime-types (>= 1.16)
+      multipart-post
+      nokogiri
+      om (>= 1.0)
+      solr-ruby (>= 0.0.6)
+      solrizer (>= 0.3.0)
+      xml-simple (>= 1.0.12)
+>>>>>>> upstream/master
     activerecord (2.3.10)
       activesupport (= 2.3.10)
     activeresource (2.3.10)
@@ -34,7 +46,11 @@ GEM
     builder (2.1.2)
     columnize (0.3.2)
     crack (0.1.8)
+<<<<<<< HEAD
     cucumber (0.8.5)
+=======
+    cucumber (0.9.4)
+>>>>>>> upstream/master
       builder (~> 2.1.2)
       diff-lcs (~> 1.1.2)
       gherkin (~> 2.1.4)
@@ -46,9 +62,15 @@ GEM
     database_cleaner (0.6.0)
     diff-lcs (1.1.2)
     facets (2.8.4)
+<<<<<<< HEAD
     fastercsv (1.5.3)
     gherkin (2.1.5)
       trollop (~> 1.16.2)
+=======
+    gherkin (2.2.9)
+      json (~> 1.4.6)
+      term-ansicolor (~> 1.0.5)
+>>>>>>> upstream/master
     haml (3.0.24)
     httparty (0.6.1)
       crack (= 0.1.8)
@@ -60,7 +82,11 @@ GEM
     mocha (0.9.10)
       rake
     multipart-post (1.0.1)
+<<<<<<< HEAD
     nokogiri (1.4.4)
+=======
+    nokogiri (1.4.3.1)
+>>>>>>> upstream/master
     om (1.0.1)
       facets
       facets
@@ -114,13 +140,21 @@ PLATFORMS
 
 DEPENDENCIES
   RedCloth
+<<<<<<< HEAD
   active-fedora!
+=======
+  active-fedora (= 1.2.7)
+>>>>>>> upstream/master
   authlogic (>= 0.1.0)
   block_helpers
   builder
   columnize
   crack
+<<<<<<< HEAD
   cucumber (= 0.8.5)
+=======
+  cucumber (>= 0.8.5)
+>>>>>>> upstream/master
   cucumber-rails
   curb
   database_cleaner
@@ -136,8 +170,8 @@ DEPENDENCIES
   mime-types
   mocha
   multipart-post
-  nokogiri
-  om (>= 1.0.0)
+  nokogiri (= 1.4.3.1)
+  om (>= 1.0.1)
   rack
   rack-test
   rails (>= 2.3.5, < 3.0.0)
@@ -158,3 +192,6 @@ DEPENDENCIES
   webrat
   will_paginate
   xml-simple
+
+METADATA
+  version: 1.0.6

@@ -65,7 +65,7 @@ Rails::Initializer.run do |config|
   
   # Make Active Record use UTC-base instead of local time
   # config.active_record.default_timezone = :utc
-
+  config.middleware.use "UserAttributesLoader" if Rails.env == 'development'  
 end
 
 # ApplicationController.before_filter do |controller|
