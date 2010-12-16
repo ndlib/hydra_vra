@@ -1,0 +1,21 @@
+1. get latest code from github.com/ndliblis/hydra_exhibit
+2. cd to hydra_exhibits root and run
+         git submodule init 
+         git submodule update
+         bundle install (or update)
+         rake db:migrate
+         rake db:migrate:plugins
+         rake hydra:jetty:load       (very important step to setup proper solr config)
+3. Ingest objects:
+
+          rake batch:load_csv_data FILE=[webshare inquisition mount path]/Currency\ ALL\ CSV\ files/Ead_Header.csv
+          rake batch:load_csv_data FILE=[webshare inquisition mount path]/Currency\ ALL\ CSV\ files/Collection_Set_Formatted.csv
+          rake batch:load_csv_data FILE=[webshare inquisition mount path]/Currency\ ALL\ CSV\ files/Item_set_formatted.csv
+          
+         
+3. 'rake hydra:jetty:stop' will stop jetty if you need to.  Sometimes I start jetty directly in hydra_exhibits/jetty by running java -jar start.jar if I want to see any errors, etc in output
+
+4. The collections controller is currently not linked to anything but you can get to by browsing directly to:
+
+http://localhost:3000/collections
+
