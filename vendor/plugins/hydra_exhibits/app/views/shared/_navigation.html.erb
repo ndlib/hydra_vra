@@ -1,13 +1,21 @@
-<div id="facets">
+<!--this was id="facets" but removed for now so items below are always unhidden, will style more later->
+<div>
   	
   <!--currently just accounting for one level but might want to be more sophisticated and have something like expandable/collaspable tree-->
-  <%- if members.any? %>
-      <%- members.each do |member| -%>
-          <h3>
-            <%=member%>
-          </h3>
-       <%- end -%>     
-  <%- end -%>
+  <% browse_facets.each do |display_facet| %>
+    <div>
+      <% if display_facet.items.length > 0 %>
+        <h3><%=facet_field_labels[display_facet.name] -%></h3>
+        <ul style="display:block">
+          <% display_facet.items.each do |item| -%>
+            <li>
+	      <%=item.value%>
+            </li>
+          <% end %>          
+        </ul>
+      <% end %>
+    </div>
+  <% end %>
 </div>
 
 

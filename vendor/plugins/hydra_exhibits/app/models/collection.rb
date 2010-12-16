@@ -29,6 +29,7 @@ class Collection < ActiveFedora::Base
       end
       members.each do |member|
         if member.responds_to? :facets
+          #map facet value to member item
           facet_members[facet].merge!({member.facets[facet]=>member})
         end
       end
@@ -37,7 +38,7 @@ class Collection < ActiveFedora::Base
   end
 
   def browse_facets
-    ["dsc_0_collection_0_did_0_unittitle_0_imprint_0_publisher_t"]
+    ["dsc_0_collection_0_did_0_unittitle_0_imprint_0_publisher_facet"]
   end
   
   def insert_new_node(type, opts)

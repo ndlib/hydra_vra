@@ -11,6 +11,7 @@ module BatchIngester
     def process_ingest_data(filename)
       cnter = 1
       arr_of_data=load_file(filename)
+      puts "Processing Total Rows: #{arr_of_data.length()}"
       arr_of_data.each do |row|
         if(filename.include? "Collection")
           puts "Ingesting Subcollection Object"
@@ -163,7 +164,7 @@ module BatchIngester
     def subcollection_ingest_each_row(row)
       puts "Rows: #{row.inspect}"
       if (row[0].blank? || row[1].blank?)
-         raise "This entry #{row.inspect} has empty collection information"
+         puts "This entry #{row.inspect} has empty collection information, skip to next row"
       else
         key=row[1]
         abr_title = row[0]

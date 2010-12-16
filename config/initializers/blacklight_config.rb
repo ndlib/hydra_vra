@@ -72,7 +72,7 @@ Blacklight.configure(:shared) do |config|
       "location_t",
       "id",
       "active_fedora_model_s",
-      "dsc_0_collection_0_did_0_unittitle_0_imprint_0_publisher_t"
+      "dsc_0_collection_0_did_0_unittitle_0_imprint_0_publisher_facet"
       ],
     :labels => {
       "date_t"=>"Date",
@@ -81,7 +81,7 @@ Blacklight.configure(:shared) do |config|
       "location_t"=>"Location",
       "id"=>"Pid",
       "active_fedora_model_s"=>"Model",
-      "dsc_0_collection_0_did_0_unittitle_0_imprint_0_publisher_t"=>"Publisher"
+      "dsc_0_collection_0_did_0_unittitle_0_imprint_0_publisher_facet"=>"Publisher"
     },
     :limits=> {nil=>10}
   }
@@ -96,7 +96,7 @@ Blacklight.configure(:shared) do |config|
       "location_t",
       "id",
       "active_fedora_model_s",
-      "dsc_0_collection_0_did_0_unittitle_0_imprint_0_publisher_t"],
+      "dsc_0_collection_0_did_0_unittitle_0_imprint_0_publisher_s"],
     :labels => {
       "date_t"=>"Date",
       "title_t"=>"Title",
@@ -104,7 +104,7 @@ Blacklight.configure(:shared) do |config|
       "location_t"=>"Location",
       "id"=>"Pid",
       "active_fedora_model_s"=>"Model",
-      "dsc_0_collection_0_did_0_unittitle_0_imprint_0_publisher_t"=>"Publisher"
+      "dsc_0_collection_0_did_0_unittitle_0_imprint_0_publisher_s"=>"Publisher"
     }
   }
 
