@@ -10,6 +10,32 @@ module ApplicationHelper
     'Hydrangea (Hydra ND Demo App)'
   end
 
+  # Used in catalog/facet action, facets.rb view, for a click
+  # on a facet value. Add on the facet params to existing
+  # search constraints. Remove any paginator-specific request
+  # params, or other request params that should be removed
+  # for a 'fresh' display. 
+  # Change the action to 'index' to send them back to
+  # catalog/index with their new facet choice. 
+  def add_facet_params_and_redirect(field, value)
+    new_params = add_facet_params(field, value)
+
+    # Delete page, if needed. 
+    new_params.delete(:page)
+
+    # Delete any request params from facet-specific action, needed
+    # to redir to index action properly. 
+    Blacklight::Solr::FacetPaginator.request_keys.values.each do |paginator_key| 
+      new_params.delete(paginator_key)
+    end
+    new_params.delete(:id)
+
+    # Force action to be show. 
+    new_params[:action] = "show"
+
+    new_params
+  end
+
   def generate_pid(key, content_model)
     namespace="RBSC-CURRENCY"
     #content_model="Lot"

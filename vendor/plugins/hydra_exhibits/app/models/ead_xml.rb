@@ -13,6 +13,7 @@ class EadXml < ActiveFedora::NokogiriDatastream
       t.physdesc(:ref=>[:physdesc_ref])
     }
     t.title_ref(:path=>'unittitle'){
+      t.unittitle_content(:path=>'text()')
       t.unittitle_label(:path=>{:attribute=>"label"})
       t.num(:path=>'num')
       t.imprint(:ref=>[:imprint_ref]) #(:path=>'imprint')

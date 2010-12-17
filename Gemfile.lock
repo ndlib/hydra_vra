@@ -1,3 +1,13 @@
+GIT
+  remote: git://github.com/rickjohnson/om.git
+  revision: 56695ef9cc249bcb1eca5467af914cf5d55a1469
+  specs:
+    om (1.0.2)
+      facets
+      facets
+      nokogiri
+      nokogiri (>= 1.4.2)
+
 GEM
   remote: http://rubygems.org/
   remote: http://gemcutter.org/
@@ -44,7 +54,7 @@ GEM
     fastercsv (1.5.3)
     gherkin (2.1.5)
       trollop (~> 1.16.2)
-    haml (3.0.24)
+    haml (3.0.25)
     httparty (0.6.1)
       crack (= 0.1.8)
     json_pure (1.4.6)
@@ -56,11 +66,6 @@ GEM
       rake
     multipart-post (1.0.1)
     nokogiri (1.4.3.1)
-    om (1.0.2)
-      facets
-      facets
-      nokogiri
-      nokogiri (>= 1.4.2)
     rack (1.1.0)
     rack-test (0.5.6)
       rack (>= 1.0)
@@ -132,7 +137,7 @@ DEPENDENCIES
   mocha
   multipart-post
   nokogiri (= 1.4.3.1)
-  om (>= 1.0.1)
+  om!
   rack
   rack-test
   rails (>= 2.3.5, < 3.0.0)

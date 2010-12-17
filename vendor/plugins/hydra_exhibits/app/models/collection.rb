@@ -38,7 +38,7 @@ class Collection < ActiveFedora::Base
   end
 
   def browse_facets
-    ["dsc_0_collection_0_did_0_unittitle_0_imprint_0_publisher_facet"]
+    [{"dsc_0_collection_0_did_0_unittitle_0_imprint_0_publisher_facet"=>"dsc_0_collection_0_did_0_unittitle_0_unittitle_content_facet"}]
   end
   
   def insert_new_node(type, opts)

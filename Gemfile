@@ -20,7 +20,7 @@ gem 'marc'
 gem 'mime-types'
 gem 'multipart-post'
 gem 'nokogiri', '1.4.3.1'
-gem 'om', '>=1.0.1'
+gem 'om', :git => "git://github.com/rickjohnson/om.git"  
 gem 'rack'
 gem 'rack-test'
 gem 'rake'
