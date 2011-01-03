@@ -24,7 +24,7 @@
                             <% if facet_in_params?( display_second_facet.name, second_item.value ) %>              
                               <%= render_selected_facet_value(display_second_facet.name, second_item) %>              
                             <% else %>              
-                              <%= render_facet_value(display_second_facet.name, second_item) %>
+                              <%= render_browse_facet_value(display_second_facet.name, second_item) %>
                             <% end %>
                           </li>              
                         <% end -%> 
@@ -32,7 +32,7 @@
                     <% end %>
                   <% end %>
                 <% else %>              
-                  <%= render_facet_value(display_facet.name, item) %>              
+                  <%= render_browse_facet_value(display_facet.name, item) %>              
                 <% end -%>
               </li>
             <% end %>          

@@ -10,30 +10,25 @@ module ApplicationHelper
     'Hydrangea (Hydra ND Demo App)'
   end
 
-  # Used in catalog/facet action, facets.rb view, for a click
-  # on a facet value. Add on the facet params to existing
-  # search constraints. Remove any paginator-specific request
-  # params, or other request params that should be removed
-  # for a 'fresh' display. 
-  # Change the action to 'index' to send them back to
-  # catalog/index with their new facet choice. 
-  def add_facet_params_and_redirect(field, value)
-    new_params = add_facet_params(field, value)
+  # Standard display of a facet value in a list. Used in both _facets sidebar
+  # partial and catalog/facet expanded list. Will output facet value name as
+  # a link to add that to your restrictions, with count in parens. 
+  # first arg item is a facet value item from rsolr-ext.
+  # options consist of:
+  # :suppress_link => true # do not make it a link, used for an already selected value for instance
+  def render_browse_facet_value(facet_solr_field, item, options ={})    
+    
+    link_to_unless(options[:suppress_link], item.value, collection_sub_collection_path(add_facet_params_and_redirect(facet_solr_field, item.value).merge!({:collection_id=>params[:id], :class=>"facet_select",:controller=>:sub_collections, :action=>"show"}))) + " (" + format_num(item.hits) + ")"
+    #link_to_unless(options[:suppress_link], item.value, collection_sub_collection_path({:collection_id=>params[:id], :class=>"facet_select"}.merge!(add_facet_params_and_redirect(facet_solr_field, item.value)))) + " (" + format_num(item.hits) + ")" 
+  end
 
-    # Delete page, if needed. 
-    new_params.delete(:page)
-
-    # Delete any request params from facet-specific action, needed
-    # to redir to index action properly. 
-    Blacklight::Solr::FacetPaginator.request_keys.values.each do |paginator_key| 
-      new_params.delete(paginator_key)
-    end
-    new_params.delete(:id)
-
-    # Force action to be show. 
-    new_params[:action] = "show"
-
-    new_params
+  # Standard display of a SELECTED facet value, no link, special span
+  # with class, and 'remove' button.
+  def render_selected_facet_value(facet_solr_field, item)
+    '<span class="selected">' +
+    render_facet_value(facet_solr_field, item, :suppress_link => true) +
+    '</span>' +
+      ' [' + link_to("remove", collection_path(remove_facet_params(facet_solr_field, item.value, params).merge!(:controller=>"collections",:id=>params[:collection_id])), :class=>"remove") + ']'
   end
 
   def generate_pid(key, content_model)
