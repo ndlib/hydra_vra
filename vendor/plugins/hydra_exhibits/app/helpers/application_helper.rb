@@ -18,8 +18,7 @@ module ApplicationHelper
   # :suppress_link => true # do not make it a link, used for an already selected value for instance
   def render_browse_facet_value(facet_solr_field, item, options ={})    
     
-    link_to_unless(options[:suppress_link], item.value, collection_sub_collection_path(add_facet_params_and_redirect(facet_solr_field, item.value).merge!({:collection_id=>params[:id], :class=>"facet_select",:controller=>:sub_collections, :action=>"show"}))) + " (" + format_num(item.hits) + ")"
-    #link_to_unless(options[:suppress_link], item.value, collection_sub_collection_path({:collection_id=>params[:id], :class=>"facet_select"}.merge!(add_facet_params_and_redirect(facet_solr_field, item.value)))) + " (" + format_num(item.hits) + ")" 
+    link_to_unless(options[:suppress_link], item.value, collection_path(add_facet_params_and_redirect(facet_solr_field, item.value).merge!({:class=>"facet_select", :action=>"show"}))) + " (" + format_num(item.hits) + ")"
   end
 
   # Standard display of a SELECTED facet value, no link, special span
@@ -28,7 +27,7 @@ module ApplicationHelper
     '<span class="selected">' +
     render_facet_value(facet_solr_field, item, :suppress_link => true) +
     '</span>' +
-      ' [' + link_to("remove", collection_path(remove_facet_params(facet_solr_field, item.value, params).merge!(:controller=>"collections",:id=>params[:collection_id])), :class=>"remove") + ']'
+      ' [' + link_to("remove", collection_path(remove_facet_params(facet_solr_field, item.value, params)), :class=>"remove") + ']'
   end
 
   def generate_pid(key, content_model)
@@ -170,5 +169,39 @@ module ApplicationHelper
     @collection ? @collection.name : "All Collections"
   end 
 
+  def render_browse_facet_div(browse_facets, response)
+    return_str = '<div>'
+    browse_facet = browse_facets.first
+    solr_fname = browse_facet.to_s
+    display_facet = response.facets.detect {|f| f.name == solr_fname}
+    unless display_facet.nil?
+      if display_facet.items.length > 0
+        return_str += '<h3>' + facet_field_labels[display_facet.name] + '</h3>'
+        return_str += '<ul style="display:block">'
+        display_facet.items.each do |item|
+          return_str += '<li>'
+          if facet_in_params?( display_facet.name, item.value )
+            return_str += render_selected_facet_value(display_facet.name, item)
+            if browse_facets.length > 1
+            #call recursively until no more facets in array
+            return_str += render_browse_facet_div(browse_facets.slice(1,browse_facets.length-1), response)
+          end
+          else
+            return_str += render_browse_facet_value(display_facet.name, item)     
+          end
+          return_str += '</li>'
+        end
+        return_str += '</ul>'
+      end
+    end
+    return_str += '</div>'
+  end
+
+  def browse_facet_selected?(browse_facets)
+    browse_facets.each do |facet|
+      return true if params[:f] and params[:f][facet]
+    end
+    return false
+  end
 
 end

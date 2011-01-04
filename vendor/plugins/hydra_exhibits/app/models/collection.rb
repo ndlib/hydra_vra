@@ -15,8 +15,11 @@ class Collection < ActiveFedora::Base
   # Uses the Hydra MODS Article profile for tracking most of the descriptive metadata
   has_metadata :name => "descMetadata", :type => EadXml
 
-  # A place to put extra metadata values
-  has_metadata :name => "properties", :type => ActiveFedora::MetadataDatastream do |m|
+  # A datastream to hold browseable facet list
+  has_metadata :name => "filters", :type => ActiveFedora::MetadataDatastream do |m|
+    m.field "facets", :string
+    m.field "query", :string
+    m.field "tags", :string
   end
 
   attr_accessor :facet_members
@@ -38,7 +41,7 @@ class Collection < ActiveFedora::Base
   end
 
   def browse_facets
-    [{"dsc_0_collection_0_did_0_unittitle_0_imprint_0_publisher_facet"=>"dsc_0_collection_0_did_0_unittitle_0_unittitle_content_facet"}]
+    datastreams["filters"].fields[:facets][:values]
   end
   
   def insert_new_node(type, opts)

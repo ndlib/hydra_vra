@@ -117,6 +117,9 @@ module BatchIngester
         update_fields(collection, [:archive_desc, :acqinfo, :head], args[:prefercite_head])
         update_fields(collection, [:archive_desc, :prefercite], args[:prefercite_info])
         update_fields(collection, [:archive_desc, :prefercite, :head], args[:prefercite_head])
+        collection.datastreams["filters"].fields[:facets][:values] << "dsc_0_collection_0_did_0_unittitle_0_imprint_0_publisher_facet"
+        collection.datastreams["filters"].fields[:facets][:values] << "dsc_0_collection_0_did_0_unittitle_0_unittitle_content_facet"
+        puts "#{collection.datastreams["browse_filters"].inspect}"
         collection.save
       else
         objmap = result.to_a[0]

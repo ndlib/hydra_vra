@@ -1,0 +1,28 @@
+<%- content_for :sidebar do -%>
+  <%= render :partial => 'shared/navigation', :locals => {:browse_facets => @browse_facets} -%>
+<%- end -%>
+
+<h1>Sub Collection Title</h1>
+
+<p>
+  Description
+</p>
+
+<%- if @essay -%>
+  <h3><%= link_to "Essay: \"#{@essay.title}\"", collection_essay_path(params[:collection_id], @essay.pid, :genre_form_id => @genre_form) %></h3>
+  <p>
+    <%= @essay.introduction %>
+    <%= link_to "[Read the complete essay]", collection_essay_path(params[:collection_id], @essay.pid, :genre_form_id => @genre_form) %>
+  </p>
+<%- else -%>
+  <h3><%= "Essay forthcoming..." %></h3>
+<%- end -%>
+
+<h3><%= link_to "Complete list of sources related to <em>#{""}</em> at Notre Dame", catalog_index_path(:params => {"f[type_facet][]" => ""}) %></h3>
+
+<hr />
+
+<h2>Featured sources</h2>
+
+<dl class="item-list">
+</dl>

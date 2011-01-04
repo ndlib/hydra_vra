@@ -1,46 +1,7 @@
 <!--this was id="facets" but removed for now so items below are always unhidden, will style more later-->
-<div>
-  	
+<div>	
   <!--currently just accounting for one level but might want to be more sophisticated and have something like expandable/collaspable tree-->
-  <% browse_facets.each do |browse_facet|%>
-    <div>
-      <% (browse_facet.is_a? Hash) ? solr_fname = browse_facet.keys.first : solr_fname = browse_facet.to_s%>
-      <% display_facet = @response.facets.detect {|f| f.name == solr_fname}%>
-      <% unless display_facet.nil?%>
-        <% if display_facet.items.length > 0 %>
-          <h3><%=facet_field_labels[display_facet.name] -%></h3>
-          <ul style="display:block">
-            <% display_facet.items.each do |item| -%>
-              <li>
-                <% if facet_in_params?( display_facet.name, item.value ) %>              
-                  <%= render_selected_facet_value(display_facet.name, item) %>
-                  <% if browse_facet.is_a? Hash %>
-                    <% display_second_facet = @response.facets.detect {|f| f.name == browse_facet[solr_fname]}%>
-                    <%(browse_facet[solr_fname].is_a? Hash) ? solr_second_fname = browse_facet[solr_fname].keys.first : solr_second_fname = browse_facet[solr_fname]%>
-                    <% unless display_second_facet.nil? && display_second_facet.items.length <= 0%>
-                      <ul style="display:block">
-                        <% display_second_facet.items.each do |second_item| %>
-                          <li>
-                            <% if facet_in_params?( display_second_facet.name, second_item.value ) %>              
-                              <%= render_selected_facet_value(display_second_facet.name, second_item) %>              
-                            <% else %>              
-                              <%= render_browse_facet_value(display_second_facet.name, second_item) %>
-                            <% end %>
-                          </li>              
-                        <% end -%> 
-                      </ul>
-                    <% end %>
-                  <% end %>
-                <% else %>              
-                  <%= render_browse_facet_value(display_facet.name, item) %>              
-                <% end -%>
-              </li>
-            <% end %>          
-          </ul>
-        <% end %>
-      <% end %>
-    </div>
-  <% end %>
+  <%=render_browse_facet_div(browse_facets,@response)%>
 </div>
 
 
