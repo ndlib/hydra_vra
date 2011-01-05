@@ -236,7 +236,7 @@ module BatchIngester
     def item_ingest_each_row(row)
       puts "Rows: #{row.inspect}"
       if (row[0].blank? || row[1].blank?)
-         raise "This entry #{row.inspect} has empty item information"
+         puts "This entry #{row.inspect} has empty item information, skip to next row"
       else
         key="ITEM_#{row[1]}"
         serial_number = row[12]
