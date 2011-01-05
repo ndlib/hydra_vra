@@ -2,7 +2,7 @@ class PropertiesDatastream < ActiveFedora::MetadataDatastream
 
   def self.from_xml(tmpl, node) # :nodoc:
     node.xpath("./foxml:datastreamVersion[last()]/foxml:xmlContent/fields/node()").each do |f|
-      field(f.name, :string) if fields[f.name.to_sym].nil?
+      tmpl.field(f.name, :string) if tmpl.fields[f.name.to_sym].nil?
       tmpl.send("#{f.name}_append", f.text)
     end
     tmpl.send(:dirty=, false)
