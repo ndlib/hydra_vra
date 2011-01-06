@@ -4,12 +4,19 @@
   Description
 </p>
 
-<%- if @essay -%>
-  <h3><%= link_to "Essay: \"#{@essay.title}\"", collection_essay_path(params[:collection_id], @essay.pid, :genre_form_id => @genre_form) %></h3>
-  <p>
-    <%= @essay.introduction %>
-    <%= link_to "[Read the complete essay]", collection_essay_path(params[:collection_id], @essay.pid, :genre_form_id => @genre_form) %>
-  </p>
+<% if !@subset.nil?%>
+  <h3>Matched subset</h3>
+<% else %>
+  <h3>Did not match subset</h3>
+<% end %>
+<% if @descriptions.length > 0 %>
+  <% @descriptions.each do |description|%>
+    <h3><%= link_to "Essay: \"#{description.title}\"", essay_path(params[:collection_id], @essay.pid) %></h3>
+    <p>
+      <%= description.introduction %>
+      <%= link_to "[Read the complete essay]", essay_path(params[:collection_id], @essay.pid) %>
+    </p>
+  <% end %>
 <%- else -%>
   <h3><%= "Essay forthcoming..." %></h3>
 <%- end -%>
