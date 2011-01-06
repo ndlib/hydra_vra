@@ -6,7 +6,9 @@ class Collection < ActiveFedora::Base
   include Hydra::ModelMethods
 
   has_bidirectional_relationship "members", :has_member, :is_member_of
-  has_bidirectional_relationship "highlighted", :has_subset, :is_subset_of
+  #reusing parts here because has_subset taken already
+  has_bidirectional_relationship "highlighted", :has_part, :is_part_of
+  has_bidirectional_relationship "subsets", :has_subset, :is_subset_of
   has_bidirectional_relationship  "descriptions",   :has_description, :is_description_of
     
   # Uses the Hydra Rights Metadata Schema for tracking access permissions & copyright
@@ -22,7 +24,28 @@ class Collection < ActiveFedora::Base
     m.field "tags", :string
   end
 
+  def intialize(attrs = {})
+    super
+    @facet_subset_map = {}
+    load_facet_subset_map
+  end
+
   attr_accessor :facet_members
+
+  def load_facet_subsets_map
+    @facet_subsets_map = {}
+    subsets.each do |subset|
+      if subset.respond_to? :selected_facets
+        @facet_subsets_map.merge!({subset.selected_facets=>subset})
+      end
+    end
+    @facet_subsets_map
+  end
+
+  def facet_subsets_map
+    load_facet_subsets_map if @facet_subsets_map.nil? || @relationships_are_dirty || rels_ext.relationships_are_dirty
+    @facet_subsets_map
+  end
 
   def facet_members(refresh=false)
     if facet_members.nil? || refresh

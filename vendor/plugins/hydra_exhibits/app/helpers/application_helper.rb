@@ -197,11 +197,4 @@ module ApplicationHelper
     return_str += '</div>'
   end
 
-  def browse_facet_selected?(browse_facets)
-    browse_facets.each do |facet|
-      return true if params[:f] and params[:f][facet]
-    end
-    return false
-  end
-
 end

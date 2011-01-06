@@ -29,11 +29,16 @@ class CollectionsController < ApplicationController
     @extra_controller_params ||= {}
     (@response, @document_list) = get_search_results( @extra_controller_params.merge!(:q=>build_lucene_query(params[:q])) )
     @browse_facets = @collection.browse_facets
-
+    @facet_subsets_map = @collection.facet_subsets_map
+    @selected_browse_facets = get_selected_browse_facets(@browse_facets) 
+    #subset will be nil if the condition fails
+    @subset = @facet_subsets_map[@selected_browse_facets] if @selected_browse_facets.length > 0 && @facet_subsets_map[@selected_browse_facets]
     #call collection.discriptions once since querying solr everytime on inbound relationship
-    descriptions = @collection.descriptions
-    if descriptions.any?
-      @description = essays.first
+    if browse_facet_selected?(@browse_facets)
+      @subset.nil? ? @descriptions = [] : @descriptions = @subset.descriptions
+    else
+      #use collection descriptions
+      @descriptions = @collection.descriptions
     end
   end
 
@@ -61,33 +66,22 @@ class CollectionsController < ApplicationController
   end
   helper_method :facet_limit_hash
 
-  private
+  def browse_facet_selected?(browse_facets)
+    browse_facets.each do |facet|
+      return true if params[:f] and params[:f][facet]
+    end
+    return false
+  end
+  helper_method :browse_facet_selected?
 
-  #returns an array of selected display facets from Blacklight marked for browse navigation 
-#  def collection_browse_facets
-#    @extra_controller_params ||= {}
-#    (@response, @document_list) = get_search_results( @extra_controller_params.merge!(:q=>build_lucene_query(params[:q])) )
-
-#    browse_facets = []
-#    @collection.browse_facets.each do |browse_facet|
-#      (browse_facet.is_a? Hash) ? solr_fname = browse_facet.keys.first : solr_fname = browse_facet.to_s
-#      display_facet = @response.facets.detect {|f| f.name == solr_fname}
-#      unless display_facet.nil?
-#        logger.debug("Display facet found: #{display_facet.inspect}")
-#        browse_facets << display_facet
-#        if browse_facet.is_a? Hash
-#          display_second_facet = @response.facets.detect {|f| f.name == browse_facet[solr_fname]}
-#          (browse_facet[solr_fname].is_a? Hash) ? solr_second_fname = browse_facet[solr_fname].keys.first : solr_second_fname = browse_facet[solr_fname].to_s
-#          unless display_second_facet.nil?
-#            browse_facets << display_second_facet
-#          else
-#            logger.debug("display second facet is nil for #{solr_second_fname}")
-#          end
-#        end
-#      else 
-#        logger.debug("display facet is nil for #{solr_fname}")
-#      end
-#    end
-#    browse_facets
-#  end
+  def get_selected_browse_facets(browse_facets)
+    selected = {}
+    if params[:f]
+      browse_facets.each do |facet|
+        selected.merge!({facet.to_sym=>params[:f][facet].first}) if params[:f][facet]
+      end
+    end
+    selected
+  end
+  helper_method :get_selected_browse_facets
 end
