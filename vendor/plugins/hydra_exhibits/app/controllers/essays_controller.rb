@@ -43,8 +43,9 @@ class EssaysController < ApplicationController
     render :partial=>"new", :layout=>false
   end
 
-  def create    
-    @essay = create_and_save_essay_from_params
+  def create
+    logger.debug "Essay params: #{params.inspect}"
+    @essay = create_and_save_essay
     apply_depositor_metadata(@essay)
     if !params[:asset_id].nil?
       @asset =  ActiveFedora::Base.load_instance(params[:asset_id])      
@@ -120,7 +121,9 @@ class EssaysController < ApplicationController
     end
     @essay=af_model.load_instance(params[:id])    
     remove_named_relationship(@essay, params[:collection_content_type], params[:collection_pid])
-    render :text => "Deleted #{params[:id]} from realtionships from #{params[:collection_pid]}."
+    @essay.delete
+    flash[:notice]= "Deleted essay " + params[:id]
+    #render :text => "Deleted #{params[:id]} from relationships from #{params[:collection_pid]}."
   end
 
   def show

@@ -1,0 +1,7 @@
+<%- content_for :sidebar do -%>
+  <%= render :partial => "shared/navigation", :locals => {:browse_facets => @browse_facets} %>
+<%- end -%>
+
+<% if browse_facet_selected?(@browse_facets)%>
+  <%= render :partial => 'collections/show_sub_collection' %>
+<% end %>

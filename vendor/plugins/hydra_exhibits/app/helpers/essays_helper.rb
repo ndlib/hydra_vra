@@ -13,7 +13,7 @@ module EssaysHelper
   #
   # @return [FileAsset] the File Asset
   def create_essay
-    essay_asset = Essay.new
+    essay_asset = Essay.new(:namespace=>"RBSC-CURRENCY")
     logger.error("Essay Create with pid #{essay_asset.pid}")
     return essay_asset
   end
