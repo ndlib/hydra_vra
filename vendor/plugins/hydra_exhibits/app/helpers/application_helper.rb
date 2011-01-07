@@ -70,6 +70,25 @@ module ApplicationHelper
 
     return false
   end
+
+  def edit_and_browse_subcollection_links(subcollection)
+    result = ""
+    if params[:action] == "edit"
+      result << "<a href=\"#{catalog_path(@document[:id], :viewing_context=>"browse")}\" class=\"browse toggle\">Browse Subcollection</a>"
+      result << "<span class=\"edit toggle active\">Edit Subcollection</span>"
+    else
+      result << "<span class=\"browse toggle active\">Browse</span>"
+      if(subcollection.nil?)
+        result << "<a href=\"#{url_for(:action => "new", :controller => "subcollections", :content_type => "sub_collection", :collection_id => @document[:id], :selected_facets => params[:f] )}\" class=\"edit toggle\">Edit Subcollection</a>"
+      else
+        result << "<a href=\"#{edit_catalog_path(subcollection.id)}\" class=\"edit toggle\">Edit Subcollection</a>"
+      end
+
+    end
+    # result << link_to "Browse", "#", :class=>"browse"
+    # result << link_to "Edit", edit_document_path(@document[:id]), :class=>"edit"
+    return result
+  end
   
   def app_rich_text_area(content_type,pid, datastream_name, opts={})
     field_name = "essay_content"

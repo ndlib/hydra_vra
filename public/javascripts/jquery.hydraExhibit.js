@@ -2,12 +2,11 @@
    /*  Initialize the form for inserting new Person (individual) permissions
    *  ex. $("#add-contributor-box").hydraNewContributorForm
    */
-    var test = "";
-    $("div.textile-text", this).live('click', function() {
-
-        test = $("div.textile-text").last()[0].innerHTML;
-        alert("Tat->"+test);
-      });
+   var test = "";
+   $("div.textile-text", this).live('click', function() {
+     test = $("div.textile-text").last()[0].innerHTML;
+     alert("Tat->"+test);
+   });
    $.fn.essayTextareaField = function(settings) {
      //alert("essayTextareaField intialize")
      var config = {
@@ -77,19 +76,19 @@
 
    };
 
-      $.fn.insertTextareaValue = function(settings) {
-      //alert("insertTextareaValue")
-      var config = {};
-      if (settings) $.extend(config, settings);
-      $("a.addval.rich-textarea", this).click(function(e) {
-        var name = $("input#essay_title").first().attr("value");
-        if (name == "" || name.length ==0) {
-          alert("Please enter name before adding new essay")
-          return false;
-        }
-        $.fn.hydraExhibit.insertEssay(this,e);    
-      });
-    };
+   $.fn.insertTextareaValue = function(settings) {
+     //alert("insertTextareaValue")
+     var config = {};
+     if (settings) $.extend(config, settings);
+     $("a.addval.rich-textarea", this).click(function(e) {
+       /*var name = $("input#essay_title").first().attr("value");
+       if (name == "" || name.length ==0) {
+         alert("Please enter name before adding new essay")
+         return false;
+       }*/
+       $.fn.hydraExhibit.insertEssay(this,e);
+     });
+   };
 
      $.fn.essayDeleteButton = function(settings) {
          alert("Essay Delete")
@@ -157,8 +156,8 @@
 
        var values_list = $("ol[rel="+fieldName+"]");
        var new_value_index = values_list.children('li').size();
-       var essayName = $("input#essay_title").first().attr("value");
-       var params = "?datastream_name="+datastreamName+"&content_type="+contentType+"&essay_name="+essayName;
+       //var essayName = $("input#essay_title").first().attr("value");
+       var params = "?datastream_name="+datastreamName+"&content_type="+contentType//+"&essay_name="+essayName;
        var assetUrl = $("input#show_essay_url").first().attr("value")+params;
        var addDiv = $("div#add-essay-div").last()
 

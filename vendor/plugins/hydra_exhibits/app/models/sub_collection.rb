@@ -4,7 +4,7 @@ class SubCollection < ActiveFedora::Base
 
   include Hydra::GenericContent
 
-  has_bidirectional_relationship "member_of", :is_member_of, :has_member
+  has_bidirectional_relationship "subset_of", :is_subset_of, :has_subset  
   has_bidirectional_relationship "members", :has_member, :is_member_of
   has_bidirectional_relationship "highlighted", :has_part, :is_part_of
   has_bidirectional_relationship  "descriptions",   :has_description, :is_description_of
@@ -16,6 +16,8 @@ class SubCollection < ActiveFedora::Base
   # Assumes each field name is the facet and values selected are in values
   has_metadata :name => "selected_facets", :type => PropertiesDatastream
 
+  alias_method :id, :pid
+  
   #returns hash of facet and value pairs
   def selected_facets
     datastreams["selected_facets"].values
@@ -34,6 +36,10 @@ class SubCollection < ActiveFedora::Base
     #filter would combine members facet (if defined) and highlighted facets,
     #or if not defined apply filter to relationship members list?
     {}
+  end
+
+  def description_list
+    descriptions.any? ? descriptions : nil
   end
 
   

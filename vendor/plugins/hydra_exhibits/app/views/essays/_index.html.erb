@@ -11,6 +11,7 @@
             <%- essays.each do |essay| -%>              
 
                 <%=app_rich_text_area("essay",essay.pid, essay.essaydatastream_ids.first) %>
+                <a id="remove_essay" class="destructive destroy_essay" href=# action="<%= essay_path(essay.pid)%>" title="Remove Essay"> Delete</a>
 
             <%- end -%>
 
