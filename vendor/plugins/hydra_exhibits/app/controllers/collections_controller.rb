@@ -4,14 +4,6 @@ require "#{RAILS_ROOT}/vendor/plugins/hydra_exhibits/app/models/ead_xml.rb"
 
 class CollectionsController < CatalogController
 
-  #caches_page :index, :show
-
-  include MediaShelf::ActiveFedoraHelper
-  include Blacklight::SolrHelper
-  include Hydra::RepositoryController
-  include Hydra::AccessControlsEnforcement
-
-  before_filter :require_fedora, :require_solr
   before_filter :initialize_collection, :except=>[:index]
 
   def initialize_collection
