@@ -262,6 +262,27 @@ module ApplicationHelper
   def facet_in_temp?(temp, field, value)
     temp and temp[field] and temp[field].include?(value)
   end
+
+  def display_thumnail( document )
+    document[:has_part_s] ? true : false
+  end
+
+  def thumbnail_class( document )
+    display_thumnail( document ) ? ' with-thumbnail' : ''
+  end
+  
+  def document_partial_name(document)
+    document[Blacklight.config[:show][:display_type]].first if document[Blacklight.config[:show][:display_type]]
+  end
+
+  def render_document_index_partial(doc, counter, action_name)
+    format = document_partial_name(doc)
+    begin
+      render :partial=>"catalog/_#{action_name}_partials/#{format}", :locals=>{:document=>doc, :counter=>counter}      
+    rescue ActionView::MissingTemplate
+      render :partial=>"catalog/_#{action_name}_partials/default", :locals=>{:document=>doc}
+    end
+  end
   
 end
 
