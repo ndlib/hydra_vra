@@ -24,11 +24,23 @@ module ApplicationHelper
 
   # Standard display of a SELECTED facet value, no link, special span
   # with class, and 'remove' button.
-  def render_selected_facet_value(facet_solr_field, item)
+  def render_selected_browse_facet_value(facet_solr_field, item, browse_facets)
     '<span class="selected">' +
     render_facet_value(facet_solr_field, item, :suppress_link => true) +
     '</span>' +
-      ' [' + link_to("remove", collection_path(remove_facet_params(facet_solr_field, item.value, params)), :class=>"remove") + ']'
+      ' [' + link_to("remove", collection_path(remove_browse_facet_params(facet_solr_field, item.value, params, browse_facets)), :class=>"remove") + ']'
+  end
+
+  #Remove current selected facet plus any child facets selected
+  def remove_browse_facet_params(solr_facet_field, value, params, browse_facets)
+    new_params = remove_facet_params(solr_facet_field, value, params)
+    #iterate through browseable facets from current on down
+    selected_browse_facets = get_selected_browse_facets(browse_facets)
+    index = browse_facets.index(solr_facet_field)
+    browse_facets.slice(index + 1, browse_facets.length - index + 1).each do |f|
+      new_params = remove_facet_params(f, selected_browse_facets[f.to_sym], new_params) if selected_browse_facets[f.to_sym]
+    end
+    new_params
   end
 
   def generate_pid(key, content_model)
@@ -189,7 +201,7 @@ module ApplicationHelper
               return_str+=get_complete_facet(browse_facets, response)
               #return_str += render_browse_facet_div(browse_facets.slice(1,browse_facets.length-1), response)
             elsif browse_facets.length == 1
-              return_str += render_selected_facet_value(display_facet.name, item)
+              return_str += render_selected_browse_facet_value(display_facet.name, item, browse_facets)
             end
           else
             return_str += '<li>'
@@ -226,7 +238,7 @@ module ApplicationHelper
             if facet_in_params?(display_facet.name, item.value )
               if display_facet_with_f.items.length > 0
                 display_facet_with_f.items.each do |item_with_f|
-                  return_str += render_selected_facet_value(display_facet_with_f.name, item_with_f)
+                  return_str += render_selected_browse_facet_value(display_facet_with_f.name, item_with_f, browse_facets)
                   if browse_facets.length > 1
                     return_str += render_browse_facet_div(browse_facets.slice(1,browse_facets.length-1), response)
                   end
