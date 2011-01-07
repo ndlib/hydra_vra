@@ -1,10 +1,31 @@
-<h1>Special Collections</h1>
+<% if params[:q].blank? and params[:f].blank? and params[:search_field].blank? %>
+	<%# if there are no input/search related params, display the "home" partial -%>
+	<%= render 'home' %>
+<% else %>
 
-<ul class="collection-list">
-  <%- @collections.each do |collection| -%>
-    <li>
-      <h2><%=link_to h( collection.name ), collection_path(collection) %></h2>
-      <p><%=h collection.description %></p>
-    </li>
-  <%- end -%>
-</ul>
+	<% @page_title = application_name + " Search Results" %>
+
+	<%= render :partial => 'search_form' %>
+	
+	<%= render :partial => 'did_you_mean' %>
+	
+	<%= render 'constraints', :localized_params=>params %>
+	
+	<div class="pagination">
+	  <h2>Results navigation</h2>
+	  <%= will_paginate @response.docs, :page_links => false, :class => 'prev_next_links' %>
+	  <%= will_paginate @response.docs, :container => false %>
+	</div>
+	
+	<%= render 'sort_and_per_page' %>
+	
+	<%= render :partial=>'document_list' %>
+
+	<div class="pagination">
+	  <%= will_paginate @response.docs, :page_links => false, :class => 'prev_next_links' %>
+	  <%= will_paginate @response.docs, :container => false %>
+	</div>
+
+	<%= render :partial=>'solr_request' %>
+
+<% end %>

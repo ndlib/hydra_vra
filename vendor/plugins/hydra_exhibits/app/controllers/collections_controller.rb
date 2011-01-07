@@ -2,7 +2,7 @@ require 'net/http'
 require 'mediashelf/active_fedora_helper'
 require "#{RAILS_ROOT}/vendor/plugins/hydra_exhibits/app/models/ead_xml.rb"
 
-class CollectionsController < ApplicationController
+class CollectionsController < CatalogController
 
   #caches_page :index, :show
 
@@ -12,22 +12,11 @@ class CollectionsController < ApplicationController
   include Hydra::AccessControlsEnforcement
 
   before_filter :require_fedora, :require_solr
+  before_filter :initialize_collection, :except=>[:index]
 
-  def index
-    @collections = Collection.find_by_solr(:all).hits.map{|result| Collection.load_instance_from_solr(result["id"])}
-    if @collections.size == 1
-      #just redirect to that collection if only one
-      redirect_to collection_path(@collections.first.pid)
-    else
-      render :layout => 'rbsc'
-    end
-  end
-
-  def show
-    @collection = Collection.load_instance_from_solr(params[:id])
-    #@browse_facets = collection_browse_facets
-    @extra_controller_params ||= {}
-    (@response, @document_list) = get_search_results( @extra_controller_params.merge!(:q=>build_lucene_query(params[:q])) )
+  def initialize_collection
+    params[:collection_id] ? collection_id = params[:collection_id] : collection_id = params[:id]
+    @collection = Collection.load_instance_from_solr(collection_id)
     @browse_facets = @collection.browse_facets
     @facet_subsets_map = @collection.facet_subsets_map
     @selected_browse_facets = get_selected_browse_facets(@browse_facets) 
@@ -40,7 +29,25 @@ class CollectionsController < ApplicationController
       #use collection descriptions
       @descriptions = @collection.descriptions
     end
+    @extra_controller_params ||= {}
+    (@response, @document_list) = get_search_results( @extra_controller_params.merge!(:q=>build_lucene_query(params[:q])) )
+    @browse_response = @response
   end
+
+  #def index
+  #  super
+    #render :partial=>"catalog/index"
+  #end
+  #def index
+  #  @collections = Collection.find_by_solr(:all).hits.map{|result| Collection.load_instance_from_solr(result["id"])}
+  #  if @collections.size == 1
+  #    #just redirect to that collection if only one
+  #    redirect_to collection_path(@collections.first.pid)
+  #  else
+  #    render :layout => 'rbsc'
+  #  end
+  #  super
+  #end
 
    # Look up configged facet limit for given facet_field. If no
   # limit is configged, may drop down to default limit (nil key)
