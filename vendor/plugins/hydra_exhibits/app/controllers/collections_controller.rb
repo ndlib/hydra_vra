@@ -26,20 +26,13 @@ class CollectionsController < CatalogController
     @browse_response = @response
   end
 
-  #def index
-  #  super
-    #render :partial=>"catalog/index"
-  #end
-  #def index
-  #  @collections = Collection.find_by_solr(:all).hits.map{|result| Collection.load_instance_from_solr(result["id"])}
-  #  if @collections.size == 1
-  #    #just redirect to that collection if only one
-  #    redirect_to collection_path(@collections.first.pid)
-  #  else
-  #    render :layout => 'rbsc'
-  #  end
-  #  super
-  #end
+  def index
+    redirect_to :controller=>'catalog'
+  end
+
+  def show
+    show_without_customizations
+  end
 
    # Look up configged facet limit for given facet_field. If no
   # limit is configged, may drop down to default limit (nil key)
