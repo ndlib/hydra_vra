@@ -1,5 +1,3 @@
-<form id="document_metadata" action="<%= url_for(:action=>"update", :controller=>"sub_collections", :content_type=>content)%>" method="post" data-resourceType="<%= content %>" accept-charset="utf-8">
-
-  <%= render :partial => "shared/edit_description", :locals => {:content => 'collection', :document_fedora => @document_fedora} %>
-  
+<form id="document_metadata" action="<%= url_for(:action=>"update", :controller=>"sub_collections", :content_type=>content)%>" method="post" data-resourceType="<%= content %>" accept-charset="utf-8" data-pid="<%= params[:id] %>" data-content-type="<%= content %>">
+  <%= render :partial => "shared/edit_description", :locals => {:content => 'collection', :document_fedora => @document_fedora} %>  
 </form>

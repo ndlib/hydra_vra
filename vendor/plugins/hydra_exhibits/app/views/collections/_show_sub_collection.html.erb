@@ -1,4 +1,10 @@
-<h1>Sub Collection Title</h1>
+<h1>Sub Collection Title</h1> 
+
+<span class="edit-browse">
+  <% if editor? %>
+    <%= edit_and_browse_links %>
+  <% end -%>
+</span>
 
 <%#debug @subset.inspect%>
 
