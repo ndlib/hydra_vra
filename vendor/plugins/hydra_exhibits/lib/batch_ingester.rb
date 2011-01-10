@@ -144,21 +144,37 @@ module BatchIngester
       unless af_model
         af_model = Page
       end
-      pid= generate_pid(args[:pid_key], nil)
-      if(!asset_available(pid,content_type))
-        map = Hash.new
-        image_path = "/Path/of/the/image/dir/#{args[:image_name]}"#"/home/rbalekai/Desktop/hydra_images/#{args[:image_name]}"
-        map[:file] = File.new(image_path)
-        map[:mimeType] = "image/jpg"
-        map[:file_name] = args[:image_name]
-        map[:label] = "#{args[:image_title]}-#{args[:image_name]}"
-        page= af_model.new(:namespace=>"RBSC-CURRENCY")#(:pid=>pid)
-        page.content = map
-        item_pid = generate_pid("ITEM_#{args[:item_id]}",nil)
-        page.item_append(item_pid)
-        page.save
-        page.derive_all
-        page.save
+#      pid= generate_pid(args[:pid_key], nil)
+#      if(!asset_available(pid,content_type))
+      item_check = Component.find_by_fields_by_solr({"item_did_unitid_s"=>args[:item_id]})
+      if(item_check.to_a.length > 0)
+	page_check = Page.find_by_fields_by_solr({"name_s"=>args[:image_name]})
+	if(page_check.to_a.length < 1)
+          map = Hash.new
+          image_path = "/Path/of/the/image/dir/#{args[:image_name]}"
+	  if(File.exists?(image_path))
+            map[:file] = File.new(image_path)
+            map[:mimeType] = "image/tif"
+            map[:file_name] = args[:image_name]
+            map[:label] = "#{args[:image_title]}-#{args[:image_name]}"
+            page= af_model.new(:namespace=>"RBSC-CURRENCY")#(:pid=>pid)
+	    page.update_indexed_attributes({:title=>{0=>args[:image_title]}})
+	    page.update_indexed_attributes({:name=>{0=>args[:image_name]}})
+            page.content = map
+    	    page.item_append(item_check.to_a[0]["id"])
+#        item_pid = generate_pid("ITEM_#{args[:item_id]}",nil)
+#        page.item_append(item_pid)
+            page.save
+            page.derive_all
+            page.save
+	  else
+	    puts "Image not found: #{args[:image_name]}"
+	  end
+	else
+	  puts "Page already exists with Id:#{page_check.to_a[0]["id"]}"
+	end
+      else
+	puts "Couldn't find Item: #{args[:item_id]} for the image: #{args[:image_name]}.... Cannot create the page object...."
       end
     end
     
@@ -172,15 +188,15 @@ module BatchIngester
         id = key
         printer=row[9]
         engraver=row[5]
-        title=row[8]
+        title=row[11] #row[8]
         geog=row[10]
         publisher=row[6]
-        date=row[11]
+        date=row[8] #row[11]
         description=row[4]
         display=row[3]
         genreform=row[2]
-        key = "SUBCOLLECTION_#{key}"
-        attributes= {:pid_key => key, :abr_title=> abr_title, :title => title, :subcollection_id => id, :genreform => genreform, :display => display, :date => date, :description => description, :publisher => publisher, :geography => geog, :printer => printer, :engraver => engraver}
+        subcol_id = row[13] #"SUBCOLLECTION_#{key}"
+        attributes= {:key => subcol_id, :abr_title=> abr_title, :title => title, :subcollection_id => id, :genreform => genreform, :display => display, :date => date, :description => description, :publisher => publisher, :geography => geog, :printer => printer, :engraver => engraver}
         ingest_subcollection('component', attributes)
         puts "Attributes: #{attributes.inspect}"
       end
@@ -214,17 +230,19 @@ module BatchIngester
             update_fields(subcollection, [:dsc, :collection, :did, :origination, :printer], args[:printer])
             update_fields(subcollection, [:dsc, :collection, :did, :origination, :engraver], args[:engraver])
             #subcollection.update_indexed_attributes ({term=>{"0"=>value}} )
+            update_fields(subcollection, [:dsc, :collection, :did, :unittitle, :unitdate], args[:title]) #new stuff
+            update_fields(subcollection, [:dsc, :collection, :did, :unittitle, :imprint, :geogname], args[:geography])
             update_fields(subcollection, [:dsc, :collection, :did, :unittitle, :imprint, :publisher], args[:publisher])
-            update_fields(subcollection, [:dsc, :collection, :did, :unittitle, :unittitle_content], args[:title])
+            update_fields(subcollection, [:dsc, :collection, :did, :unittitle, :unittitle_content], args[:date]) #new stuff
             update_fields(subcollection, [:dsc, :collection, :scopecontent], utf_desc)
             update_fields(subcollection, [:dsc, :collection, :odd], args[:display])
             update_fields(subcollection, [:dsc, :collection, :controlaccess, :genreform], args[:genreform])
-            
-              
+            subcollection.update_indexed_attributes({:subcollection_id=>{0=>args[:key]}})
+            subcollection.update_indexed_attributes({:component_type=>{0=>"subcollection"}})
             subcollection.save
             puts "\r\n#{subcollection.datastreams["descMetadata"].to_xml}\r\n"
           else
-            objmap = result.to_a[0]
+            objmap = col_map.to_a[0]
             puts "Subcollection already exists with Id: #{objmap["id"]}. Cannot create duplicate object"
           end
         else
@@ -264,7 +282,7 @@ module BatchIngester
           end
           count += 1
         end
-        puts "Converted to: key ->#{key}, item_id ->#{serial_number}, collection_id -> #{collection_id}"
+#        puts "Converted to: key ->#{key}, item_id ->#{serial_number}, collection_id -> #{collection_id}"
         attributes= {:pid_key => key, :subcollection_id => collection_id, :dispay_title => display_title, :title => title, :item_id => item_id, :serial_number => serial_number, :display_signer => display_signer, :signer => signer, :physdesc => physdesc, :description => description, :plate_letter => plate_letter, :page_turn => page_turn, :provenance => provenance}
         ingest_item('component', attributes, images)
         puts "Attributes: #{attributes.inspect}"
@@ -276,17 +294,18 @@ module BatchIngester
       unless af_model
         af_model = Component
       end
-      pid= generate_pid(args[:pid_key], nil)
-      if(!asset_available(pid,content_type))
-        result = Component.find_by_fields_by_solr({"dsc_collection_did_unitid_unitid_identifier_s"=>args[:subcollection_id]})
+#      pid= generate_pid(args[:pid_key], nil)
+#      if(!asset_available(pid,content_type))
+        result = Component.find_by_fields_by_solr({"subcollection_id_s"=>args[:subcollection_id]})
         if(result.to_a.length > 0)
           item_check = Component.find_by_fields_by_solr({"item_did_unitid_s"=>args[:item_id]})
           if(item_check.to_a.length < 1)
             item= af_model.new(:namespace=>"RBSC-CURRENCY")#(:pid=>pid, :component_level => "c02")
             item.datastreams["descMetadata"].ng_xml = EadXml.item_template
             item.save
-            subcollection_pid = generate_pid("SUBCOLLECTION_#{args[:subcollection_id]}",nil)
-            item.members_append(subcollection_pid)
+	    item.members_append(result.to_a[0]["id"])
+#            subcollection_pid = generate_pid("SUBCOLLECTION_#{args[:subcollection_id]}",nil)
+#            item.members_append(subcollection_pid)
             item.save
             disp = args[:display_title].nil? ? "" : args[:display_title]
             item.datastreams["rightsMetadata"].update_permissions({"group"=>{"archivist"=>"edit"}})
@@ -309,14 +328,19 @@ module BatchIngester
               update_image_fields(item, [:item, :daogrp, :daoloc, :daoloc_href], "#{i.to_s}", (counter - 1).to_s)
               counter += 1
             end
+            item.update_indexed_attributes({:item_id=>{0=>args[:item_id]}})
+            item.update_indexed_attributes({:component_type=>{0=>"item"}})
             item.save
           else
             puts "Item already exists with Id: #{item_check.to_a[0]["id"]}. Cannot create duplicate object"
           end
         else
           puts "Subcollection does not exist. Cannot create Item without Parent Object"
+	  file = File.open("/home/rbalekai/Desktop/item.txt", "a")
+	  file.puts args[:item_id]
+	  file.close
         end
-      end
+#      end
     end
 
     def load_dependency_file(id,file)

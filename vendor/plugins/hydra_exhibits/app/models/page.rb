@@ -17,6 +17,7 @@ class Page < ActiveFedora::Base
     m.field 'collection', :string
     m.field 'depositor', :string
     m.field 'title', :string
+    m.field 'name', :string
   end
   
 #  def initialize( attrs={} )
@@ -34,7 +35,7 @@ class Page < ActiveFedora::Base
       if file.has_key? :blob
         from_binary(file, ds_name)
       elsif file.has_key? :file
-        add_file_datastream(file[:file], :dsid => ds_name.upcase, :label => ds_name, :mimeType => mime_type(file[:file_name]))
+        add_file_datastream(file[:file], :dsid => ds_name, :label => ds_name, :mimeType => mime_type(file[:file_name]))
       end
     end
   end
