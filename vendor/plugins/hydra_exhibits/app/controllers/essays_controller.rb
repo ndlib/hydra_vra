@@ -98,7 +98,7 @@ class EssaysController < ApplicationController
         @asset = the_model.load_instance(params[:id])
         @essay=Essay.load_instance(@essay.pid)
       end
-      logger.debug "Created #{@essay.pid}. Now asset has #{@asset.description_inbound_ids.count} essays and pids are #{@asset.description_inbound_ids}"
+      logger.debug "Created #{@essay.pid}. Now asset has #{@asset.descriptions_inbound_ids.count} essays and pids are #{@asset.descriptions_inbound_ids}"
     end
 
     respond_to do |want|
