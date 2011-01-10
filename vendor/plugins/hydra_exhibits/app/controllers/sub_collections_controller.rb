@@ -1,6 +1,6 @@
 require 'mediashelf/active_fedora_helper'
 
-class SubcollectionsController < ApplicationController
+class SubCollectionsController < ApplicationController
 
   include Hydra::AssetsControllerHelper
   include Hydra::FileAssetsHelper
@@ -52,7 +52,7 @@ class SubcollectionsController < ApplicationController
       @collection.save
     end
     logger.debug("Selected faceted added to subcollection: #{@subcollection.selected_facets}")
-    redirect_to url_for(:action=>"edit", :controller=>"catalog", :id=>@subcollection.id)
+    redirect_to url_for(:action=>"edit", :controller=>"catalog", :id=>@subcollection.id, :selected_facet=>params[:f],:class=>"facet_selected", :collection_id=>params[:collection_id])
   end
 
   def show

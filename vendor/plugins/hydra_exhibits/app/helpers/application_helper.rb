@@ -74,14 +74,14 @@ module ApplicationHelper
   def edit_and_browse_subcollection_links(subcollection)
     result = ""
     if params[:action] == "edit"
-      result << "<a href=\"#{catalog_path(@document[:id], :viewing_context=>"browse")}\" class=\"browse toggle\">Browse Subcollection</a>"
-      result << "<span class=\"edit toggle active\">Edit Subcollection</span>"
+      result << "<a href=\"#{catalog_path(@document[:id], :viewing_context=>"browse")}\" class=\"browse toggle\">Browse</a>"
+      result << "<span class=\"edit toggle active\">Edit Essay</span>"
     else
       result << "<span class=\"browse toggle active\">Browse</span>"
       if(subcollection.nil?)
-        result << "<a href=\"#{url_for(:action => "new", :controller => "subcollections", :content_type => "sub_collection", :collection_id => @document[:id], :selected_facets => params[:f] )}\" class=\"edit toggle\">Edit Subcollection</a>"
+        result << "<a href=\"#{url_for(:action => "new", :controller => "sub_collections", :content_type => "sub_collection", :collection_id => @document[:id], :selected_facets => params[:f] )}\" class=\"edit toggle\">Edit Subcollection</a>"
       else
-        result << "<a href=\"#{edit_catalog_path(subcollection.id)}\" class=\"edit toggle\">Edit Subcollection</a>"
+        result << "<a href=\"#{edit_catalog_path(subcollection.id, :class => "facet_selected", :collection_id => @document[:id], :f => params[:f])}\" class=\"edit toggle\">Edit Essay</a>"
       end
 
     end
@@ -135,6 +135,16 @@ module ApplicationHelper
     "<a class='addval rich-textarea' href='#' data-datastream-name=\"#{datastream_name}\" content-type=\"#{opts[:content_type]}\" rel=\"#{field_name}\" title='#{link_text}'>#{link_text}</a>"    
   end
 
+  def load_essay(essay_obj)
+    #af_model = retrieve_af_model(content_type)
+    #logger.error("cm:#{content_type.inspect}, pid:#{pid.inspect}, ds:#{datastream_name.inspect}")
+    #raise "Content model #{content_type} is not of type ActiveFedora:Base" unless af_model
+    resource = essay_obj.class.load_instance(essay_obj.pid)
+    logger.error("Model: #{essay_obj.class}, resource:#{resource.pid}")
+    content = resource.essaydatastream(resource.essaydatastream_ids.first).first.content
+    return content
+  end
+
   #
   #  Link to the main browse page for the collection of items displayed
   #
@@ -166,7 +176,17 @@ module ApplicationHelper
       link_to "Return to collection home", collections_path
 #    end
     
-  end  
+  end
+
+  def link_back_to_collection(opts={:label=>'Back to facets'})
+    logger.debug("params: #{params.inspect}")
+    # params[:f].dup ||
+    query_params =  {}
+    query_params.merge!({:id=>params[:collection_id]})
+    query_params.merge!({:f=>params[:f]})
+    link_url = collection_path(query_params)
+    link_to opts[:label], link_url    
+  end
 
   def breadcrumb_builder
     breadcrumb_html = ''

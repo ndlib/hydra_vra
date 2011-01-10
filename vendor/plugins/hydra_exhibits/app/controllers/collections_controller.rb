@@ -21,6 +21,7 @@ class CollectionsController < CatalogController
       #use collection descriptions
       @descriptions = @collection.descriptions
     end
+    logger.debug("Description: #{@descriptions}")
     @extra_controller_params ||= {}
     (@response, @document_list) = get_search_results( @extra_controller_params.merge!(:q=>build_lucene_query(params[:q])) )
     @browse_response = @response

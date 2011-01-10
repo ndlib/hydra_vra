@@ -95,14 +95,19 @@
          var config = {};
          if (settings) $.extend(config, settings);
          //alert("before this function");
-         this.each(function() {
+         $("a.destroy_essay", this).click(function(e) {
+            alert("lotDeleteButtton live");
+            $.fn.hydraExhibit.deleteEssay(this,e);
+            //e.preventDefault();
+         });
+         /*this.each(function() {
            //alert("this function");
            $(this).unbind('click.hydra').bind('click.hydra', function(e) {
              $.fn.hydraExhibit.deleteEssay(this, e);
              e.preventDefault();
            })
-         });
-         return this;
+         });*/
+         //return this;
       };
       /*$.fn.addEssayButton = function(settings) {
          var config = {};
@@ -144,8 +149,31 @@
        });
      },*/
 
-     deleteEssay: function(el){
-         alert("deleteEssay Function")
+     deleteEssay: function(element){
+       $element = $(element)       
+       var $essayNode = $(element).closest(".remove-essay-div")
+       var url =$(element).attr("action");
+       var parent_pid = $("form#document_metadata").first().attr("data-pid");
+       var parent_content_type = $("form#document_metadata").attr("data-content-type");
+       var params ="?asset_id="+parent_pid+"&asset_content_type="+parent_content_type;
+       url=url+params;
+       alert("URL: "+url +" Closet Nose"+$essayNode);
+       //$essayNode.animate({'backgroundColor':'#fb6c6c'},300);
+       $.ajax({
+         type: "DELETE",
+         url: url,
+         dataType: "html",
+         beforeSend: function() {
+            //alert("change color")
+   			$essayNode.animate({'backgroundColor':'#fb6c6c'},300);
+         },
+         success: function() {
+           //alert("trying to hide")
+           $essayNode.slideUp(300,function() {
+             $essayNode.remove();
+           });
+         }
+       });
      },
 
      insertEssay: function(element){      
@@ -167,9 +195,6 @@
 
        //$item.appendTo(values_list.last());
        $item.appendTo(addDiv);
-
-       alert("Test->"+test);
-       console.log("Test->"+test);
 
        $("div.textile-text", $item).editable(assetUrl, {
           method    : "PUT",
