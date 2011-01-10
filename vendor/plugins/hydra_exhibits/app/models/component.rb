@@ -21,6 +21,7 @@ class Component < ActiveFedora::Base
   has_metadata :name => "properties", :type => ActiveFedora::MetadataDatastream do |m|
     m.field "subcollection_id", :string
     m.field "item_id", :string
+    m.field "component_type", :string
   end
 
   def subcollection_id

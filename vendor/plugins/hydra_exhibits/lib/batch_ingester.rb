@@ -238,6 +238,7 @@ module BatchIngester
             update_fields(subcollection, [:dsc, :collection, :odd], args[:display])
             update_fields(subcollection, [:dsc, :collection, :controlaccess, :genreform], args[:genreform])
             subcollection.update_indexed_attributes({:subcollection_id=>{0=>args[:key]}})
+            subcollection.update_indexed_attributes({:component_type=>{0=>"subcollection"}})
             subcollection.save
             puts "\r\n#{subcollection.datastreams["descMetadata"].to_xml}\r\n"
           else
@@ -328,6 +329,7 @@ module BatchIngester
               counter += 1
             end
             item.update_indexed_attributes({:item_id=>{0=>args[:item_id]}})
+            item.update_indexed_attributes({:component_type=>{0=>"item"}})
             item.save
           else
             puts "Item already exists with Id: #{item_check.to_a[0]["id"]}. Cannot create duplicate object"
