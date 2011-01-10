@@ -47,6 +47,8 @@ class EadXml < ActiveFedora::NokogiriDatastream
       t.persname(:path=>'persname'){
         t.persname_normal(:path=>{:attribute=>"normal"})
       }
+      t.printer(:path=>'persname', :attributes=>{:role=>"printer"})
+      t.engraver(:path=>'persname', :attributes=>{:role=>"engraver"})
     }
     t.physdesc_ref(:path=>'physdesc'){
       t.dimensions
@@ -437,7 +439,7 @@ class EadXml < ActiveFedora::NokogiriDatastream
         nodeset = self.find_by_terms(:archive_desc, :dsc, :collection, :item)
       when :image
         node = EadXml.image_template
-        nodeset = self.find_by_terms(:item, :daogrp, :daoloc, :daoloc_href)
+        nodeset = self.find_by_terms(:item, :daogrp, :daoloc)
       else
         ActiveFedora.logger.warn("#{type} is not a valid argument for EadXml.insert_node")
         node = nil
