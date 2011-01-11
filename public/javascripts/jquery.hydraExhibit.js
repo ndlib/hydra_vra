@@ -1,25 +1,13 @@
  (function($) {
 
-   $(document).ready(function() {
-     test_page();
-
-     function test_page(){
-      //alert("Hey... here is the alert from jquery")
-     }
+   $(document).ready(function() {     
 
      $('a.addhighlighted').bind('click',function(){
-       var selectedCollectionItems = new Array();
        var selectedSubcollectionItems = new Array();
-       $("input.collection:checked").each(function() {selectedCollectionItems.push($(this).val());});
        $("input.sub_collection:checked").each(function() {selectedSubcollectionItems.push($(this).val());});
-
-       //alert("SelectedCollectionItems=> "+ selectedCollectionItems.fieldSerialize() +"; selectedSubcollectionItems=> "+ selectedSubcollectionItems.fieldSerialize());
        var $closestForm = $("form#document_metadata").first();
        var url = $closestForm.attr("action");
-       var collection_pid = $(this).attr("collection-id");
-       var sub_collection_pid = $closestForm.attr("data-pid");
-       var params =  "collection_items="+selectedCollectionItems+"&sub_collection_items="+selectedSubcollectionItems+"&collection_id="+collection_pid+"&_method='PUT'"
-       //alert("Params: "+params);
+       var params =  "sub_collection_items="+selectedSubcollectionItems+"&_method='PUT'"
        $.ajax({
          type: "PUT",
          url: url,
@@ -30,7 +18,7 @@
              inEffect:               {opacity: 'show'},      // in effect
              inEffectDuration:       600,                    // in effect duration in miliseconds
              stayTime:               6000,                   // time in miliseconds before the item has to disappear
-             text:                   "Collection highlighted added are "+ msg.updated[0].collection_highlighted + "Sub_collection highlighted added are " +msg.updated[0].sub_collection_highlighted ,   // content of the item
+             text:                   "Sub_collection highlighted added are " +msg.updated[0].sub_collection_highlighted ,   // content of the item
              stay:                   true,                  // should the notice item stay or not?
              type:                   'notice'                // could also be error, succes
             });
@@ -53,11 +41,11 @@
    /*  Initialize the form for inserting new Person (individual) permissions
    *  ex. $("#add-contributor-box").hydraNewContributorForm
    */
-   var test = "";
+   /*var test = "";
    $("div.textile-text", this).live('click', function() {
      test = $("div.textile-text").last()[0].innerHTML;
      alert("Tat->"+test);
-   });
+   });*/
    $.fn.essayTextareaField = function(settings) {
      //alert("essayTextareaField intialize")
      var config = {

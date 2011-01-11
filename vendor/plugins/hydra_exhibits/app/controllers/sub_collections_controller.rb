@@ -65,24 +65,6 @@ class SubCollectionsController < ApplicationController
       @subcollection = af_model.load_instance(params[:id])
     end
 
-    if !params[:collection_id].blank?
-      @collection = Collection.load_instance(params[:collection_id])
-    end
-
-    if !params[:collection_items].blank?
-      items=params[:collection_items].split(',')
-      logger.debug("Item to Highlight in collections => #{items.inspect}")
-      collection_highlighted = Array.new
-      items.each do |item|
-        obj=ActiveFedora::Base.load_instance(item)
-        @collection.highlighted_append(obj)
-        obj.save
-        @collection.save
-        collection_highlighted << item
-      end
-      response["updated"] << {"collection_highlighted"=>collection_highlighted}
-    end
-
     if !params[:sub_collection_items].blank?
       items=params[:sub_collection_items].split(',')
       logger.debug("Items to Highlight sub_collection => #{items.inspect}")
