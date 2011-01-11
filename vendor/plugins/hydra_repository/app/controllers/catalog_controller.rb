@@ -34,14 +34,10 @@ class CatalogController
       format.html { save_current_search_params }
       format.rss  { render :layout => false }
     end
-    rescue RSolr::RequestError
-      logger.error("Unparseable search error: #{params.inspect}" ) 
-      flash[:notice] = "Sorry, I don't understand your search." 
+    rescue Exception => e
+      logger.error("Unparseable search params: #{params.inspect} error: #{e.to_s}")
+      flash[:notice] = "Sorry, you've encountered an error. Try a different search."
       redirect_to :action => 'index', :q => nil , :f => nil
-    #rescue
-      #logger.error("Unknown error: #{params.inspect}" )
-      #flash[:notice] = "Sorry, you've encountered an error. Try a different search."
-      #redirect_to :action => 'index', :q => nil , :f => nil
   end
     
   def show_with_customizations
