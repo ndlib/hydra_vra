@@ -49,7 +49,7 @@
       <%# debug get_values_from_datastream(@document_fedora,"descMetadata", [:work]).first %>
       <%# debug datastreams_in_memory.inspect %>      
       <% # = render :partial => "shared/edit_description", :locals => {:content => 'collection', :document_fedora => @document_fedora} %>
-      <%= render :partial => "sub_collections/edit_sub_collection", :locals => { :content => "sub_collections", :label => "subset", :document_fedora => @document_fedora} %>
+      <%= render :partial => "sub_collections/edit_sub_collection", :locals => { :content => "sub_collections", :label => "sub collection", :document_fedora => @document_fedora} %>      
       <h2 class="section-title"><a href="#">Set permissions</a></h2>
       <div id="permissions">
         <%= render :partial => "permissions/index", :locals => {:document => document, :asset_id=>params[:id]} %>
@@ -64,7 +64,7 @@
   </div>
 </div>
 <% sidebar_items << capture do %>
-  <%= delete_asset_link(params[:id], "Collection") %>
+  <%= delete_asset_link(params[:id], "Sub Collection") %>
 <% end %>
 
 

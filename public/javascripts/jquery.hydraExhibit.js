@@ -90,62 +90,45 @@
      });
    };
 
-     $.fn.essayDeleteButton = function(settings) {
-         alert("Essay Delete")
-         var config = {};
-         if (settings) $.extend(config, settings);
-         //alert("before this function");
-         this.each(function() {
-           //alert("this function");
-           $(this).unbind('click.hydra').bind('click.hydra', function(e) {
-             $.fn.hydraExhibit.deleteEssay(this, e);
-             e.preventDefault();
-           })
-         });
-         return this;
-      };
-      /*$.fn.addEssayButton = function(settings) {
-         var config = {};
-         //alert("Essay Create")
-         if (settings) $.extend(config, settings);
-         this.each(function() {
-           $("#add_essay", this).click(function(e) {
-             var name = $("input#essay_title").first().attr("value");
-             //alert("Lot key enter: "+ lot_key)
-             if (name == "" || name.length ==0) {
-                alert("Please enter name before adding new essay")
-                return false;
-             }
-             //alert("Calling create lot on click")
-             $.fn.hydraExhibit.createEssay(this);
-               e.preventDefault();
-           });
-         });
-         return this;
-      };*/
+   $.fn.essayDeleteButton = function(settings) {
+     //alert("Essay Delete")
+     var config = {};
+     if (settings) $.extend(config, settings);
+     //alert("before this function");
+     $("a.destroy_essay", this).click(function(e) {
+       //alert("lotDeleteButtton live");
+       $.fn.hydraExhibit.deleteEssay(this,e);
+       //e.preventDefault();
+     });
+    //return this;
+   };
 
     $.fn.hydraExhibit = {
 
-     /*createEssay: function(el) {
-       var name= $("input#essay_title").first().attr("value");
-       //alert("Lot id: "+lot_id)
-       var url = $("input#create_essay_url").first().attr("value");//$(el).attr("action");
-       var params =  "&essay_name="+name+"&content=";
+     deleteEssay: function(element){
+       $element = $(element)       
+       var $essayNode = $(element).closest(".remove-essay-div")
+       var url =$(element).attr("action");
+       var parent_pid = $("form#document_metadata").first().attr("data-pid");
+       var parent_content_type = $("form#document_metadata").attr("data-content-type");
+       var params ="?asset_id="+parent_pid+"&asset_content_type="+parent_content_type;
        url=url+params;
-       var essay_selector = ".essay_div";
-       var $essayNode = $(el).closest(".essay_div");
-       //alert("create Essay url"+url);
-       $.post(url, function(data){
-         $(essay_selector).last().after(data);
-         $inserted = $(essay_selector).last();
-         $(".editable-container", $inserted).hydraTextField();
-         //$("a.destructive", $inserted).essayDeleteButton();
-         //$("input#essay_title").clear
+       //alert("URL: "+url +" Closet Nose"+$essayNode);       
+       $.ajax({
+         type: "DELETE",
+         url: url,
+         dataType: "html",
+         beforeSend: function() {
+            //alert("change color")
+   			$essayNode.animate({'backgroundColor':'#fb6c6c'},300);
+         },
+         success: function() {
+           //alert("trying to hide")
+           $essayNode.slideUp(300,function() {
+             $essayNode.remove();
+           });
+         }
        });
-     },*/
-
-     deleteEssay: function(el){
-         alert("deleteEssay Function")
      },
 
      insertEssay: function(element){      
@@ -167,9 +150,6 @@
 
        //$item.appendTo(values_list.last());
        $item.appendTo(addDiv);
-
-       alert("Test->"+test);
-       console.log("Test->"+test);
 
        $("div.textile-text", $item).editable(assetUrl, {
           method    : "PUT",

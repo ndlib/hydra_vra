@@ -1,20 +1,18 @@
 <div class="essay_div">
-    <input id="show_essay_url" type="hidden" name="url" value="<%= essay_path(asset.pid) %>" />
+    <input id="show_essay_url" type="hidden" name="url" asset-pid="<%= asset.pid %>" value="<%= essay_path(asset.pid) %>" />
     <h2 class="section-title">Essay</h2>
-    <%= debug asset.pid %>
+    <%# debug asset.pid %>
     <%- unless asset.description_list.blank? -%>
         <fieldset>
           <% essays = asset.description_list %>
           <%= debug essays.count %>
-          <h3>This asset has <%= essays.count %> essays associated with it.</h3>
           <dl class="related-essays">
-            <%- essays.each do |essay| -%>              
-
+            <%- essays.each do |essay| -%>
+              <div class="remove-essay-div">
                 <%=app_rich_text_area("essay",essay.pid, essay.essaydatastream_ids.first) %>
-                <a id="remove_essay" class="destructive destroy_essay" href=# action="<%= essay_path(essay.pid)%>" title="Remove Essay"> Delete</a>
-
+                <a class="destructive destroy_essay" href=# action="<%= essay_path(essay.pid)%>" title="Remove Essay"> Delete this essay</a>
+              </div>
             <%- end -%>
-
           </dl>
         </fieldset>
     <%- end -%>

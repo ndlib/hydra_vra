@@ -98,7 +98,7 @@ class EssaysController < ApplicationController
         @asset = the_model.load_instance(params[:id])
         @essay=Essay.load_instance(@essay.pid)
       end
-      logger.debug "Created #{@essay.pid}. Now asset has #{@asset.description_inbound_ids.count} essays and pids are #{@asset.description_inbound_ids}"
+      logger.debug "Created #{@essay.pid}. Now asset has #{@asset.descriptions_inbound_ids.count} essays and pids are #{@asset.descriptions_inbound_ids}"
     end
 
     respond_to do |want|
@@ -115,15 +115,15 @@ class EssaysController < ApplicationController
   end
 
   def destroy
-    check_required_params([:content_type,:id,:collection_content_type,:collection_pid])
-    unless af_model
-        af_model = Essay
-    end
-    @essay=af_model.load_instance(params[:id])    
-    remove_named_relationship(@essay, params[:collection_content_type], params[:collection_pid])
+    check_required_params([:asset_content_type,:id,:asset_id])
+    #unless af_model
+      af_model = Essay
+    #end
+    @essay=af_model.load_instance(params[:id])
+    #remove_named_relationship(@essay, params[:asset_content_type], params[:asset_pid])
     @essay.delete
-    flash[:notice]= "Deleted essay " + params[:id]
-    #render :text => "Deleted #{params[:id]} from relationships from #{params[:collection_pid]}."
+    #flash[:notice]= "Deleted essay " + params[:id]
+    render :text => "Deleted Essay Successfully."
   end
 
   def show

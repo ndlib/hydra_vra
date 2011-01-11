@@ -4,4 +4,6 @@
 
 <% if browse_facet_selected?(@browse_facets)%>
   <%= render :partial => 'collections/show_sub_collection' %>
+<% else %>
+  <%= render :partial => 'collections/show_collection_main' %>
 <% end %>

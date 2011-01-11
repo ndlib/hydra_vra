@@ -14,6 +14,10 @@ class Essay < ActiveFedora::Base
   def label=(label)
     super
     datastreams_in_memory["descMetadata"].title_values = label
-  end  
+  end
+
+   def content
+    essaydatastream.first.content unless essaydatastream.nil? || essaydatastream.empty?
+  end
 
 end

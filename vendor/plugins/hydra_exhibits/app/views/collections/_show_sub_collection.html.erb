@@ -1,35 +1,31 @@
 <h1>Sub Collection Title</h1>
-
-<%= debug @subset.inspect%>
+<%#debug @subset.inspect%>
 
 <span class="edit-browse">
   <% if editor? %>
     <%= edit_and_browse_subcollection_links(@subset) %>
   <% end -%>
 </span>
-
-<p>
-  Description
-</p>
-
 <% if !@subset.nil?%>
   <h3>Matched subset</h3>
 <% else %>
   <h3>Did not match subset</h3>
 <% end %>
-<% if @descriptions.length > 0 %>
+<p>
+  Description
+</p>
+<% if @descriptions.length > 0 %>    
   <% @descriptions.each do |description|%>
-    <h3><%= link_to "Essay: \"#{description.title}\"", essay_path(params[:collection_id], @essay.pid) %></h3>
-    <p>
-      <%= description.introduction %>
-      <%= link_to "[Read the complete essay]", essay_path(params[:collection_id], @essay.pid) %>
-    </p>
+    <h3>Essay Title goes in here</h3>
+    <%=load_essay(description) %>
+    <%# #link_to "Essay: \"#{description.title}\"", essay_path(params[:collection_id], @essay.pid) description.introduction %>
+    <%# link_to "[Read the complete essay]", essay_path(params[:collection_id], @essay.pid) %>
   <% end %>
 <%- else -%>
   <h3><%= "Essay forthcoming..." %></h3>
 <%- end -%>
 
-  <h3>No highlighted items defined</h3>
+<h3>No highlighted items defined</h3>
 
 <h3><%= link_to "Complete list of sources related to <em>#{""}</em> at Notre Dame", catalog_index_path(:params => {"f[type_facet][]" => ""}) %></h3>
 
