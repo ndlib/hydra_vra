@@ -1,7 +1,7 @@
 <fieldset id="<%= title %>_fields">
   <legend><%= title.to_s.titleize %></legend>
   <dl>
-  <%- @document_fedora.descMetadata.each do |key, value| -%>
+  <%- @document_fedora.metadata_fields.each do |key, value| -%>
     <%- if @document_fedora.has_value_for("descMetadata", value) -%>
       <dt class="<%= key.downcase.dasherize %>">
         <%= fedora_field_label("descMetadata", value, "#{key}:") %>

@@ -61,7 +61,7 @@ class Component < ActiveFedora::Base
     end
   end
 
-  def descMetadata
+  def metadata_fields
     field_keys[:descMetadata][type] rescue nil
   end
 
@@ -104,7 +104,12 @@ class Component < ActiveFedora::Base
           "Acquisition Info",          [:archive_desc, :acqinfo],
           "Acquisition Head",          [:archive_desc, :acqinfo, :head],
           "Prefercite Info",           [:archive_desc, :prefercite],
-          "Prefercite Head",           [:archive_desc, :prefercite, :head]
+          "Prefercite Head",           [:archive_desc, :prefercite, :head],
+          "Unique ID",                 [:dsc, :collection, :did, :unitid],
+          "ID",                        [:dsc, :collection, :did, :unitid, :unitid, :identifier],
+          "Emission Date",             [:dsc, :collection, :did, :unittitle, :unittitle, :content],
+          "Publisher",                 [:dsc, :collection, :did, :unittitle, :imprint, :publisher],
+          "Genre",                     [:dsc, :collection, :controlaccess, :genreform]
         ]
       }
     }
