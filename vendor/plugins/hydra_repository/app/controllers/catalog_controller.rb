@@ -78,6 +78,12 @@ class CatalogController
   #   return [solr_response, document_list]
   #   
   # end
+
+   # displays values and pagination links for a single facet field
+  def facet
+    @pagination = get_facet_pagination(params[:id], params.merge!(:q=>build_lucene_query(params[:q])))
+  end
+
   protected
   
   # a solr query method
