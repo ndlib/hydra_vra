@@ -75,13 +75,13 @@ module ApplicationHelper
     result = ""
     if params[:action] == "edit"
       result << "<a href=\"#{catalog_path(@document[:id], :viewing_context=>"browse")}\" class=\"browse toggle\">Browse</a>"
-      result << "<span class=\"edit toggle active\">Edit Essay</span>"
+      result << "<span class=\"edit toggle active\">Edit Subcollection</span>"
     else
       result << "<span class=\"browse toggle active\">Browse</span>"
       if(subcollection.nil?)
         result << "<a href=\"#{url_for(:action => "new", :controller => "sub_collections", :content_type => "sub_collection", :collection_id => @document[:id], :selected_facets => params[:f] )}\" class=\"edit toggle\">Edit Subcollection</a>"
       else
-        result << "<a href=\"#{edit_catalog_path(subcollection.id, :class => "facet_selected", :collection_id => @document[:id], :f => params[:f])}\" class=\"edit toggle\">Edit Essay</a>"
+        result << "<a href=\"#{edit_catalog_path(subcollection.id, :class => "facet_selected", :collection_id => @document[:id], :f => params[:f])}\" class=\"edit toggle\">Edit Subcollection</a>"
       end
 
     end
@@ -300,6 +300,24 @@ module ApplicationHelper
   # true or false, depending on whether the field and value is in params[:f]
   def facet_in_temp?(temp, field, value)
     temp and temp[field] and temp[field].include?(value)
+  end
+
+  def get_search_results_from_params
+    @extra_controller_params = {}
+    (@response, @document_list) = get_search_results( @extra_controller_params.merge!(:q=>build_lucene_query(params[:q])) )
+    #render :partial => 'catalog/_index_partials/default_group', :locals => {:docs => @response.docs, :facet_name => nil, :facet_value => nil}
+    render :partial => 'sub_collections/item_list', :locals => {:docs => @response.docs, :facet_name => nil, :facet_value => nil}
+  end
+
+  def render_item_partial(doc, action_name, locals={})
+    format = document_partial_name(doc)
+    begin
+      Rails.logger.debug("attempting to render #{format}/_#{action_name}")
+      render :partial=>"#{format}/#{action_name}", :locals=>{:document=>doc}.merge(locals)
+    rescue ActionView::MissingTemplate
+      Rails.logger.debug("rendering default partial catalog/_#{action_name}_partials/default")
+      render :partial=>"catalog/_#{action_name}_partials/default", :locals=>{:document=>doc}.merge(locals)
+    end
   end
 
   def display_thumnail( document )

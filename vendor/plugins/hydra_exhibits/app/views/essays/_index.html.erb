@@ -1,6 +1,5 @@
 <div class="essay_div">
-    <input id="show_essay_url" type="hidden" name="url" asset-pid="<%= asset.pid %>" value="<%= essay_path(asset.pid) %>" />
-    <h2 class="section-title">Essay</h2>
+    <input id="show_essay_url" type="hidden" name="url" asset-pid="<%= asset.pid %>" value="<%= essay_path(asset.pid) %>" />   
     <%# debug asset.pid %>
     <%- unless asset.description_list.blank? -%>
         <fieldset>
@@ -16,9 +15,7 @@
           </dl>
         </fieldset>
     <%- end -%>
-    <div id="add-essay-div">
-      <label>Essay Name: </label>
-      <input id="essay_title" type="text"/>
+    <div id="add-essay-div">      
       <%= essay_text_area_insert_link "essaydatastream", {:label=>"Essay", :content_type=>"essay"}%>  
     </div>
 </div>

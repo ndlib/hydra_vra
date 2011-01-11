@@ -7,7 +7,7 @@ class Collection < ActiveFedora::Base
 
   has_bidirectional_relationship "members", :has_member, :is_member_of
   #reusing parts here because has_subset taken already
-  has_bidirectional_relationship "highlighted", :has_part, :is_part_of
+  has_relationship "highlighted", :has_part
   has_bidirectional_relationship "subsets", :has_subset, :is_subset_of
   has_bidirectional_relationship  "descriptions",   :has_description, :is_description_of
     

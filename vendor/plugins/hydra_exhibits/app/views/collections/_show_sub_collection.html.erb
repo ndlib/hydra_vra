@@ -26,27 +26,24 @@
 <%- end -%>
 
 <h3>No highlighted items defined</h3>
-
-<h3><%= link_to "Complete list of sources related to <em>#{""}</em> at Notre Dame", catalog_index_path(:params => {"f[type_facet][]" => ""}) %></h3>
-
+<%= debug @subset.highlighted %>
 <hr />
 
 <h2>Featured sources</h2>
 
-<dl class="item-list">
-</dl>
+<dl class="item-list"></dl>
 
- <div class="pagination">
-      <%= will_paginate @response.docs, :page_links => false, :class => 'prev_next_links' %>
-      <%= will_paginate @response.docs, :container => false %>
-    </div>
+<div class="pagination">
+  <%= will_paginate @response.docs, :page_links => false, :class => 'prev_next_links' %>
+  <%= will_paginate @response.docs, :container => false %>
+</div>
 
-    <%= render 'sort_and_per_page' if @response.response['numFound'] > 10 %>
-	
-	<%= render :partial=>'document_list' %>
-	
-    <div class="pagination">
-      <%= will_paginate @response.docs, :page_links => false, :class => 'prev_next_links' %>
-      <%= will_paginate @response.docs, :container => false%>
-    </div>
+<%= render 'sort_and_per_page' if @response.response['numFound'] > 10 %>
+
+<%= render :partial=>'document_list' %>
+
+<div class="pagination">
+  <%= will_paginate @response.docs, :page_links => false, :class => 'prev_next_links' %>
+  <%= will_paginate @response.docs, :container => false%>
+</div>
     
