@@ -221,80 +221,56 @@ module ApplicationHelper
     @collection ? @collection.name : "All Collections"
   end 
 
-  def render_browse_facet_div(browse_facets, response)
+  def render_browse_facet_div(browse_facets, response, extra_controller_params)
     logger.debug("Param in browse div: #{params.inspect}")
     return_str = '<div>'
-    facet_str=''
+    return_str=''
     browse_facet = browse_facets.first
     solr_fname = browse_facet.to_s
-    display_facet = response.facets.detect {|f| f.name == solr_fname}    
+    if params.has_key?(:f) && params[:f][browse_facet]
+      temp = params[:f].dup
+      logger.debug("Removing F params: #{params.inspect}, Removed F params: #{temp.inspect}")
+      browse_facets.each do |facet|
+        params[:f].delete(facet.to_s)
+      end
+      logger.debug("Params after delete: #{params.inspect}")
+      (response_without_f_param, @new_document_list) = get_search_results(extra_controller_params)
+    else
+      response_without_f_param = response
+    end
+    display_facet = response_without_f_param.facets.detect {|f| f.name == solr_fname}
+    display_facet_with_f = response.facets.detect {|f| f.name == solr_fname}
     unless display_facet.nil?
-      if display_facet.items.length > 0
+      if display_facet.items.length > 0          
         return_str += '<h3>' + facet_field_labels[display_facet.name] + '</h3>'
         return_str += '<ul style="display:block">'
         display_facet.items.each do |item|
-          if facet_in_params?( display_facet.name, item.value )                        
-            #return_str += render_selected_facet_value(display_facet.name, item)
-            if browse_facets.length > 1
-              #call recursively until no more facets in array
-              return_str+=get_complete_facet(browse_facets, response)
-              #return_str += render_browse_facet_div(browse_facets.slice(1,browse_facets.length-1), response)
-            elsif browse_facets.length == 1
-              return_str += render_selected_browse_facet_value(display_facet.name, item, browse_facets)
+          #logger.debug("Check facet value: #{facet_in_temp?( temp, display_facet.name, item.value )}, temp: #{temp.inspect}")
+          return_str += '<li>'
+          params[:f]=temp if temp
+          if facet_in_params?(display_facet.name, item.value )
+            if display_facet_with_f.items.length > 0
+              display_facet_with_f.items.each do |item_with_f|
+                return_str += render_selected_browse_facet_value(display_facet_with_f.name, item_with_f, browse_facets)
+                if browse_facets.length > 1
+                  return_str += render_browse_facet_div(browse_facets.slice(1,browse_facets.length-1), response, extra_controller_params)
+                end
+              end
             end
           else
-            return_str += '<li>'
+            browse_facets.each do |facet|
+              params[:f].delete(facet.to_s) if params[:f]
+            end
             return_str += render_browse_facet_value(display_facet.name, item)
-            return_str += '</li>'
           end
+          return_str += '</li>'
         end
         return_str += '</ul>'
       end
     end
-    #return_str +=facet_str
+    logger.debug("Temp F params are: #{params.inspect}")
+    params[:f]=temp if temp 
     return_str += '</div>'
-  end
-
-  def get_complete_facet(browse_facets, response)
-    return_str=''
-    if params.has_key?(:f)
-      temp = params[:f]
-      params.delete(:f)
-      logger.debug("Removing F params: #{params.inspect}, Removed F params: #{temp.inspect}")
-      (@response_without_f_param, @new_document_list) = get_search_results( @extra_controller_params.merge!(:q=>build_lucene_query(params[:q])) )
-      #logger.debug("Adding f again: #{params.inspect}, and the solr reponse: #{@response_without_facet.inspect}")
-      browse_facet = browse_facets.first
-      solr_fname = browse_facet.to_s
-      display_facet = @response_without_f_param.facets.detect {|f| f.name == solr_fname}
-      display_facet_with_f = response.facets.detect {|f| f.name == solr_fname}
-      unless display_facet.nil?
-        if display_facet.items.length > 0          
-          return_str += '<ul style="display:block">'
-          display_facet.items.each do |item|
-            #logger.debug("Check facet value: #{facet_in_temp?( temp, display_facet.name, item.value )}, temp: #{temp.inspect}")
-            return_str += '<li>'
-            params[:f]=temp
-            if facet_in_params?(display_facet.name, item.value )
-              if display_facet_with_f.items.length > 0
-                display_facet_with_f.items.each do |item_with_f|
-                  return_str += render_selected_browse_facet_value(display_facet_with_f.name, item_with_f, browse_facets)
-                  if browse_facets.length > 1
-                    return_str += render_browse_facet_div(browse_facets.slice(1,browse_facets.length-1), response)
-                  end
-                end
-              end
-            else
-              params.delete(:f)
-              return_str += render_browse_facet_value(display_facet.name, item)
-            end
-            return_str += '</li>'
-          end
-          return_str += '</ul>'
-        end
-      end
-    end
-    params[:f]=temp
-    return return_str
   end
 
   # true or false, depending on whether the field and value is in params[:f]
