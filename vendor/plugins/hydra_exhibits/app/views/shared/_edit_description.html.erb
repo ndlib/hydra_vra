@@ -1,5 +1,7 @@
-<form id="document_metadata" action="<%= url_for(:action=>"update", :controller=>"assets", :content_type=>content)%>" method="post" data-resource-type="<%= content %>" accept-charset="utf-8" data-rest-pid="<%= params[:id] %>" data-content-type="<%= content %>">
+<fieldset>
+    <legend> Essay </legend>
   <%= render :partial => "essays/index", :locals => {:asset => document_fedora}%>
-</form>
+</fieldset>
+
 
 

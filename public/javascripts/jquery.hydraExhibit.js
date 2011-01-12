@@ -1,12 +1,51 @@
  (function($) {
+
+   $(document).ready(function() {     
+
+     $('a.addhighlighted').bind('click',function(){
+       var selectedSubcollectionItems = new Array();
+       $("input.sub_collection:checked").each(function() {selectedSubcollectionItems.push($(this).val());});
+       var $closestForm = $("form#document_metadata").first();
+       var url = $closestForm.attr("action");
+       var params =  "sub_collection_items="+selectedSubcollectionItems+"&_method='PUT'"
+       $.ajax({
+         type: "PUT",
+         url: url,
+         dataType: "json",
+         data: params,
+         success: function(msg){
+     		$.noticeAdd({
+             inEffect:               {opacity: 'show'},      // in effect
+             inEffectDuration:       600,                    // in effect duration in miliseconds
+             stayTime:               6000,                   // time in miliseconds before the item has to disappear
+             text:                   "Sub_collection highlighted added are " +msg.updated[0].sub_collection_highlighted ,   // content of the item
+             stay:                   true,                  // should the notice item stay or not?
+             type:                   'notice'                // could also be error, succes
+            });
+         },
+         error: function(xhr, textStatus, errorThrown){
+     		$.noticeAdd({
+             inEffect:               {opacity: 'show'},      // in effect
+             inEffectDuration:       600,                    // in effect duration in miliseconds
+             stayTime:               6000,                   // time in miliseconds before the item has to disappear
+             text:                   'Your changes failed'+ xhr.statusText + ': '+ xhr.responseText,
+             stay:                   true,                  // should the notice item stay or not?
+             type:                   'error'                // could also be error, succes
+            });
+         }
+       });
+      return false;
+    });
+
+   });
    /*  Initialize the form for inserting new Person (individual) permissions
    *  ex. $("#add-contributor-box").hydraNewContributorForm
    */
-   var test = "";
+   /*var test = "";
    $("div.textile-text", this).live('click', function() {
      test = $("div.textile-text").last()[0].innerHTML;
      alert("Tat->"+test);
-   });
+   });*/
    $.fn.essayTextareaField = function(settings) {
      //alert("essayTextareaField intialize")
      var config = {
@@ -143,13 +182,14 @@
        var params = "?datastream_name="+datastreamName+"&content_type="+contentType//+"&essay_name="+essayName;
        var assetUrl = $("input#show_essay_url").first().attr("value")+params;
        var addDiv = $("div#add-essay-div").last()
+       var essayDiv=$("div.remove-essay-div").last()
 
-       var $item = jQuery('<li class=\"field_value essay-textarea-container field\" name="asset[' + fieldName + '][' + new_value_index + ']">' +
+       var $item = jQuery('<label>Essay Name: </label> <input id="essay_title" type="text"/> <li class=\"field_value essay-textarea-container field\" name="asset[' + fieldName + '][' + new_value_index + ']">' +
               '<a href="" class="destructive"><img src="/images/delete.png" border="0" /></a>' +
               '<div class="textile-text text" id="'+fieldName+'_'+new_value_index+'">click to edit</div></li>');
 
        //$item.appendTo(values_list.last());
-       $item.appendTo(addDiv);
+       $item.appendTo(essayDiv);
 
        $("div.textile-text", $item).editable(assetUrl, {
           method    : "PUT",
@@ -198,3 +238,4 @@
     };
 
  })(jQuery)
+

@@ -3,7 +3,7 @@
   <div id="showUtils">
     <div class="tools"><%= render :partial => 'show_tools' %></div>
     <%- if params[:class].blank? -%>
-      <span class="back_to_cat"><%= link_back_to_catalog :label=>'&laquo; Back to test' %></span>
+      <span class="back_to_cat"><%= link_back_to_catalog :label=>'&laquo; Back to Search' %></span>
       <% if @previous_document || @next_document %>
         <div id="previousNextDocument">
           <span class="previous"><%= link_to_previous_document(@previous_document) %></span>
@@ -21,7 +21,7 @@
         <% end -%>
       </span>
     <%- else -%>        
-        <span class="back_to_cat"><%= link_back_to_collection :label=>'Back to Facets' %></span>
+        <span class="back_to_cat"><%= link_back_to_collection :label=>'Back to Browse' %></span>
     <%- end -%>
 
   </div>

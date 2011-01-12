@@ -27,7 +27,8 @@ class SubCollectionsController < ApplicationController
   end
 
   def index
-    render :partial=>"index", :layout=>false    
+    render :partial=>"index", :layout=>false
+    render :text => "Deleted Essay Successfully."
   end
 
   def new
@@ -53,6 +54,38 @@ class SubCollectionsController < ApplicationController
     end
     logger.debug("Selected faceted added to subcollection: #{@subcollection.selected_facets}")
     redirect_to url_for(:action=>"edit", :controller=>"catalog", :id=>@subcollection.id, :selected_facet=>params[:f],:class=>"facet_selected", :collection_id=>params[:collection_id])
+  end
+
+  def update
+    logger.debug("Params send to update: #{params.inspect}")
+    response = Hash["updated"=>[]]
+
+    af_model = retrieve_af_model(params[:content_type])
+    if af_model
+      @subcollection = af_model.load_instance(params[:id])
+    end
+
+    if !params[:sub_collection_items].blank?
+      items=params[:sub_collection_items].split(',')
+      logger.debug("Items to Highlight sub_collection => #{items.inspect}")
+      sub_collection_highlighted = Array.new
+      items.each do |item|
+        obj=ActiveFedora::Base.load_instance(item)
+        @subcollection.highlighted_append(obj)
+        obj.save
+        @subcollection.save
+        sub_collection_highlighted<<item
+      end
+      response["updated"] << {"sub_collection_highlighted"=>sub_collection_highlighted}
+    end
+
+
+    #render :text => "reached update."
+    respond_to do |want|
+        want.js {
+          render :json=> response
+        }
+    end
   end
 
   def show

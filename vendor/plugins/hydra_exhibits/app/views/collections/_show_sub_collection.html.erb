@@ -25,28 +25,36 @@
   <h3><%= "Essay forthcoming..." %></h3>
 <%- end -%>
 
-<h3>No highlighted items defined</h3>
 
-<h3><%= link_to "Complete list of sources related to <em>#{""}</em> at Notre Dame", catalog_index_path(:params => {"f[type_facet][]" => ""}) %></h3>
+<%# debug @subset.highlighted %>
+<h2>Featured sources</h2>
+<% if @subset.highlighted.length > 0 %>
+  <dl class="item-list">
+    <%- @subset.highlighted.each do |item| -%>
+    <dt><%= link_to truncate(item.pid, :length => 80), catalog_path(item) %></dt>    
+    <%- end -%>
+  </dl>
+<%- else -%>
+  <h3>No highlighted items defined</h3>
+<%- end -%>
 
 <hr />
 
-<h2>Featured sources</h2>
 
-<dl class="item-list">
-</dl>
+<h2>Complete sources</h2>
+<dl class="item-list"></dl>
 
- <div class="pagination">
-      <%= will_paginate @response.docs, :page_links => false, :class => 'prev_next_links' %>
-      <%= will_paginate @response.docs, :container => false %>
-    </div>
+<div class="pagination">
+  <%= will_paginate @response.docs, :page_links => false, :class => 'prev_next_links' %>
+  <%= will_paginate @response.docs, :container => false %>
+</div>
 
-    <%= render 'sort_and_per_page' if @response.response['numFound'] > 10 %>
-	
-	<%= render :partial=>'document_list' %>
-	
-    <div class="pagination">
-      <%= will_paginate @response.docs, :page_links => false, :class => 'prev_next_links' %>
-      <%= will_paginate @response.docs, :container => false%>
-    </div>
+<%= render 'sort_and_per_page' if @response.response['numFound'] > 10 %>
+
+<%= render :partial=>'document_list' %>
+
+<div class="pagination">
+  <%= will_paginate @response.docs, :page_links => false, :class => 'prev_next_links' %>
+  <%= will_paginate @response.docs, :container => false%>
+</div>
     

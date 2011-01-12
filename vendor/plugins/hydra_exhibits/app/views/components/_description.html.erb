@@ -1,0 +1,15 @@
+<fieldset id="<%= title %>_fields">
+  <legend><%= title.to_s.titleize %></legend>
+  <dl>
+  <%- @document_fedora.metadata_fields.each do |key, value| -%>
+    <%- if @document_fedora.has_value_for("descMetadata", value) -%>
+      <dt class="<%= key.downcase.dasherize %>">
+        <%= fedora_field_label("descMetadata", value, "#{key}:") %>
+      </dt>
+      <dd>
+        <%= get_values_from_datastream(@document_fedora,"descMetadata", value)%>
+      </dd>
+    <%- end -%>
+  <%- end -%>
+  </dl>
+</fieldset>
