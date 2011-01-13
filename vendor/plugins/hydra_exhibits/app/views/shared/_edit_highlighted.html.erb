@@ -1,0 +1,13 @@
+<tr class="document" class="<%= cycle("even","odd") %>">
+  <td>
+    <%= link_to_document(document, :label => Blacklight.config[:show][:heading].to_sym, :counter => (counter + 1 + @response.params[:start].to_i)) %>
+  </td>
+  <td>
+    <%=  document_type(document).gsub("Hydrangea","") %>
+  </td>  
+  <td>
+    <input type="checkbox" name="sub_collection_highlighted" class="sub_collection" value=<%=document[:id]%>>
+  </td>
+</tr>
+
+    
