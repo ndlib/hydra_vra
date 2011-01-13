@@ -91,7 +91,7 @@ module BatchIngester
         collection= af_model.new(:namespace=>"RBSC-CURRENCY")#(:pid=>pid)
         collection.datastreams["descMetadata"].ng_xml = EadXml.collection_template
         collection.save
-        collection.datastreams["rightsMetadata"].update_permissions({"group"=>{"archivist"=>"edit"}})
+        collection.datastreams["rightsMetadata"].update_permissions({"group"=>{"archivist"=>"edit","public"=>"read"}})
         update_fields(collection, [:ead_header, :eadid], args[:ead_id])
         update_fields(collection, [:ead_header, :filedesc, :titlestmt, :titleproper], args[:title])
         update_fields(collection, [:ead_header, :filedesc, :titlestmt, :author], args[:author])
@@ -224,7 +224,7 @@ module BatchIngester
             desc = Iconv.conv('utf-8','ISO-8859-1',args[:description])
             c = Iconv.new('UTF-8','ISO-8859-1')
             utf_desc = c.iconv(desc)
-            subcollection.datastreams["rightsMetadata"].update_permissions({"group"=>{"archivist"=>"edit"}})
+            subcollection.datastreams["rightsMetadata"].update_permissions({"group"=>{"archivist"=>"edit","public"=>"read"}})
             update_fields(subcollection, [:dsc, :collection, :did, :unitid], args[:abr_title])
             update_fields(subcollection, [:dsc, :collection, :did, :unitid, :unitid_identifier], args[:subcollection_id])
             update_fields(subcollection, [:dsc, :collection, :did, :origination, :printer], args[:printer])
@@ -308,7 +308,7 @@ module BatchIngester
 #            item.members_append(subcollection_pid)
             item.save
             disp = args[:display_title].nil? ? "" : args[:display_title]
-            item.datastreams["rightsMetadata"].update_permissions({"group"=>{"archivist"=>"edit"}})
+            item.datastreams["rightsMetadata"].update_permissions({"group"=>{"archivist"=>"edit","public"=>"read"}})
             update_fields(item, [:item, :did, :unitid], args[:item_id])
             update_fields(item, [:item, :did, :origination, :signer, :persname_normal], args[:display_signer])
             update_fields(item, [:item, :did, :origination, :signer], args[:signer])
