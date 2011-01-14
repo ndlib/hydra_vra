@@ -26,7 +26,7 @@
       setUpNewPermissionsForm();      
       $("#add-contributor-box").hydraNewContributorForm();      
       $("div.essay_div").insertTextareaValue();
-      $("div.remove-essay-div").essayDeleteButton();
+      $("dd.remove-essay-div").essayDeleteButton();
       $("a.inline").fancybox({
       		'hideOnContentClick': true,
       		'autoDimensions' : false

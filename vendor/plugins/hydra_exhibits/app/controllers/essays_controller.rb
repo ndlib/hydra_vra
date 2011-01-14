@@ -67,8 +67,7 @@ class EssaysController < ApplicationController
   def update
     updater_method_args = prep_updater_method_args(params)
     content = updater_method_args[:params]["essay_content"]
-    ds_id=updater_method_args[:opts][:datastreams]
-    logger.error("Essay: #{@essay.inspect}, Param: #{updater_method_args.inspect}")
+    ds_id=updater_method_args[:opts][:datastreams]    
     logger.error("Param: #{updater_method_args[:params]["essay_content"].inspect}, opts: #{updater_method_args[:opts][:datastreams].inspect}")
 
     if params.has_key?(:essay_id)

@@ -53,7 +53,7 @@ class SubCollectionsController < ApplicationController
       @exhibit.save
     end
     logger.debug("Selected faceted added to subcollection: #{@subcollection.selected_facets}")
-    redirect_to url_for(:action=>"edit", :controller=>"catalog", :id=>@subcollection.id, :f=>params[:selected_facets],:class=>"facet_selected", :exhibit_id=>params[:exhibit_id])
+    redirect_to url_for(:action=>"edit", :controller=>"catalog", :id=>@subcollection.id, :f=>@subcollection.selected_facets,:class=>"facet_selected", :exhibit_id=>params[:exhibit_id])
   end
 
   def update
@@ -64,27 +64,34 @@ class SubCollectionsController < ApplicationController
     if af_model
       @subcollection = af_model.load_instance(params[:id])
     end
-
-    if !params[:sub_collection_items].blank?
-      items=params[:sub_collection_items].split(',')
-      logger.debug("Items to Highlight sub_collection => #{items.inspect}")
-      sub_collection_highlighted = Array.new
-      items.each do |item|
-        obj=ActiveFedora::Base.load_instance(item)
-        @subcollection.highlighted_append(obj)
-        obj.save
-        @subcollection.save
-        sub_collection_highlighted<<item
+    if params[:highlighted_action].equal?("add")
+      if !params[:sub_collection_items].blank?
+        items=params[:sub_collection_items].split(',')
+        logger.debug("Items to Highlight sub_collection => #{items.inspect}")
+        sub_collection_highlighted = Array.new
+        items.each do |item|
+          obj=ActiveFedora::Base.load_instance(item)
+          @subcollection.highlighted_append(obj)
+          obj.save
+          @subcollection.save
+          sub_collection_highlighted<<item
+        end
+        response["updated"] << {"sub_collection_highlighted"=>sub_collection_highlighted}
       end
-      response["updated"] << {"sub_collection_highlighted"=>sub_collection_highlighted}
-    end
-
-
-    #render :text => "reached update."
-    respond_to do |want|
+      respond_to do |want|
         want.js {
           render :json=> response
         }
+      end
+    else
+      raise "error, Item id not available in parameters list" if params[:item_id].blank?
+      params[:item_id]? item = params[:item_id] : item =""
+      logger.debug("Items to remove as Highlight from sub_collection => #{item.inspect}")
+      obj=ActiveFedora::Base.load_instance(item)
+      @subcollection.highlighted_remove(obj)
+      obj.save
+      @subcollection.save
+      render :text => "Successfully removed #{obj.pid}from highlighted list"
     end
   end
 

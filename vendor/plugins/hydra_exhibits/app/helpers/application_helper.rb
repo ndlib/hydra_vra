@@ -113,14 +113,14 @@ module ApplicationHelper
       # Not sure why there is we're not allowing the for the first textile to be deleted, but this was in the original helper.
       #body << "<a href=\"\" title=\"Delete '#{h(current_value)}'\" class=\"destructive field\">Delete</a>" unless z == 0
       body << "<div class=\"textile-text text\" id=\"#{base_id}-text\">#{processed_field_value}</div>"
-      body << "<input class=\"textile-edit edit\" id=\"#{base_id}\"  data-pid=\"#{pid}\" data-content-type=\"#{content_type}\" data-datastream-name=\"#{datastream_name}\" rel=\"#{field_name}\" name=\"#{name}\" value=\"#{h(field_values)}\"/>"
+      body << "<input class=\"textile-edit edit\" id=\"#{base_id}\"  data-pid=\"#{pid}\" data-content-type=\"#{content_type}\" data-datastream-name=\"#{datastream_name}\" rel=\"#{field_name}\" name=\"#{name}\" title=\"essay_title\" value=\"#{h(field_values)}\"/>"
     body << "</#{container_tag_type}>"
 
 
     result = ""
 
     if opts.fetch(:multiple, true)
-      result << content_tag(:ol, body, :rel=>field_name)
+      result << content_tag(:ol, body, :rel=>field_name, :title=>"essay_title")
     else
       result << body
     end
@@ -279,10 +279,29 @@ module ApplicationHelper
   end
 
   def get_search_results_from_params
+    if !params[:collection_id].blank?
+      collection_id = params[:collection_id]
+      @collection = Collection.load_instance_from_solr(collection_id)
+      @browse_facets = @collection.browse_facets
+      @facet_subsets_map = @collection.facet_subsets_map
+      @selected_browse_facets = get_selected_browse(@browse_facets)
+      #subset will be nil if the condition fails
+      @subset = @facet_subsets_map[@selected_browse_facets] if @selected_browse_facets.length > 0 && @facet_subsets_map[@selected_browse_facets]
+    end
     @extra_controller_params = {}
     (@response, @document_list) = get_search_results( @extra_controller_params.merge!(:q=>build_lucene_query(params[:q])) )
     #render :partial => 'catalog/_index_partials/default_group', :locals => {:docs => @response.docs, :facet_name => nil, :facet_value => nil}
     render :partial => 'sub_collections/item_list', :locals => {:docs => @response.docs, :facet_name => nil, :facet_value => nil}
+  end
+
+  def get_selected_browse(browse_facets)
+    selected = {}
+    if params[:f]
+      browse_facets.each do |facet|
+        selected.merge!({facet.to_sym=>params[:f][facet].first}) if params[:f][facet]
+      end
+    end
+    selected
   end
 
   def render_item_partial(doc, action_name, locals={})

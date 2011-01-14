@@ -1,14 +1,27 @@
-<h3><%=h facet_value if facet_value %> <em><%= grouped_result_count(@response, facet_name, facet_value) %></em></h3>
+<h3>Highlighted Item </h3>
+<% if @subset.highlighted.length > 0 %>
+  <dl class="item-list">
+    <%- @subset.highlighted.each do |item| -%>
+    <dd class="item_highlighted">
+      <%= item.pid%>
+      <a id="remove_highlighted" style="position: absolute" class="destructive destroy_highlighted" href=# action="<%=sub_collection_path(params[:id], :content_type=>"sub_collection", :highlighted_action=>"remove", :item_id=>item.pid)%>" title="Remove as highlighted"> Remove from Highlighted list</a>
+    </dd>
+    <%- end -%>
+  </dl>
+<%- else -%>
+  <h3>No highlighted items defined</h3>
+<%- end -%>
+
+<h3>Available <%=h facet_value if facet_value %> <em><%= grouped_result_count(@response, facet_name, facet_value) %> to be added as highlighted</em></h3>
 <table>
 	<% unless params[:display_type] == 'list' %>
   <tr>
     <th class="title">Title</th>
     <th class="type">Type</th>    
     <th class="type">Highlighted in Subcollection</th>
-
   </tr>
   <% end %>
   <% docs.each_with_index do |document,counter| %>
-   <%= render_item_partial document, 'edit_highlighted', :counter => counter %>
+   <%= render :partial => "shared/edit_highlighted", :locals => {:document => document, :counter => counter} %>   
   <% end %>
 </table>
