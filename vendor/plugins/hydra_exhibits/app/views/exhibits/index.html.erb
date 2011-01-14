@@ -1,0 +1,9 @@
+<h1>Special Collections</h1>
+
+<ul class="collection-list">
+  <%- @exhibits.each do |exhibit| -%>
+    <li>
+      <h2><%=link_to exhibit.pid, exhibit_path(exhibit) %></h2>
+    </li>
+  <%- end -%>
+</ul>

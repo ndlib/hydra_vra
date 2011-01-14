@@ -4,36 +4,14 @@ require "#{RAILS_ROOT}/vendor/plugins/hydra_exhibits/app/models/ead_xml.rb"
 
 class CollectionsController < CatalogController
 
-  before_filter :initialize_collection, :except=>[:index]
-
-  def initialize_collection
-    params[:collection_id] ? collection_id = params[:collection_id] : collection_id = params[:id]
-    @collection = Collection.load_instance_from_solr(collection_id)
-    @browse_facets = @collection.browse_facets
-    @facet_subsets_map = @collection.facet_subsets_map
-    @selected_browse_facets = get_selected_browse_facets(@browse_facets) 
-    #subset will be nil if the condition fails
-    @subset = @facet_subsets_map[@selected_browse_facets] if @selected_browse_facets.length > 0 && @facet_subsets_map[@selected_browse_facets]
-    #call collection.discriptions once since querying solr everytime on inbound relationship
-    if browse_facet_selected?(@browse_facets)
-      @subset.nil? ? @descriptions = [] : @descriptions = @subset.descriptions
-    else
-      #use collection descriptions
-      @descriptions = @collection.descriptions
-    end
-    logger.debug("Description: #{@descriptions}")
-    @extra_controller_params ||= {}
-    (@response, @document_list) = get_search_results( @extra_controller_params.merge!(:q=>build_lucene_query(params[:q])) )
-    @browse_response = @response
-  end
-
   def index
-    redirect_to :controller=>'catalog'
+    @collections = Collection.find_by_solr(:all).hits.map{|result| Collection.load_instance_from_solr(result["id"])}
   end
 
-  def show
-    show_without_customizations
-  end
+  #def show
+  #  
+  #  show_without_customizations
+  #end
 
    # Look up configged facet limit for given facet_field. If no
   # limit is configged, may drop down to default limit (nil key)
@@ -59,22 +37,4 @@ class CollectionsController < CatalogController
   end
   helper_method :facet_limit_hash
 
-  def browse_facet_selected?(browse_facets)
-    browse_facets.each do |facet|
-      return true if params[:f] and params[:f][facet]
-    end
-    return false
-  end
-  helper_method :browse_facet_selected?
-
-  def get_selected_browse_facets(browse_facets)
-    selected = {}
-    if params[:f]
-      browse_facets.each do |facet|
-        selected.merge!({facet.to_sym=>params[:f][facet].first}) if params[:f][facet]
-      end
-    end
-    selected
-  end
-  helper_method :get_selected_browse_facets
 end

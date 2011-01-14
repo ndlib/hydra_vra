@@ -65,20 +65,20 @@
             <%= get_values_from_datastream(@document_fedora,"descMetadata", [:ead_header, :profiledesc, :creation, :date])%>
           </dd>
       <%end%>
-      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:ead_header, :profiledesc, :language]).first.empty?%>
+      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:ead_header, :profiledesc, :langusage]).first.empty?%>
           <dt class="langusage">
             <%= fedora_field_label("descMetadata", [:ead_header, :profiledesc, :langusage], "Langusage:") %>
           </dt>
           <dd>
-            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:ead_header, :profiledesc, :language])%>
+            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:ead_header, :profiledesc, :langusage])%>
           </dd>
       <%end%>
-      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:ead_header, :profiledesc, :language, :language]).first.empty?%>
+      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:ead_header, :profiledesc, :langusage, :language]).first.empty?%>
           <dt class="language">
-            <%= fedora_field_label("descMetadata", [:ead_header, :profiledesc, :language, :language], "Language:") %>
+            <%= fedora_field_label("descMetadata", [:ead_header, :profiledesc, :langusage, :language], "Language:") %>
           </dt>
           <dd>
-            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:ead_header, :profiledesc, :language, :language])%>
+            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:ead_header, :profiledesc, :langusage, :language])%>
           </dd>
       <%end%>
 	  <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:archive_desc, :did, :head]).first.empty?%>

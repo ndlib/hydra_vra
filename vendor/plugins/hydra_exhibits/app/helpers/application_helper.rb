@@ -19,7 +19,7 @@ module ApplicationHelper
   # options consist of:
   # :suppress_link => true # do not make it a link, used for an already selected value for instance
   def render_browse_facet_value(facet_solr_field, item, options ={})
-    link_to_unless(options[:suppress_link], item.value, collection_path(add_facet_params_and_redirect(facet_solr_field, item.value).merge!({:class=>"facet_select", :action=>"show"}))) + " (" + format_num(item.hits) + ")"
+    link_to_unless(options[:suppress_link], item.value, exhibit_path(add_facet_params_and_redirect(facet_solr_field, item.value).merge!({:class=>"facet_select", :action=>"show"}))) + " (" + format_num(item.hits) + ")"
   end
 
   # Standard display of a SELECTED facet value, no link, special span
@@ -28,7 +28,7 @@ module ApplicationHelper
     '<span class="selected">' +
     render_facet_value(facet_solr_field, item, :suppress_link => true) +
     '</span>' +
-      ' [' + link_to("remove", collection_path(remove_browse_facet_params(facet_solr_field, item.value, params, browse_facets)), :class=>"remove") + ']'
+      ' [' + link_to("remove", exhibit_path(remove_browse_facet_params(facet_solr_field, item.value, params, browse_facets)), :class=>"remove") + ']'
   end
 
   #Remove current selected facet plus any child facets selected
@@ -79,9 +79,9 @@ module ApplicationHelper
     else
       result << "<span class=\"browse toggle active\">Browse</span>"
       if(subcollection.nil?)
-        result << "<a href=\"#{url_for(:action => "new", :controller => "sub_collections", :content_type => "sub_collection", :collection_id => @document[:id], :selected_facets => params[:f] )}\" class=\"edit toggle\">Edit Subcollection</a>"
+        result << "<a href=\"#{url_for(:action => "new", :controller => "sub_collections", :content_type => "sub_collection", :exhibit_id => @document[:id], :selected_facets => params[:f] )}\" class=\"edit toggle\">Edit Subcollection</a>"
       else
-        result << "<a href=\"#{edit_catalog_path(subcollection.id, :class => "facet_selected", :collection_id => @document[:id], :f => params[:f])}\" class=\"edit toggle\">Edit Subcollection</a>"
+        result << "<a href=\"#{edit_catalog_path(subcollection.id, :class => "facet_selected", :exhibit_id => @document[:id], :f => params[:f])}\" class=\"edit toggle\">Edit Subcollection</a>"
       end
 
     end
@@ -178,13 +178,13 @@ module ApplicationHelper
     
   end
 
-  def link_back_to_collection(opts={:label=>'Back to facets'})
+  def link_back_to_exhibit(opts={:label=>'Back to facets'})
     logger.debug("params: #{params.inspect}")
     # params[:f].dup ||
     query_params =  {}
-    query_params.merge!({:id=>params[:collection_id]})
+    query_params.merge!({:id=>params[:exhibit_id]})
     query_params.merge!({:f=>params[:f]})
-    link_url = collection_path(query_params)
+    link_url = exhibit_path(query_params)
     link_to opts[:label], link_url    
   end
 
@@ -287,13 +287,13 @@ module ApplicationHelper
 
   def render_item_partial(doc, action_name, locals={})
     format = document_partial_name(doc)
-    begin
+    #begin
       Rails.logger.debug("attempting to render #{format}/_#{action_name}")
       render :partial=>"#{format}/#{action_name}", :locals=>{:document=>doc}.merge(locals)
-    rescue ActionView::MissingTemplate
-      Rails.logger.debug("rendering default partial catalog/_#{action_name}_partials/default")
-      render :partial=>"catalog/_#{action_name}_partials/default", :locals=>{:document=>doc}.merge(locals)
-    end
+    #rescue ActionView::MissingTemplate
+    #  Rails.logger.debug("rendering default partial catalog/_#{action_name}_partials/default")
+    #  render :partial=>"catalog/_#{action_name}_partials/default", :locals=>{:document=>doc}.merge(locals)
+    #end
   end
 
   def display_thumnail( document )
@@ -315,6 +315,20 @@ module ApplicationHelper
     rescue ActionView::MissingTemplate
       render :partial=>"catalog/_#{action_name}_partials/default", :locals=>{:document=>doc}
     end
+  end
+
+  alias :access_controls_build_lucene_query :build_lucene_query
+
+  def build_lucene_query(user_query)
+    q = access_controls_build_lucene_query(user_query)
+    if params[:exhibit_id]
+      ex = Exhibit.load_instance_from_solr(params[:exhibit_id])
+      unless ex.nil?
+        exhibit_members_query = ex.build_members_query
+        q = "#{exhibit_members_query} AND #{q}" unless exhibit_members_query.empty?
+      end
+    end
+    q
   end
   
 end

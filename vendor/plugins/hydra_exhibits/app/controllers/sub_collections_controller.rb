@@ -46,14 +46,14 @@ class SubCollectionsController < ApplicationController
       @subcollection.save
     end
 
-    if !params[:collection_id].nil?
-      @collection =  ActiveFedora::Base.load_instance(params[:collection_id])
-      @subcollection.subset_of_append(@collection)
+    if !params[:exhibit_id].nil?
+      @exhibit =  ActiveFedora::Base.load_instance(params[:exhibit_id])
+      @subcollection.subset_of_append(@exhibit)
       @subcollection.save
-      @collection.save
+      @exhibit.save
     end
     logger.debug("Selected faceted added to subcollection: #{@subcollection.selected_facets}")
-    redirect_to url_for(:action=>"edit", :controller=>"catalog", :id=>@subcollection.id, :selected_facet=>params[:f],:class=>"facet_selected", :collection_id=>params[:collection_id])
+    redirect_to url_for(:action=>"edit", :controller=>"catalog", :id=>@subcollection.id, :f=>params[:selected_facets],:class=>"facet_selected", :exhibit_id=>params[:exhibit_id])
   end
 
   def update

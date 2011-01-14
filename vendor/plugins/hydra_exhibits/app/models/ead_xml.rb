@@ -304,7 +304,7 @@ class EadXml < ActiveFedora::NokogiriDatastream
               t.creation{
                 t.date
               }
-              t.langusage{
+              t.languages{
                 t.language(:langcode=>"eng", :encodinganalog=>"546")
               }
             }

@@ -1,0 +1,67 @@
+  <fieldset id="collection_fields">
+    <legend> Exhibit </legend>
+    <dl>
+          <dt>
+            <%= fedora_field_label("filters", "facets", "Browse By Facets:") %>
+          </dt>
+          <dd>
+            <% tabs = 0 %>
+            <% @exhibit.datastreams["filters"].facets_values.each do |solr_fname|%>
+             <h2>
+             <% for i in 0..tabs %>
+               &nbsp;&nbsp;
+             <% end %>
+             -
+             <% if facet_field_labels[solr_fname] %>
+               <%=facet_field_labels[solr_fname]%>
+             <% else %>
+               <%=solr_fname%>
+             <% end %>
+             </h2>
+             <% tabs += 1 %>
+            <% end %>
+          </dd>
+          <dt>
+            <%= fedora_field_label("filters", "query", "Exhibit Members Query:") %>
+          </dt>
+          <dd>
+            <% @exhibit.query_values.each do |value|%>
+             <h2> <%=value%></h2>
+            <% end %>
+          </dd>
+           
+          <dt>
+            <%= fedora_field_label("rightsMetadata", [:discover_access], "Discover Access:") %>
+          </dt>
+          <dd>
+            <% unless @exhibit.get_values_from_datastream("rightsMetadata", [:discover_access])%>
+              <%= @exhibit.get_values_from_datastream("rightsMetadata", [:discover_access])%>
+            <% else %>
+              Not set
+            <% end %>
+          </dd>
+           <dt>
+            <%= fedora_field_label("rightsMetadata", [:discover_access], "Read Access:") %>
+          </dt>
+          <dd>
+            <% unless @exhibit.get_values_from_datastream("rightsMetadata", [:read_access])%>
+              <%= @exhibit.get_values_from_datastream("rightsMetadata", [:read_access])%>
+            <% else %>
+              Not set
+            <% end %>
+          </dd>
+           <dt>
+            <%= fedora_field_label("rightsMetadata", [:read_access], "Edit Access:") %>
+          </dt>
+          <dd>
+            <% unless @exhibit.get_values_from_datastream("rightsMetadata", [:edit_access])%>
+              <%= @exhibit.get_values_from_datastream("rightsMetadata", [:edit_access])%>
+            <% else %>
+              Not set
+            <% end %>
+          </dd>
+    </dl>
+  </fieldset>
+
+  
+  

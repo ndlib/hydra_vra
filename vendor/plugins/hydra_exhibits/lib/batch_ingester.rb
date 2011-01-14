@@ -117,8 +117,13 @@ module BatchIngester
         update_fields(collection, [:archive_desc, :acqinfo, :head], args[:prefercite_head])
         update_fields(collection, [:archive_desc, :prefercite], args[:prefercite_info])
         update_fields(collection, [:archive_desc, :prefercite, :head], args[:prefercite_head])
-        collection.update_indexed_attributes({:facets=>{0=>"dsc_0_collection_0_did_0_unittitle_0_imprint_0_publisher_facet",1=>"dsc_0_collection_0_did_0_unittitle_0_unittitle_content_facet"}})
         collection.save
+        exhibit= Exhibit.new(:namespace=>"RBSC-CURRENCY")#(:pid=>pid)
+        exhibit.update_indexed_attributes({:facets=>{0=>"dsc_0_collection_0_did_0_unittitle_0_imprint_0_publisher_facet",1=>"dsc_0_collection_0_did_0_unittitle_0_unittitle_content_facet"}})
+        exhibit.update_indexed_attributes(:query=>{0=>"id_t:RBSC-CURRENCY"})
+        exhibit.datastreams["rightsMetadata"].update_permissions({"group"=>{"archivist"=>"edit","public"=>"read"}})
+        exhibit.collections_append(collection)
+        exhibit.save
       else
         objmap = result.to_a[0]
         puts "Collection already exists with Id: #{objmap["id"]}. Cannot create duplicate object"
