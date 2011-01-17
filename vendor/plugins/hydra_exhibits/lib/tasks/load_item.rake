@@ -12,12 +12,12 @@ namespace :batch do
   end
 
   desc "Remove building from csv file"
-  task :remove_csv_objects  => :environment do
+  task :remove_all_objects  => :environment do
     ingester = BatchIngester::CurrencyIngester.new
     if ENV['FILE']
-      ingester.process_delete_obj(ENV['FILE'])
+      ingester.delete_all_obj_from_fedora(ENV['NAMESPACE'])
     else
-      ingester.process_delete_obj("spec/fixtures/seaside.csv")
+      ingester.delete_all_obj_from_fedora("RBSC-CURRENCY")
     end
 
   end
