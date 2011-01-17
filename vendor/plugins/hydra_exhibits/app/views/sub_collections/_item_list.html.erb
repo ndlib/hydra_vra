@@ -1,5 +1,5 @@
 <h3>Highlighted Item </h3>
-<% if @subset.highlighted.length > 0 %>
+<% if @subset && @subset.highlighted.length > 0 %>
   <dl class="item-list">
     <%- @subset.highlighted.each do |item| -%>
     <dd class="item_highlighted">

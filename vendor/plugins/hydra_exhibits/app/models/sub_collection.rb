@@ -23,6 +23,16 @@ class SubCollection < ActiveFedora::Base
     datastreams["selected_facets"].values
   end
 
+  #returns hash of facet to array of values for adding to params
+  def selected_facets_for_params
+    h = {}
+    datastreams["selected_facets"].values.each_pair do |key, value|
+      h[key] = []
+      h[key] << value
+    end
+    h
+  end
+
   def selected_facets_append(hash={})
     datastreams["selected_facets"].update_values(hash)
   end

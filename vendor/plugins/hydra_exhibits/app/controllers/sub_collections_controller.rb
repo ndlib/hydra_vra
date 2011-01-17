@@ -53,7 +53,8 @@ class SubCollectionsController < ApplicationController
       @exhibit.save
     end
     logger.debug("Selected faceted added to subcollection: #{@subcollection.selected_facets}")
-    redirect_to url_for(:action=>"edit", :controller=>"catalog", :id=>@subcollection.id, :f=>@subcollection.selected_facets,:class=>"facet_selected", :exhibit_id=>params[:exhibit_id])
+    
+    redirect_to url_for(:action=>"edit", :controller=>"catalog", :id=>@subcollection.id, :f=>@subcollection.selected_facets_for_params,:class=>"facet_selected", :exhibit_id=>params[:exhibit_id])
   end
 
   def update
