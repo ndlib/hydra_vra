@@ -11,12 +11,78 @@
 <% javascript_includes << "jquery.notice.js" %>
 <%# For Fancybox> %>
 <% javascript_includes << "fancybox/jquery.fancybox-1.3.1.pack.js" %>
+
+<% javascript_includes << "ckeditor/ckeditor.js" %>
+<% javascript_includes << "ckeditor/adapters/jquery.js" %>
+<% javascript_includes << "ckeditor/jquery.jeditable.ckeditor.js" %>
+<% javascript_includes << "ckeditor/jquery.generateId.js" %>
+
 <% stylesheet_links << "../javascripts/fancybox/jquery.fancybox-1.3.1.css" %>
 <%# For slider controls %>
 <% javascript_includes << "select_to_ui_slider/selectToUISlider.jQuery.js" %>
+
 <% stylesheet_links << ["../javascripts/select_to_ui_slider/css/ui.slider.extras.css"] %>
 <% stylesheet_links << "slider" %>
 <% extra_head_content << capture do %>
+  <script type="text/javascript">
+    $(function()
+        {
+            var basic_config = {
+                toolbar:
+                [
+                    ['Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink'],
+                    ['UIColor']
+                ]
+            };
+
+            var full_config ={
+                toolbar:
+                    [
+                        ['Source','-','Save','NewPage','Preview','-','Templates'],
+                        ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print', 'SpellChecker', 'Scayt'],
+                        ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
+                        ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField'],
+                        ['BidiLtr', 'BidiRtl'],
+                        '/',
+                        ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
+                        ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv'],
+                        ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
+                        ['Link','Unlink','Anchor'],
+                        ['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar','PageBreak'],
+                        '/',
+                        ['Styles','Format','Font','FontSize'],
+                        ['TextColor','BGColor'],
+                        ['Maximize', 'ShowBlocks','-','About']
+                    ]
+            };
+
+            var nd_config ={
+                toolbar:
+                    [
+                        ['Source','Preview','-','Templates'],
+                        ['Cut','Copy','Paste','PasteText','SpellChecker', 'Scayt'],
+                        ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
+                        ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField'],
+                        ['BidiLtr', 'BidiRtl'],
+                        '/',
+                        ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
+                        ['NumberedList','BulletedList'],
+                        ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
+                        ['Link','Unlink','Anchor'],
+                        ['Image','Table','HorizontalRule','SpecialChar','PageBreak'],
+                        '/',
+                        ['Styles','Format','Font','FontSize'],
+                        ['TextColor','BGColor'],
+                        ['Maximize', 'ShowBlocks','-','About']
+                    ]
+            };
+
+
+            // Initialize the editor.
+            // Callback function can be passed and executed after full instance creation.
+            $('.ckeditor').ckeditor(basic_config);
+        });
+  </script>
   <script type="text/javascript">
     $(document).ready(function() {
       $(document).catalogEdit();
@@ -27,6 +93,7 @@
   <div class="multipleEdit">
     <div id="loading" style="display:none;">
       <img src="/images/ajax-loader.gif" width="32" height="32" alt="Saving...">
+      </img>
     </div>
     <% if flash[:notice] %>
       <div class="notice">
@@ -34,21 +101,22 @@
       </div>
     <% end %>
 
-  	<div id="accordion">
-		<h2 class="section-title"><a href="#">Description</a></h2>
-		<% if (!get_values_from_datastream(@document_fedora,"descMetadata", [:item]).first.empty?) %>
-			<%= render :partial => "components/edit_item", :locals => { :content => "component", :label => "item", :document_fedora => @document_fedora} %>
-		<% else %>
-			<%= render :partial => "components/edit_subcollection", :locals => { :content => "component", :label => "subcollection", :document_fedora => @document_fedora} %>
-                <% end %>
-	    <h2 class="section-title"><a href="#">Upload Content</a></h2>
-    <div id="uploads" data-pid="<%= params[:id] %>">
-		<%= render :partial=>"fluid_infusion/uploader" %>
-		<%= render :partial=>"fluid_infusion/uploader_generic_content_objects.js" %>
-	</div>
-
-    <h2 class="section-title"><a href="#">Set permissions</a></h2>
-    <div id="permissions">
-      <%= render :partial => "permissions/index", :locals => {:document => document, :asset_id=>params[:id]} %>
+    <div id="accordion">
+      <h2 class="section-title"><a href="#">Description</a></h2>
+      <% if (!get_values_from_datastream(@document_fedora,"descMetadata", [:item]).first.empty?) %>
+        <%= render :partial => "components/edit_item", :locals => { :content => "component", :label => "item", :document_fedora => @document_fedora} %>
+      <% else %>
+        <%= render :partial => "components/edit_subcollection", :locals => { :content => "component", :label => "subcollection", :document_fedora => @document_fedora} %>
+      <% end %>
+      <h2 class="section-title"><a href="#">Set permissions</a></h2>
+      <div id="permissions">
+        <%= render :partial => "permissions/index", :locals => {:document => document, :asset_id=>params[:id]} %>
+      </div>
     </div>
+    <form id="new_image_tag" action="<%=url_for(:action=>"create", :controller=>"images_tag", :asset_id=>params[:id]) %>" method="post" style="display:none;">
+      <input id="content_type" type="hidden" name="content_type" value="component" />
+      <input type="submit" value="Add Image Tag" />
+    </form>
+  </div>
 </div>
+

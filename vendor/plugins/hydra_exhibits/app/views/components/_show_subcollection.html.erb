@@ -1,12 +1,12 @@
 <fieldset id="subcollection_fields">
   <legend>Subcollection</legend>
     <dl>
-      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:dsc, :collection, :did, :unittitle]).first.empty?%>
+      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:dsc, :collection, :did, :unittitle, :unittitle_content]).first.empty?%>
          <dt class="title">
-           <%= fedora_field_label("descMetadata", [:dsc, :collection, :did, :unittitle], "Title:")%>
+           <%= fedora_field_label("descMetadata", [:dsc, :collection, :did, :unittitle, :unittitle_content], "Title:")%>
 	     </dt>
          <dd>
-           <%= get_values_from_datastream(@document_fedora,"descMetadata", [:dsc, :collection, :did, :unittitle])%>
+           <%= get_values_from_datastream(@document_fedora,"descMetadata", [:dsc, :collection, :did, :unittitle, :unittitle_content])%>
          </dd>
       <%end%>
       <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:dsc, :collection, :did, :unitid]).first.empty?%>
@@ -39,6 +39,30 @@
 	 </dt>
          <dd>
            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:dsc, :collection, :did, :origination, :engraver])%>
+         </dd>
+     <%end%>
+      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:dsc, :collection, :did, :unittitle, :imprint, :geogname]).first.empty?%>
+         <dt class="printing_location">
+           <%= fedora_field_label("descMetadata", [:dsc, :collection, :did, :unittitle, :imprint, :geogname], "Printing Location:")%>
+	 </dt>
+         <dd>
+           <%= get_values_from_datastream(@document_fedora,"descMetadata", [:dsc, :collection, :did, :unittitle, :imprint, :geogname])%>
+         </dd>
+     <%end%>
+      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:dsc, :collection, :did, :unittitle, :imprint, :publisher]).first.empty?%>
+         <dt class="publisher">
+           <%= fedora_field_label("descMetadata", [:dsc, :collection, :did, :unittitle, :imprint, :publisher], "Publisher:")%>
+	 </dt>
+         <dd>
+           <%= get_values_from_datastream(@document_fedora,"descMetadata", [:dsc, :collection, :did, :unittitle, :imprint, :publisher])%>
+         </dd>
+     <%end%>
+      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:dsc, :collection, :did, :unittitle, :unitdate]).first.empty?%>
+         <dt class="date">
+           <%= fedora_field_label("descMetadata", [:dsc, :collection, :did, :unittitle, :unitdate], "Date:")%>
+	 </dt>
+         <dd>
+           <%= get_values_from_datastream(@document_fedora,"descMetadata", [:dsc, :collection, :did, :unittitle, :unitdate])%>
          </dd>
      <%end%>
      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:dsc, :collection, :scopecontent]).first.empty?%>

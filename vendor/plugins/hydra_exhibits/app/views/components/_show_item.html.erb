@@ -1,0 +1,103 @@
+<fieldset id="item_fields">
+  <legend>Item</legend>
+    <dl>
+      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:item, :did, :unittitle, :unittitle_label]).first.empty?%>
+          <dt class="display_title">
+            <%= fedora_field_label("descMetadata", [:item, :did, :unittitle, :unittitle_label], "Display Title:") %>
+          </dt>
+          <dd>
+            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:item, :did, :unittitle, :unittitle_label])%>
+          </dd>
+      <%end%>
+      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:item, :did, :unittitle, :unittitle_content]).first.empty?%>
+          <dt class="title">
+            <%= fedora_field_label("descMetadata", [:item, :did, :unittitle, :unittitle_content], "Title:") %>
+          </dt>
+          <dd>
+            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:item, :did, :unittitle, :unittitle_content])%>
+          </dd>
+      <%end%>
+      <% unless get_values_from_datastream(@document_fedora,"descMetadata",  [:item, :did, :unitid]).first.empty?%>
+          <dt class="item_id">
+            <%= fedora_field_label("descMetadata", [:item, :did, :unitid], "ID:") %>
+          </dt>
+          <dd>
+            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:item, :did, :unitid])%>
+          </dd>
+      <%end%>
+      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:item, :did, :unittitle, :num]).first.empty?%>
+         <dt class="serial_num">
+           <%= fedora_field_label("descMetadata", [:item, :did, :unittitle, :num], "Serial Number:")%>
+	 </dt>
+         <dd>
+           <%= get_values_from_datastream(@document_fedora,"descMetadata", [:item, :did, :unittitle, :num])%>
+         </dd>
+     <%end%>
+      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:item, :did, :origination, :persname, :persname_normal]).first.empty?%>
+         <dt class="display_signers">
+           <%= fedora_field_label("descMetadata", [:item, :did, :origination, :persname, :persname_normal], "Display Signers:")%>
+	 </dt>
+         <dd>
+           <%= get_values_from_datastream(@document_fedora,"descMetadata", [:item, :did, :origination, :persname, :persname_normal])%>
+         </dd>
+     <%end%>
+      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:item, :did, :origination, :persname]).first.empty?%>
+         <dt class="signers">
+           <%= fedora_field_label("descMetadata", [:item, :did, :origination, :persname], "Signers:")%>
+	 </dt>
+         <dd>
+           <%= get_values_from_datastream(@document_fedora,"descMetadata", [:item, :did, :origination, :persname])%>
+         </dd>
+     <%end%>
+      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:item, :did, :physdesc, :dimensions]).first.empty?%>
+         <dt class="physdesc">
+           <%= fedora_field_label("descMetadata", [:item, :did, :physdesc, :dimensions], "Physical Description:")%>
+	 </dt>
+         <dd>
+           <%= get_values_from_datastream(@document_fedora,"descMetadata", [:item, :did, :physdesc, :dimensions])%>
+         </dd>
+     <%end%>
+      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:item, :controlaccess, :genreform]).first.empty?%>
+         <dt class="page_turn">
+           <%= fedora_field_label("descMetadata", [:item, :controlaccess, :genreform], "Page Turn:")%>
+	 </dt>
+         <dd>
+           <%= get_values_from_datastream(@document_fedora,"descMetadata", [:item, :controlaccess, :genreform])%>
+         </dd>
+     <%end%>
+      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:item, :acqinfo]).first.empty?%>
+         <dt class="provenance">
+           <%= fedora_field_label("descMetadata", [:item, :acqinfo], "Provenance:")%>
+	 </dt>
+         <dd>
+           <%= get_values_from_datastream(@document_fedora,"descMetadata", [:item, :acqinfo])%>
+         </dd>
+     <%end%>
+      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:item, :odd]).first.empty?%>
+         <dt class="plate_letter">
+           <%= fedora_field_label("descMetadata", [:item, :odd], "Plate Letter:")%>
+	 </dt>
+         <dd>
+           <%= get_values_from_datastream(@document_fedora,"descMetadata", [:item, :odd])%>
+         </dd>
+     <%end%>
+      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:item, :scopecontent]).first.empty?%>
+         <dt class="description">
+           <%= fedora_field_label("descMetadata", [:item, :scopecontent], "Description:")%>
+	 </dt>
+         <dd>
+           <%= get_values_from_datastream(@document_fedora,"descMetadata", [:item, :scopecontent])%>
+         </dd>
+     <%end%>
+      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:item, :daogrp, :daoloc, :daoloc_href]).first.empty?%>
+         <dt class="images">
+           <%= fedora_field_label("descMetadata", [:item, :daogrp, :daoloc, :daoloc_href], "Images:")%>
+	 </dt>
+         <dd>
+           <%= get_values_from_datastream(@document_fedora,"descMetadata", [:item, :daogrp, :daoloc, :daoloc_href])%>
+         </dd>
+     <%end%>
+    </dl>
+</fieldset>
+
+

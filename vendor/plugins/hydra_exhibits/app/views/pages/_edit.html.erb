@@ -11,26 +11,16 @@
 <% javascript_includes << "jquery.notice.js" %>
 <%# For Fancybox> %>
 <% javascript_includes << "fancybox/jquery.fancybox-1.3.1.pack.js" %>
-
-<% javascript_includes << "ckeditor/ckeditor.js" %>
-<% javascript_includes << "ckeditor/adapters/jquery.js" %>
-<% javascript_includes << "ckeditor/jquery.jeditable.ckeditor.js" %>
-<% javascript_includes << "ckeditor/jquery.generateId.js" %>
-<% javascript_includes << "jquery.hydraExhibit.js" %>
-
 <% stylesheet_links << "../javascripts/fancybox/jquery.fancybox-1.3.1.css" %>
 <%# For slider controls %>
 <% javascript_includes << "select_to_ui_slider/selectToUISlider.jQuery.js" %>
-
 <% stylesheet_links << ["../javascripts/select_to_ui_slider/css/ui.slider.extras.css"] %>
 <% stylesheet_links << "slider" %>
-<% extra_head_content << capture do %>    
-    
+<% extra_head_content << capture do %>
   <script type="text/javascript">
     $(document).ready(function() {
-      $(document).catalogEdit();      
-
-    });    
+      $(document).catalogEdit();
+    });
   </script>
 <% end %>
 <div class="document_viewer" id="cover_container">
@@ -47,23 +37,19 @@
 
     <div id="accordion">
       <h2 class="section-title"><a href="#">Description</a></h2>
-      <%= render :partial => "collections/edit_collection", :locals => { :content => "collection", :label => "collection", :document_fedora => @document_fedora} %>      
+        <%= render :partial => "pages/edit_page", :locals => { :content => "page", :label => "page", :document_fedora => @document_fedora} %>
+      <h2 class="section-title"><a href="#">Image</a></h2>
+        <%= render :partial => "pages/image_page", :locals => { :content => "page", :label => "page", :document_fedora => @document_fedora} %>
+      <h2 class="section-title"><a href="#">Upload Content</a></h2>
+      <div id="uploads" data-pid="<%= params[:id] %>">
+	<%= render :partial=>"fluid_infusion/uploader" %>
+	<%= render :partial=>"fluid_infusion/uploader_page_objects.js" %>
+      </div>
       <h2 class="section-title"><a href="#">Set permissions</a></h2>
       <div id="permissions">
         <%= render :partial => "permissions/index", :locals => {:document => document, :asset_id=>params[:id]} %>
       </div>
     </div>
-
-    <%#
-    // This hidden form really belongs elsewhere, but putting it inside of an
-    // accordion section un-hides it, so I stuck it here for now. -MZ
-    %>
-
   </div>
 </div>
-<% sidebar_items << capture do %>
-  <%= delete_asset_link(params[:id], "Collection") %>
-<% end %>
-
-
 

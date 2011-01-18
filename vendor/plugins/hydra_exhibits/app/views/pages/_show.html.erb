@@ -1,0 +1,18 @@
+<% javascript_includes << "/plugin_assets/fluid-infusion/infusion-1.2-src/lib/jquery/ui/js/jquery.ui.accordion.js" %>
+<% javascript_includes << 'custom' %>
+<% javascript_includes << "catalog/show" %>
+<% javascript_includes << "fancybox/jquery.fancybox-1.3.1.pack.js" %>
+<% stylesheet_links << "../javascripts/fancybox/jquery.fancybox-1.3.1.css" %>
+
+<style type="text/css" media="screen">
+  input.editable-edit, input.textile-edit {display:none}
+</style>
+
+<div class="document_viewer" id="cover_container">
+  <div id="accordion">
+    <h2 class="section-title"><a href="#">Description</a></h2>
+    <%= render :partial => "pages/show_page", :locals => {:content_type => "page", :label => "page", :document_fedora => @document_fedora} %>
+    <h2 class="section-title"><a href="#">Image</a></h2>
+    <%= render :partial => "pages/image_page", :locals => { :content => "page", :label => "page", :document_fedora => @document_fedora} %>
+  </div>
+</div>

@@ -7,8 +7,8 @@
   <dd>
     <ul>
         <li class="image">
-          <%= fedora_field_label("descMetadata", [:item, :daogrp, :daoloc, :daoloc_href], "Image:") %>
-          <%= fedora_text_field(@document_fedora,"descMetadata", [:item, :daogrp, :daoloc, :daoloc_href], :multiple=>false) %>
+          <%= fedora_field_label("descMetadata", [:item, :daogrp, {:daoloc => image_counter}, :daoloc_href], "Image:") %>
+          <%= fedora_text_field(@document_fedora,"descMetadata", [:item, :daogrp, {:daoloc => image_counter}, :daoloc_href], :multiple=>false) %>
 		  <%= debug "#{image_counter}"%>
         </li>
     </ul>

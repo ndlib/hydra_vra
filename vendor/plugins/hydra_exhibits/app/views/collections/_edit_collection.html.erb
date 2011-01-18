@@ -1,11 +1,156 @@
-<form id="document_metadata" action="<%= url_for(:action=>"update", :controller=>"components", :content_type=>content)%>" method="post" data-resource-type="<%= content %>" accept-charset="utf-8" data-pid="<%= params[:id] %>" data-content-type="<%= content %>">
+<form id="document_metadata" action="<%= url_for(:action=>"update", :controller=>"collections", :content_type=>"collection")%>" method="post" data-resourceType="<%= content %>" accept-charset="utf-8">
+  <%- if current_user -%>
+    <input id="re-run-action" class="nobutton" type="button" onclick=" location.href='<%=url_for(:action => "new", :controller => "components", :content_type => "component", :label => "subcollection", :collection_id => params[:id])%>' " value="Add Component"/>
+  <%- end -%>
   <fieldset id="work_fields">
-    <legend> Item </legend>
-      <input id="content_type" type="hidden" name="content_type" value="<%= content %>" />
+    <legend> Collection </legend>
+    <input id="content_type" type="hidden" name="content_type" value="<%= content %>" />
     <dl>
-      
+      <dt>
+        <%= fedora_field_label("descMetadata", [:ead_header, :eadid], "Ead ID:") %>
+      </dt>
+      <dd class="eadid">
+        <%= fedora_text_field(document_fedora,"descMetadata", [:ead_header, :eadid], :multiple=>false) %>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:ead_header, :filedesc, :titlestmt, :titleproper], "Title:") %>
+      </dt>
+      <dd class="title">
+        <%= fedora_text_field(document_fedora,"descMetadata", [:ead_header, :filedesc, :titlestmt, :titleproper], :multiple=>false) %>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:ead_header, :filedesc, :titlestmt, :author], "Author:") %>
+      </dt>
+      <dd class="author">
+        <%= fedora_text_field(document_fedora,"descMetadata", [:ead_header, :filedesc, :titlestmt, :author])%>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:ead_header, :filedesc, :publicationstmt, :publisher], "Publisher:") %>
+      </dt>
+      <dd class="publisher">
+        <%= fedora_text_field(document_fedora,"descMetadata", [:ead_header, :filedesc, :publicationstmt, :publisher]) %>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:ead_header, :filedesc, :publicationstmt, :address, :addressline], "Publisher Address:") %>
+      </dt>
+      <dd class="address">
+        <%= fedora_text_field(document_fedora,"descMetadata", [:ead_header, :filedesc, :publicationstmt, :address, :addressline], :multiple=>true) %>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:ead_header, :filedesc, :publicationstmt, :date], "Published Date:") %>
+      </dt>
+      <dd class="date">
+        <%= fedora_text_field(document_fedora,"descMetadata", [:ead_header, :filedesc, :publicationstmt, :date], :multiple=>false) %>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:ead_header, :profiledesc, :creation], "Finding Aid Creator:") %>
+      </dt>
+      <dd id="creator">
+        <%=fedora_text_field(document_fedora,"descMetadata", [:ead_header, :profiledesc, :creation], :multiple=>true) %>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:ead_header, :profiledesc, :creation, :date], "Finding Aid Creation Date:")%>
+      </dt>
+      <dd id="creation_date">
+        <%= fedora_text_field(document_fedora,"descMetadata", [:ead_header, :profiledesc, :creation, :date])%>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:ead_header, :profiledesc, :langusage], "Langusage:")%>
+      </dt>
+      <dd id="langusage">
+        <%= fedora_text_field(document_fedora,"descMetadata", [:ead_header, :profiledesc, :langusage])%>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:ead_header, :profiledesc, :langusage, :language], "Language:")%>
+      </dt>
+      <dd id="language">
+        <%= fedora_text_field(document_fedora,"descMetadata", [:ead_header, :profiledesc, :langusage, :language])%>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:archive_desc, :did, :head], "Unit Head:")%>
+      </dt>
+      <dd id="unit_head">
+        <%= fedora_text_field(document_fedora,"descMetadata", [:archive_desc, :did, :head])%>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:archive_desc, :did, :unittitle], "Unit Title:")%>
+      </dt>
+      <dd id="unit_title">
+        <%= fedora_text_field(document_fedora,"descMetadata", [:archive_desc, :did, :unittitle])%>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:archive_desc, :did, :unitid], "Unit ID:")%>
+      </dt>
+      <dd id="unit_id">
+        <%= fedora_text_field(document_fedora,"descMetadata", [:archive_desc, :did, :unitid])%>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:archive_desc, :did, :unitdate], "Unit Date:")%>
+      </dt>
+      <dd id="unit_date">
+        <%= fedora_text_field(document_fedora,"descMetadata", [:archive_desc, :did, :unitdate])%>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:archive_desc, :did, :lang, :language], "Unit Language:")%>
+      </dt>
+      <dd id="unit_language">
+        <%= fedora_text_field(document_fedora,"descMetadata", [:archive_desc, :did, :lang, :language])%>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:archive_desc, :did, :repo, :corpname], "Organization Name:")%>
+      </dt>
+      <dd id="corp_name">
+        <%= fedora_text_field(document_fedora,"descMetadata", [:archive_desc, :did, :repo, :corpname])%>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:archive_desc, :did, :repo, :corpname, :subarea], "Department:")%>
+      </dt>
+      <dd id="subarea">
+        <%= fedora_text_area(document_fedora,"descMetadata", [:archive_desc, :did, :repo, :corpname, :subarea])%>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:archive_desc, :did, :repo, :address, :addressline], "Organization Address:")%>
+      </dt>
+      <dd id="unit_address">
+        <%= fedora_text_area(document_fedora,"descMetadata", [:archive_desc, :did, :repo, :address, :addressline])%>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:archive_desc, :accessrestrict, :head], "Access Restriction Head:")%>
+      </dt>
+      <dd id="access_restrict_head">
+        <%= fedora_text_field(document_fedora,"descMetadata", [:archive_desc, :accessrestrict, :head])%>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:archive_desc, :accessrestrict], "Access Restriction Info:")%>
+      </dt>
+      <dd id="access_restrict_info">
+        <%= fedora_text_area(document_fedora,"descMetadata", [:archive_desc, :accessrestrict])%>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:archive_desc, :acqinfo, :head], "Acquisition Head:")%>
+      </dt>
+      <dd id="acq_head">
+        <%= fedora_text_field(document_fedora,"descMetadata", [:archive_desc, :acqinfo, :head])%>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:archive_desc, :acqinfo], "Acquisition Info:")%>
+      </dt>
+      <dd id="acq_info">
+        <%= fedora_text_area(document_fedora,"descMetadata", [:archive_desc, :acqinfo])%>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:archive_desc, :prefercite, :head], "Prefercite Head:")%>
+      </dt>
+      <dd id="prefercite_head">
+        <%= fedora_text_field(document_fedora,"descMetadata", [:archive_desc, :prefercite, :head])%>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:archive_desc, :prefercite], "Prefercite Info:")%>
+      </dt>
+      <dd id="prefercite_info">
+        <%= fedora_text_area(document_fedora,"descMetadata", [:archive_desc, :prefercite])%>
+      </dd>
     </dl>
   </fieldset>
-  <%= render :partial => "shared/edit_description", :locals => {:content => 'collection', :document_fedora => @document_fedora} %>
-  
 </form>
+

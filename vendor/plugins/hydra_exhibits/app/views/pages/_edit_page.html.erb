@@ -1,0 +1,27 @@
+<form id="document_metadata" action="<%= url_for(:action=>"update", :controller=>"pages", :content_type=>content)%>" method="post" data-resourceType="<%= content %>" accept-charset="utf-8">
+  <fieldset id="page_fields">
+    <legend> Page </legend>
+    <dl>
+      <dt>
+        <%= fedora_field_label("properties", [:page_id], "ID:") %>
+      </dt>
+      <dd class="page_id">
+        <%= fedora_text_field(document_fedora,"properties", [:page_id], :multiple=>false) %>
+      </dd>
+      <dt>
+        <%= fedora_field_label("properties", [:name], "Name:") %>
+      </dt>
+      <dd class="name">
+        <%= fedora_text_field(document_fedora,"properties", [:name], :multiple=>false) %>
+      </dd>
+      <dt>
+        <%= fedora_field_label("properties", [:title], "Title:") %>
+      </dt>
+      <dd class="title">
+        <%= fedora_text_field(document_fedora,"properties", [:title], :multiple=>false) %>
+      </dd>
+    </dl> 
+  </fieldset>
+</form>
+
+
