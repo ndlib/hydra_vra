@@ -50,6 +50,7 @@ module Hydra::GenericContent
   end
   
   def create_or_update_datastream ds_name, file
+    logger.info("In the create_or_update_datastream of generic_content....")
     case file
     when File
         logger.debug "adding #{ds_name} file datastream"
