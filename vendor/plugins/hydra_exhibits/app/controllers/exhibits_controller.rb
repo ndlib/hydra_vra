@@ -5,8 +5,11 @@ require "#{RAILS_ROOT}/vendor/plugins/hydra_exhibits/app/models/ead_xml.rb"
 class ExhibitsController < CatalogController
 
   before_filter :initialize_exhibit, :except=>[:index]
+ 
 
   def initialize_exhibit
+    require_fedora
+    require_solr
     params[:exhibit_id] ? exhibit_id = params[:exhibit_id] : exhibit_id = params[:id]
     @exhibit = Exhibit.load_instance_from_solr(exhibit_id)
     @browse_facets = @exhibit.browse_facets

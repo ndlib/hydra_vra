@@ -1,3 +1,55 @@
+<h1>Exhibit Title</h1>
+
+<span class="edit-browse">
+  <% if editor? %>
+    <%= edit_and_browse_exhibit_links(@exhibit) %>
+  <% end -%>
+</span>
+<p>
+  Description
+</p>
+<% if @descriptions.length > 0 %>    
+  <% @descriptions.each do |description|%>
+    <h3>Essay Title goes in here</h3>
+    <%=load_essay(description) %>
+    <%# #link_to "Essay: \"#{description.title}\"", essay_path(params[:collection_id], @essay.pid) description.introduction %>
+    <%# link_to "[Read the complete essay]", essay_path(params[:collection_id], @essay.pid) %>
+  <% end %>
+<%- else -%>
+  <h3><%= "Essay forthcoming..." %></h3>
+<%- end -%>
+
+
+<h2>Featured sources</h2>
+<% if !@subset.nil? && @subset.highlighted.length > 0 %>
+  <dl class="item-list">
+    <%- @subset.highlighted.each do |item| -%>
+    <dt><%= link_to truncate(item.pid, :length => 80), catalog_path(item) %></dt>    
+    <%- end -%>
+  </dl>
+<%- else -%>
+  <h3>No highlighted items defined</h3>
+<%- end -%>
+
+<hr />
+
+
+<h2>Complete sources</h2>
+<dl class="item-list"></dl>
+
+<div class="pagination">
+  <%= will_paginate @response.docs, :page_links => false, :class => 'prev_next_links' %>
+  <%= will_paginate @response.docs, :container => false %>
+</div>
+
+<%= render 'sort_and_per_page' if @response.response['numFound'] > 10 %>
+
+<%= render :partial=>'document_list' %>
+
+<div class="pagination">
+  <%= will_paginate @response.docs, :page_links => false, :class => 'prev_next_links' %>
+  <%= will_paginate @response.docs, :container => false%>
+</div>
   <fieldset id="collection_fields">
     <legend> Exhibit </legend>
     <dl>
@@ -27,37 +79,6 @@
           <dd>
             <% @exhibit.query_values.each do |value|%>
              <h2> <%=value%></h2>
-            <% end %>
-          </dd>
-           
-          <dt>
-            <%= fedora_field_label("rightsMetadata", [:discover_access], "Discover Access:") %>
-          </dt>
-          <dd>
-            <% unless @exhibit.get_values_from_datastream("rightsMetadata", [:discover_access])%>
-              <%= @exhibit.get_values_from_datastream("rightsMetadata", [:discover_access])%>
-            <% else %>
-              Not set
-            <% end %>
-          </dd>
-           <dt>
-            <%= fedora_field_label("rightsMetadata", [:discover_access], "Read Access:") %>
-          </dt>
-          <dd>
-            <% unless @exhibit.get_values_from_datastream("rightsMetadata", [:read_access])%>
-              <%= @exhibit.get_values_from_datastream("rightsMetadata", [:read_access])%>
-            <% else %>
-              Not set
-            <% end %>
-          </dd>
-           <dt>
-            <%= fedora_field_label("rightsMetadata", [:read_access], "Edit Access:") %>
-          </dt>
-          <dd>
-            <% unless @exhibit.get_values_from_datastream("rightsMetadata", [:edit_access])%>
-              <%= @exhibit.get_values_from_datastream("rightsMetadata", [:edit_access])%>
-            <% else %>
-              Not set
             <% end %>
           </dd>
     </dl>
