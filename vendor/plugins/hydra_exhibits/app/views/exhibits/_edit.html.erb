@@ -44,12 +44,13 @@
       </div>
     <% end %>
 
-    <div id="accordion">
-      <h2 class="section-title"><a href="#">Description</a></h2>
-      <%# debug get_values_from_datastream(@document_fedora,"descMetadata", [:work]).first %>
-      <%# debug datastreams_in_memory.inspect %>      
-      <% # = render :partial => "shared/edit_description", :locals => {:content => 'collection', :document_fedora => @document_fedora} %>
-      <%= render :partial => "collections/edit_collection", :locals => { :content => "collection", :label => "collection", :document_fedora => @document_fedora} %>      
+    <div id="accordion" style="height:600px;">
+      <h2 class="section-title"><a href="#">Details</a></h2>
+      <% if @document_fedora.kind_of? Exhibit%>
+        <%= render :partial => "exhibits/edit_exhibit", :locals => { :content => "exhibit", :label => "exhibit", :document_fedora => @document_fedora} %>
+      <% else %>
+        <%= render :partial => "sub_collections/edit_sub_collection", :locals => { :content => "sub_collection", :label => "sub collection", :document_fedora => @document_fedora} %>     
+      <% end %>      
       <h2 class="section-title"><a href="#">Set permissions</a></h2>
       <div id="permissions">
         <%= render :partial => "permissions/index", :locals => {:document => document, :asset_id=>params[:id]} %>
@@ -64,7 +65,12 @@
   </div>
 </div>
 <% sidebar_items << capture do %>
-  <%= delete_asset_link(params[:id], "Collection") %>
+  <% if @document_fedora.kind_of? Exhibit%>
+    <%= delete_asset_link(params[:id], "Exhibit") %>
+  <% else %>
+    <%= delete_asset_link(params[:id], "Sub Collection") %>
+  <% end %>
+  
 <% end %>
 
 

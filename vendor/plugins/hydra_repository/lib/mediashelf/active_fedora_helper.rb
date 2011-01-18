@@ -36,7 +36,15 @@ module MediaShelf
 
     def load_af_instance_from_solr(doc)
       pid = doc[:id] ? doc[:id] : doc[:id.to_s]
-      pid ? ActiveFedora::Base.load_instance_from_solr(pid,doc) : nil
+      if pid
+        if doc[:active_fedora_model_s]
+          return doc[:active_fedora_model_s].first.constantize.load_instance_from_solr(doc[:id],doc)  
+        else
+          return ActiveFedora::Base.load_instance_from_solr(pid,doc)
+        end
+      else
+        return nil
+      end
     end
 
     def add_named_relationship(asset, relationship_name, target_pid)

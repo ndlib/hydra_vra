@@ -1,0 +1,26 @@
+  <fieldset id="work_fields2">
+    <legend> Exhibit </legend>
+      <input id="content_type" type="hidden" name="content_type" value="<%= content %>" />
+    <dl>
+      <dt>
+        Title:
+      </dt>
+      <dd class="title">
+
+      </dd>
+      <dt>
+        <%= fedora_field_label("filters", "facets", "Browse By Facets:") %>
+      </dt>
+      <dd id="browse_facets">
+        <%=fedora_text_field(document_fedora,"filters", "facets", :multiple=>true) %>
+        <%= fedora_text_field_insert_link "filters", :facets, :label=>"Browse Facet"%>
+      </dd>
+      <dt>
+        <%= fedora_field_label("filters", "query", "Solr Queries:")%>
+      </dt>
+      <dd id="queries">
+        <%= fedora_text_field(document_fedora,"filters", "query", :multiple=>true)%>
+      </dd>
+    </dl>
+    </fieldset>
+
