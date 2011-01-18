@@ -71,6 +71,18 @@ module ApplicationHelper
     return false
   end
 
+  def edit_and_browse_exhibit_links(exhibit)
+    result = ""
+    if params[:action] == "edit"
+      result << "<a href=\"#{catalog_path(@document[:id], :viewing_context=>"browse")}\" class=\"browse toggle\">Browse</a>"
+      result << "<span class=\"edit toggle active\">Edit Exhibit</span>"
+    else
+      result << "<span class=\"browse toggle active\">Browse</span>"
+      result << "<a href=\"#{edit_catalog_path(@document[:id], :class => "facet_selected", :exhibit_id => @document[:id], :f => params[:f])}\" class=\"edit toggle\">Edit Exhibit</a>"
+    end
+    return result
+  end
+
   def edit_and_browse_subcollection_links(subcollection)
     result = ""
     if params[:action] == "edit"
@@ -183,7 +195,7 @@ module ApplicationHelper
     # params[:f].dup ||
     query_params =  {}
     query_params.merge!({:id=>params[:exhibit_id]})
-    query_params.merge!({:f=>params[:f]})
+    query_params.merge!({:f=>params[:f]}) if params[:f] && !params[:f].empty?
     link_url = exhibit_path(query_params)
     link_to opts[:label], link_url    
   end
