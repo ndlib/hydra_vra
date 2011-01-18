@@ -1,6 +1,32 @@
  (function($) {
 
-   $(document).ready(function() {     
+   $(document).ready(function() {
+
+      // Setup the ajax indicator
+     $('body').append('<div id="ajaxBusy"><p><img src="/images/ajax-loader.gif"></p></div>');
+
+     $('#ajaxBusy').css({
+        display:"none",
+        width:"100px",
+        height: "100px",
+        position: "fixed",
+        top: "50%",
+        left: "50%",
+        //background:"url(/images/ajax-loader.gif) no-repeat center #fff",
+        textAlign:"center",
+        padding:"10px",
+        font:"normal 16px Tahoma, Geneva, sans-serif",
+        border:"1px solid #666",
+        marginLeft: "-50px",
+        marginTop: "-50px",
+        overflow: "auto"
+     });
+
+     /*shows the loading div every time we have an Ajax call*/
+     $(document).ajaxStart(function(){
+        $('#ajaxBusy').show();
+     }).ajaxStop(function(){
+     $('#ajaxBusy').hide();});       
 
      $('a.addhighlighted').bind('click',function(){
        var selectedSubcollectionItems = new Array();
@@ -54,12 +80,6 @@
          }
       });
     });
-
-    $("a.essay_content", this).live("click", function(){
-      alert("essay content live")
-      $.fn.hydraExhibit.insertEssay(this);         
-    });
-
    });
    /*  Initialize the form for inserting new Person (individual) permissions
    *  ex. $("#add-contributor-box").hydraNewContributorForm
@@ -69,6 +89,31 @@
      test = $("div.textile-text").last()[0].innerHTML;
      alert("Tat->"+test);
    });*/
+
+   /* Initialize the element as a Hydra Editable TextField
+   */
+   $.fn.exhibitTextField = function(settings) {
+     var config = {
+        selectors : {
+          text  : ".editable-text",
+          edit  : ".editable-edit"
+        },
+        listeners : {
+          onFinishEdit : jQuery.fn.hydraExhibit.fluidFinishExhibitEditListener          
+        },
+        defaultViewText: "click to edit"
+      };
+
+     if (settings) $.extend(config, settings);
+
+     this.each(function() {
+       fluid.inlineEdit(this, config);
+     });
+
+     return this;
+
+   };
+
    $.fn.essayTextareaField = function(settings) {
      //alert("essayTextareaField intialize")
      var config = {
@@ -98,7 +143,7 @@
       var $this = $(this);
       var $editNode = $(".textile-edit", this).first();
       var $textNode = $(".textile-text", this).first();
-      var $closestForm =  $editNode.closest("form");
+      //var $closestForm =  $editNode.closest("form");
       var name = $editNode.attr("name");
 
       var pid = $editNode.attr("data-pid");
@@ -110,7 +155,7 @@
       // var field_param = $editNode.fieldSerialize();
       var field_selectors = $("input.fieldselector[rel="+$editNode.attr("rel")+"]").fieldSerialize();         
 
-      var params = "?datastream_name="+datastream_name+"&content_type="+content_type+"&essay_id="+pid
+      var params = "?datastream_name="+datastream_name+"&content_type="+content_type+"&essay_id="+pid+"&essay_action=update_essay"
 
       //Field Selectors are the only update params to be passed in the url
       //var assetUrl = $closestForm.attr("action") + "&" + field_selectors;
@@ -142,13 +187,7 @@
      //alert("insertTextareaValue")
      var config = {};
      if (settings) $.extend(config, settings);
-     $("a.addval.rich-textarea", this).click(function(e) {
-       /*var name = $("input#essay_title").first().attr("value");
-       if (name == "" || name.length ==0) {
-         alert("Please enter name before adding new essay")
-         return false;
-       }*/       
-       //$.fn.hydraExhibit.insertEssayTitle(this,e);
+     $("a.addval.rich-textarea", this).live("click",function(e) {       
        $.fn.hydraExhibit.insertEssay(this,e);
      });
    };
@@ -156,7 +195,7 @@
    $.fn.essayDeleteButton = function(settings) {
      var config = {};
      if (settings) $.extend(config, settings);
-     $("a.destroy_essay", this).click(function(e) {       
+     $("a.destroy_essay", this).live("click", function(e) {
        $.fn.hydraExhibit.deleteEssay(this,e);
      });
     //return this;
@@ -164,13 +203,78 @@
 
     $.fn.hydraExhibit = {
 
-     insertEssayTitle: function(element) {
-       $element = $(element);
-       var $item = $('<input type="text" name="essay_title" class="editable-edit" value="" /> <a href="#" class="essay_content">add content</a>');
-       $item.appendTo(values_list);       
+/*
+     *  hydraMetadata.fluidFinishEditListener
+     *  modelChangedListener for Fluid Components
+     *  Purpose: Handler for when you're done editing and want values to submit to the app.
+     *  Triggers hydraMetadata.saveEdit()
+     */
+     fluidFinishExhibitEditListener: function(newValue, oldValue, editNode, viewNode) {
+       // Only submit if the value has actually changed.
+       if (newValue != oldValue) {
+         var result = $.fn.hydraExhibit.saveTitle(editNode, newValue);
+       }
+       return result;
      },
 
-     insertEssay: function(element){       
+     /*
+     *  hydraMetadata.fluidModelChangedListener
+     *  modelChangedListener for Fluid Components
+     *  Purpose: Handler for ensuring that the undo decorator's actions will be submitted to the app.
+     *  Triggers hydraExhibit.saveTitle()
+     */
+     fluidModelExhibitChangedListener: function(model, oldModel, source) {
+
+       // this was a really hacky way of checking if the model is being changed by the undo decorator
+       if (source && source.options.selectors.undoControl) {
+         var result = $.fn.hydraMetadata.saveTitle(source.component.edit);
+         return result;
+       }
+     },
+
+     saveTitle: function(editNode) {
+       //alert("Exhibit SaveEdit")
+
+       var $editNode = $(".editable-edit").first();
+       var $textNode = $(".editable-text").first();
+       var name = $editNode.attr("name");
+       var essay_id = $editNode.attr("data-pid");
+       var contentType = $editNode.attr("data-content-type");
+       var datastreamName = $editNode.attr("data-datastream-name");
+
+       var params = "datastream_name="+datastreamName+"&content_type="+contentType+ "&essay_id="+essay_id+ "&essay_title="+ $editNode.val()+"&essay_action=update_essay_title"+"&_method=put"
+       var url = $("input#show_essay_url").first().attr("value")
+
+       $.ajax({
+         type: "PUT",
+         url: url,
+         dataType : "json",
+         data: params,
+         success: function(msg){
+     			$.noticeAdd({
+             inEffect:               {opacity: 'show'},      // in effect
+             inEffectDuration:       600,                    // in effect duration in miliseconds
+             stayTime:               6000,                   // time in miliseconds before the item has to disappear
+             text:                   "Your edit to "+ msg.updated[0].field_name +" has been saved as "+msg.updated[0].value+" at index "+msg.updated[0].index,   // content of the item
+             stay:                   false,                  // should the notice item stay or not?
+             type:                   'notice'                // could also be error, succes
+            });
+         },
+         error: function(xhr, textStatus, errorThrown){
+     			$.noticeAdd({
+             inEffect:               {opacity: 'show'},      // in effect
+             inEffectDuration:       600,                    // in effect duration in miliseconds
+             stayTime:               6000,                   // time in miliseconds before the item has to disappear
+             text:                   'Your changes to' + $editNode.attr("rel") + ' could not be saved because of '+ xhr.statusText + ': '+ xhr.responseText,   // content of the item
+             stay:                   true,                  // should the notice item stay or not?
+             type:                   'error'                // could also be error, succes
+            });
+         }
+       });
+     },
+
+     insertEssay: function(element){
+       //alert("insert essay")
        $element = $(element)
        var fieldName = $element.attr("rel");
        var datastreamName = $element.attr('data-datastream-name');
@@ -182,22 +286,50 @@
        var params = "?datastream_name="+datastreamName+"&content_type="+contentType//+"&essay_name="+essayName;
        var assetUrl = $("input#show_essay_url").first().attr("value")+params;
        var addDiv = $("div#add-essay-div").first()
-       var essayDiv=$("div.essay_div").last()
+       var essayDiv=$("div.essay_div")
+       var essayNode=$(element).closest("div.essay_div")
 
        var $item = jQuery('<li class=\"field_value essay-textarea-container field\" name="asset[' + fieldName + '][' + new_value_index + ']">' +
               '<a href="" class="destructive"><img src="/images/delete.png" border="0" /></a>' +
-              '<div class="textile-text text" id="'+fieldName+'_'+new_value_index+'">click to add Essay content</div></li>');
+              '<label>Essay Title</label> <input type="text" name="essay_title" class="editable-edit" value="" /> ' +
+               '<div class="textile-text text" id="'+fieldName+'_'+new_value_index+'">click to add Essay content</div></li>');
 
        $item.appendTo(essayDiv);
-       var testUrl= assetUrl +"&format=textile"+"&temp_content="+$("div#"+fieldName+"_"+new_value_index).html()+"&essay_title="+$("input.editable-edit").val();
+       //alert("Essay Title=> "+$("input.editable-edit").val())
+       var submitUrl= assetUrl+"&essay_action=insert_essay" +"&format=html"+"&temp_content="+$("div#"+fieldName+"_"+new_value_index).html();
 
-       $("div.textile-text", $item).editable(testUrl, {
+      function submitEditableTextArea(value, settings) {
+       //alert("Submit from function")
+       var edits = new Object();
+       var result = value;
+       edits[settings.name] = [value];
+        var returned = $.ajax({
+         //async: false,
+         type: "PUT",
+         //indicator : "<img src='/images/ajax-loader.gif'>",
+         url: submitUrl+"&essay_title="+ $("input.editable-edit").val(),
+         dataType: "html",
+         data: edits,
+         success: function(data) {
+          $(essayDiv).last().after(data);
+          $(essayNode).remove();
+          $inserted = $(essayDiv).last();
+          $("a.destructive", $inserted).essayDeleteButton();
+          $(".essay-textarea-container").essayTextareaField();
+          $(".custom-editable-container").exhibitTextField();
+          $inserted.insertTextareaValue();
+          return(result);
+         }
+       });
+
+      }
+      $("div.textile-text", $item).editable(submitEditableTextArea, {
           method    : "PUT",
-          indicator : "<img src='/images/ajax-loader.gif'>",
+          //indicator : "<img src='/images/ajax-loader.gif'>",
           loadtext  : $("div#"+fieldName+"_"+new_value_index).html(),
           type      : "ckeditor",
           submit    : "OK",
-          cancel    : "Cancel",          
+          cancel    : "Cancel",
           placeholder : "click to edit essay",
           onblur    : "ignore",
           name      : "asset["+new_value_index+"]["+fieldName+"]",
@@ -210,20 +342,30 @@
                         ]
                       }
        });
-       /*$("div.textile-text", $item).editable(assetUrl+"&format=textile", {
+
+
+
+
+       /*$("div.textile-text", $item).editable(testUrl, {
           method    : "PUT",
           indicator : "<img src='/images/ajax-loader.gif'>",
-          loadtext  : "",
+          loadtext  : $("div#"+fieldName+"_"+new_value_index).html(),
           type      : "ckeditor",
           submit    : "OK",
-          cancel    : "Cancel",
-          // tooltip   : "Click to edit #{field_name.gsub(/_/, ' ')}...",
-          placeholder : "click to edit",
+          cancel    : "Cancel",          
+          placeholder : "click to edit essay",
           onblur    : "ignore",
           name      : "asset["+new_value_index+"]["+fieldName+"]",
           id        : "field_id",
           height    : "100",
-          loadurl   : assetUrl +"&temp_content="+$("div.textile-text").last()[0].innerHTML,
+          submitdata : function() {
+                     return {essay_title: $("input.editable-edit").val()}
+                     },
+          callback:  function(value, settings) {
+               alert("hiding");
+                //$("div.essay_div").first().hide();
+          },
+
           ckeditor  : { toolbar:
                         [
                             ['Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink'],

@@ -65,21 +65,24 @@ class EssaysController < ApplicationController
   end
 
   def update
-    updater_method_args = prep_updater_method_args(params)
-    content = updater_method_args[:params]["essay_content"]
-    ds_id=updater_method_args[:opts][:datastreams]    
-    logger.error("Param: #{updater_method_args[:params]["essay_content"].inspect}, opts: #{updater_method_args[:opts][:datastreams].inspect}")
-
     if params.has_key?(:essay_id)
       af_model = retrieve_af_model(params[:content_type])
       unless af_model
         af_model = Essay
       end
-      raise "ds_id not available to update the datastream. Please check and try again" if ds_id.blank?
       @essay=af_model.load_instance(params[:essay_id])
+      @essay.save
+    end
+    if !params[:essay_action].eql?("update_essay_title")
+      updater_method_args = prep_updater_method_args(params)
+      content = updater_method_args[:params]["essay_content"]
+      ds_id=updater_method_args[:opts][:datastreams]
+      logger.error("Param: #{updater_method_args[:params]["essay_content"].inspect}, opts: #{updater_method_args[:opts][:datastreams].inspect}")
+    end
+    if params.has_key?(:essay_action) && params[:essay_action].eql?("update_essay")
       @essay.update_named_datastream("essaydatastream",{:dsid=>ds_id,:file=>content, :label=>"test essay", :mimeType=>"text/html"})
       @essay.save
-    else
+    elsif params.has_key?(:essay_action) && params[:essay_action].eql?("insert_essay")
       @essay = create_and_save_essay(content)
       apply_depositor_metadata(@essay)
       @essay.save
@@ -98,10 +101,21 @@ class EssaysController < ApplicationController
         @essay=Essay.load_instance(@essay.pid)
       end
       logger.debug "Created #{@essay.pid}. Now asset has #{@asset.descriptions_inbound_ids.count} essays and pids are #{@asset.descriptions_inbound_ids}"
+    #else
+     # raise "Unknown action to perform"
+    end
+    if params.has_key?(:essay_title) && !params[:essay_title].blank?
+      logger.debug "essay title: #{params[:essay_title]}, Essay pid: #{@essay.pid}"
+      @essay.update_indexed_attributes(:title=>{"0"=>params[:essay_title]})
+      @essay.save
+      response = Hash["updated"=>[]]
+      response["updated"] << {"title update"=>params[:essay_title]}
+      logger.debug("if loop response-> #{response.inspect}")
     end
 
     respond_to do |want|
       want.js {
+        logger.debug("render js response-> #{response.inspect}")
         render :json=> response
       }
       want.textile {
@@ -109,6 +123,9 @@ class EssaysController < ApplicationController
           content = content.values.first
         end
         render :text=> white_list( RedCloth.new(content, [:sanitize_html]).to_html )
+      }
+      want.html {
+        render :partial=>"essays/index", :locals => {:asset => @asset}
       }
     end
   end

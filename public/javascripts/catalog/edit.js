@@ -21,6 +21,7 @@
       $(".editable-container").hydraTextField();
       $(".textile-container").hydraTextileField();
       $(".essay-textarea-container").essayTextareaField();
+      $(".custom-editable-container").exhibitTextField();
       setUpDatePicker();
       setUpSliders();
       setUpNewPermissionsForm();      

@@ -382,27 +382,29 @@ module BatchIngester
       #obj.save
     end
         
-    def process_delete_obj(filename)
-      arr_of_data=load_file(filename)
-      arr_of_data.each do |row|
-        remove_each_row( row )
+    def delete_all_obj_from_fedora(namespace)
+      row =715
+      while row < 717  do
+        remove_each_obj(namespace,row)
+        row +=1;
       end
     end
-    def remove_each_row(row)
-      if (row[0].blank? || row[1].blank?)
-        raise "This entry #{row.inspect} has empty street name or street number, Please correct it before proceeding"
-      else
-        key=row[0]<<'-'<<row[1]
-        pid= generate_pid(key, nil)
-        puts "The pid is #{pid}"
-        delete_object(pid, "building")
-      end
+
+    def remove_each_obj(namespace,row)
+      row_str=row
+      pid= namespace+":" +row_str.to_s
+      puts "The pid is #{pid}"
+      delete_object(pid)
     end
     
-    def delete_object(pid, content_type)      
-      if(asset_available(pid,content_type))
-          ActiveFedora::Base.load_instance(pid).delete
+    def delete_object(pid)
+      begin
+        ActiveFedora::Base.load_instance(pid).delete
+      rescue Exception => exc
+        logger.error("Message for the log file #{exc.message}")
       end
+
+
     end
   end
 end
