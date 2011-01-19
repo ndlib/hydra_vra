@@ -4,7 +4,12 @@ require "#{RAILS_ROOT}/vendor/plugins/hydra_exhibits/app/models/ead_xml.rb"
 
 class ExhibitsController < CatalogController
 
-  before_filter :initialize_exhibit, :except=>[:index]
+  before_filter :initialize_exhibit, :except=>[:index, :new]
+  before_filter :require_solr, :require_fedora, :only=>[:new]
+
+  include Hydra::AssetsControllerHelper
+
+  helper :hydra, :metadata, :infusion_view
  
 
   def initialize_exhibit
@@ -37,6 +42,41 @@ class ExhibitsController < CatalogController
 
   def index
     @exhibits = Exhibit.find_by_solr(:all).hits.map{|result| Exhibit.load_instance_from_solr(result["id"])}
+  end
+
+  def new
+    content_type = params[:content_type]
+    af_model = retrieve_af_model(content_type)
+    logger.debug("Afmodel: #{af_model}")
+    if af_model
+      @exhibit = af_model.new(:namespace=>"RBSC-CURRENCY")
+      @exhibit.save      
+      apply_depositor_metadata(@exhibit)
+      set_collection_type(@exhibit, params[:content_type])
+      @exhibit.save
+    end
+    redirect_to url_for(:action=>"edit", :controller=>"catalog", :label => params[:label], :id=>@exhibit.pid)
+  end
+
+  def update_attributes
+    content_type = params[:content_type]
+    af_model = retrieve_af_model(content_type)
+    logger.debug("Afmodel: #{af_model}")
+    if af_model
+      @exhibit = af_model.load_instance(params[:id])
+      @exhibit.update_indexed_attributes(:main_description=>{"0"=>params[:essay_id]})
+      @exhibit.save
+      response = Hash["updated"=>[]]
+      response["updated"] << {"title update"=>params[:essay_id]}
+      logger.debug("if loop response-> #{response.inspect}")
+    end
+
+    respond_to do |want|
+      want.js {
+        logger.debug("render js response-> #{response.inspect}")
+        render :partial => "exhibits/edit_settings", :locals => {:content => "exhibit", :document_fedora => @exhibit}
+      }
+    end
   end
 
   def show

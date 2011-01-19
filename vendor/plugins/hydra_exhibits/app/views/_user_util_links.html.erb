@@ -12,7 +12,7 @@
    <button id="select-asset" type="button"> Select type of content to create</button>
    <ul id="create-asset-menu">
       <li onclick=" location.href='<%=url_for(:action => "new", :controller => "collections", :content_type => "collection", :label => "collection")%>' ">Add new collection</li>
-      <li onclick=" location.href='<%=url_for(:action => "new", :controller => "assets", :content_type => "exhibit", :label => "collection")%>' ">Add new Exhibit</li>
+      <li onclick=" location.href='<%=url_for(:action => "new", :controller => "exhibits", :content_type => "exhibit", :label => "exhibit")%>' ">Add new Exhibit</li>
    </ul>
 
   </div>

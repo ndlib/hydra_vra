@@ -125,17 +125,20 @@ class EssaysController < ApplicationController
         render :text=> white_list( RedCloth.new(content, [:sanitize_html]).to_html )
       }
       want.html {
-        render :partial=>"essays/index", :locals => {:asset => @asset}
+        render :partial=>"essays/edit_essay", :locals => {:asset => @asset}
       }
     end
   end
 
   def destroy
     check_required_params([:asset_content_type,:id,:asset_id])
-    #unless af_model
-      af_model = Essay
-    #end
-    @essay=af_model.load_instance(params[:id])
+    logger.debug("Params sent to delete Essays: #{params.inspect}")    
+    @essay=Essayl.load_instance(params[:id])
+    if  params[:asset_content_type].eql?("exhibit")
+      @exhibit=Exhibit.load_instance(params[:asset_id])
+      @exhibit.update_indexed_attributes(:main_description=>{"0"=>""})
+      @exhibit.save
+    end
     #remove_named_relationship(@essay, params[:asset_content_type], params[:asset_pid])
     @essay.delete
     #flash[:notice]= "Deleted essay " + params[:id]

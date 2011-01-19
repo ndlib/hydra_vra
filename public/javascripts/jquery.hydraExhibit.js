@@ -81,6 +81,69 @@
          }
       });
     });
+
+    $("#re-run-add-main-essay-action").next().button( {
+    text: false,
+    icons: { primary: "ui-icon-triangle-1-s" }
+    })
+    .click(function() {
+      $('#add-main-essay-menu').is(":hidden") ?
+        $('#add-main-essay-menu').show() : $('#add-main-essay-menu').hide();
+      })
+    .parent().buttonset();
+
+    $('#add-main-essay-menu').mouseleave(function(){
+        $('#add-main-essay-menu').hide();
+    });
+
+    $("#re-run-add-main-essay-action", this).click(function() {
+      label = $(this).val().split(' ');
+      type = label[label.length-1];
+      alert("label: "+ label+"Type: "+type)
+    });
+       
+    $('li.essay').live('click',function(){
+      var pid =  $(this).attr("pid")
+      str=$(this).text()
+      $("#re-run-add-main-essay-action").val(jQuery.trim(str));
+      var params = "essay_id="+pid
+      var url = $("input#exhibit_update_url").first().attr("value")
+      var wholeDiv=$("div#edit_setting")
+      var perviousNode=$(this).closest("div#edit_setting")
+
+      $.ajax({
+         type: "PUT",
+         url: url,
+         dataType : "html",
+         data: params,
+         success: function(data){
+           $(wholeDiv).last().after(data);
+           $(perviousNode).remove();
+         },
+         error: function(xhr, textStatus, errorThrown){
+     			$.noticeAdd({
+             inEffect:               {opacity: 'show'},      // in effect
+             inEffectDuration:       600,                    // in effect duration in miliseconds
+             stayTime:               6000,                   // time in miliseconds before the item has to disappear
+             text:                   'Your changes to' + $editNode.attr("rel") + ' could not be saved because of '+ xhr.statusText + ': '+ xhr.responseText,   // content of the item
+             stay:                   true,                  // should the notice item stay or not?
+             type:                   'error'                // could also be error, succes
+            });
+         }
+      });
+    });
+
+
+      /* $("#add_person", this).click(function() {
+         $.fn.hydraMetadata.addContributor("person");
+       });
+       $("#add_organization", this).click(function() {
+         $.fn.hydraMetadata.addContributor("organization");
+       });
+       $("#add_conference", this).click(function() {
+         $.fn.hydraMetadata.addContributor("conference");
+       });*/
+
    });
    /*  Initialize the form for inserting new Person (individual) permissions
    *  ex. $("#add-contributor-box").hydraNewContributorForm

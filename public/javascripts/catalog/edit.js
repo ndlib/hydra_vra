@@ -248,8 +248,8 @@
       var content_type = $("form#new_contributor > input#content_type").first().attr("value");
       var insertion_point_selector = "#"+type+"_entries";
       var url = $("form#new_contributor").attr("action");
-      
-      $.post(url, {contributor_type: type, content_type: content_type},function(data) {
+      alert(type)
+      /*$.post(url, {contributor_type: type, content_type: content_type},function(data) {
         $(insertion_point_selector).append(data);
         fluid.inlineEdits("#"+$(data).attr("id"), {
             selectors : {
@@ -267,7 +267,7 @@
             defaultViewText: "click to edit"
         });
         
-      });
+      });*/
     };
     
     function removeContributor(element) {

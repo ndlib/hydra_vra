@@ -33,7 +33,7 @@ class ApplicationController
     
     stylesheet_links << ['yui', 'application', {:plugin=>:blacklight, :media=>'all'}]
     stylesheet_links << ['redmond/jquery-ui-1.8.5.custom', {:media=>'all'}]      
-    stylesheet_links << ['styles', 'hydrangea', 'hydrangea-split-button', {:media=>'all'}]
+    stylesheet_links << ['styles', 'hydrangea', 'hydrangea-split-button','hydraExhibit', {:media=>'all'}]
   end 
       
   def current_user

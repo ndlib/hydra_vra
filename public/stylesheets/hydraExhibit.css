@@ -1,0 +1,11 @@
+div#add-main-essay-box .ui-widget {font-size: .9em;}
+div#add-main-essay-box .ui-button {padding: 0;}
+div#add-main-essay-box {position:relative; margin-top: 15px; color:#333; margin: 5px 0 0 20px;}
+div#add-main-essay-box input,  div#add-main-essay-box button {color:#333; height: 2.2em;}
+div#add-main-essay-box button {padding: 0 0;}
+input#re-run-add-main-essay-action {margin-right: -0.5em; padding: 0 0.6em !important;}
+ul#add-main-essay-menu {display: none; overflow: auto; background: #f6f6f6 url('../plugin_assets/blacklight/stylesheets/jquery/ui-lightness/images/ui-bg_glass_100_f6f6f6_1x400.png') repeat-x scroll 50% 50%; position: absolute; border: 1px solid #ccc; z-index: 500; padding: 0; margin: 0; cursor: pointer; left: 0; }
+ul#add-main-essay-menu li {padding: 5px 12px; margin:0; list-style: none;}
+ul#add-main-essay-menu li:hover {background-color: #666; color: #fff;}
+
+div#add-main-essay-box .ui-widget {font-size: .9em;}
