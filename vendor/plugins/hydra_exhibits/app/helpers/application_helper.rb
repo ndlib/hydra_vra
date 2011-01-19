@@ -225,13 +225,35 @@ module ApplicationHelper
     
   end
 
-  def link_back_to_exhibit(opts={:label=>'Back to facets'})
-    logger.debug("params: #{params.inspect}")
+  def document_link_to_exhibit_sub_collection(label, document, counter)
+    sub_collection = load_af_instance_from_solr(document)
+    if !sub_collection.nil? && sub_collection.respond_to?(:selected_facets)
+      p = params.dup
+      sub_collection.selected_facets.each_pair do |facet_solr_field,value| 
+        p = add_facet_params(facet_solr_field,value)
+      end
+      p.delete(:commit)
+      p.delete(:search_field)
+      p.delete(:q)
+      link_to(label, exhibit_path(p.merge!({:id=>sub_collection.subset_of_ids.first, :class=>"facet_select", :action=>"show", :exhibit_id=>sub_collection.subset_of_ids.first})))
+    else
+      link_to_document(document, :label => Blacklight.config[:show][:heading].to_sym, :counter => (counter + 1 + @response.params[:start].to_i))
+    end
+  end
+
+  def link_to_exhibit(opts={})
     # params[:f].dup ||
     query_params =  {}
-    query_params.merge!({:id=>params[:exhibit_id]})
-    query_params.merge!({:f=>params[:f]}) if params[:f] && !params[:f].empty?
+    opts[:exhibit_id] ? exhibit_id = opts[:exhibit_id] : exhibit_id = params[:exhibit_id]
+    if opts[:f]
+      f = opts[:f]
+    elsif params[:f] && !params[:f].empty?
+      f = params[:f]
+    end 
+    query_params.merge!({:id=>exhibit_id})
+    query_params.merge!({:f=>f}) if f && !f.empty?
     link_url = exhibit_path(query_params)
+    opts[:label] = params[:exhibit_id] unless opts[:label]
     link_to opts[:label], link_url    
   end
 
