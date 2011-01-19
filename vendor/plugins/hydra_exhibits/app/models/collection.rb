@@ -6,6 +6,7 @@ class Collection < ActiveFedora::Base
   include Hydra::ModelMethods
 
   has_bidirectional_relationship "members", :has_member, :is_member_of
+  has_bidirectional_relationship  "descriptions",   :has_description, :is_description_of
     
   # Uses the Hydra Rights Metadata Schema for tracking access permissions & copyright
   has_metadata :name => "rightsMetadata", :type => Hydra::RightsMetadata 
@@ -23,6 +24,10 @@ class Collection < ActiveFedora::Base
     ds = self.datastreams_in_memory["descMetadata"]
     result = ds.remove_node(type,index)
     return result
+  end
+
+  def description_list
+    descriptions.any? ? descriptions : nil
   end
   
 end
