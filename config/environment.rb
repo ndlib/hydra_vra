@@ -67,7 +67,9 @@ Rails::Initializer.run do |config|
   # config.active_record.default_timezone = :utc
   config.middleware.use "UserAttributesLoader" if Rails.env == 'development'  
 end
-
+  ApplicationController.before_filter do |controller|
+     controller.javascript_includes << "jquery.vraMetadata.js"
+   end
 # ApplicationController.before_filter do |controller|
  #    controller.javascript_includes << "jquery.hydraExhibit.js"
   # end

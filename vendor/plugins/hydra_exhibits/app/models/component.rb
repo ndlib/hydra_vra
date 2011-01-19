@@ -17,6 +17,8 @@ class Component < ActiveFedora::Base
 
   # A place to put extra metadata values
   has_metadata :name => "properties", :type => ActiveFedora::MetadataDatastream do |m|
+    m.field 'collection', :string
+    m.field 'depositor', :string
     m.field "subcollection_id", :string
     m.field "item_id", :string
     m.field "component_type", :string
@@ -38,6 +40,12 @@ class Component < ActiveFedora::Base
     ds = self.datastreams_in_memory["descMetadata"]
     node, index = ds.insert_node(type, opts)
     return node, index
+  end
+
+  def remove_image(type, index)
+    ds = self.datastreams_in_memory["descMetadata"]
+    result = ds.remove_node(type,index)
+    return result
   end
 
   def get_component_level

@@ -36,7 +36,7 @@ class EssaysController < ApplicationController
     @asset=Collection.load_instance(params[:collection_id])
     essay_ids=@asset.description_inbound_ids
     logger.error("pid: #{@asset.pid}")
-    render :partial=>"essays/index", :layout=>layout
+    render :partial=>"essays/edit_essay", :layout=>layout
   end
 
   def new

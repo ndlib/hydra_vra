@@ -73,9 +73,12 @@ class EadXml < ActiveFedora::NokogiriDatastream
     t.item_ref(:path=>'c02'){
       t.did(:ref=>[:did_ref]){
         t.origination(:ref=>[:origination_ref]){
-          t.signer(:path=>'persname', :attribute=>{:role=>"signer"}){
-            t.persname_normal(:path=>{:attribute=>"normal"})
-          }
+#          t.signer(:path=>'persname', :attribute=>{:role=>"signer"}){
+#            t.persname_normal(:path=>{:attribute=>"normal"})
+#          }
+	t.persname(:path=>'persname', :attribute=>{:role=>"signer"}){
+	    t.persname_normal(:path=>{:attribute=>"normal"})
+	  }
         }
         t.unittitle(:ref=>[:title_ref]){
           t.unittitle_label(:path=>{:attribute=>"label"})
@@ -136,7 +139,7 @@ class EadXml < ActiveFedora::NokogiriDatastream
         t.creation(:path=>'creation'){
           t.date
         }
-        t.language(:path=>'language'){
+        t.langusage(:path=>'langusage'){
           t.language
         }
       }
@@ -439,7 +442,7 @@ class EadXml < ActiveFedora::NokogiriDatastream
         nodeset = self.find_by_terms(:archive_desc, :dsc, :collection, :item)
       when :image
         node = EadXml.image_template
-        nodeset = self.find_by_terms(:item, :daogrp, :daoloc)
+        nodeset = self.find_by_terms(:collection)
       else
         ActiveFedora.logger.warn("#{type} is not a valid argument for EadXml.insert_node")
         node = nil

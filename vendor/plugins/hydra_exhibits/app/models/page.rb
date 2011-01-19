@@ -18,8 +18,27 @@ class Page < ActiveFedora::Base
     m.field 'depositor', :string
     m.field 'title', :string
     m.field 'name', :string
+    m.field 'page_id', :string
   end
-  
+
+  def page_id
+    return @page_id if (defined? @page_id)
+    values = self.fields[:page_id][:values]
+    @page_id = values.any? ? values.first : ""
+  end  
+
+  def name
+    return @name if (defined? @name)
+    values = self.fields[:name][:values]
+    @name = values.any? ? values.first : ""
+  end
+
+  def title
+    return @title if (defined? @title)
+    values = self.fields[:title][:values]
+    @title = values.any? ? values.first : ""
+  end
+
 #  def initialize( attrs={} )
 #    super
 #  end
@@ -39,5 +58,7 @@ class Page < ActiveFedora::Base
       end
     end
   end
-  
+  def datastream_url ds_name="content"
+    "#{admin_site}fedora/objects/#{pid}/datastreams/#{ds_name}/content"
+  end
 end

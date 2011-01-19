@@ -1,13 +1,16 @@
 <form id="document_metadata" action="<%= url_for(:action=>"update", :controller=>"components", :content_type=>content)%>" method="post" data-resourceType="<%= content %>" accept-charset="utf-8">
+  <%- if current_user -%>
+      <input id="re-run-action" class="nobutton" type="button" onclick=" location.href='<%=url_for(:action => "new", :controller => "components", :content_type => "component", :label => "item", :subcollection_id => params[:id])%>' " value="Add Component"/>
+  <%- end -%>
   <fieldset id="work_fields">
     <legend> Subcollection </legend>
       <input id="content_type" type="hidden" name="content_type" value="<%= content %>" />
     <dl>
       <dt>
-        <%= fedora_field_label("descMetadata", [:dsc, :collection, :did, :unittitle], "Title:") %>
+        <%= fedora_field_label("descMetadata", [:dsc, :collection, :did, :unittitle, :unittitle_content], "Title:") %>
       </dt>
       <dd class="title">
-        <%= fedora_text_field(document_fedora,"descMetadata", [:dsc, :collection, :did, :unittitle], :multiple=>false) %>
+        <%= fedora_text_field(document_fedora,"descMetadata", [:dsc, :collection, :did, :unittitle, :unittitle_content], :multiple=>false) %>
       </dd>
       <dt>
         <%= fedora_field_label("descMetadata", [:dsc, :collection, :did, :unitid], "Abbreviated Title:") %>
@@ -34,10 +37,28 @@
         <%= fedora_text_field(document_fedora,"descMetadata", [:dsc, :collection, :did, :origination, :engraver], :multiple=>true) %>
       </dd>
       <dt>
+        <%= fedora_field_label("descMetadata", [:dsc, :collection, :did, :unittitle, :imprint, :geogname], "Printing Location:") %>
+      </dt>
+      <dd class="printing_location">
+        <%= fedora_text_field(document_fedora,"descMetadata", [:dsc, :collection, :did, :unittitle, :imprint, :geogname], :multiple=>true) %>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:dsc, :collection, :did, :unittitle, :imprint, :publisher], "Publisher:") %>
+      </dt>
+      <dd class="publisher">
+        <%= fedora_text_field(document_fedora,"descMetadata", [:dsc, :collection, :did, :unittitle, :imprint, :publisher], :multiple=>true) %>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:dsc, :collection, :did, :unittitle, :unitdate], "Date:") %>
+      </dt>
+      <dd class="date">
+        <%= fedora_text_field(document_fedora,"descMetadata", [:dsc, :collection, :did, :unittitle, :unitdate], :multiple=>true) %>
+      </dd>
+      <dt>
         <%= fedora_field_label("descMetadata", [:dsc, :collection, :scopecontent], "Description:") %>
       </dt>
       <dd class="description">
-        <%= fedora_text_field(document_fedora,"descMetadata", [:dsc, :collection, :scopecontent], :multiple=>false) %>
+        <%= fedora_text_area(document_fedora,"descMetadata", [:dsc, :collection, :scopecontent], :multiple=>false) %>
       </dd>
       <dt>
         <%= fedora_field_label("descMetadata", [:dsc, :collection, :odd], "Data Display:") %>
@@ -52,6 +73,6 @@
         <%= fedora_text_area(document_fedora,"descMetadata", [:dsc, :collection, :controlaccess, :genreform])%>
       </dd>
     </dl>
-    </fieldset>
-  </form>
+  </fieldset>
+</form>
 

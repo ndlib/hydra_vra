@@ -22,9 +22,9 @@
 
 
 <h2>Featured sources</h2>
-<% if !@subset.nil? && @subset.highlighted.length > 0 %>
+<% if !@exhibit.nil? && @exhibit.highlighted.length > 0 %>
   <dl class="item-list">
-    <%- @subset.highlighted.each do |item| -%>
+    <%- @exhibit.highlighted.each do |item| -%>
     <dt><%= link_to truncate(item.pid, :length => 80), catalog_path(item) %></dt>    
     <%- end -%>
   </dl>

@@ -63,21 +63,21 @@ class SubCollectionsController < ApplicationController
 
     af_model = retrieve_af_model(params[:content_type])
     if af_model
-      @subcollection = af_model.load_instance(params[:id])
+      @asset = af_model.load_instance(params[:id])
     end
-    if params[:highlighted_action].equal?("add")
-      if !params[:sub_collection_items].blank?
-        items=params[:sub_collection_items].split(',')
-        logger.debug("Items to Highlight sub_collection => #{items.inspect}")
+    if params[:highlighted_action].eql?("add")
+      if !params[:highlighted_items].blank?
+        items=params[:highlighted_items].split(',')
+        logger.debug("Items to Highlight in #{af_model} => #{items.inspect}")
         sub_collection_highlighted = Array.new
         items.each do |item|
           obj=ActiveFedora::Base.load_instance(item)
-          @subcollection.highlighted_append(obj)
+          @asset.highlighted_append(obj)
           obj.save
-          @subcollection.save
+          @asset.save
           sub_collection_highlighted<<item
         end
-        response["updated"] << {"sub_collection_highlighted"=>sub_collection_highlighted}
+        response["updated"] << {"#{af_model}_highlighted"=>sub_collection_highlighted}
       end
       respond_to do |want|
         want.js {
@@ -85,13 +85,13 @@ class SubCollectionsController < ApplicationController
         }
       end
     else
-      raise "error, Item id not available in parameters list" if params[:item_id].blank?
+      raise "error, Item id not available in parameters list for removing from highlighted list" if params[:item_id].blank?
       params[:item_id]? item = params[:item_id] : item =""
       logger.debug("Items to remove as Highlight from sub_collection => #{item.inspect}")
       obj=ActiveFedora::Base.load_instance(item)
-      @subcollection.highlighted_remove(obj)
+      @asset.highlighted_remove(obj)
       obj.save
-      @subcollection.save
+      @asset.save
       render :text => "Successfully removed #{obj.pid}from highlighted list"
     end
   end

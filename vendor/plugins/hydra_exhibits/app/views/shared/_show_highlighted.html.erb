@@ -1,0 +1,36 @@
+<h3>Highlighted Item </h3>
+<%#debug @subset %>
+<% if asset &&  asset.highlighted.length > 0 %>
+  <dl class="item-list">
+    <%-  asset.highlighted.each do |item| -%>
+    <dd class="item_highlighted">
+      <%= item.pid%>
+      <a id="remove_highlighted" style="position: absolute" class="destructive destroy_highlighted" href=# action="<%=sub_collection_path(params[:id], :content_type=>content, :highlighted_action=>"remove", :item_id=>item.pid)%>" title="Remove as highlighted"> Remove from Highlighted list</a>
+    </dd>
+    <%- end -%>
+  </dl>
+<%- else -%>
+  <h3>No highlighted items defined</h3>
+<%- end -%>
+
+<h3>Available <%=h facet_value if facet_value %> <em><%= grouped_result_count(@response, facet_name, facet_value) %> to be added as highlighted</em></h3>
+<div class="pagination">
+  <%= will_paginate @response.docs, :page_links => false, :class => 'prev_next_links' %>
+  <%= will_paginate @response.docs, :container => false %>
+</div>
+<table>
+	<% unless params[:display_type] == 'list' %>
+  <tr>
+    <th class="title">Title</th>
+    <th class="type">Type</th>
+    <th class="type">Highlighted in <%=content %></th>
+  </tr>
+  <% end %>
+  <% docs.each_with_index do |document,counter| %>
+   <%= render :partial => "shared/edit_highlighted", :locals => {:document => document, :counter => counter} %>
+  <% end %>
+</table>
+<div class="pagination">
+  <%= will_paginate @response.docs, :page_links => false, :class => 'prev_next_links' %>
+  <%= will_paginate @response.docs, :container => false %>
+</div>

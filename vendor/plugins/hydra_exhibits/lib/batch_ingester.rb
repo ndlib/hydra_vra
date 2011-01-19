@@ -149,8 +149,6 @@ module BatchIngester
       unless af_model
         af_model = Page
       end
-#      pid= generate_pid(args[:pid_key], nil)
-#      if(!asset_available(pid,content_type))
       item_check = Component.find_by_fields_by_solr({"item_did_unitid_s"=>args[:item_id]})
       if(item_check.to_a.length > 0)
 	page_check = Page.find_by_fields_by_solr({"name_s"=>args[:image_name]})
@@ -159,7 +157,7 @@ module BatchIngester
           image_path = "/Path/of/the/image/dir/#{args[:image_name]}"
 	  if(File.exists?(image_path))
             map[:file] = File.new(image_path)
-            map[:mimeType] = "image/tif"
+            map[:mimeType] = "image/jpg"
             map[:file_name] = args[:image_name]
             map[:label] = "#{args[:image_title]}-#{args[:image_name]}"
             page= af_model.new(:namespace=>"RBSC-CURRENCY")#(:pid=>pid)
@@ -167,8 +165,6 @@ module BatchIngester
 	    page.update_indexed_attributes({:name=>{0=>args[:image_name]}})
             page.content = map
     	    page.item_append(item_check.to_a[0]["id"])
-#        item_pid = generate_pid("ITEM_#{args[:item_id]}",nil)
-#        page.item_append(item_pid)
             page.save
             page.derive_all
             page.save
@@ -275,8 +271,8 @@ module BatchIngester
         page_turn = row[9]
         #Get the image names and signers name for the item from the respective files
         # image names in Image_partila_Set.csv and singers in Signers_partial_Set.csv in the shared directory
-        images = load_dependency_file(item_id.to_s, "/home/rbalekai/Desktop/Image_Set.csv")
-        signers = load_dependency_file(item_id.to_s, "/home/rbalekai/Desktop/Signers_Set.csv")
+        images = load_dependency_file(item_id.to_s, "/Path/to/the/Currency/dir/Image_Set.csv")
+        signers = load_dependency_file(item_id.to_s, "/Path/to/the/Currency/dir/Signers_Set.csv")
         display_signer = ""
         count = 1
         for i in signers
@@ -309,8 +305,6 @@ module BatchIngester
             item.datastreams["descMetadata"].ng_xml = EadXml.item_template
             item.save
 	    item.members_append(result.to_a[0]["id"])
-#            subcollection_pid = generate_pid("SUBCOLLECTION_#{args[:subcollection_id]}",nil)
-#            item.members_append(subcollection_pid)
             item.save
             disp = args[:display_title].nil? ? "" : args[:display_title]
             item.datastreams["rightsMetadata"].update_permissions({"group"=>{"archivist"=>"edit","public"=>"read"}})
@@ -341,9 +335,6 @@ module BatchIngester
           end
         else
           puts "Subcollection does not exist. Cannot create Item without Parent Object"
-	  file = File.open("/home/rbalekai/Desktop/item.txt", "a")
-	  file.puts args[:item_id]
-	  file.close
         end
 #      end
     end

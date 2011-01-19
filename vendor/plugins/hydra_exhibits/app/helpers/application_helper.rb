@@ -325,20 +325,28 @@ module ApplicationHelper
     temp and temp[field] and temp[field].include?(value)
   end
 
-  def get_search_results_from_params
-    if !params[:collection_id].blank?
-      collection_id = params[:collection_id]
-      @collection = Collection.load_instance_from_solr(collection_id)
-      @browse_facets = @collection.browse_facets
-      @facet_subsets_map = @collection.facet_subsets_map
+  def get_search_results_from_params(content)
+    logger.debug("param in helper: #{params.inspect}")
+    if !params[:exhibit_id].blank?
+      exhibit_id = params[:exhibit_id]
+      @exhibit = Exhibit.load_instance_from_solr(exhibit_id)
+      @browse_facets = @exhibit.browse_facets
+      @facet_subsets_map = @exhibit.facet_subsets_map
       @selected_browse_facets = get_selected_browse(@browse_facets)
       #subset will be nil if the condition fails
       @subset = @facet_subsets_map[@selected_browse_facets] if @selected_browse_facets.length > 0 && @facet_subsets_map[@selected_browse_facets]
     end
+    if(content.eql?("exhibit"))
+      asset=@exhibit
+    elsif(content.eql?("sub_collection"))
+      asset=@subset
+    else
+      asset=nil
+    end
     @extra_controller_params = {}
     (@response, @document_list) = get_search_results( @extra_controller_params.merge!(:q=>build_lucene_query(params[:q])) )
     #render :partial => 'catalog/_index_partials/default_group', :locals => {:docs => @response.docs, :facet_name => nil, :facet_value => nil}
-    render :partial => 'sub_collections/item_list', :locals => {:docs => @response.docs, :facet_name => nil, :facet_value => nil}
+    render :partial => 'shared/show_highlighted.html.erb', :locals => {:docs => @response.docs, :facet_name => nil, :facet_value => nil, :content=>content, :asset=>asset}
   end
 
   def get_selected_browse(browse_facets)

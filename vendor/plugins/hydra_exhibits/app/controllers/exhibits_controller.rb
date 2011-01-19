@@ -24,7 +24,7 @@ class ExhibitsController < CatalogController
       #use exhibit descriptions
       @descriptions = @exhibit.descriptions
     end
-    logger.debug("Description: #{@descriptions}")
+    logger.debug("Description: #{@descriptions}, Subset:#{@subset.inspect}")
     @extra_controller_params ||= {}
     exhibit_members_query = @exhibit.build_members_query
     lucene_query = build_lucene_query(params[:q])

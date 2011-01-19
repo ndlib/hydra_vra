@@ -25,6 +25,10 @@ class Exhibit < ActiveFedora::Base
     m.field "tags", :string
   end
 
+  has_metadata :name => "properties", :type => ActiveFedora::MetadataDatastream do |m|
+    m.field "main_description", :string
+  end
+
   def build_members_query
     q = ""
     field_queries = []
