@@ -8,11 +8,12 @@
 <p>
   Description
 </p>
-<% if @descriptions.length > 0 %>    
-  <% @descriptions.each do |description|%>
+<% @exhibit = exhibit if @exhibit.nil? && exhibit%>
+<% if @exhibit.descriptions.length > 0 %>    
+  <% @exhibit.descriptions.each do |description|%>
     <h3>Essay Title goes in here</h3>
     <%=load_essay(description) %>
-    <%# #link_to "Essay: \"#{description.title}\"", essay_path(params[:collection_id], @essay.pid) description.introduction %>
+    <%# #link_to "Essay: \"#{description.title}\"", essay_path(params[:collection_id], description.pid) description.introduction %>
     <%# link_to "[Read the complete essay]", essay_path(params[:collection_id], @essay.pid) %>
   <% end %>
 <%- else -%>
@@ -42,7 +43,7 @@
   <%= will_paginate @response.docs, :container => false %>
 </div>
 
-<%= render 'sort_and_per_page' if @response.response['numFound'] > 10 %>
+<%= render 'sort_and_per_page' if format_num(session[:search][:total]).to_i > 10%>
 
 <%= render :partial=>'document_list' %>
 
