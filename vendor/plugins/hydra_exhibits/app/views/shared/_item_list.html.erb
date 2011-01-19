@@ -1,0 +1,8 @@
+<fieldset id="work_fields">    
+    <legend> Items </legend>
+    <dl class="item-list">
+      <%= get_search_results_from_params(content) %>
+    </dl>
+    <a class='addhighlighted' href='#' title='add as highlighted' exhibit-id="<%= params[:exhibit_id] %>" >Add as highlighted</a>
+    <%# debug params.inspect %>
+</fieldset>
