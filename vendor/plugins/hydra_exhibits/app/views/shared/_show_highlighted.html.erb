@@ -14,6 +14,10 @@
 <%- end -%>
 
 <h3>Available <%=h facet_value if facet_value %> <em><%= grouped_result_count(@response, facet_name, facet_value) %> to be added as highlighted</em></h3>
+<div class="pagination">
+  <%= will_paginate @response.docs, :page_links => false, :class => 'prev_next_links' %>
+  <%= will_paginate @response.docs, :container => false %>
+</div>
 <table>
 	<% unless params[:display_type] == 'list' %>
   <tr>
@@ -26,3 +30,7 @@
    <%= render :partial => "shared/edit_highlighted", :locals => {:document => document, :counter => counter} %>
   <% end %>
 </table>
+<div class="pagination">
+  <%= will_paginate @response.docs, :page_links => false, :class => 'prev_next_links' %>
+  <%= will_paginate @response.docs, :container => false %>
+</div>
