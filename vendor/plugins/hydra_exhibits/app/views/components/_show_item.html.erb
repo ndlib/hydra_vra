@@ -1,5 +1,5 @@
 <fieldset id="item_fields">
-  <legend>Item Description</legend>
+  <legend>Item</legend>
     <dl>
       <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:item, :did, :unittitle, :unittitle_label]).first.empty?%>
           <dt class="display_title">
@@ -9,12 +9,12 @@
             <%= get_values_from_datastream(@document_fedora,"descMetadata", [:item, :did, :unittitle, :unittitle_label])%>
           </dd>
       <%end%>
-      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:item, :did, :unittitle]).first.empty?%>
+      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:item, :did, :unittitle, :unittitle_content]).first.empty?%>
           <dt class="title">
-            <%= fedora_field_label("descMetadata", [:item, :did, :unittitle], "Title:") %>
+            <%= fedora_field_label("descMetadata", [:item, :did, :unittitle, :unittitle_content], "Title:") %>
           </dt>
           <dd>
-            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:item, :did, :unittitle])%>
+            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:item, :did, :unittitle, :unittitle_content])%>
           </dd>
       <%end%>
       <% unless get_values_from_datastream(@document_fedora,"descMetadata",  [:item, :did, :unitid]).first.empty?%>
@@ -33,20 +33,20 @@
            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:item, :did, :unittitle, :num])%>
          </dd>
      <%end%>
-      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:item, :did, :origination, :signer, :persname_normal]).first.empty?%>
+      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:item, :did, :origination, :persname, :persname_normal]).first.empty?%>
          <dt class="display_signers">
-           <%= fedora_field_label("descMetadata", [:item, :did, :origination, :signer, :persname_normal], "Display Signers:")%>
+           <%= fedora_field_label("descMetadata", [:item, :did, :origination, :persname, :persname_normal], "Display Signers:")%>
 	 </dt>
          <dd>
-           <%= get_values_from_datastream(@document_fedora,"descMetadata", [:item, :did, :origination, :signer, :persname_normal])%>
+           <%= get_values_from_datastream(@document_fedora,"descMetadata", [:item, :did, :origination, :persname, :persname_normal])%>
          </dd>
      <%end%>
-      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:item, :did, :origination, :signer]).first.empty?%>
+      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:item, :did, :origination, :persname]).first.empty?%>
          <dt class="signers">
-           <%= fedora_field_label("descMetadata", [:item, :did, :origination, :signer], "Signers:")%>
+           <%= fedora_field_label("descMetadata", [:item, :did, :origination, :persname], "Signers:")%>
 	 </dt>
          <dd>
-           <%= get_values_from_datastream(@document_fedora,"descMetadata", [:item, :did, :origination, :signer])%>
+           <%= get_values_from_datastream(@document_fedora,"descMetadata", [:item, :did, :origination, :persname])%>
          </dd>
      <%end%>
       <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:item, :did, :physdesc, :dimensions]).first.empty?%>

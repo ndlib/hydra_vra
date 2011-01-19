@@ -27,6 +27,7 @@
       setUpNewPermissionsForm();      
       $("#add-contributor-box").hydraNewContributorForm();      
       $("div.essay_div").insertTextareaValue();
+      $("#add-image-box").hydraNewImageForm();
       $("dd.remove-essay-div").essayDeleteButton();
       $("a.inline").fancybox({
       		'hideOnContentClick': true,
@@ -57,7 +58,7 @@
       //   e.preventDefault();
       // });
       $(".contributor a.destructive").hydraContributorDeleteButton();
-
+      $(".image_tag a.destructive").imageDeleteButton();
       $(".grant a.destructive").hydraGrantDeleteButton();     
 
       

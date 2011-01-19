@@ -19,7 +19,7 @@ class ComponentsController < ApplicationController
         
         @response, @document = get_solr_response_for_doc_id
         pid = doc[:id] ? doc[:id] : doc[:id.to_s]
-        pid ? @sub_collection = SubCollection.load_instance_from_solr(pid,@document) : @sub_collection = nil
+        pid ? @component = Component.load_instance_from_solr(pid,@document) : @component = nil
         #@sub_collection.nil? @members = [] : @members = @sub_collection.members
         # @document = SolrDocument.new(@response.docs.first)
         result = @document["#{params["field"]}_t"]
@@ -98,16 +98,20 @@ class ComponentsController < ApplicationController
       af_model = retrieve_af_model(content_type)
       if af_model
         if(params[:label].include? "item")
-          @asset = af_model.new(:component_level => "c02")
+          @asset = af_model.new(:namespace=>"RBSC-CURRENCY")
           @asset.datastreams["descMetadata"].ng_xml = EadXml.item_template
           apply_depositor_metadata(@asset)
           set_collection_type(@asset, params[:content_type])
+          @asset.update_indexed_attributes({:component_type=>{0=>"item"}})
+	  @asset.members_append(params[:subcollection_id])
           @asset.save
         elsif(params[:label].include? "subcollection")
-          @asset = af_model.new(:component_level => "c01")
+          @asset = af_model.new(:namespace=>"RBSC-CURRENCY")
           @asset.datastreams["descMetadata"].ng_xml = EadXml.subcollection_template
           apply_depositor_metadata(@asset)
           set_collection_type(@asset, params[:content_type])
+          @asset.update_indexed_attributes({:component_type=>{0=>"subcollection"}})
+	  @asset.member_of_append(params[:collection_id])
           @asset.save
         elsif(params[:label].include? "image")
           @asset = af_model.load_instance(params[:id])
