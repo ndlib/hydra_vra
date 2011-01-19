@@ -8,11 +8,12 @@
 <p>
   Description
 </p>
-<% if @descriptions.length > 0 %>    
-  <% @descriptions.each do |description|%>
+<% @exhibit = exhibit if @exhibit.nil? && exhibit%>
+<% if @exhibit.descriptions.length > 0 %>    
+  <% @exhibit.descriptions.each do |description|%>
     <h3>Essay Title goes in here</h3>
     <%=load_essay(description) %>
-    <%# #link_to "Essay: \"#{description.title}\"", essay_path(params[:collection_id], @essay.pid) description.introduction %>
+    <%# #link_to "Essay: \"#{description.title}\"", essay_path(params[:collection_id], description.pid) description.introduction %>
     <%# link_to "[Read the complete essay]", essay_path(params[:collection_id], @essay.pid) %>
   <% end %>
 <%- else -%>
@@ -41,9 +42,9 @@
   <%= will_paginate @browse_response.docs, :page_links => false, :class => 'prev_next_links' %>
   <%= will_paginate @browse_response.docs, :container => false %>
 </div>
-<%= render 'sort_and_per_page' if @browse_response.response['numFound'] > 10 %>
+<%= render :partial=>'sort_and_per_page', :locals => {:response=>@browse_response} if @browse_response.response['numFound'] > 10 %>
 
-<%= render :partial=>'document_list' %>
+<%= render :partial=>'document_list', :locals => {:document_list=>@browse_document_list, :response=>@browse_response} %>
 
 <div class="pagination">
   <%= will_paginate @browse_response.docs, :page_links => false, :class => 'prev_next_links' %>

@@ -1,6 +1,6 @@
 <tr class="document" class="<%= cycle("even","odd") %>">
   <td>
-    <%= link_to_document(document, :label => Blacklight.config[:show][:heading].to_sym, :counter => (counter + 1 + @response.params[:start].to_i)) %>
+    <%= link_to_exhibit :label=>document.id, :exhibit_id=>document.id%>
   </td>
   <td>
     <% creator = get_person_from_role(document, "Creator") %>

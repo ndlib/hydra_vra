@@ -37,6 +37,7 @@ class SubCollectionsController < ApplicationController
       @subcollection = af_model.new(:namespace=>"RBSC-CURRENCY")
       apply_depositor_metadata(@subcollection)
       set_collection_type(@subcollection, params[:content_type])
+      @subcollection.datastreams["rightsMetadata"].update_permissions({"group"=>{"public"=>"read"}})
       @subcollection.save
     end
 

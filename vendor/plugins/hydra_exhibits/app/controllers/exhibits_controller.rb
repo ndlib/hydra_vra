@@ -36,6 +36,7 @@ class ExhibitsController < CatalogController
     lucene_query = "#{exhibit_members_query} AND #{lucene_query}" unless exhibit_members_query.empty?
     (@response, @document_list) = get_search_results( @extra_controller_params.merge!(:q=>lucene_query))
     @browse_response = @response
+    @browse_document_list = @document_list
   end
 
 
