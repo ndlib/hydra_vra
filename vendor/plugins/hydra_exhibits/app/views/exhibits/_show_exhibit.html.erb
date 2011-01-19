@@ -39,17 +39,16 @@
 <dl class="item-list"></dl>
 
 <div class="pagination">
-  <%= will_paginate @response.docs, :page_links => false, :class => 'prev_next_links' %>
-  <%= will_paginate @response.docs, :container => false %>
+  <%= will_paginate @browse_response.docs, :page_links => false, :class => 'prev_next_links' %>
+  <%= will_paginate @browse_response.docs, :container => false %>
 </div>
-
-<%= render 'sort_and_per_page' if format_num(session[:search][:total]).to_i > 10%>
+<%= render 'sort_and_per_page' if @browse_response.response['numFound'] > 10 %>
 
 <%= render :partial=>'document_list' %>
 
 <div class="pagination">
-  <%= will_paginate @response.docs, :page_links => false, :class => 'prev_next_links' %>
-  <%= will_paginate @response.docs, :container => false%>
+  <%= will_paginate @browse_response.docs, :page_links => false, :class => 'prev_next_links' %>
+  <%= will_paginate @browse_response.docs, :container => false%>
 </div>
   <fieldset id="collection_fields">
     <legend> Exhibit </legend>

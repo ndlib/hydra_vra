@@ -8,12 +8,13 @@
 <%- if current_user -%>
   <div id="create-asset-box">
     <input id="re-run-action" class="nobutton" type="button" onclick=" location.href='<%=url_for(:action => "new", :controller => "collections", :content_type => "collection", :label => "collection")%>' " value="Add Collection"/>
-<!--
+
    <button id="select-asset" type="button"> Select type of content to create</button>
    <ul id="create-asset-menu">
-      <li onclick=" location.href='<%=url_for(:action => "new", :controller => "collections", :content_type => "collection", :label => "collection")%>' ">Add a collection</li>
-    </ul> 
--->
+      <li onclick=" location.href='<%=url_for(:action => "new", :controller => "collections", :content_type => "collection", :label => "collection")%>' ">Add new collection</li>
+      <li onclick=" location.href='<%=url_for(:action => "new", :controller => "assets", :content_type => "exhibit", :label => "collection")%>' ">Add new Exhibit</li>
+   </ul>
+
   </div>
 <%- end -%>
 
