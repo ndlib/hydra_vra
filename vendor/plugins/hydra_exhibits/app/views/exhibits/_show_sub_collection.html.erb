@@ -41,18 +41,18 @@
 
 <h2>Complete sources</h2>
 <dl class="item-list"></dl>
-
+<h3>Available <em><%= grouped_result_count(@browse_response, nil, nil) %> to be added as highlighted</em></h3>
 <div class="pagination">
-  <%= will_paginate @response.docs, :page_links => false, :class => 'prev_next_links' %>
-  <%= will_paginate @response.docs, :container => false %>
+  <%= will_paginate @browse_response.docs, :page_links => false, :class => 'prev_next_links' %>
+  <%= will_paginate @browse_response.docs, :container => false %>
 </div>
 
-<%= render 'sort_and_per_page' if @response.response['numFound'] > 10 %>
+<%= render 'sort_and_per_page' if @browse_response.response['numFound'] > 10 %>
 
 <%= render :partial=>'document_list' %>
 
 <div class="pagination">
-  <%= will_paginate @response.docs, :page_links => false, :class => 'prev_next_links' %>
-  <%= will_paginate @response.docs, :container => false%>
+  <%= will_paginate @browse_response.docs, :page_links => false, :class => 'prev_next_links' %>
+  <%= will_paginate @browse_response.docs, :container => false%>
 </div>
     
