@@ -70,14 +70,9 @@ class ExhibitsController < CatalogController
       response = Hash["updated"=>[]]
       response["updated"] << {"title update"=>params[:essay_id]}
       logger.debug("if loop response-> #{response.inspect}")
-    end
-
-    respond_to do |want|
-      want.js {
-        logger.debug("render js response-> #{response.inspect}")
-        render :partial => "exhibits/edit_settings", :locals => {:content => "exhibit", :document_fedora => @exhibit}
-      }
-    end
+    end    
+    logger.debug("New description id: #{@exhibit.title}, param essay id:#{params[:essay_id]}")
+    render :partial => "exhibits/edit_settings", :locals => {:content => "exhibit", :document_fedora => @exhibit}
   end
 
   def show

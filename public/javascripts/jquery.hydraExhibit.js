@@ -82,18 +82,20 @@
       });
     });
 
-    $("#re-run-add-main-essay-action").next().button( {
+    $("div.split-button input.button").next().button( {
     text: false,
     icons: { primary: "ui-icon-triangle-1-s" }
     })
     .click(function() {
-      $('#add-main-essay-menu').is(":hidden") ?
-        $('#add-main-essay-menu').show() : $('#add-main-essay-menu').hide();
+      var ulelement= $(this).siblings('ul')
+      //$('div.split-button ul#add-main-essay-menu')
+              ulelement.is(":hidden") ?
+        ulelement.show() : ulelement.hide();
       })
     .parent().buttonset();
 
-    $('#add-main-essay-menu').mouseleave(function(){
-        $('#add-main-essay-menu').hide();
+    $('div.split-button ul').mouseleave(function(){
+        $(this).hide();
     });
 
     $("#re-run-add-main-essay-action", this).click(function() {
@@ -108,9 +110,8 @@
       $("#re-run-add-main-essay-action").val(jQuery.trim(str));
       var params = "essay_id="+pid
       var url = $("input#exhibit_update_url").first().attr("value")
-      var wholeDiv=$("div#edit_setting")
-      var perviousNode=$(this).closest("div#edit_setting")
-
+      var wholeDiv=$("div.edit_setting")
+      var perviousNode=$(this).closest("div.edit_setting")     
       $.ajax({
          type: "PUT",
          url: url,
@@ -119,6 +120,22 @@
          success: function(data){
            $(wholeDiv).last().after(data);
            $(perviousNode).remove();
+           $inserted = $(wholeDiv).last();
+           /** repeat the whole set in every drop down ajax call to render the select box again on ajax call **/
+           $(".editable-container").hydraTextField();
+           $("div.split-button input.button").next().button( {
+            text: false,
+            icons: { primary: "ui-icon-triangle-1-s" }
+           })
+           .click(function() {
+             var ulelement= $(this).siblings('ul')
+             ulelement.is(":hidden") ?
+             ulelement.show() : ulelement.hide();
+           })
+           .parent().buttonset();
+           $('div.split-button ul').mouseleave(function(){
+             $(this).hide();
+           });
          },
          error: function(xhr, textStatus, errorThrown){
      			$.noticeAdd({

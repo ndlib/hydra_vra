@@ -85,5 +85,11 @@ class Exhibit < ActiveFedora::Base
     result = ds.remove_node(type,index)
     return result
   end
+
+  def title
+    return @exhibit_essay_title if (defined? @exhibit_essay_title)
+    values = self.fields[:main_description][:values]
+    @exhibit_essay_title = values.any? ? values.first : ""
+  end
   
 end

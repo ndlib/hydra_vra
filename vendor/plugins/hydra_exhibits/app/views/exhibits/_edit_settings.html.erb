@@ -1,4 +1,4 @@
-<div class="edit_setting">
+<div class="edit_setting">  
   <fieldset id="work_fields2">
     <legend> Exhibit </legend>
       <input id="content_type" type="hidden" name="content_type" value="<%= content %>" />
@@ -21,7 +21,7 @@
       </dt>
       <dd id="queries">
         <%= fedora_text_field(document_fedora,"filters", "query", :multiple=>true)%>
-      </dd>
+      </dd>      
       <% unless get_values_from_datastream(document_fedora,"descMetadata", [:main_description]).first.empty?%>
           <dt class="main_description">
             <%= fedora_field_label("descMetadata", "main_description", "Main Description Title:")%>
@@ -36,11 +36,11 @@
       <%end%>
     </dl>
     <input id="exhibit_update_url" type="hidden" name="url" value="<%= url_for(:action=>"update_attributes", :controller=>"exhibits", :content_type=>content)%>" />
-    <div id="add-main-essay-box">
-        <input id="re-run-add-main-essay-action" type="button" value="Select Essay" />
+    <div id="add-main-essay-box" class="split-button">
+        <input id="re-run-add-main-essay-action" type="button" class="button" value="Select Essay" />
         <button id="select-main-essay-type" type="button">Select main essay</button>
         <ul id="add-main-essay-menu">
-        <%- document_fedora.descriptions.each do |item| -%>          
+        <%- document_fedora.descriptions.each do |item| -%>
           <li class="essay" pid="<%= item.pid%>">
             <%= item.title%>
           </li>
