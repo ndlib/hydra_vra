@@ -8,6 +8,7 @@ class ExhibitsController < CatalogController
   before_filter :require_solr, :require_fedora, :only=>[:new]
 
   include Hydra::AssetsControllerHelper
+  include ApplicationHelper
 
   helper :hydra, :metadata, :infusion_view
  
@@ -57,6 +58,10 @@ class ExhibitsController < CatalogController
       @exhibit.save
     end
     redirect_to url_for(:action=>"edit", :controller=>"catalog", :label => params[:label], :id=>@exhibit.pid)
+  end
+
+  def update_embedded_search
+    get_search_results_from_params(params[:content_type])
   end
 
   def update_attributes

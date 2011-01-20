@@ -1,3 +1,5 @@
+<div class="highlighted_search">
+
 <div class="show_highlighted_div"> <%= render :partial => 'shared/show_highlighted', :locals => {:content=>content, :asset=>asset} %> </div>
 
 
@@ -33,7 +35,7 @@
   <%= will_paginate @response.docs, :page_links => false, :class => 'prev_next_links' %>
   <%= will_paginate @response.docs, :container => false %>
 </div>
-
+</div>
 
 
     
