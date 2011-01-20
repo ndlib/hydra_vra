@@ -368,7 +368,8 @@ module ApplicationHelper
     @extra_controller_params = {}
     (@response, @document_list) = get_search_results( @extra_controller_params.merge!(:q=>build_lucene_query(params[:q])) )
     #render :partial => 'catalog/_index_partials/default_group', :locals => {:docs => @response.docs, :facet_name => nil, :facet_value => nil}
-    render :partial => 'shared/show_highlighted.html.erb', :locals => {:docs => @response.docs, :facet_name => nil, :facet_value => nil, :content=>content, :asset=>asset}
+    render :partial => "shared/edit_highlighted", :locals => {:docs => @response.docs, :facet_name => nil, :facet_value => nil, :content=>content, :asset=>asset}
+    #render :partial => 'shared/show_highlighted.html.erb', :locals => {:docs => @response.docs, :facet_name => nil, :facet_value => nil, :content=>content, :asset=>asset}
   end
 
   def get_selected_browse(browse_facets)

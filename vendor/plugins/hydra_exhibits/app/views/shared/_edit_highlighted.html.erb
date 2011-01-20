@@ -1,13 +1,39 @@
-<tr class="document" class="<%= cycle("even","odd") %>">
-  <td>
-    <%= link_to_document(document, :label => Blacklight.config[:show][:heading].to_sym, :counter => (counter + 1 + @response.params[:start].to_i)) %>
-  </td>
-  <td>
-    <%=  document_type(document).gsub("Hydrangea","") %>
-  </td>  
-  <td>
-    <input type="checkbox" name="sub_collection_highlighted" class="sub_collection" value=<%=document[:id]%>>
-  </td>
-</tr>
+<div class="show_highlighted_div"> <%= render :partial => 'shared/show_highlighted', :locals => {:content=>content, :asset=>asset} %> </div>
+
+
+<h3>Available <%=h facet_value if facet_value %> <em><%= grouped_result_count(@response, facet_name, facet_value) %> to be added as highlighted</em></h3>
+<div class="pagination">
+  <%= will_paginate @response.docs, :page_links => false, :class => 'prev_next_links' %>
+  <%= will_paginate @response.docs, :container => false %>
+</div>
+<table>
+	<% unless params[:display_type] == 'list' %>
+  <tr>
+    <th class="title">Title</th>
+    <th class="type">Type</th>
+    <th class="type">Highlighted in <%=content %></th>
+  </tr>
+  <% end %>
+  <% @response.docs.each_with_index do |document,counter| %>
+   <%# render :partial => "shared/edit_highlighted", :locals => {:document => document, :counter => counter} %>
+    <tr class="document" class="<%= cycle("even","odd") %>">
+      <td>
+        <%= link_to_document(document, :label => Blacklight.config[:show][:heading].to_sym, :counter => (counter + 1 + @response.params[:start].to_i)) %>
+      </td>
+      <td>
+        <%=  document_type(document).gsub("Hydrangea","") %>
+      </td>
+      <td>
+        <input type="checkbox" name="sub_collection_highlighted" class="sub_collection" value=<%=document[:id]%>>
+      </td>
+    </tr>
+  <% end %>
+</table>
+<div class="pagination">
+  <%= will_paginate @response.docs, :page_links => false, :class => 'prev_next_links' %>
+  <%= will_paginate @response.docs, :container => false %>
+</div>
+
+
 
     

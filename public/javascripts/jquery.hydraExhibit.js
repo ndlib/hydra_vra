@@ -34,13 +34,22 @@
        //var $closestForm = $("form#document_metadata").first();
        //var url = $closestForm.attr("action");
        var url = $("input#update_url").first().attr("value")       
-       var params =  "highlighted_items="+selectedSubcollectionItems+"&_method='PUT'"+"&highlighted_action='add'"
+       var params =  "highlighted_items="+selectedSubcollectionItems+"&highlighted_action='add'"
+       var showDiv=$("div.show_highlighted_div")
+       var perviousNode=$("div.show_highlighted_div").first();
+
        $.ajax({
          type: "PUT",
          url: url,
-         dataType: "json",
+         dataType: "html",
          data: params,
-         success: function(msg){
+         success: function(data){
+           $(showDiv).last().after(data);
+           $(perviousNode).remove();
+           $inserted = $(showDiv).last();
+         },
+
+         /*(msg){
      		$.noticeAdd({
              inEffect:               {opacity: 'show'},      // in effect
              inEffectDuration:       600,                    // in effect duration in milliseconds
@@ -49,7 +58,7 @@
              stay:                   true,                  // should the notice item stay or not?
              type:                   'notice'                // could also be error, success
             });
-         },
+         },*/
          error: function(xhr, textStatus, errorThrown){
      		$.noticeAdd({
              inEffect:               {opacity: 'show'},      // in effect
