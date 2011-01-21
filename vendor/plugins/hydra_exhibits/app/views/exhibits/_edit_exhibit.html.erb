@@ -1,6 +1,7 @@
 <form id="document_metadata" action="<%= url_for(:action=>"update", :controller=>"assets", :content_type=>content)%>" method="post" data-resourceType="<%= content %>" accept-charset="utf-8" data-pid="<%= params[:id] %>" data-content-type="<%= content %>">
   <input id="update_url" type="hidden" name="url" value="<%= url_for(:action=>"update", :controller=>"sub_collections", :content_type=>content)%>" />
   <input id="update_embedded_search" type="hidden" name="search_url" value="<%= url_for(:action=>"update_embedded_search", :controller=>"exhibits", :content_type=>content, :f=>params[:f], :facet_selected=>params[:facet_selected], :exhibit_id=>params[:exhibit_id])%>" />
+  <%= render :partial => "shared/search_form"%>
   <%= render :partial => "shared/item_list", :locals => {:content => content} %>
   <%= render :partial => "exhibits/edit_settings", :locals => {:content => content, :document_fedora => @document_fedora} %>
   <%= render :partial => "shared/edit_description", :locals => {:content => content, :document_fedora => @document_fedora} %>
