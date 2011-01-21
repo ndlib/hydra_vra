@@ -413,14 +413,12 @@ module ApplicationHelper
     document[Blacklight.config[:show][:display_type]].first if document[Blacklight.config[:show][:display_type]]
   end
 
-  def render_document_index_partial(doc, counter, action_name)
-  #def render_document_index_partial(doc, title, counter, action_name, thumbnail=nil)
+  def render_document_index_partial(doc, title, counter, action_name, thumbnail=nil)
     format = document_partial_name(doc)
     begin
-      render :partial=>"catalog/_#{action_name}_partials/#{format}", :locals=>{:document=>doc, :counter=>counter}
-      #locals = {:document=>doc, :counter=>counter, :title=>title}
-      #locals.merge!(:thumbnail=>thumbnail) unless thumbnail.nil?
-      #render :partial=>"catalog/_#{action_name}_partials/#{format}", :locals=>locals      
+      locals = {:document=>doc, :counter=>counter, :title=>title}
+      locals.merge!(:thumbnail=>thumbnail) unless thumbnail.nil?
+      render :partial=>"catalog/_#{action_name}_partials/#{format}", :locals=>locals      
     rescue ActionView::MissingTemplate
       render :partial=>"catalog/_#{action_name}_partials/default", :locals=>{:document=>doc}
     end
@@ -437,7 +435,7 @@ module ApplicationHelper
         q = "#{exhibit_members_query} AND #{q}" unless exhibit_members_query.empty?
       end
     end
-    q
+    q = "#{q} AND NOT _query_:\"info\\\\:fedora/afmodel\\\\:Exhibit\" AND NOT _query_:\"info\\\\:fedora/afmodel\\\\:SubCollection\""
   end
   
 end

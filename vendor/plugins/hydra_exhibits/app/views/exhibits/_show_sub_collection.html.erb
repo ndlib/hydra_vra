@@ -27,9 +27,11 @@
 
 <h2>Featured sources</h2>
 <% if !@subset.nil? && @subset.highlighted.length > 0 %>
-  <dl class="item-list">
-    <%- @subset.highlighted.each do |item| -%>
-    <dt><%= link_to truncate(item.pid, :length => 80), catalog_path(item) %></dt>    
+  <dl class="item-list featured">
+    <%- @subset.highlighted(:response_format=>:solr).each_with_index do |document, counter| -%>
+      <% item = load_af_instance_from_solr(document)%>
+      <% item.respond_to?(:title) ? title = item.title : title = document[:id]%>
+      <%= render_document_index_partial(SolrDocument.new(document), title, counter, :index)%>
     <%- end -%>
   </dl>
 <%- else -%>
