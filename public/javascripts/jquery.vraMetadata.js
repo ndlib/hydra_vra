@@ -16,7 +16,7 @@
   };
 
    $.fn.hydraNewImageForm = function(settings) {
-     alert("Inside hydraNewImageForm....");
+     //alert("Inside hydraNewImageForm....");
      var config = {};
      if (settings) $.extend(config, settings);
      this.each(function() {

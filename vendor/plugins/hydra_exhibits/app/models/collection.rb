@@ -29,5 +29,11 @@ class Collection < ActiveFedora::Base
   def description_list
     descriptions.any? ? descriptions : nil
   end
+
+  def title
+    return @collection_title if (defined? @collection_title)    
+    values = self.datastreams["descMetadata"].term_values(:ead_header, :filedesc, :titlestmt, :titleproper)
+    @collection_title = values.any? ? values.first : ""
+  end
   
 end

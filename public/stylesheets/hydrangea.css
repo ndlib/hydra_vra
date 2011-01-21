@@ -217,7 +217,7 @@ a.destructive {
 	color: transparent;
 	overflow:hidden;
 	border-bottom: none;
-  /*position: absolute;*/
+    position: absolute;
 	top: 1px;
 	right: -25px;	
 	width: 20px;

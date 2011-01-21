@@ -59,7 +59,7 @@ class ExhibitsController < CatalogController
     redirect_to url_for(:action=>"edit", :controller=>"catalog", :label => params[:label], :id=>@exhibit.pid)
   end
 
-  def update_attributes
+  def add_main_essay
     content_type = params[:content_type]
     af_model = retrieve_af_model(content_type)
     logger.debug("Afmodel: #{af_model}")
@@ -73,6 +73,42 @@ class ExhibitsController < CatalogController
     end    
     logger.debug("New description id: #{@exhibit.title}, param essay id:#{params[:essay_id]}")
     render :partial => "exhibits/edit_settings", :locals => {:content => "exhibit", :document_fedora => @exhibit}
+  end
+
+  def add_collection
+    content_type = params[:content_type]
+    af_model = retrieve_af_model(content_type)
+    logger.debug("Afmodel: #{af_model}")
+    if af_model
+      @exhibit = af_model.load_instance(params[:id])      
+    end
+    @obj =  ActiveFedora::Base.load_instance(params[:collections_id])
+    the_model = ActiveFedora::ContentModel.known_models_for( @obj ).first
+    if the_model.nil?
+      raise "Unknown content type for the object with pid #{@obj.pid}"
+    end
+    @asset = the_model.load_instance(params[:collections_id])
+    @exhibit.collections_append(@asset)
+    @exhibit.save    
+    render :partial => "exhibits/edit_settings", :locals => {:content => "exhibit", :document_fedora => @exhibit}
+  end
+
+  def remove_collection
+    content_type = params[:content_type]
+    af_model = retrieve_af_model(content_type)
+    logger.debug("Afmodel: #{af_model}")
+    if af_model
+      @exhibit = af_model.load_instance(params[:id])
+    end
+    @obj =  ActiveFedora::Base.load_instance(params[:collections_id])
+    the_model = ActiveFedora::ContentModel.known_models_for( @obj ).first
+    if the_model.nil?
+      raise "Unknown content type for the object with pid #{@obj.pid}"
+    end
+    @asset = the_model.load_instance(params[:collections_id])
+    @exhibit.collections_remove(@asset)
+    @exhibit.save
+    render :text => "Removed collections relation successfully."
   end
 
   def show

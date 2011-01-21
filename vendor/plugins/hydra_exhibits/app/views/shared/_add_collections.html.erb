@@ -1,0 +1,18 @@
+<input id="exhibit_add_collection_url" type="hidden" name="url" value="<%= url_for(:action=>"add_collection", :controller=>"exhibits", :content_type=>content)%>" />
+<div id="add-collection-box" class="split-button">
+    <input id="re-run-add-colection-action" type="button" class="button" value="Select Collection" />
+    <button type="button">Select collection</button>
+     <%- collection_list.docs.each_with_index do |document,counter| -%>
+     <%- collection = Collection.load_instance_from_solr(document[:id]) -%>
+     <ul id="add-collection-menu">
+       <li class="collections" pid="<%= document[:id]%>">
+         <%=collection.title%>
+       </li>
+    </ul>
+    <%- end -%>
+</div>
+
+
+
+
+    
