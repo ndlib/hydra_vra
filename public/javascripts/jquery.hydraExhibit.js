@@ -12,7 +12,7 @@
         position: "fixed",
         top: "50%",
         left: "50%",
-        //background:"url(/images/ajax-loader.gif) no-repeat center #fff",
+        //background:"url(/images/ajax-loader.gif) no-repeat center #ffff",
         textAlign:"center",
         padding:"10px",
         font:"normal 16px Tahoma, Geneva, sans-serif",
@@ -89,17 +89,6 @@
            $(perviousNode).remove();
            $inserted = $(showDiv).last();
          },
-
-         /*(msg){
-     		$.noticeAdd({
-             inEffect:               {opacity: 'show'},      // in effect
-             inEffectDuration:       600,                    // in effect duration in milliseconds
-             stayTime:               6000,                   // time in milliseconds before the item has to disappear
-             text:                   "highlighted added are " +msg.updated[0].sub_collection_highlighted ,   // content of the item
-             stay:                   true,                  // should the notice item stay or not?
-             type:                   'notice'                // could also be error, success
-            });
-         },*/
          error: function(xhr, textStatus, errorThrown){
      		$.noticeAdd({
              inEffect:               {opacity: 'show'},      // in effect
@@ -147,19 +136,13 @@
     $('div.split-button ul').mouseleave(function(){
         $(this).hide();
     });
-
-    $("#re-run-add-main-essay-action", this).click(function() {
-      label = $(this).val().split(' ');
-      type = label[label.length-1];
-      alert("label: "+ label+"Type: "+type)
-    });
        
     $('li.essay').live('click',function(){
       var pid =  $(this).attr("pid")
       str=$(this).text()
       $("#re-run-add-main-essay-action").val(jQuery.trim(str));
       var params = "essay_id="+pid
-      var url = $("input#exhibit_update_url").first().attr("value")
+      var url = $("input#exhibit_add_main_essay_url").first().attr("value")
       var wholeDiv=$("div.edit_setting")
       var perviousNode=$(this).closest("div.edit_setting")     
       $.ajax({
@@ -200,16 +183,77 @@
       });
     });
 
+    $('li.collections').live('click',function(){      
+      var str=$(this).text()
+      $("#re-run-add-colection-action").val(jQuery.trim(str));
+      var pid =  $(this).attr("pid")
+      var params = "collections_id="+pid
+      var url = $("input#exhibit_add_collection_url").first().attr("value")
+      var wholeDiv=$("div.edit_setting")
+      var perviousNode=$(this).closest("div.edit_setting")      
+      $.ajax({
+         type: "PUT",
+         url: url,
+         dataType : "html",
+         data: params,
+         success: function(data){
+           $(wholeDiv).last().after(data);
+           $(perviousNode).remove();
+           $inserted = $(wholeDiv).last();
+           // repeat the whole set in every drop down ajax call to render the select box again on ajax call *
+           $(".editable-container").hydraTextField();
+           $("div.split-button input.button").next().button( {
+            text: false,
+            icons: { primary: "ui-icon-triangle-1-s" }
+           })
+           .click(function() {
+             var ulelement= $(this).siblings('ul')
+             ulelement.is(":hidden") ?
+             ulelement.show() : ulelement.hide();
+           })
+           .parent().buttonset();
+           $('div.split-button ul').mouseleave(function(){
+             $(this).hide();
+           });
+         },
+         error: function(xhr, textStatus, errorThrown){
+     			$.noticeAdd({
+             inEffect:               {opacity: 'show'},      // in effect
+             inEffectDuration:       600,                    // in effect duration in miliseconds
+             stayTime:               6000,                   // time in miliseconds before the item has to disappear
+             text:                   'Your changes to' + $editNode.attr("rel") + ' could not be saved because of '+ xhr.statusText + ': '+ xhr.responseText,   // content of the item
+             stay:                   true,                  // should the notice item stay or not?
+             type:                   'error'                // could also be error, succes
+            });
+         }
+      });
+    });
 
-      /* $("#add_person", this).click(function() {
-         $.fn.hydraMetadata.addContributor("person");
-       });
-       $("#add_organization", this).click(function() {
-         $.fn.hydraMetadata.addContributor("organization");
-       });
-       $("#add_conference", this).click(function() {
-         $.fn.hydraMetadata.addContributor("conference");
-       });*/
+    $('a.remove_collections').live('click',function(){
+      var url = $(this).attr("action");
+      var dtNode = $('dt.collections')
+      var ddNode = $(this).closest("dd.collections")
+      var pid =  $(this).attr("pid")
+      var params = "collections_id="+pid     
+      $.ajax({
+         type: "post",
+         url: url,
+         data: params,
+         dataType: "html",
+         beforeSend: function() {
+   			dtNode.animate({'backgroundColor':'#fb6c6c'},300);
+            ddNode.animate({'backgroundColor':'#fb6c6c'},300);
+         },
+         success: function() {
+           dtNode.slideUp(300,function() {
+             dtNode.remove();
+           });
+           ddNode.slideUp(300,function() {
+             ddNode.remove();
+           });
+         }
+      });
+    });
 
    });
    /*  Initialize the form for inserting new Person (individual) permissions

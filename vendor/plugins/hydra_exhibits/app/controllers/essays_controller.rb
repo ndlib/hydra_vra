@@ -133,16 +133,15 @@ class EssaysController < ApplicationController
   def destroy
     check_required_params([:asset_content_type,:id,:asset_id])
     logger.debug("Params sent to delete Essays: #{params.inspect}")    
-    @essay=Essayl.load_instance(params[:id])
+    @essay=Essay.load_instance(params[:id])
     if  params[:asset_content_type].eql?("exhibit")
       @exhibit=Exhibit.load_instance(params[:asset_id])
       @exhibit.update_indexed_attributes(:main_description=>{"0"=>""})
       @exhibit.save
     end
-    #remove_named_relationship(@essay, params[:asset_content_type], params[:asset_pid])
-    @essay.delete
-    #flash[:notice]= "Deleted essay " + params[:id]
+    @essay.delete    
     render :text => "Deleted Essay Successfully."
+    #render :partial => "exhibits/edit_settings", :locals => {:content => "exhibit", :document_fedora => @exhibit}
   end
 
   def show

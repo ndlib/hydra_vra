@@ -10,18 +10,30 @@
 
       </dd>
       <dt>
-        <%= fedora_field_label("filters", "facets", "Browse By Facets:") %>
+        <%= fedora_field_label("filters", "facets", "Browse Facets:") %>
       </dt>
       <dd id="browse_facets">
-        <%=fedora_text_field(document_fedora,"filters", "facets", :multiple=>true) %>
-        <%= fedora_text_field_insert_link "filters", :facets, :label=>"Browse Facet"%>
+        <%=fedora_text_field(document_fedora, "filters", "facets", :multiple=>true) %>
+        <%= fedora_text_field_insert_link "filters", :facets, :label=>"Browse Facets"%>
       </dd>
       <dt>
         <%= fedora_field_label("filters", "query", "Solr Queries:")%>
       </dt>
       <dd id="queries">
-        <%= fedora_text_field(document_fedora,"filters", "query", :multiple=>true)%>
-      </dd>      
+        <%= fedora_text_field(document_fedora,"filters", "query", :multiple=>true)%>        
+      </dd>
+      <%- unless document_fedora.collections.empty?-%>
+         <dt class="collections">
+            <label>Related Collections:</label>
+         </dt>
+         <dd class="collections">
+           <%- document_fedora.collections.each do |collection| -%>
+             <%= collection.title%>
+             <a class="destructive remove_collections" pid="<%= collection.pid%>" href=# action="<%= remove_collection_exhibit_path(params[:id], :content_type=>content)%>" title="Remove Relation"> Delete Collection Relations</a>
+           <%- end -%>
+         </dd>
+      <%-end-%>
+
       <% unless get_values_from_datastream(document_fedora,"descMetadata", [:main_description]).first.empty?%>
           <dt class="main_description">
             <%= fedora_field_label("descMetadata", "main_description", "Main Description Title:")%>
@@ -33,9 +45,9 @@
                  <%- end -%>
              <%- end -%>
           </dd>
-      <%end%>
+      <%end%>     
     </dl>
-    <input id="exhibit_update_url" type="hidden" name="url" value="<%= url_for(:action=>"update_attributes", :controller=>"exhibits", :content_type=>content)%>" />
+    <input id="exhibit_add_main_essay_url" type="hidden" name="url" value="<%= url_for(:action=>"add_main_essay", :controller=>"exhibits", :content_type=>content)%>" />
     <div id="add-main-essay-box" class="split-button">
         <input id="re-run-add-main-essay-action" type="button" class="button" value="Select Essay" />
         <button id="select-main-essay-type" type="button">Select main essay</button>
@@ -47,6 +59,7 @@
         <%- end -%>
         </ul>
     </div>
+    <%= get_collections(content,"active_fedora_model_s:Collection")%>
 
     </fieldset>
   </div>

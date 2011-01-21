@@ -437,6 +437,18 @@ module ApplicationHelper
     end
     q = "#{q} AND NOT _query_:\"info\\\\:fedora/afmodel\\\\:Exhibit\" AND NOT _query_:\"info\\\\:fedora/afmodel\\\\:SubCollection\""
   end
+
+  def get_collections(content, user_query_to_append)
+    q = build_lucene_query(params[:q])
+    collection_query = [user_query_to_append]
+    if params[:exhibit_id]
+      ex = Exhibit.load_instance_from_solr(params[:exhibit_id])      
+    end    
+    lucene_query = "#{collection_query} AND #{q}" unless collection_query.empty?
+    @extra_controller_params ||= {}
+    (@collection_response, @collection_document_list) = get_search_results( @extra_controller_params.merge!(:q=>lucene_query))
+    render :partial => "shared/add_collections", :locals => {:collection_list => @collection_response, :facet_name => nil, :facet_value => nil, :content=>content, :asset=>ex}    
+  end
   
 end
 
