@@ -50,39 +50,6 @@
   <%= will_paginate @browse_response.docs, :page_links => false, :class => 'prev_next_links' %>
   <%= will_paginate @browse_response.docs, :container => false%>
 </div>
-  <fieldset id="collection_fields">
-    <legend> Exhibit </legend>
-    <dl>
-          <dt>
-            <%= fedora_field_label("filters", "facets", "Browse By Facets:") %>
-          </dt>
-          <dd>
-            <% tabs = 0 %>
-            <% @exhibit.datastreams["filters"].facets_values.each do |solr_fname|%>
-             <h2>
-             <% for i in 0..tabs %>
-               &nbsp;&nbsp;
-             <% end %>
-             -
-             <% if facet_field_labels[solr_fname] %>
-               <%=facet_field_labels[solr_fname]%>
-             <% else %>
-               <%=solr_fname%>
-             <% end %>
-             </h2>
-             <% tabs += 1 %>
-            <% end %>
-          </dd>
-          <dt>
-            <%= fedora_field_label("filters", "query", "Exhibit Members Query:") %>
-          </dt>
-          <dd>
-            <% @exhibit.query_values.each do |value|%>
-             <h2> <%=value%></h2>
-            <% end %>
-          </dd>
-    </dl>
-  </fieldset>
 
   
   

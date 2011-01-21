@@ -225,12 +225,22 @@ module ApplicationHelper
     
   end
 
+  def add_facet_params(field, value, p=nil)
+    p = params.dup if p.nil?
+    p[:f]||={}
+    p[:f][field] ||= []
+    p[:f][field].push(value)
+    p
+  end
+
   def document_link_to_exhibit_sub_collection(label, document, counter)
     sub_collection = load_af_instance_from_solr(document)
     if !sub_collection.nil? && sub_collection.respond_to?(:selected_facets)
       p = params.dup
-      sub_collection.selected_facets.each_pair do |facet_solr_field,value| 
-        p = add_facet_params(facet_solr_field,value)
+      #remove any previous f params from search
+      p.delete(:f)
+      sub_collection.selected_facets.each_pair do |facet_solr_field,value|
+        p = add_facet_params(facet_solr_field,value,p)
       end
       p.delete(:commit)
       p.delete(:search_field)
@@ -247,8 +257,6 @@ module ApplicationHelper
     opts[:exhibit_id] ? exhibit_id = opts[:exhibit_id] : exhibit_id = params[:exhibit_id]
     if opts[:f]
       f = opts[:f]
-    elsif params[:f] && !params[:f].empty?
-      f = params[:f]
     end 
     query_params.merge!({:id=>exhibit_id})
     query_params.merge!({:f=>f}) if f && !f.empty?
@@ -406,9 +414,13 @@ module ApplicationHelper
   end
 
   def render_document_index_partial(doc, counter, action_name)
+  #def render_document_index_partial(doc, title, counter, action_name, thumbnail=nil)
     format = document_partial_name(doc)
     begin
-      render :partial=>"catalog/_#{action_name}_partials/#{format}", :locals=>{:document=>doc, :counter=>counter}      
+      render :partial=>"catalog/_#{action_name}_partials/#{format}", :locals=>{:document=>doc, :counter=>counter}
+      #locals = {:document=>doc, :counter=>counter, :title=>title}
+      #locals.merge!(:thumbnail=>thumbnail) unless thumbnail.nil?
+      #render :partial=>"catalog/_#{action_name}_partials/#{format}", :locals=>locals      
     rescue ActionView::MissingTemplate
       render :partial=>"catalog/_#{action_name}_partials/default", :locals=>{:document=>doc}
     end

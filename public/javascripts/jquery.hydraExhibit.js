@@ -28,6 +28,47 @@
      }).ajaxStop(function(){
      $('#ajaxBusy').hide();});       
 
+     $('input.update_embedded_search').bind('click',function(){
+       var url = $("input#update_embedded_search").first().attr("value")       
+       var params =  "q="+$("input#q").first().attr("value")+"&search_field"+$("select#search_field").first().attr("value")     
+       var showDiv=$("div.highlighted_search")
+       var perviousNode=$("div.highlighted_search").first();
+
+       $.ajax({
+         type: "POST",
+         url: url,
+         dataType: "html",
+         data: params,
+         success: function(data){
+           $(showDiv).last().after(data);
+           $(perviousNode).remove();
+           $inserted = $(showDiv).last();
+         },
+
+         /*(msg){
+     		$.noticeAdd({
+             inEffect:               {opacity: 'show'},      // in effect
+             inEffectDuration:       600,                    // in effect duration in milliseconds
+             stayTime:               6000,                   // time in milliseconds before the item has to disappear
+             text:                   "highlighted added are " +msg.updated[0].sub_collection_highlighted ,   // content of the item
+             stay:                   true,                  // should the notice item stay or not?
+             type:                   'notice'                // could also be error, success
+            });
+         },*/
+         error: function(xhr, textStatus, errorThrown){
+     		$.noticeAdd({
+             inEffect:               {opacity: 'show'},      // in effect
+             inEffectDuration:       600,                    // in effect duration in milliseconds
+             stayTime:               6000,                   // time in milliseconds before the item has to disappear
+             text:                   'Your changes failed'+ xhr.statusText + ': '+ xhr.responseText,
+             stay:                   true,                  // should the notice item stay or not?
+             type:                   'error'                // could also be error, success
+            });
+         }
+       });
+      return false;
+    });
+     
      $('a.addhighlighted').bind('click',function(){
        var selectedSubcollectionItems = new Array();
        $("input.sub_collection:checked").each(function() {selectedSubcollectionItems.push($(this).val());});
