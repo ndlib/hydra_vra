@@ -5,43 +5,13 @@ require "#{RAILS_ROOT}/vendor/plugins/hydra_exhibits/app/models/ead_xml.rb"
 class ExhibitsController < CatalogController
 
   before_filter :initialize_exhibit, :except=>[:index, :new]
-  before_filter :require_solr, :require_fedora, :only=>[:new]
+  before_filter :require_solr, :require_fedora, :only=>[:new,:index]
 
   include Hydra::AssetsControllerHelper
   include ApplicationHelper
 
   helper :hydra, :metadata, :infusion_view
  
-
-  def initialize_exhibit
-    require_fedora
-    require_solr
-    params[:exhibit_id] ? exhibit_id = params[:exhibit_id] : exhibit_id = params[:id]
-    @exhibit = Exhibit.load_instance_from_solr(exhibit_id)
-    @browse_facets = @exhibit.browse_facets
-    @facet_subsets_map = @exhibit.facet_subsets_map
-    @selected_browse_facets = get_selected_browse_facets(@browse_facets) 
-    #subset will be nil if the condition fails
-    @subset = @facet_subsets_map[@selected_browse_facets] if @selected_browse_facets.length > 0 && @facet_subsets_map[@selected_browse_facets]
-    #call exhibit.discriptions once since querying solr everytime on inbound relationship
-    if browse_facet_selected?(@browse_facets)
-      @subset.nil? ? @descriptions = [] : @descriptions = @subset.descriptions
-    else
-      #use exhibit descriptions
-      @descriptions = @exhibit.descriptions
-    end
-    logger.debug("Description: #{@descriptions}, Subset:#{@subset.inspect}")
-    @extra_controller_params ||= {}
-    exhibit_members_query = @exhibit.build_members_query
-    lucene_query = build_lucene_query(params[:q])
-    lucene_query = "#{exhibit_members_query} AND #{lucene_query}" unless exhibit_members_query.empty?
-    (@response, @document_list) = get_search_results( @extra_controller_params.merge!(:q=>lucene_query))
-    @browse_response = @response
-    @browse_document_list = @document_list
-  end
-
-
-
   def index
     @exhibits = Exhibit.find_by_solr(:all).hits.map{|result| Exhibit.load_instance_from_solr(result["id"])}
   end

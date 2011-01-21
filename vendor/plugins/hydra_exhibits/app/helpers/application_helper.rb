@@ -298,7 +298,16 @@ module ApplicationHelper
     @collection ? @collection.name : "All Collections"
   end 
 
-  def render_browse_facet_div(browse_facets, response, extra_controller_params)
+  def render_browse_facet_div
+    initialize_exhibit if @exhibit.nil?
+    unless @exhibit.nil?
+      return get_browse_facet_div(@browse_facets,@browse_response,@extra_controller_params) 
+    else
+      return ""
+    end
+  end
+
+  def get_browse_facet_div(browse_facets, response, extra_controller_params)
     logger.debug("Param in browse div: #{params.inspect}")
     return_str = '<div>'
     return_str=''
@@ -330,7 +339,7 @@ module ApplicationHelper
               display_facet_with_f.items.each do |item_with_f|
                 return_str += render_selected_browse_facet_value(display_facet_with_f.name, item_with_f, browse_facets)
                 if browse_facets.length > 1
-                  return_str += render_browse_facet_div(browse_facets.slice(1,browse_facets.length-1), response, extra_controller_params)
+                  return_str += get_browse_facet_div(browse_facets.slice(1,browse_facets.length-1), response, extra_controller_params)
                 end
               end
             end
@@ -448,6 +457,37 @@ module ApplicationHelper
     @extra_controller_params ||= {}
     (@collection_response, @collection_document_list) = get_search_results( @extra_controller_params.merge!(:q=>lucene_query))
     render :partial => "shared/add_collections", :locals => {:collection_list => @collection_response, :facet_name => nil, :facet_value => nil, :content=>content, :asset=>ex}    
+  end
+
+   def initialize_exhibit
+    require_fedora
+    require_solr
+    params[:exhibit_id] ? exhibit_id = params[:exhibit_id] : exhibit_id = params[:id]
+    begin
+      @exhibit = Exhibit.load_instance_from_solr(exhibit_id) 
+      @browse_facets = @exhibit.browse_facets
+      @facet_subsets_map = @exhibit.facet_subsets_map
+      @selected_browse_facets = get_selected_browse_facets(@browse_facets) 
+      #subset will be nil if the condition fails
+      @subset = @facet_subsets_map[@selected_browse_facets] if @selected_browse_facets.length > 0 && @facet_subsets_map[@selected_browse_facets]
+      #call exhibit.discriptions once since querying solr everytime on inbound relationship
+      if browse_facet_selected?(@browse_facets)
+        @subset.nil? ? @descriptions = [] : @descriptions = @subset.descriptions
+      else
+        #use exhibit descriptions
+        @descriptions = @exhibit.descriptions
+      end
+      logger.debug("Description: #{@descriptions}, Subset:#{@subset.inspect}")
+      @extra_controller_params ||= {}
+      exhibit_members_query = @exhibit.build_members_query
+      lucene_query = build_lucene_query(params[:q])
+      lucene_query = "#{exhibit_members_query} AND #{lucene_query}" unless exhibit_members_query.empty?
+      (@response, @document_list) = get_search_results( @extra_controller_params.merge!(:q=>lucene_query))
+      @browse_response = @response
+      @browse_document_list = @document_list
+    rescue 
+      logger.warning("No exhibit was found for id #{exhibit_id}")
+    end
   end
   
 end
