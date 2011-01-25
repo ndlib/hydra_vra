@@ -301,11 +301,7 @@ module ApplicationHelper
 
   def render_browse_facet_div
     initialize_exhibit if @exhibit.nil?
-    unless @exhibit.nil?
-      return get_browse_facet_div(@browse_facets,@browse_response,@extra_controller_params) 
-    else
-      return ""
-    end
+    @exhibit.nil? ? '' : get_browse_facet_div(@browse_facets,@browse_response,@extra_controller_params)
   end
 
   def get_browse_facet_div(browse_facets, response, extra_controller_params)
@@ -329,8 +325,8 @@ module ApplicationHelper
     display_facet_with_f = response.facets.detect {|f| f.name == solr_fname}
     unless display_facet.nil?
       if display_facet.items.length > 0          
-        return_str += '<h3>' + facet_field_labels[display_facet.name] + '</h3>'
-        return_str += '<ul style="display:block">'
+        return_str += '<h3 class="facet-heading">' + facet_field_labels[display_facet.name] + '</h3>'
+        return_str += '<ul>'
         display_facet.items.each do |item|
           #logger.debug("Check facet value: #{facet_in_temp?( temp, display_facet.name, item.value )}, temp: #{temp.inspect}")
           return_str += '<li>'

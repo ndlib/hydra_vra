@@ -18,7 +18,6 @@ class ApplicationController
     javascript_includes << ['blacklight', 'application', 'accordion', { :plugin=>:blacklight } ]
     
     stylesheet_links << ['yui', {:plugin => :hydra_exhibits, :media=>'all'}]
-    stylesheet_links << ['application', {:plugin=>:blacklight, :media=>'all'}]
     stylesheet_links << ['redmond/jquery-ui-1.8.5.custom', {:media=>'all'}]      
     stylesheet_links << ['styles', 'hydrangea', 'hydrangea-split-button', {:media=>'all'}]
     stylesheet_links << ['application', 'hydra-exhibit', {:plugin => :hydra_exhibits, :media=>'all'}]
