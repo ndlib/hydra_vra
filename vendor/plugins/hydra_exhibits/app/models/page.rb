@@ -5,7 +5,7 @@ class Page < ActiveFedora::Base
   include Hydra::ModelMethods
   
   has_bidirectional_relationship  "item",   :is_part_of, :has_part
-  has_bidirectional_relationship  "essays", :is_description_of, :has_description
+  has_bidirectional_relationship  "descriptions", :is_description_of, :has_description
   
   # Uses the Hydra Rights Metadata Schema for tracking access permissions & copyright
   has_metadata :name => "rightsMetadata", :type => Hydra::RightsMetadata 

@@ -64,19 +64,19 @@ class ExhibitsController < CatalogController
     get_search_results_from_params(params[:content_type])
   end
 
-  def add_main_essay
+  def add_main_description
     content_type = params[:content_type]
     af_model = retrieve_af_model(content_type)
     logger.debug("Afmodel: #{af_model}")
     if af_model
       @exhibit = af_model.load_instance(params[:id])
-      @exhibit.update_indexed_attributes(:main_description=>{"0"=>params[:essay_id]})
+      @exhibit.update_indexed_attributes(:main_description=>{"0"=>params[:description_id]})
       @exhibit.save
       response = Hash["updated"=>[]]
-      response["updated"] << {"title update"=>params[:essay_id]}
+      response["updated"] << {"title update"=>params[:description_id]}
       logger.debug("if loop response-> #{response.inspect}")
     end    
-    logger.debug("New description id: #{@exhibit.title}, param essay id:#{params[:essay_id]}")
+    logger.debug("New description id: #{@exhibit.title}, param description id:#{params[:description_id]}")
     render :partial => "exhibits/edit_settings", :locals => {:content => "exhibit", :document_fedora => @exhibit}
   end
 

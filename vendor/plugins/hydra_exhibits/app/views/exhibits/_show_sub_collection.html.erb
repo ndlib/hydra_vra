@@ -15,8 +15,8 @@
 </p>
 <% if @descriptions.length > 0 %>    
   <% @descriptions.each do |description|%>
-    <h3>Essay Title goes in here</h3>
-    <%=load_essay(description) %>
+    <h3>Description Title goes in here</h3>
+    <%=load_description(description) %>
     <%# #link_to "Essay: \"#{description.title}\"", essay_path(params[:collection_id], @essay.pid) description.introduction %>
     <%# link_to "[Read the complete essay]", essay_path(params[:collection_id], @essay.pid) %>
   <% end %>
@@ -41,7 +41,7 @@
 
 <h2>Complete sources</h2>
 <dl class="item-list"></dl>
-<h3><em><%= grouped_result_count(@browse_response, nil, nil) %> found</em</h3>
+<h3><em><%= grouped_result_count(@browse_response, nil, nil) %> found</em></h3>
 <div class="pagination">
   <%= will_paginate @browse_response.docs, :page_links => false, :class => 'prev_next_links' %>
   <%= will_paginate @browse_response.docs, :container => false %>

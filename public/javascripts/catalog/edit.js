@@ -20,15 +20,15 @@
       bindDomEvents();
       $(".editable-container").hydraTextField();
       $(".textile-container").hydraTextileField();
-      $(".essay-textarea-container").essayTextareaField();
+      $(".description-textarea-container").descriptionTextareaField();
       $(".custom-editable-container").exhibitTextField();
       setUpDatePicker();
       setUpSliders();
       setUpNewPermissionsForm();      
       $("#add-contributor-box").hydraNewContributorForm();      
-      $("div.essay_div").insertTextareaValue();
+      $("div.description_div").insertTextareaValue();
       $("#add-image-box").hydraNewImageForm();
-      $("dd.remove-essay-div").essayDeleteButton();
+      $("dd.remove-description-div").descriptionDeleteButton();
       $("a.inline").fancybox({
       		'hideOnContentClick': true,
       		'autoDimensions' : false

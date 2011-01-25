@@ -44,17 +44,6 @@
            $(perviousNode).remove();
            $inserted = $(showDiv).last();
          },
-
-         /*(msg){
-     		$.noticeAdd({
-             inEffect:               {opacity: 'show'},      // in effect
-             inEffectDuration:       600,                    // in effect duration in milliseconds
-             stayTime:               6000,                   // time in milliseconds before the item has to disappear
-             text:                   "highlighted added are " +msg.updated[0].sub_collection_highlighted ,   // content of the item
-             stay:                   true,                  // should the notice item stay or not?
-             type:                   'notice'                // could also be error, success
-            });
-         },*/
          error: function(xhr, textStatus, errorThrown){
      		$.noticeAdd({
              inEffect:               {opacity: 'show'},      // in effect
@@ -137,12 +126,12 @@
         $(this).hide();
     });
        
-    $('li.essay').live('click',function(){
+    $('li.description').live('click',function(){
       var pid =  $(this).attr("pid")
       str=$(this).text()
-      $("#re-run-add-main-essay-action").val(jQuery.trim(str));
-      var params = "essay_id="+pid
-      var url = $("input#exhibit_add_main_essay_url").first().attr("value")
+      $("#re-run-add-main-description-action").val(jQuery.trim(str));
+      var params = "description_id="+pid
+      var url = $("input#exhibit_add_main_description_url").first().attr("value")
       var wholeDiv=$("div.edit_setting")
       var perviousNode=$(this).closest("div.edit_setting")     
       $.ajax({
@@ -289,7 +278,7 @@
 
    };
 
-   $.fn.essayTextareaField = function(settings) {
+   $.fn.descriptionTextareaField = function(settings) {
      //alert("essayTextareaField intialize")
      var config = {
        method    : "PUT",
@@ -330,11 +319,11 @@
       // var field_param = $editNode.fieldSerialize();
       var field_selectors = $("input.fieldselector[rel="+$editNode.attr("rel")+"]").fieldSerialize();         
 
-      var params = "?datastream_name="+datastream_name+"&content_type="+content_type+"&essay_id="+pid+"&essay_action=update_essay"
+      var params = "?datastream_name="+datastream_name+"&content_type="+content_type+"&description_id="+pid+"&description_action=update_description"
 
       //Field Selectors are the only update params to be passed in the url
       //var assetUrl = $closestForm.attr("action") + "&" + field_selectors;
-      var assetUrl = $("input#show_essay_url").first().attr("value")+params;
+      var assetUrl = $("input#show_description_url").first().attr("value")+params;
       var submitUrl = $.fn.hydraMetadata.appendFormat(assetUrl, {format: "textile"});
 
       // These params are all you need to load the value from AssetsController.show
@@ -363,15 +352,15 @@
      var config = {};
      if (settings) $.extend(config, settings);
      $("a.addval.rich-textarea", this).live("click",function(e) {       
-       $.fn.hydraExhibit.insertEssay(this,e);
+       $.fn.hydraExhibit.insertDescription(this,e);
      });
    };
 
-   $.fn.essayDeleteButton = function(settings) {
+   $.fn.descriptionDeleteButton = function(settings) {
      var config = {};
      if (settings) $.extend(config, settings);
-     $("a.destroy_essay", this).live("click", function(e) {
-       $.fn.hydraExhibit.deleteEssay(this,e);
+     $("a.destroy_description", this).live("click", function(e) {
+       $.fn.hydraExhibit.deleteDescription(this,e);
      });
     //return this;
    };
@@ -413,12 +402,12 @@
        var $editNode = $(".editable-edit").first();
        var $textNode = $(".editable-text").first();
        var name = $editNode.attr("name");
-       var essay_id = $editNode.attr("data-pid");
+       var description_id = $editNode.attr("data-pid");
        var contentType = $editNode.attr("data-content-type");
        var datastreamName = $editNode.attr("data-datastream-name");
 
-       var params = "datastream_name="+datastreamName+"&content_type="+contentType+ "&essay_id="+essay_id+ "&essay_title="+ $editNode.val()+"&essay_action=update_essay_title"+"&_method=put"
-       var url = $("input#show_essay_url").first().attr("value")
+       var params = "datastream_name="+datastreamName+"&content_type="+contentType+ "&description_id="+description_id+ "&description_title="+ $editNode.val()+"&description_action=update_description_title"+"&_method=put"
+       var url = $("input#show_description_url").first().attr("value")
 
        $.ajax({
          type: "PUT",
@@ -448,7 +437,7 @@
        });
      },
 
-     insertEssay: function(element){
+     insertDescription: function(element){
        //alert("insert essay")
        $element = $(element)
        var fieldName = $element.attr("rel");
@@ -456,22 +445,21 @@
        var contentType = $element.attr('content-type');
 
        var values_list = $("ol[rel="+fieldName+"]");
-       var new_value_index = values_list.children('li').size();
-       //var essayName = $("input#essay_title").first().attr("value");
-       var params = "?datastream_name="+datastreamName+"&content_type="+contentType//+"&essay_name="+essayName;
-       var assetUrl = $("input#show_essay_url").first().attr("value")+params;
-       var addDiv = $("div#add-essay-div").first()
-       var essayDiv=$("div.essay_div")
-       var essayNode=$(element).closest("div.essay_div")
+       var new_value_index = values_list.children('li').size();       
+       var params = "?datastream_name="+datastreamName+"&content_type="+contentType
+       var assetUrl = $("input#show_description_url").first().attr("value")+params;
+       var addDiv = $("div#add-description-div").first()
+       var essayDiv=$("div.description_div")
+       var essayNode=$(element).closest("div.description_div")
 
-       var $item = jQuery('<li class=\"field_value essay-textarea-container field\" name="asset[' + fieldName + '][' + new_value_index + ']">' +
+       var $item = jQuery('<li class=\"field_value description-textarea-container field\" name="asset[' + fieldName + '][' + new_value_index + ']">' +
               '<a href="" class="destructive"><img src="/images/delete.png" border="0" /></a>' +
-              '<label>Essay Title</label> <input type="text" name="essay_title" class="editable-edit" value="" /> ' +
-               '<div class="textile-text text" id="'+fieldName+'_'+new_value_index+'">click to add Essay content</div></li>');
+              '<label>Description Title</label> <input type="text" name="description_title" class="editable-edit" value="" /> ' +
+               '<div class="textile-text text" id="'+fieldName+'_'+new_value_index+'">click to add Description content</div></li>');
 
        $item.appendTo(essayDiv);
        //alert("Essay Title=> "+$("input.editable-edit").val())
-       var submitUrl= assetUrl+"&essay_action=insert_essay" +"&format=html"+"&temp_content="+$("div#"+fieldName+"_"+new_value_index).html();
+       var submitUrl= assetUrl+"&description_action=insert_description" +"&format=html"+"&temp_content="+$("div#"+fieldName+"_"+new_value_index).html();
 
       function submitEditableTextArea(value, settings) {
        //alert("Submit from function")
@@ -482,15 +470,15 @@
          //async: false,
          type: "PUT",
          //indicator : "<img src='/images/ajax-loader.gif'>",
-         url: submitUrl+"&essay_title="+ $("input.editable-edit").val(),
+         url: submitUrl+"&description_title="+ $("input.editable-edit").val(),
          dataType: "html",
          data: edits,
          success: function(data) {
           $(essayDiv).last().after(data);
           $(essayNode).remove();
           $inserted = $(essayDiv).last();
-          $("a.destructive", $inserted).essayDeleteButton();
-          $(".essay-textarea-container").essayTextareaField();
+          $("a.destructive", $inserted).descriptionDeleteButton();
+          $(".description-textarea-container").descriptionTextareaField();
           $(".custom-editable-container").exhibitTextField();
           $inserted.insertTextareaValue();
           return(result);
@@ -505,7 +493,7 @@
           type      : "ckeditor",
           submit    : "OK",
           cancel    : "Cancel",
-          placeholder : "click to edit essay",
+          placeholder : "click to edit description",
           onblur    : "ignore",
           name      : "asset["+new_value_index+"]["+fieldName+"]",
           id        : "field_id",
@@ -550,9 +538,9 @@
        });*/
      },
 
-     deleteEssay: function(element){
+     deleteDescription: function(element){
        $element = $(element)
-       var $essayNode = $(element).closest(".remove-essay-div")
+       var $essayNode = $(element).closest(".remove-description-div")
        var url =$(element).attr("action");
        var parent_pid = $("form#document_metadata").first().attr("data-pid");
        var parent_content_type = $("form#document_metadata").attr("data-content-type");

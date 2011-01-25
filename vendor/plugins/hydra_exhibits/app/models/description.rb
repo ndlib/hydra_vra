@@ -1,6 +1,6 @@
 require "hydra"
 
-class Essay < ActiveFedora::Base
+class Description < ActiveFedora::Base
 
   include Hydra::ModelMethods
   
@@ -11,7 +11,7 @@ class Essay < ActiveFedora::Base
     m.field "title", :string, :xml_node => "title"
   end
 
-  has_datastream :name=>"essaydatastream", :type=>ActiveFedora::Datastream, :mimeType=>"text/html", :controlGroup=>'M'
+  has_datastream :name=>"descriptiondatastream", :type=>ActiveFedora::Datastream, :mimeType=>"text/html", :controlGroup=>'M'
 
   def label=(label)
     super
@@ -19,13 +19,13 @@ class Essay < ActiveFedora::Base
   end
 
   def content
-    essaydatastream.first.content unless essaydatastream.nil? || essaydatastream.empty?
+    descriptiondatastream.first.content unless descriptiondatastream.nil? || descriptiondatastream.empty?
   end
 
   def title
-    return @essay_title if (defined? @essay_title)
+    return @description_title if (defined? @description_title)
     values = self.fields[:title][:values]
-    @essay_title = values.any? ? values.first : ""
+    @description_title = values.any? ? values.first : ""
   end
 
 end

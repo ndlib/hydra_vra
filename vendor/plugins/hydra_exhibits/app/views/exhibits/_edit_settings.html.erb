@@ -47,13 +47,13 @@
           </dd>
       <%end%>     
     </dl>
-    <input id="exhibit_add_main_essay_url" type="hidden" name="url" value="<%= url_for(:action=>"add_main_essay", :controller=>"exhibits", :content_type=>content)%>" />
-    <div id="add-main-essay-box" class="split-button">
-        <input id="re-run-add-main-essay-action" type="button" class="button" value="Select Essay" />
-        <button id="select-main-essay-type" type="button">Select main essay</button>
-        <ul id="add-main-essay-menu">
+    <input id="exhibit_add_main_description_url" type="hidden" name="url" value="<%= url_for(:action=>"add_main_description", :controller=>"exhibits", :content_type=>content)%>" />
+    <div id="add-main-description-box" class="split-button">
+        <input id="re-run-add-main-description-action" type="button" class="button" value="Select Description" />
+        <button id="select-main-description-type" type="button">Select main description</button>
+        <ul id="add-main-description-menu">
         <%- document_fedora.descriptions.each do |item| -%>
-          <li class="essay" pid="<%= item.pid%>">
+          <li class="description" pid="<%= item.pid%>">
             <%= item.title%>
           </li>
         <%- end -%>
