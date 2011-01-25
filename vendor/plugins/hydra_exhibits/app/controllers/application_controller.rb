@@ -6,9 +6,9 @@ class ApplicationController
   # Display-related methods. 
   #############
   
-  # Because of the way Hydra Repository Application controller is included is is difficult to override.
+  # Because of the way the Hydra Repository Application controller is included is is difficult to override.
   # The base_assets method sidesteps this problem but does not solve it.
-  # Ideally the default_html_head method could be overriden here.
+  # Ideally the default_html_head method would be overriden here.
   def base_assets
     # when working offline, comment out the above uncomment the next line:
     #javascript_includes << ['jquery-1.4.2.min.js', 'jquery-ui-1.8.1.custom.min.js', { :plugin=>:blacklight } ]
@@ -17,8 +17,10 @@ class ApplicationController
     javascript_includes << ['application']
     javascript_includes << ['blacklight', 'application', 'accordion', { :plugin=>:blacklight } ]
     
-    stylesheet_links << ['yui', 'application', {:plugin=>:blacklight, :media=>'all'}]
+    stylesheet_links << ['yui', {:plugin => :hydra_exhibits, :media=>'all'}]
+    stylesheet_links << ['application', {:plugin=>:blacklight, :media=>'all'}]
     stylesheet_links << ['redmond/jquery-ui-1.8.5.custom', {:media=>'all'}]      
-    stylesheet_links << ['styles', 'hydrangea', 'hydrangea-split-button','hydraExhibit', {:media=>'all'}]
+    stylesheet_links << ['styles', 'hydrangea', 'hydrangea-split-button', {:media=>'all'}]
+    stylesheet_links << ['application', 'hydra-exhibit', {:plugin => :hydra_exhibits, :media=>'all'}]
   end
 end
