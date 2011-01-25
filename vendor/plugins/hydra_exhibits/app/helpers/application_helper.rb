@@ -255,9 +255,10 @@ module ApplicationHelper
     # params[:f].dup ||
     query_params =  {}
     opts[:exhibit_id] ? exhibit_id = opts[:exhibit_id] : exhibit_id = params[:exhibit_id]
-    if opts[:f]
-      f = opts[:f]
-    end 
+    opts[:f] ? f = opts[:f] : f = params[:f]
+    #if opts[:f]
+     # f = opts[:f]
+    #end 
     query_params.merge!({:id=>exhibit_id})
     query_params.merge!({:f=>f}) if f && !f.empty?
     link_url = exhibit_path(query_params)
