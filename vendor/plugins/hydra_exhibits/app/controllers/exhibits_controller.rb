@@ -31,7 +31,7 @@ class ExhibitsController < CatalogController
   end
 
   def update_embedded_search
-    get_search_results_from_params(params[:content_type])
+    get_components(params[:content_type],"active_fedora_model_s:Component")
   end
 
   def add_main_description
@@ -82,6 +82,24 @@ class ExhibitsController < CatalogController
     end
     @asset = the_model.load_instance(params[:collections_id])
     @exhibit.collections_remove(@asset)
+    @exhibit.save
+    render :text => "Removed collections relation successfully."
+  end
+
+  def remove_facet_value
+    content_type = params[:content_type]
+    af_model = retrieve_af_model(content_type)
+    logger.debug("Afmodel: #{af_model}")
+    if af_model
+      @exhibit = af_model.load_instance(params[:id])
+    end
+    @obj =  ActiveFedora::Base.load_instance(params[:collections_id])
+    the_model = ActiveFedora::ContentModel.known_models_for( @obj ).first
+    if the_model.nil?
+      raise "Unknown content type for the object with pid #{@obj.pid}"
+    end
+    @asset = the_model.load_instance(params[:collections_id])
+    @exhibit..update_indexed_attributes(:main_description=>{params[:index]=>params[:facet_value]})
     @exhibit.save
     render :text => "Removed collections relation successfully."
   end

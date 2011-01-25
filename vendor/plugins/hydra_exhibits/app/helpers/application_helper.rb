@@ -364,7 +364,7 @@ module ApplicationHelper
     temp and temp[field] and temp[field].include?(value)
   end
 
-  def get_search_results_from_params(content)
+  def get_components(content, component_query_to_append)
     logger.debug("param in helper: #{params.inspect}")
     if !params[:exhibit_id].blank?
       exhibit_id = params[:exhibit_id]
@@ -382,11 +382,13 @@ module ApplicationHelper
     else
       asset=nil
     end
+    q = build_lucene_query(params[:q])
+    component_query = [component_query_to_append]
+    lucene_query = "#{component_query} AND #{q}" unless component_query.empty?
     @extra_controller_params = {}
-    (@response, @document_list) = get_search_results( @extra_controller_params.merge!(:q=>build_lucene_query(params[:q])) )
-    #render :partial => 'catalog/_index_partials/default_group', :locals => {:docs => @response.docs, :facet_name => nil, :facet_value => nil}
-    render :partial => "shared/edit_highlighted", :locals => {:docs => @response.docs, :facet_name => nil, :facet_value => nil, :content=>content, :asset=>asset}
-    #render :partial => 'shared/show_highlighted.html.erb', :locals => {:docs => @response.docs, :facet_name => nil, :facet_value => nil, :content=>content, :asset=>asset}
+    (@component_response, @document_list) = get_search_results( @extra_controller_params.merge!(:q=>lucene_query) )    
+    render :partial => "shared/edit_highlighted", :locals => {:docs => @component_response.docs, :facet_name => nil, :facet_value => nil, :content=>content, :asset=>asset}
+
   end
 
   def get_selected_browse(browse_facets)

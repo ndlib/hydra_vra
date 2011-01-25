@@ -244,6 +244,77 @@
       });
     });
 
+    $('li.facet').live('click',function(){
+
+       var $closestForm = $(this).closest("form");
+       var url = $closestForm.attr("action");
+       var index = $("dd.browse_facets").size()
+       var name = "asset[filters][facets]["+index+"]"
+
+       var params = name + "="+$(this).attr("field_name")+"&_method=put";
+       //alert(url+"---- params"+params)
+       $.ajax({
+         type: "PUT",
+         url: url,
+         dataType : "json",
+         data: params,
+         success: function(msg){
+     			$.noticeAdd({
+             inEffect:               {opacity: 'show'},      // in effect
+             inEffectDuration:       600,                    // in effect duration in miliseconds
+             stayTime:               6000,                   // time in miliseconds before the item has to disappear
+             text:                   "Your edit to "+ msg.updated[0].field_name +" has been saved as "+msg.updated[0].value+" at index "+msg.updated[0].index,   // content of the item
+             stay:                   false,                  // should the notice item stay or not?
+             type:                   'notice'                // could also be error, succes
+            });
+         },
+         error: function(xhr, textStatus, errorThrown){
+     			$.noticeAdd({
+             inEffect:               {opacity: 'show'},      // in effect
+             inEffectDuration:       600,                    // in effect duration in miliseconds
+             stayTime:               6000,                   // time in miliseconds before the item has to disappear
+             text:                   'Your changes to' + $editNode.attr("rel") + ' could not be saved because of '+ xhr.statusText + ': '+ xhr.responseText,   // content of the item
+             stay:                   true,                  // should the notice item stay or not?
+             type:                   'error'                // could also be error, succes
+            });
+         }
+       });
+    });
+
+    $('a.remove_facet').live('click',function(){
+       var url = $(this).attr("action");
+       var name = "asset[filters][facets]["+$(this).attr("index")+"]"      
+
+       var params = name + "="+"&_method=put";
+
+       $.ajax({
+         type: "PUT",
+         url: url,
+         dataType : "json",
+         data: params,
+         success: function(msg){
+     			$.noticeAdd({
+             inEffect:               {opacity: 'show'},      // in effect
+             inEffectDuration:       600,                    // in effect duration in miliseconds
+             stayTime:               6000,                   // time in miliseconds before the item has to disappear
+             text:                   "Your edit to "+ msg.updated[0].field_name +" has been saved as "+msg.updated[0].value+" at index "+msg.updated[0].index,   // content of the item
+             stay:                   false,                  // should the notice item stay or not?
+             type:                   'notice'                // could also be error, succes
+            });
+         },
+         error: function(xhr, textStatus, errorThrown){
+     			$.noticeAdd({
+             inEffect:               {opacity: 'show'},      // in effect
+             inEffectDuration:       600,                    // in effect duration in miliseconds
+             stayTime:               6000,                   // time in miliseconds before the item has to disappear
+             text:                   'Your changes to' + $editNode.attr("rel") + ' could not be saved because of '+ xhr.statusText + ': '+ xhr.responseText,   // content of the item
+             stay:                   true,                  // should the notice item stay or not?
+             type:                   'error'                // could also be error, succes
+            });
+         }
+       });
+    });
+
    });
    /*  Initialize the form for inserting new Person (individual) permissions
    *  ex. $("#add-contributor-box").hydraNewContributorForm

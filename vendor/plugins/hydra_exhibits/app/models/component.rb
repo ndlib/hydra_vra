@@ -70,6 +70,18 @@ class Component < ActiveFedora::Base
     field_keys[:descMetadata][type] rescue nil
   end
 
+  def item_title
+    return @item_title if (defined? @item_title)
+    values = self.datastreams["descMetadata"].term_values(:item, :did, :unittitle)
+    @item_title = values.any? ? values.first : ""
+  end
+
+  def sub_collection_title
+    return @sub_collection_title if (defined? @sub_collection_title)
+    values = self.datastreams["descMetadata"].term_values(:dsc, :collection, :did, :unittitle, :unittitle_content)
+    @sub_collection_title = values.any? ? values.first : ""
+  end
+
   def field_keys
     {
       :descMetadata => {
