@@ -37,11 +37,13 @@ module MediaShelf
     def load_af_instance_from_solr(doc)
       pid = doc[:id] ? doc[:id] : doc[:id.to_s]
       if pid
-        if doc[:active_fedora_model_s]
-          return doc[:active_fedora_model_s].first.constantize.load_instance_from_solr(doc[:id])  
-        elsif doc[:has_model_s] || doc["has_model_s"]
-          doc[:has_model_s] ? model = doc[:has_model_s].first.gsub("info:fedora/afmodel:","") :  model = doc["has_model_s"].first.gsub("info:fedora/afmodel:","") 
-          return model.constantize.load_instance_from_solr(doc[:id])  
+        if doc[:active_fedora_model_s] || doc[:active_fedora_model_s.to_s]
+          active_fedora_model_s = doc[:active_fedora_model_s] ? doc[:active_fedora_model_s] : doc[:active_fedora_model_s.to_s]
+          return active_fedora_model_s.first.constantize.load_instance_from_solr(pid)  
+        elsif doc[:has_model_s] || doc[:has_model_s.to_s]
+          has_model_s = doc[:has_model_s] ? doc[:has_model_s] : doc[:has_model_s.to_s]
+          model = has_model_s.first.gsub("info:fedora/afmodel:","") 
+          return model.constantize.load_instance_from_solr(pid)  
         else
           return ActiveFedora::Base.load_instance_from_solr(pid)
         end
