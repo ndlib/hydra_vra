@@ -1,0 +1,12 @@
+<% childern = @document_fedora.list_childern(params[:id],"item") %>
+<table>
+<% if(childern.size > 0) %>
+  <% childern.each {|child| %>
+    <tr>
+    <td><img src="<%=child.datastream_url('thumbnail')%>" heigth="100px" /></td>
+    <td><%= link_to child.pid, catalog_path(child.pid) %><br/>
+    <%= child.name %></td>
+  <% } %>
+<% end %>
+</table>
+
