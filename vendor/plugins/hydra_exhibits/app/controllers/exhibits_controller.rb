@@ -142,23 +142,4 @@ class ExhibitsController < CatalogController
     Blacklight.config[:facet][:limits]           
   end
   helper_method :facet_limit_hash
-
-  def browse_facet_selected?(browse_facets)
-    browse_facets.each do |facet|
-      return true if params[:f] and params[:f][facet]
-    end
-    return false
-  end
-  helper_method :browse_facet_selected?
-
-  def get_selected_browse_facets(browse_facets)
-    selected = {}
-    if params[:f]
-      browse_facets.each do |facet|
-        selected.merge!({facet.to_sym=>params[:f][facet].first}) if params[:f][facet]
-      end
-    end
-    selected
-  end
-  helper_method :get_selected_browse_facets
 end

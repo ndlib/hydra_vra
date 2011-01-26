@@ -1,9 +1,9 @@
 <% thumbnail = nil unless thumbnail%>
 <%# default partial to display solr document fields in catalog index view -%>
-<%= link_to truncate(title, :length => 80), catalog_path(document[:id], :render_search => 'false') %>
+<%= link_to_catalog_item truncate(title, :length => 80), document[:id] %>
 <div class="with-thumbnail">
   <div class="thumbnail-container">
-    <%= link_to image_tag( thumbnail.nil? ? '/images/no_thumbnail.png' : thumbnail), catalog_path(document[:id], :render_search => 'false') %>
+    <%= link_to_catalog_item image_tag( thumbnail.nil? ? '/images/no_thumbnail.png' : thumbnail), document[:id] %>
   </div>
   <dl class="defList">
     <% index_field_names.each do |solr_fname| -%>

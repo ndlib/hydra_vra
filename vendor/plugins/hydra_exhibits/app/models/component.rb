@@ -4,6 +4,7 @@ require 'facets/dictionary'
 class Component < ActiveFedora::Base
 
   include Hydra::ModelMethods
+  include ComponentsHelper
 
   has_bidirectional_relationship "member_of", :is_member_of, :has_member
   has_bidirectional_relationship "members", :has_member, :is_member_of
@@ -21,6 +22,7 @@ class Component < ActiveFedora::Base
     m.field 'depositor', :string
     m.field "subcollection_id", :string
     m.field "item_id", :string
+    m.field "main_page", :string
     m.field "component_type", :string
   end
 
@@ -34,6 +36,12 @@ class Component < ActiveFedora::Base
     return @item_id if (defined? @item_id)
     values = self.fields[:item_id][:values]
     @item_id = values.any? ? values.first : ""
+  end
+
+  def main_page
+    return @main_page if (defined? @main_page)
+    values = self.fields[:main_page][:values]
+    @main_page = values.any? ? values.first : ""
   end
 
   def insert_new_node(type, opts)
@@ -54,6 +62,31 @@ class Component < ActiveFedora::Base
 
   def type
     @type ||= get_type_from_datastream
+  end
+
+  def list_childern(item_id, type)
+    @asset = Component.load_instance_from_solr(item_id)
+    arr = Array.new
+    if(type.eql?"item")
+      childern = @asset.inbound_relationships[:is_part_of]
+      if(!(childern.nil?) && childern.size > 0)
+        childern.each { |child|
+          child_id = child.split('/')  
+          child_obj = Page.load_instance(child_id[1])
+          arr.push(child_obj)
+        }
+      end
+    else #if(type.eql?"subcollection")
+      childern = @asset.members #inbound_relationships[:has_member]
+#      if(!(childern.nil?) && childern.size > 0)
+        childern.each { |child|
+          child_id = child.pid #child.split('/')
+	  child_obj = Component.load_instance(child_id)
+          arr.push(child_obj)
+        }
+#      end
+    end
+    return arr
   end
 
   def get_type_from_datastream

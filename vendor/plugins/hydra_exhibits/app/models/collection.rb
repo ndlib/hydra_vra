@@ -35,5 +35,19 @@ class Collection < ActiveFedora::Base
     values = self.datastreams["descMetadata"].term_values(:ead_header, :filedesc, :titlestmt, :titleproper)
     @collection_title = values.any? ? values.first : ""
   end
+
+  def list_childern(item_id, type)
+    @asset = Collection.load_instance_from_solr(item_id)
+    arr = Array.new
+    childern = @asset.members #.inbound_relationships[:is_part_of]
+    if(!(childern.nil?) && childern.size > 0)
+      childern.each { |child|
+        child_id = child.pid #.split('/')  
+        child_obj = Component.load_instance(child_id)
+        arr.push(child_obj)
+      }
+    end
+    return arr
+  end
   
 end

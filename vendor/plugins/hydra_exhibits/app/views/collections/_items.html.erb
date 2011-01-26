@@ -1,0 +1,70 @@
+<% #if(@document_feodra.respond_to?(:list_childern)) %>
+  <% childern = @document_fedora.list_childern(params[:id], nil) %>
+  <% if(childern.size > 0) %>
+    <div>
+    <table>
+    <% childern.each {|child| %>
+      <tr><td>
+      <a href="/catalog/<%=child.pid%>"><%= child.pid %></a> &nbsp;&nbsp;&nbsp;&nbsp;</td><td>
+      <% date = child.get_values_from_datastream("descMetadata", [:dsc, :collection, :did, :unittitle, :unitdate]) %>
+      <% title = child.get_values_from_datastream("descMetadata", [:dsc, :collection, :did, :unittitle, :unittitle_content]) %>
+      <% unitid = child.get_values_from_datastream("descMetadata", [:dsc, :collection, :did, :unitid]) %>
+      <% printer = child.get_values_from_datastream("descMetadata", [:dsc, :collection, :did, :origination, :printer]) %>
+      <% engraver = child.get_values_from_datastream("descMetadata", [:dsc, :collection, :did, :origination, :engraver]) %>
+      <% geogname = child.get_values_from_datastream("descMetadata", [:dsc, :collection, :did, :unittitle, :imprint, :geogname]) %>
+      <% scopecontent = child.get_values_from_datastream("descMetadata", [:dsc, :collection, :scopecontent]) %>
+      <% if(!title.to_s.strip.empty?) %>
+        <%= title %>
+      <% end %>
+      <% if(!date.to_s.strip.empty?) %>
+        ;&nbsp;<%= date %>
+      <% end %>
+      <% if(!unitid.to_s.strip.empty?) %>
+        ;&nbsp;<%= unitid %>
+      <% end %>
+      <% if(!printer.to_s.strip.empty?) %>
+        ;&nbsp;<%= printer %>
+      <% end %>
+      <% if(!engraver.to_s.strip.empty?) %>
+        ;&nbsp;<%= engraver %>
+      <% end %>
+      <% if(!geogname.to_s.strip.empty?) %>
+        ;&nbsp;<%= geogname %>
+      <% end %>
+      <% if(!scopecontent.to_s.empty?) %>
+        <% # = scopecontent %>
+      <% end %>
+      <% subcollection_pid = child.pid %>
+      <%# items = child.inbound_relationships[:has_member] %>
+      <%# if(child.members.size > 0) %>
+<!--        <ul>
+          <%# child.members.each {|item| %>
+	    <li>
+	      <table>
+		<tr>
+                  <%# item_id = item.pid #item.split('/') %>
+                  <%# item_obj = child.get_item_object(item_id) %>
+	          <%# page_id = item_obj.main_page %>
+		  <%# if((!page_id.nil?)&&(!page_id.empty?)) %>
+  	            <%# model = item_obj.get_page_object(page_id) %>
+		    <%# if(!model.nil?) %>
+                      <td>
+ 		        <img src="<% #= model.datastream_url('thumbnail')%>" heigth="100px" /> 
+		      </td>
+		    <%# end %>
+		  <%# end %>
+	          <td>
+		    <% # = link_to item_obj.pid, catalog_path(item_obj.pid) %>
+		  </td>
+    	        </tr>
+	      </table>
+	    </li>
+          <%# } %>
+        </ul> -->
+      <%# end %>
+    <% } %>
+    </table>
+    </div> 
+  <% end %>
+<% #end %>
+

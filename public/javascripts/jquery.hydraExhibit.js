@@ -59,6 +59,22 @@
        });
       return false;
     });
+
+     $('a.hidecompletesources').bind('click',function(){
+	 var showDiv=$("div.show_complete_sources_div");
+         var hideDiv=$("div.hide_complete_sources_div");
+	 hideDiv.show();
+         showDiv.hide();
+      return false;
+    });
+ 
+     $('a.showcompletesources').bind('click',function(){
+	 var showDiv=$("div.show_complete_sources_div");
+         var hideDiv=$("div.hide_complete_sources_div");
+	 showDiv.show();
+         hideDiv.hide();
+      return false;
+    });
      
      $('a.addhighlighted').bind('click',function(){
        var selectedSubcollectionItems = new Array();
