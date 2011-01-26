@@ -46,12 +46,16 @@
         <dt>
           <%= fedora_field_label("filters", "facets", "Browse Facets:") %>
         </dt>
-        <%- get_values_from_datastream(document_fedora,"filters", [:facets]).each do |item| -%>
-          <dd id="browse_facets" class="browse_facets" index="<%= get_values_from_datastream(document_fedora,"filters", [:facets]).index(item)%>">
-            <%= facet_field_labels[item].blank? ? item : facet_field_labels[item]%>
-            <a class="destructive remove_facet" value="<%= item%>" index="<%= get_values_from_datastream(document_fedora,"filters", [:facets]).index(item)%>" href=# action="<%= asset_path(params[:id], :content_type=>content)%>" title="Remove Facet"> Delete this facet</a>
+          <dd id="browse_facets" class="browse_facets">
+            <ol>
+              <%- get_values_from_datastream(document_fedora,"filters", [:facets]).each do |item| -%>
+                <li index="<%= get_values_from_datastream(document_fedora,"filters", [:facets]).index(item)%>">
+                  Level-<%= get_values_from_datastream(document_fedora,"filters", [:facets]).index(item) + 1%>: <%= facet_field_labels[item].blank? ? item : facet_field_labels[item]%>
+                  <a class="destructive remove_facet" value="<%= item%>" index="<%= get_values_from_datastream(document_fedora,"filters", [:facets]).index(item)%>" href=# action="<%= asset_path(params[:id], :content_type=>content)%>" title="Remove Facet"> Delete this facet</a>
+                </li>
+              <%- end -%>
+            </ol>
           </dd>
-        <%- end -%>
       <%- end -%>
     </dl>
     <div id="add-facet-box" class="split-button">

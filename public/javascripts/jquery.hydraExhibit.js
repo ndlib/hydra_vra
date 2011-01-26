@@ -28,6 +28,8 @@
      }).ajaxStop(function(){
      $('#ajaxBusy').hide();});       
 
+     $.fn.initialize_setting();
+
      $('input.update_embedded_search').bind('click',function(){
        var url = $("input#update_embedded_search").first().attr("value")       
        var params =  "q="+$("input#q").first().attr("value")+"&search_field"+$("select#search_field").first().attr("value")     
@@ -60,9 +62,7 @@
      
      $('a.addhighlighted').bind('click',function(){
        var selectedSubcollectionItems = new Array();
-       $("input.sub_collection:checked").each(function() {selectedSubcollectionItems.push($(this).val());});
-       //var $closestForm = $("form#document_metadata").first();
-       //var url = $closestForm.attr("action");
+       $("input.sub_collection:checked").each(function() {selectedSubcollectionItems.push($(this).val());});       
        var url = $("input#update_url").first().attr("value")       
        var params =  "highlighted_items="+selectedSubcollectionItems+"&highlighted_action='add'"
        var showDiv=$("div.show_highlighted_div")
@@ -110,21 +110,7 @@
       });
     });
 
-    $("div.split-button input.button").next().button( {
-    text: false,
-    icons: { primary: "ui-icon-triangle-1-s" }
-    })
-    .click(function() {
-      var ulelement= $(this).siblings('ul')
-      //$('div.split-button ul#add-main-essay-menu')
-              ulelement.is(":hidden") ?
-        ulelement.show() : ulelement.hide();
-      })
-    .parent().buttonset();
 
-    $('div.split-button ul').mouseleave(function(){
-        $(this).hide();
-    });
        
     $('li.description').live('click',function(){
       var pid =  $(this).attr("pid")
@@ -145,19 +131,7 @@
            $inserted = $(wholeDiv).last();
            /** repeat the whole set in every drop down ajax call to render the select box again on ajax call **/
            $(".editable-container").hydraTextField();
-           $("div.split-button input.button").next().button( {
-            text: false,
-            icons: { primary: "ui-icon-triangle-1-s" }
-           })
-           .click(function() {
-             var ulelement= $(this).siblings('ul')
-             ulelement.is(":hidden") ?
-             ulelement.show() : ulelement.hide();
-           })
-           .parent().buttonset();
-           $('div.split-button ul').mouseleave(function(){
-             $(this).hide();
-           });
+           $.fn.initialize_setting();
          },
          error: function(xhr, textStatus, errorThrown){
      			$.noticeAdd({
@@ -191,19 +165,7 @@
            $inserted = $(wholeDiv).last();
            // repeat the whole set in every drop down ajax call to render the select box again on ajax call *
            $(".editable-container").hydraTextField();
-           $("div.split-button input.button").next().button( {
-            text: false,
-            icons: { primary: "ui-icon-triangle-1-s" }
-           })
-           .click(function() {
-             var ulelement= $(this).siblings('ul')
-             ulelement.is(":hidden") ?
-             ulelement.show() : ulelement.hide();
-           })
-           .parent().buttonset();
-           $('div.split-button ul').mouseleave(function(){
-             $(this).hide();
-           });
+           $.fn.initialize_setting();
          },
          error: function(xhr, textStatus, errorThrown){
      			$.noticeAdd({
@@ -240,6 +202,7 @@
            ddNode.slideUp(300,function() {
              ddNode.remove();
            });
+           $.fn.initialize_setting();
          }
       });
     });
@@ -249,9 +212,11 @@
     $('li.facet').live('click',function(){
        var $closestForm = $(this).closest("form");
        var url = $closestForm.attr("action");
-       var index = $("dd.browse_facets").size()
-       var name = "asset[filters][facets]["+index+"]"
-       var params = name + "="+$(this).attr("field_name")+"&_method=put";       
+       var index = $("dd.browse_facets ol li").last().attr("index") 
+       total = parseInt(index) + 1
+       var name = "asset[filters][facets]["+total+"]"
+       var params = name + "="+$(this).attr("field_name")+"&_method=put";
+       //alert(name)
        $.ajax({
          type: "PUT",
          url: url,
@@ -267,6 +232,7 @@
              type:                   'notice'                // could also be error, succes
             });
             $.fn.hydraExhibit.resetSetting();
+            $.fn.initialize_setting();
          },
          error: function(xhr, textStatus, errorThrown){
      			$.noticeAdd({
@@ -278,7 +244,7 @@
              type:                   'error'                // could also be error, succes
             });
          }
-       });       
+       });
     });
 
     $('a.remove_facet').live('click',function(){
@@ -299,6 +265,7 @@
              stay:                   false,                  // should the notice item stay or not?
              type:                   'notice'                // could also be error, succes
             });
+            $.fn.initialize_setting();
             $.fn.hydraExhibit.resetSetting();
          },
          error: function(xhr, textStatus, errorThrown){
@@ -318,6 +285,28 @@
 
    /* Initialize the element as a Hydra exhibit Editable TextField
    */
+   $.fn.initialize_setting = function(){
+      $("div.split-button input.button").next().button( {
+          text: false,
+          icons: { primary: "ui-icon-triangle-1-s" }
+        })
+        .click(function() {
+          var ulelement= $(this).siblings('ul')
+          ulelement.is(":hidden") ?
+            ulelement.show() : ulelement.hide();
+          })
+        .parent().buttonset();
+
+        $('div.split-button ul').mouseleave(function(){
+            $(this).hide();
+      });
+
+     $('dd.browse_facets ol li').each(function(){
+       index = $(this).attr("index")
+       $(this).attr('style', ' position: relative; padding-left:'+index+'em');;
+     });     
+   }
+
    $.fn.exhibitTextField = function(settings) {
      var config = {
         selectors : {
@@ -443,7 +432,7 @@
           $(perviousNode).remove();
           // repeat the whole set in every drop down ajax call to render the select box again on ajax call
            $(".editable-container").hydraTextField();
-           $("div.split-button input.button").next().button( {
+           /*$("div.split-button input.button").next().button( {
             text: false,
             icons: { primary: "ui-icon-triangle-1-s" }
            })
@@ -455,7 +444,8 @@
            .parent().buttonset();
            $('div.split-button ul').mouseleave(function(){
              $(this).hide();
-           });
+           });*/
+           $.fn.initialize_setting();
          }
       });
     },

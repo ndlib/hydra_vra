@@ -4,7 +4,7 @@
   <dl class="item-list">
     <%-  asset.highlighted.each do |item| -%>
     <dd class="item_highlighted">      
-      <%=  item.item_title.blank? ? item.sub_collection_title : component.item_title %>
+      <%=  item.item_title.blank? ? item.sub_collection_title : item.item_title %>
       <a id="remove_highlighted" style="position: absolute" class="destructive destroy_highlighted" href=# action="<%=sub_collection_path(params[:id], :content_type=>content, :highlighted_action=>"remove", :item_id=>item.pid)%>" title="Remove as highlighted"> Remove from Highlighted list</a>
     </dd>
     <%- end -%>
