@@ -19,7 +19,14 @@ module ApplicationHelper
   # options consist of:
   # :suppress_link => true # do not make it a link, used for an already selected value for instance
   def render_browse_facet_value(facet_solr_field, item, options ={})
-    link_to_unless(options[:suppress_link], item.value, exhibit_path(add_facet_params_and_redirect(facet_solr_field, item.value).merge!({:class=>"facet_select", :action=>"show"}))) + " (" + format_num(item.hits) + ")"
+    p = params.dup
+    p.delete(:f)
+    p.delete(:q)
+    p.delete(:commit)
+    p.delete(:search_field)
+    p.merge!(:id=>params[:exhibit_id]) if p[:exhibit_id]
+    p = add_facet_params(facet_solr_field,item.value,p)
+    link_to(item.value, exhibit_path(p.merge!({:class=>"facet_select", :action=>"show"}))) + " (" + format_num(item.hits) + ")"
   end
 
   # Standard display of a SELECTED facet value, no link, special span
@@ -301,7 +308,7 @@ module ApplicationHelper
   def render_browse_facet_div
     initialize_exhibit if @exhibit.nil?
     unless @exhibit.nil?
-      return get_browse_facet_div(@browse_facets,@browse_response,@extra_controller_params) 
+      get_browse_facet_div(@browse_facets,@browse_response,@extra_controller_params)
     else
       return ""
     end
@@ -371,7 +378,7 @@ module ApplicationHelper
       @exhibit = Exhibit.load_instance_from_solr(exhibit_id)
       @browse_facets = @exhibit.browse_facets
       @facet_subsets_map = @exhibit.facet_subsets_map
-      @selected_browse_facets = get_selected_browse(@browse_facets)
+      @selected_browse_facets = get_selected_browse_facets(@browse_facets)
       #subset will be nil if the condition fails
       @subset = @facet_subsets_map[@selected_browse_facets] if @selected_browse_facets.length > 0 && @facet_subsets_map[@selected_browse_facets]
     end
@@ -389,7 +396,7 @@ module ApplicationHelper
     #render :partial => 'shared/show_highlighted.html.erb', :locals => {:docs => @response.docs, :facet_name => nil, :facet_value => nil, :content=>content, :asset=>asset}
   end
 
-  def get_selected_browse(browse_facets)
+  def get_selected_browse_facets(browse_facets)
     selected = {}
     if params[:f]
       browse_facets.each do |facet|
@@ -397,6 +404,13 @@ module ApplicationHelper
       end
     end
     selected
+  end
+
+  def browse_facet_selected?(browse_facets)
+    browse_facets.each do |facet|
+      return true if params[:f] and params[:f][facet]
+    end
+    return false
   end
 
   def render_item_partial(doc, action_name, locals={})
@@ -463,6 +477,11 @@ module ApplicationHelper
     require_fedora
     require_solr
     params[:exhibit_id] ? exhibit_id = params[:exhibit_id] : exhibit_id = params[:id]
+    unless exhibit_id
+      logger.info("No exhibit was found for id #{exhibit_id}")
+      return
+    end
+
     begin
       @exhibit = Exhibit.load_instance_from_solr(exhibit_id) 
       @browse_facets = @exhibit.browse_facets
@@ -485,8 +504,8 @@ module ApplicationHelper
       (@response, @document_list) = get_search_results( @extra_controller_params.merge!(:q=>lucene_query))
       @browse_response = @response
       @browse_document_list = @document_list
-    rescue 
-      logger.warning("No exhibit was found for id #{exhibit_id}")
+    rescue Exception=>e
+      logger.info("No exhibit was found for id #{exhibit_id}: #{e.to_s}")
     end
   end
   
