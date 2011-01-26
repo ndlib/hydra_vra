@@ -199,6 +199,12 @@ module ApplicationHelper
     return content
   end
 
+  def link_to_catalog_item(label, id)
+    puts "params in link catalog item: #{params.inspect}"
+    params[:controller] == "exhibits" ? exhibit_id = params[:id] : exhibit_id = params[:exhibit_id]
+    exhibit_id ? link_to(label, catalog_path(id, :render_search=>"false", :exhibit_id=>exhibit_id)) : link_to(label, catalog_path(id))
+  end
+
   #
   #  Link to the main browse page for the collection of items displayed
   #

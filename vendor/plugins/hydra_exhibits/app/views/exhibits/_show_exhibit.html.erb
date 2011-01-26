@@ -37,22 +37,14 @@
 
 <hr />
 
-
 <h2>Complete sources</h2>
-<dl class="item-list"></dl>
-
-<div class="pagination">
-  <%= will_paginate @browse_response.docs, :page_links => false, :class => 'prev_next_links' %>
-  <%= will_paginate @browse_response.docs, :container => false %>
+<div class="show_complete_sources_div">
+   <a class="hidecompletesources" href="#" title="Hide Complete Sources" exhibit-id="<%= params[:exhibit_id] %>" >Hide Complete Sources</a>
+  <dl class="item-list"></dl>
+  <%= render :partial=>'shared/complete_sources'%>
 </div>
-<%= render :partial=>'sort_and_per_page', :locals => {:response=>@browse_response} if @browse_response.response['numFound'] > 10 %>
-
-<%= render :partial=>'document_list', :locals => {:document_list=>@browse_document_list, :response=>@browse_response} %>
-
-<div class="pagination">
-  <%= will_paginate @browse_response.docs, :page_links => false, :class => 'prev_next_links' %>
-  <%= will_paginate @browse_response.docs, :container => false%>
+<div class="hide_complete_sources_div">
+  <a class="showcompletesources" href="#" title="Show Complete Sources" exhibit-id="<%= params[:exhibit_id] %>" >Show Complete Sources</a>
 </div>
 
-  
   
