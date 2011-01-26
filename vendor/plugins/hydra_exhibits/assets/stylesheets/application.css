@@ -35,13 +35,7 @@ a:hover {color: #029;}
 .yui-t2 #yui-main .yui-b {border-left: 1px dotted #ccc; padding: 1em 0 2em 2em; position: relative; margin-left: 220px;}
 
 /* Left Sidebar Layout */
-.yui-t2 .yui-b {float:left; width:220px;}
-.yui-t2 .yui-b p {padding-top: 2em;}
-.facet-list {color:#777;}
-.facet-heading {font-size:1.4em; margin:.7em 0 .3em; color:#333;}
-.facet-list ul {margin-top:.1em;}
-.facet-list ul .facet-heading {font-size:1.1em;}
-.facet-list .selected {color:#333;}
+.yui-t2 .yui-b.sidebar {float:left; width:220px;}
 
 /* Top Banner */
 h1.site_title {background: transparent url('../images/logo.png') no-repeat top left; margin: 2em 0px 0px 1em; height: 35px; width: 120px;} 
@@ -76,6 +70,12 @@ ul.facet_extended_list li {list-style:none; margin: 0.5em 0;}
 .facet_extended_list {text-align: left;} /* for our ajaxy dialog to make sure we're overriding the yui global text-align: center */
 .facet_extended_list .sort_options {text-align: right}
 
+.facet-list {color:#777;}
+.facet-heading {font-size:1.4em; margin:.7em 0 .3em; color:#333;}
+.facet-list ul {margin:.1em .5em 1em 1em;}
+.facet-list li {list-style-type:none;}
+.facet-list ul .facet-heading {font-size:1.1em;}
+.facet-list .selected {color:#333;}
 
 
 /* Solr Query */
@@ -84,7 +84,7 @@ ul.facet_extended_list li {list-style:none; margin: 0.5em 0;}
 /* Page Navigation */
 .constraints {margin: 0px; padding: 0px;}
 
-.pagination {text-align:right; padding-top: 1em; margin-bottom:.5em;}
+.pagination {text-align:right; margin-bottom:.5em;}
 .pagination h2 {display: none;}
 #results_text {display: none;}
 .pagination a, .pagination span {padding: 0px 5px; border: 0px;}
@@ -96,7 +96,7 @@ ul.facet_extended_list li {list-style:none; margin: 0.5em 0;}
 #sortAndPerPage {background-color: #eee;}
 
 /* Search Results */
-.document {padding: 0.5em 0 0 0; background-color: #fff; border-bottom: 1px dotted #ccc;}
+.document {background-color: #fff; border-bottom: 1px dotted #ccc;}
 
 #documents {background-color: #eee; color: #333; width: 650px;}
 #documents .documentHeader {background-color: #fff; padding: 0px;}
@@ -104,6 +104,9 @@ ul.facet_extended_list li {list-style:none; margin: 0.5em 0;}
 #documents .documentHeader .documentFunctions {text-align:right;}
 #documents .per_page {padding-right: 5px;}
 #documents #results_label {margin-left: 5px;}
+#documents .thumbnail-container a {border-bottom:none;}
+.with-thumbnail .defList {margin-left:120px;}
+.thumbnail-container {float:left; padding:10px;}
 
 /* Result List (http://www.quirksmode.org/css/clearing.html) */
 h3.index_title {clear: both; margin: 0px; padding: 0px; width: 460px;}
