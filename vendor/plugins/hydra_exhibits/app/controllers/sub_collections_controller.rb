@@ -10,7 +10,7 @@ class SubCollectionsController < ApplicationController
   include WhiteListHelper
   include Blacklight::CatalogHelper
   include ApplicationHelper
-  include EssaysHelper
+  include DescriptionsHelper
 
   helper :hydra, :metadata, :infusion_view
   before_filter :require_fedora, :require_solr
@@ -27,8 +27,7 @@ class SubCollectionsController < ApplicationController
   end
 
   def index
-    render :partial=>"index", :layout=>false
-    render :text => "Deleted Essay Successfully."
+    render :partial=>"index", :layout=>false    
   end
 
   def new

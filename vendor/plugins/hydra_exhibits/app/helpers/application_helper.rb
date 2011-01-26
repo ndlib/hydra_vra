@@ -145,13 +145,13 @@ module ApplicationHelper
   end
   
   def app_rich_text_area(content_type,pid, datastream_name, opts={})
-    field_name = "essay_content"
+    field_name = "description_content"
     af_model = retrieve_af_model(content_type)
     logger.error("cm:#{content_type.inspect}, pid:#{pid.inspect}, ds:#{datastream_name.inspect}")
     raise "Content model #{content_type} is not of type ActiveFedora:Base" unless af_model
     resource = af_model.load_instance(pid)
     logger.error("Model: #{af_model}, resource:#{resource.pid}")
-    field_values = resource.essaydatastream(datastream_name).first.content
+    field_values = resource.descriptiondatastream(datastream_name).first.content
     if opts.fetch(:multiple, true)
       container_tag_type = :li
     else
@@ -163,18 +163,18 @@ module ApplicationHelper
     name = "asset[#{datastream_name}][#{field_name}]"
     processed_field_value = white_list( RedCloth.new(field_values, [:sanitize_html]).to_html)
 
-    body << "<#{container_tag_type.to_s} class=\"field_value essay-textarea-container field\" id=\"#{base_id}-container\">"
+    body << "<#{container_tag_type.to_s} class=\"field_value description-textarea-container field\" id=\"#{base_id}-container\">"
       # Not sure why there is we're not allowing the for the first textile to be deleted, but this was in the original helper.
       #body << "<a href=\"\" title=\"Delete '#{h(current_value)}'\" class=\"destructive field\">Delete</a>" unless z == 0
       body << "<div class=\"textile-text text\" id=\"#{base_id}-text\">#{processed_field_value}</div>"
-      body << "<input class=\"textile-edit edit\" id=\"#{base_id}\"  data-pid=\"#{pid}\" data-content-type=\"#{content_type}\" data-datastream-name=\"#{datastream_name}\" rel=\"#{field_name}\" name=\"#{name}\" title=\"essay_title\" value=\"#{h(field_values)}\"/>"
+      body << "<input class=\"textile-edit edit\" id=\"#{base_id}\"  data-pid=\"#{pid}\" data-content-type=\"#{content_type}\" data-datastream-name=\"#{datastream_name}\" rel=\"#{field_name}\" name=\"#{name}\" title=\"description_title\" value=\"#{h(field_values)}\"/>"
     body << "</#{container_tag_type}>"
 
 
     result = ""
 
     if opts.fetch(:multiple, true)
-      result << content_tag(:ol, body, :rel=>field_name, :title=>"essay_title")
+      result << content_tag(:ol, body, :rel=>field_name, :title=>"description_title")
     else
       result << body
     end
@@ -183,19 +183,19 @@ module ApplicationHelper
 
   end
 
-  def essay_text_area_insert_link(datastream_name, opts={})
-    field_name = "essay_content"
+  def description_text_area_insert_link(datastream_name, opts={})
+    field_name = "description_content"
     link_text = "Add #{(opts[:label]).to_s.camelize.titlecase}"
     "<a class='addval rich-textarea' href='#' data-datastream-name=\"#{datastream_name}\" content-type=\"#{opts[:content_type]}\" rel=\"#{field_name}\" title='#{link_text}'>#{link_text}</a>"    
   end
 
-  def load_essay(essay_obj)
+  def load_description(description_obj)
     #af_model = retrieve_af_model(content_type)
     #logger.error("cm:#{content_type.inspect}, pid:#{pid.inspect}, ds:#{datastream_name.inspect}")
     #raise "Content model #{content_type} is not of type ActiveFedora:Base" unless af_model
-    resource = essay_obj.class.load_instance(essay_obj.pid)
-    logger.error("Model: #{essay_obj.class}, resource:#{resource.pid}")
-    content = resource.essaydatastream(resource.essaydatastream_ids.first).first.content
+    resource = description_obj.class.load_instance(description_obj.pid)
+    logger.error("Model: #{description_obj.class}, resource:#{resource.pid}")
+    content = resource.descriptiondatastream(resource.descriptiondatastream_ids.first).first.content
     return content
   end
 
@@ -262,9 +262,10 @@ module ApplicationHelper
     # params[:f].dup ||
     query_params =  {}
     opts[:exhibit_id] ? exhibit_id = opts[:exhibit_id] : exhibit_id = params[:exhibit_id]
-    if opts[:f]
-      f = opts[:f]
-    end 
+    opts[:f] ? f = opts[:f] : f = params[:f]
+    #if opts[:f]
+     # f = opts[:f]
+    #end 
     query_params.merge!({:id=>exhibit_id})
     query_params.merge!({:f=>f}) if f && !f.empty?
     link_url = exhibit_path(query_params)
@@ -307,11 +308,7 @@ module ApplicationHelper
 
   def render_browse_facet_div
     initialize_exhibit if @exhibit.nil?
-    unless @exhibit.nil?
-      get_browse_facet_div(@browse_facets,@browse_response,@extra_controller_params)
-    else
-      return ""
-    end
+    @exhibit.nil? ? '' : get_browse_facet_div(@browse_facets,@browse_response,@extra_controller_params)
   end
 
   def get_browse_facet_div(browse_facets, response, extra_controller_params)
@@ -335,8 +332,8 @@ module ApplicationHelper
     display_facet_with_f = response.facets.detect {|f| f.name == solr_fname}
     unless display_facet.nil?
       if display_facet.items.length > 0          
-        return_str += '<h3>' + facet_field_labels[display_facet.name] + '</h3>'
-        return_str += '<ul style="display:block">'
+        return_str += '<h3 class="facet-heading">' + facet_field_labels[display_facet.name] + '</h3>'
+        return_str += '<ul>'
         display_facet.items.each do |item|
           #logger.debug("Check facet value: #{facet_in_temp?( temp, display_facet.name, item.value )}, temp: #{temp.inspect}")
           return_str += '<li>'
@@ -371,7 +368,7 @@ module ApplicationHelper
     temp and temp[field] and temp[field].include?(value)
   end
 
-  def get_search_results_from_params(content)
+  def get_components(content, component_query_to_append)
     logger.debug("param in helper: #{params.inspect}")
     if !params[:exhibit_id].blank?
       exhibit_id = params[:exhibit_id]
@@ -389,11 +386,13 @@ module ApplicationHelper
     else
       asset=nil
     end
+    q = build_lucene_query(params[:q])
+    component_query = [component_query_to_append]
+    lucene_query = "#{component_query} AND #{q}" unless component_query.empty?
     @extra_controller_params = {}
-    (@response, @document_list) = get_search_results( @extra_controller_params.merge!(:q=>build_lucene_query(params[:q])) )
-    #render :partial => 'catalog/_index_partials/default_group', :locals => {:docs => @response.docs, :facet_name => nil, :facet_value => nil}
-    render :partial => "shared/edit_highlighted", :locals => {:docs => @response.docs, :facet_name => nil, :facet_value => nil, :content=>content, :asset=>asset}
-    #render :partial => 'shared/show_highlighted.html.erb', :locals => {:docs => @response.docs, :facet_name => nil, :facet_value => nil, :content=>content, :asset=>asset}
+    (@component_response, @document_list) = get_search_results( @extra_controller_params.merge!(:q=>lucene_query) )    
+    render :partial => "shared/edit_highlighted", :locals => {:docs => @component_response.docs, :facet_name => nil, :facet_value => nil, :content=>content, :asset=>asset}
+
   end
 
   def get_selected_browse_facets(browse_facets)

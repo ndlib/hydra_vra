@@ -1,39 +1,39 @@
-module EssaysHelper
+module DescriptionsHelper
 
   include MediaShelf::ActiveFedoraHelper
 
-  def create_and_save_essay(content)
-    @essay = create_essay
-    add_posted_blob_to_essay(content)
-    @essay.save
-    return @essay
+  def create_and_save_description(content)
+    @description = create_description
+    add_posted_blob_to_description(content)
+    @description.save
+    return @description
   end
 
   # Creates a File Asset and sets its label from params[:Filename]
   #
   # @return [FileAsset] the File Asset
-  def create_essay
-    essay_asset = Essay.new(:namespace=>"RBSC-CURRENCY")
-    logger.error("Essay Create with pid #{essay_asset.pid}")
-    return essay_asset
+  def create_description
+    description_asset = Description.new(:namespace=>"RBSC-CURRENCY")
+    logger.error("Description Create with pid #{description_asset.pid}")
+    return description_asset
   end
 
-  def add_posted_blob_to_essay(content, asset=@essay)
-    asset.essaydatastream_append(:file=>content, :label=>"test", :mimeType=>"text/html")
-    logger.error("List of DS: #{asset.essaydatastream_ids}")
+  def add_posted_blob_to_description(content, asset=@description)
+    asset.descriptiondatastream_append(:file=>content, :label=>"test", :mimeType=>"text/html")
+    logger.error("List of DS: #{asset.descriptiondatastream_ids}")
   end
 
   # Textile textarea varies from the other methods in a few ways
   # Since we're using jeditable with this instead of fluid, we need to provide slightly different hooks for the javascript
   # * we are storing the datastream name in data-datastream-name so that we can construct a load url on the fly when initializing the textarea
   def rich_text_area(content_model,pid, datastream_name, opts={})
-    field_name = "essaytest"
+    field_name = "descriptiontest"
     af_model = retrieve_af_model(content_model)
     logger.error("cm:#{content_model.inspect}, pid:#{pid.inspect}, ds:#{datastream_name.inspect}")
     raise "Content model #{content_model} is not of type ActiveFedora:Base" unless af_model
     resource = af_model.load_instance(pid)
     logger.error("Model: #{af_model}, resource:#{resource.pid}")
-    field_values = resource.essaydatastream(datastream_name).first.content
+    field_values = resource.descriptiondatastream(datastream_name).first.content
     if opts.fetch(:multiple, true)
       container_tag_type = :li
     else
@@ -65,14 +65,16 @@ module EssaysHelper
 
   end
 
-  def essay_content(content_model,pid,datastream_name)
+=begin
+  def description_content(content_model,pid,datastream_name)
     af_model = retrieve_af_model(content_model)
     logger.error("cm:#{content_model.inspect}, pid:#{pid.inspect}")
     raise "Content model #{content_model} is not of type ActiveFedora:Base" unless af_model
     resource = af_model.load_instance(pid)
     logger.error("Model: #{af_model}, resource:#{resource.pid}")
-    content= resource.essaydatastream(datastream_name).first.content
+    content= resource.descriptiondatastream(datastream_name).first.content
     return content
   end
+=end
 
 end

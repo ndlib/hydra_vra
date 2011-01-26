@@ -31,22 +31,22 @@ class ExhibitsController < CatalogController
   end
 
   def update_embedded_search
-    get_search_results_from_params(params[:content_type])
+    get_components(params[:content_type],"active_fedora_model_s:Component")
   end
 
-  def add_main_essay
+  def add_main_description
     content_type = params[:content_type]
     af_model = retrieve_af_model(content_type)
     logger.debug("Afmodel: #{af_model}")
     if af_model
       @exhibit = af_model.load_instance(params[:id])
-      @exhibit.update_indexed_attributes(:main_description=>{"0"=>params[:essay_id]})
+      @exhibit.update_indexed_attributes(:main_description=>{"0"=>params[:description_id]})
       @exhibit.save
       response = Hash["updated"=>[]]
-      response["updated"] << {"title update"=>params[:essay_id]}
+      response["updated"] << {"title update"=>params[:description_id]}
       logger.debug("if loop response-> #{response.inspect}")
     end    
-    logger.debug("New description id: #{@exhibit.title}, param essay id:#{params[:essay_id]}")
+    logger.debug("New description id: #{@exhibit.title}, param description id:#{params[:description_id]}")
     render :partial => "exhibits/edit_settings", :locals => {:content => "exhibit", :document_fedora => @exhibit}
   end
 
@@ -82,6 +82,24 @@ class ExhibitsController < CatalogController
     end
     @asset = the_model.load_instance(params[:collections_id])
     @exhibit.collections_remove(@asset)
+    @exhibit.save
+    render :text => "Removed collections relation successfully."
+  end
+
+  def remove_facet_value
+    content_type = params[:content_type]
+    af_model = retrieve_af_model(content_type)
+    logger.debug("Afmodel: #{af_model}")
+    if af_model
+      @exhibit = af_model.load_instance(params[:id])
+    end
+    @obj =  ActiveFedora::Base.load_instance(params[:collections_id])
+    the_model = ActiveFedora::ContentModel.known_models_for( @obj ).first
+    if the_model.nil?
+      raise "Unknown content type for the object with pid #{@obj.pid}"
+    end
+    @asset = the_model.load_instance(params[:collections_id])
+    @exhibit..update_indexed_attributes(:main_description=>{params[:index]=>params[:facet_value]})
     @exhibit.save
     render :text => "Removed collections relation successfully."
   end

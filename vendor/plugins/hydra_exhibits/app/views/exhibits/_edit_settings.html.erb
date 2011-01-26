@@ -1,4 +1,5 @@
-<div class="edit_setting">  
+<%# debug facet_field_labels %>
+<div class="edit_setting">
   <fieldset id="work_fields2">
     <legend> Exhibit </legend>
       <input id="content_type" type="hidden" name="content_type" value="<%= content %>" />
@@ -9,13 +10,7 @@
       <dd class="title">
 
       </dd>
-      <dt>
-        <%= fedora_field_label("filters", "facets", "Browse Facets:") %>
-      </dt>
-      <dd id="browse_facets">
-        <%=fedora_text_field(document_fedora, "filters", "facets", :multiple=>true) %>
-        <%= fedora_text_field_insert_link "filters", :facets, :label=>"Browse Facets"%>
-      </dd>
+
       <dt>
         <%= fedora_field_label("filters", "query", "Solr Queries:")%>
       </dt>
@@ -45,15 +40,39 @@
                  <%- end -%>
              <%- end -%>
           </dd>
-      <%end%>     
+      <%end%>
+      <% unless get_values_from_datastream(document_fedora,"filters", [:facets]).first.empty?%>
+        <dt>
+          <%= fedora_field_label("filters", "facets", "Browse Facets:") %>
+        </dt>
+        <%- get_values_from_datastream(document_fedora,"filters", [:facets]).each do |item| -%>
+          <dd id="browse_facets" class="browse_facets" index="<%= get_values_from_datastream(document_fedora,"filters", [:facets]).index(item)%>">
+            <%= facet_field_labels[item].blank? ? item : facet_field_labels[item]%>
+            <a class="destructive remove_facet" value="<%= item%>" index="<%= get_values_from_datastream(document_fedora,"filters", [:facets]).index(item)%>" href=# action="<%= asset_path(params[:id], :content_type=>content)%>" title="Remove Facet"> Delete this facet</a>
+          </dd>
+        <%- end -%>
+      <%- end -%>
     </dl>
-    <input id="exhibit_add_main_essay_url" type="hidden" name="url" value="<%= url_for(:action=>"add_main_essay", :controller=>"exhibits", :content_type=>content)%>" />
-    <div id="add-main-essay-box" class="split-button">
-        <input id="re-run-add-main-essay-action" type="button" class="button" value="Select Essay" />
-        <button id="select-main-essay-type" type="button">Select main essay</button>
-        <ul id="add-main-essay-menu">
+    <div id="add-facet-box" class="split-button">
+    <input id="re-run-add-facet-action" type="button" class="button" value="Select Browse Facets" />
+    <button id="select-facet-type" type="button">Select Facet</button>
+      <ul id="add-facet-menu">
+        <%- facet_field_names.each do |solr_fname| -%>
+          <%- unless get_values_from_datastream(document_fedora,"filters", [:facets]).include? solr_fname -%>
+            <li class="facet" field_name="<%= solr_fname%>">
+              <%= facet_field_labels[solr_fname]%>
+            </li>
+          <%- end -%>
+        <%- end -%>
+      </ul>
+    </div>
+    <input id="exhibit_add_main_description_url" type="hidden" name="url" value="<%= url_for(:action=>"add_main_description", :controller=>"exhibits", :content_type=>content)%>" />
+    <div id="add-main-description-box" class="split-button">
+        <input id="re-run-add-main-description-action" type="button" class="button" value="Select Description" />
+        <button id="select-main-description-type" type="button">Select main description</button>
+        <ul id="add-main-description-menu">
         <%- document_fedora.descriptions.each do |item| -%>
-          <li class="essay" pid="<%= item.pid%>">
+          <li class="description" pid="<%= item.pid%>">
             <%= item.title%>
           </li>
         <%- end -%>
@@ -63,6 +82,11 @@
 
     </fieldset>
   </div>
+
+
+
+
+
 
 
 

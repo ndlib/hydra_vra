@@ -93,9 +93,9 @@ class Exhibit < ActiveFedora::Base
   end
 
   def title
-    return @exhibit_essay_title if (defined? @exhibit_essay_title)
+    return @exhibit_description_title if (defined? @exhibit_description_title)
     values = self.fields[:main_description][:values]
-    @exhibit_essay_title = values.any? ? values.first : ""
+    @exhibit_description_title = values.any? ? values.first : ""
   end
   
 end

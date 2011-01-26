@@ -1,0 +1,29 @@
+<div class="description_div">
+    <input id="show_description_url" type="hidden" name="url" asset-pid="<%= asset.pid %>" value="<%= description_path(asset.pid) %>" />
+    <%# debug asset.pid %>
+    <%- unless asset.description_list.blank? -%>
+      <% descriptions = asset.description_list %>
+      <%# debug descriptions.count %>
+      <dl class="related-descriptions">
+        <%- descriptions.each do |description| -%>
+          <dt><label>Description Title:</label></dt>
+          <dd class="remove-description-div">
+            <%= custom_text_field(description,"descMetadata", [:title]) %>
+            <%=app_rich_text_area("description",description.pid, description.descriptiondatastream_ids.first) %>
+            <a style="position: absolute" class="destructive destroy_description" href=# action="<%= description_path(description.pid)%>" title="Remove Description"> Delete this description</a>
+          </dd>        
+        <%- end -%>
+      </dl>
+    <%- end -%>
+    <div id="add-description-div">
+      <%= description_text_area_insert_link "descriptiondatastream", {:label=>"Description", :content_type=>"description"}%>
+    </div>
+</div>
+
+
+
+
+
+
+
+
