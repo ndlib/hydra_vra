@@ -1,38 +1,41 @@
 <h1>Exhibit Title</h1>
 
-<span class="edit-browse">
-  <% if editor? %>
+<%- if editor? -%>
+  <span class="edit-browse">
     <%= edit_and_browse_exhibit_links(@exhibit) %>
-  <% end -%>
-</span>
-<p>
-  Description
-</p>
-<% @exhibit = exhibit if @exhibit.nil? && exhibit%>
-<% if @exhibit.descriptions.length > 0 %>    
-  <% @exhibit.descriptions.each do |description|%>
-    <h3>Description Title goes in here</h3>
-    <%=load_description(description) %>
-    <%# #link_to "Essay: \"#{description.title}\"", essay_path(params[:collection_id], description.pid) description.introduction %>
-    <%# link_to "[Read the complete essay]", essay_path(params[:collection_id], @essay.pid) %>
-  <% end %>
-<%- else -%>
-  <h3><%= "Essay forthcoming..." %></h3>
+  </span>
 <%- end -%>
 
+<%- @exhibit ||= exhibit -%>
+<%- if @exhibit.descriptions.any? -%>
+  <h2>Description</h2>
+  <%- @exhibit.descriptions.each do |description| -%>
+    <h3>Description Title goes in here</h3>
+    <%= load_description(description) %>
+    <%# #link_to "Essay: \"#{description.title}\"", essay_path(params[:collection_id], description.pid) description.introduction %>
+    <%# link_to "[Read the complete essay]", essay_path(params[:collection_id], @essay.pid) %>
+  <%- end -%>
+<%- else -%>
+  <%- if editor? -%>
+    <h2>Description</h2>
+    <p><%= "Essay forthcoming..." %></p>
+  <%- end -%>
+<%- end -%>
 
-<h2>Featured sources</h2>
-<% if !@exhibit.nil? && @exhibit.highlighted.length > 0 %>
+<%- if @exhibit && @exhibit.highlighted.any? -%>
+  <h2>Featured Sources</h2>
   <dl class="item-list featured">
     <%- @exhibit.highlighted(:response_format=>:solr).each_with_index do |document, counter| -%>
-      <% item = load_af_instance_from_solr(document)%>
-      <%= item.class.inspect%>
-      <% item.respond_to?(:title) ? title = item.title : title = document[:id]%>
-      <%= render_document_index_partial(SolrDocument.new(document), title, counter, :index)%>
+      <%- item = load_af_instance_from_solr(document) -%>
+      <%- item.respond_to?(:title) ? title = item.title : title = document[:id] -%>
+      <%= render_document_index_partial(SolrDocument.new(document), title, counter, :index) %>
     <%- end -%>
   </dl>
 <%- else -%>
-  <h3>No highlighted items defined</h3>
+  <%- if editor? -%>
+    <h2>Featured Sources</h2>
+    <h3>No highlighted items defined</h3>
+  <%- end -%>
 <%- end -%>
 
 <hr />
@@ -46,5 +49,3 @@
 <div class="hide_complete_sources_div">
   <a class="showcompletesources" href="#" title="Show Complete Sources" exhibit-id="<%= params[:exhibit_id] %>" >Show Complete Sources</a>
 </div>
-
-  

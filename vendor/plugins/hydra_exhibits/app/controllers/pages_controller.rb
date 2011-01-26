@@ -134,13 +134,4 @@ class PagesController < ApplicationController
       flash[:notice]= "Deleted " + params[:id]
       redirect_to url_for(:action => 'index', :controller => "catalog", :label => params[:label], :q => nil , :f => nil)
     end
-#    def delete
-#      af_model = retrieve_af_model(params[:content_type])
-#      @document = af_model.find(params[:id])
-#      @document.datastreams["max"].delete
-#      @document.datastreams["screen"].delete
-#      @document.datastreams["content"].delete
-#      @document.datastreams["thumbnail"].delete
-#      @document.save
-#    end
 end

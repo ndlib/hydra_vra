@@ -15,7 +15,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :descriptions
   map.resources :collections
   map.resources :sub_collections
-  map.resources :exhibits, {:member => {:update_embedded_search=> :post, :add_main_description=> :put, :add_collection=> :put, :remove_collection=> :post}}
+  map.resources :exhibits, {:member => {:update_embedded_search=> :post, :add_main_description=> :put, :add_collection=> :put, :remove_collection=> :post, :refresh_setting=> :get}}
   map.resources :pages
 
   map.login "login", :controller => "webauth_sessions", :action => "new"

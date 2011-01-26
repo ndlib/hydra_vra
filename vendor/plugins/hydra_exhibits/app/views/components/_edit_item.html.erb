@@ -66,7 +66,7 @@
        <dd id="plate_letter">
         <%= fedora_text_area(document_fedora,"descMetadata", [:item, :odd])%>
       </dd>
-	  <dt>
+      <dt>
         <%= fedora_field_label("descMetadata", [:item, :scopecontent], "Description:")%>
       </dt>
        <dd id="description">
@@ -79,6 +79,19 @@
         <%= fedora_text_field(document_fedora,"descMetadata", [:item, :daogrp, :daoloc, :daoloc_href])%>
       </dd> -->
     </dl> 
+<% childern = document_fedora.list_childern(params[:id],"item") %>
+    <input id="exhibit_update_url" type="hidden" name="url" value="<% url_for(:action=>"update", :controller=>"components", :content_type=>content)%>" />
+    <div id="add-main-essay-box">
+        <input id="re-run-add-main-essay-action" type="button" value="Select Image" />
+        <button id="select-main-essay-type" type="button">Select main Image</button>
+        <ul id="add-main-essay-menu">
+        <%- childern.each do |child| -%>          
+          <li class="essay" pid="<%= child.pid%>">
+            <%= child.name%>
+          </li>
+        <%- end -%>
+        </ul>
+    </div>
   </fieldset>
   <fieldset id="image_fields">
     <legend>Images</legend>

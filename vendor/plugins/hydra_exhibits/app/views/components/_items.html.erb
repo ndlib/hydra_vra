@@ -1,0 +1,16 @@
+<% childern = @document_fedora.list_childern(params[:id],"subcollection") %>
+<% if(childern.size > 0) %>
+  <table>
+  <% childern.each {|child| %>
+    <tr><td>
+    <% if((!child.main_page.nil?) && (!child.main_page.empty?)) %>
+      <% page_id = child.main_page %>
+      <% model = child.get_page_object(page_id) %>
+      <img src="<%= model.datastream_url('thumbnail')%>" heigth="100px" />
+    <% end %></td>
+    <td><%= link_to child.pid, catalog_path(child.pid) %><br/>
+    <%= child.get_values_from_datastream("descMetadata", [:item, :did, :unittitle]) %></td></td>
+    </tr>
+  <% } %>
+  </table>
+<% end %>

@@ -260,15 +260,14 @@
       });
     });
 
-    $('li.facet').live('click',function(){
 
+
+    $('li.facet').live('click',function(){
        var $closestForm = $(this).closest("form");
        var url = $closestForm.attr("action");
        var index = $("dd.browse_facets").size()
        var name = "asset[filters][facets]["+index+"]"
-
-       var params = name + "="+$(this).attr("field_name")+"&_method=put";
-       //alert(url+"---- params"+params)
+       var params = name + "="+$(this).attr("field_name")+"&_method=put";       
        $.ajax({
          type: "PUT",
          url: url,
@@ -283,6 +282,7 @@
              stay:                   false,                  // should the notice item stay or not?
              type:                   'notice'                // could also be error, succes
             });
+            $.fn.hydraExhibit.resetSetting();
          },
          error: function(xhr, textStatus, errorThrown){
      			$.noticeAdd({
@@ -294,15 +294,13 @@
              type:                   'error'                // could also be error, succes
             });
          }
-       });
+       });       
     });
 
     $('a.remove_facet').live('click',function(){
        var url = $(this).attr("action");
-       var name = "asset[filters][facets]["+$(this).attr("index")+"]"      
-
+       var name = "asset[filters][facets]["+$(this).attr("index")+"]"
        var params = name + "="+"&_method=put";
-
        $.ajax({
          type: "PUT",
          url: url,
@@ -317,6 +315,7 @@
              stay:                   false,                  // should the notice item stay or not?
              type:                   'notice'                // could also be error, succes
             });
+            $.fn.hydraExhibit.resetSetting();
          },
          error: function(xhr, textStatus, errorThrown){
      			$.noticeAdd({
@@ -332,16 +331,8 @@
     });
 
    });
-   /*  Initialize the form for inserting new Person (individual) permissions
-   *  ex. $("#add-contributor-box").hydraNewContributorForm
-   */
-   /*var test = "";
-   $("div.textile-text", this).live('click', function() {
-     test = $("div.textile-text").last()[0].innerHTML;
-     alert("Tat->"+test);
-   });*/
 
-   /* Initialize the element as a Hydra Editable TextField
+   /* Initialize the element as a Hydra exhibit Editable TextField
    */
    $.fn.exhibitTextField = function(settings) {
      var config = {
@@ -363,7 +354,7 @@
 
      return this;
 
-   };
+   };     
 
    $.fn.descriptionTextareaField = function(settings) {
      //alert("essayTextareaField intialize")
@@ -429,7 +420,6 @@
       $textNode.editable(submitUrl, $.extend(nodeSpecificSettings, config));
       $editNode.hide();
      });
-
      return this;
 
    };
@@ -454,7 +444,39 @@
 
     $.fn.hydraExhibit = {
 
-/*
+    resetSetting: function() {
+      var element = $("input#exhibit_refresh_setting_url").first()
+      var url = element.attr("value")
+      var wholeDiv=$("div.edit_setting")
+      var perviousNode=wholeDiv.first()
+      //alert("URL=>"+url)
+      $.ajax({
+         type: "get",
+         url: url,
+         dataType: "html",
+         success: function(data) {
+          $(wholeDiv).last().after(data);
+          $(perviousNode).remove();
+          // repeat the whole set in every drop down ajax call to render the select box again on ajax call
+           $(".editable-container").hydraTextField();
+           $("div.split-button input.button").next().button( {
+            text: false,
+            icons: { primary: "ui-icon-triangle-1-s" }
+           })
+           .click(function() {
+             var ulelement= $(this).siblings('ul')
+             ulelement.is(":hidden") ?
+             ulelement.show() : ulelement.hide();
+           })
+           .parent().buttonset();
+           $('div.split-button ul').mouseleave(function(){
+             $(this).hide();
+           });
+         }
+      });
+    },
+        
+    /*
      *  hydraMetadata.fluidFinishEditListener
      *  modelChangedListener for Fluid Components
      *  Purpose: Handler for when you're done editing and want values to submit to the app.
@@ -481,12 +503,10 @@
          var result = $.fn.hydraMetadata.saveTitle(source.component.edit);
          return result;
        }
-     },
+     },     
 
      saveTitle: function(editNode) {
-       //alert("Exhibit SaveEdit")
-
-       var $editNode = $(".editable-edit").first();
+       $editNode = $(editNode);       
        var $textNode = $(".editable-text").first();
        var name = $editNode.attr("name");
        var description_id = $editNode.attr("data-pid");
@@ -495,7 +515,7 @@
 
        var params = "datastream_name="+datastreamName+"&content_type="+contentType+ "&description_id="+description_id+ "&description_title="+ $editNode.val()+"&description_action=update_description_title"+"&_method=put"
        var url = $("input#show_description_url").first().attr("value")
-
+       //alert(params)
        $.ajax({
          type: "PUT",
          url: url,
@@ -510,6 +530,7 @@
              stay:                   false,                  // should the notice item stay or not?
              type:                   'notice'                // could also be error, succes
             });
+            $.fn.hydraExhibit.resetSetting();
          },
          error: function(xhr, textStatus, errorThrown){
      			$.noticeAdd({
@@ -568,10 +589,10 @@
           $(".description-textarea-container").descriptionTextareaField();
           $(".custom-editable-container").exhibitTextField();
           $inserted.insertTextareaValue();
+          $.fn.hydraExhibit.resetSetting();
           return(result);
          }
        });
-
       }
       $("div.textile-text", $item).editable(submitEditableTextArea, {
           method    : "PUT",
@@ -592,37 +613,6 @@
                         ]
                       }
        });
-
-
-
-
-       /*$("div.textile-text", $item).editable(testUrl, {
-          method    : "PUT",
-          indicator : "<img src='/images/ajax-loader.gif'>",
-          loadtext  : $("div#"+fieldName+"_"+new_value_index).html(),
-          type      : "ckeditor",
-          submit    : "OK",
-          cancel    : "Cancel",          
-          placeholder : "click to edit essay",
-          onblur    : "ignore",
-          name      : "asset["+new_value_index+"]["+fieldName+"]",
-          id        : "field_id",
-          height    : "100",
-          submitdata : function() {
-                     return {essay_title: $("input.editable-edit").val()}
-                     },
-          callback:  function(value, settings) {
-               alert("hiding");
-                //$("div.essay_div").first().hide();
-          },
-
-          ckeditor  : { toolbar:
-                        [
-                            ['Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink'],
-                            ['UIColor'], ['Source']
-                        ]
-                      }
-       });*/
      },
 
      deleteDescription: function(element){
@@ -639,13 +629,12 @@
          url: url,
          dataType: "html",
          beforeSend: function() {
-            //alert("change color")
    			$essayNode.animate({'backgroundColor':'#fb6c6c'},300);
          },
          success: function() {
-           //alert("trying to hide")
            $essayNode.slideUp(300,function() {
              $essayNode.remove();
+             $.fn.hydraExhibit.resetSetting();
            });
          }
        });

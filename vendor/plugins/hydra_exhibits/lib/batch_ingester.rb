@@ -304,7 +304,7 @@ module BatchIngester
             item= af_model.new(:namespace=>"RBSC-CURRENCY")#(:pid=>pid, :component_level => "c02")
             item.datastreams["descMetadata"].ng_xml = EadXml.item_template
             item.save
-	    item.members_append(result.to_a[0]["id"])
+	    item.member_of_append(result.to_a[0]["id"])
             item.save
             disp = args[:display_title].nil? ? "" : args[:display_title]
             item.datastreams["rightsMetadata"].update_permissions({"group"=>{"archivist"=>"edit","public"=>"read"}})

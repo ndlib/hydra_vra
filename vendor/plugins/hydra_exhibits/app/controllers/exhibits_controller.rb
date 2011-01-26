@@ -104,6 +104,17 @@ class ExhibitsController < CatalogController
     render :text => "Removed collections relation successfully."
   end
 
+  def refresh_setting
+    content_type = params[:content_type]
+    af_model = retrieve_af_model(content_type)
+    logger.debug("Afmodel: #{af_model}")
+    if af_model
+      @asset = af_model.load_instance(params[:id])
+    end
+    logger.debug("browse_facets: #{@asset.browse_facets}")
+    render :partial => "exhibits/edit_settings", :locals => {:content => content_type, :document_fedora => @asset}
+  end
+
   def show
     show_without_customizations
   end
