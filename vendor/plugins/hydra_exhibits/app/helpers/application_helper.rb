@@ -305,9 +305,11 @@ module ApplicationHelper
   end
 
   def get_browse_facet_div(browse_facets, response, extra_controller_params)
+    #require 'ruby-debug'
+    #debugger
+    #true
     logger.debug("Param in browse div: #{params.inspect}")
-    return_str = '<div>'
-    return_str=''
+    return_str = ''
     browse_facet = browse_facets.first
     solr_fname = browse_facet.to_s
     if params.has_key?(:f) && params[:f][browse_facet]
@@ -353,7 +355,7 @@ module ApplicationHelper
     end
     logger.debug("Temp F params are: #{params.inspect}")
     params[:f]=temp if temp 
-    return_str += '</div>'
+    return_str
   end
 
   # true or false, depending on whether the field and value is in params[:f]

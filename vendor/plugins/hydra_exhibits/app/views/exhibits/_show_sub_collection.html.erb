@@ -1,49 +1,48 @@
 <h1>Sub Collection Title</h1>
 
-<span class="edit-browse">
-  <% if editor? %>
+<%- if editor? -%>
+  <span class="edit-browse">
     <%= edit_and_browse_subcollection_links(@subset) %>
-  <% end -%>
-</span>
-<% if !@subset.nil?%>
-  <h3>Matched subset</h3>
-<% else %>
-  <h3>Did not match subset</h3>
-<% end %>
-<p>
-  Description
-</p>
-<% if @descriptions.length > 0 %>    
-  <% @descriptions.each do |description|%>
-    <h3>Description Title goes in here</h3>
-    <%=load_description(description) %>
-    <%# #link_to "Essay: \"#{description.title}\"", essay_path(params[:collection_id], @essay.pid) description.introduction %>
-    <%# link_to "[Read the complete essay]", essay_path(params[:collection_id], @essay.pid) %>
-  <% end %>
-<%- else -%>
-  <h3><%= "Essay forthcoming..." %></h3>
+  </span>
 <%- end -%>
 
+<%= debug @subset ? "Matched subset" : "Did not match subset" if RAILS_ENV == "development" -%>
 
-<h2>Featured sources</h2>
-<% if !@subset.nil? && @subset.highlighted.length > 0 %>
+<%- if @descriptions.any? -%>
+  <h2>Description</h2>
+  <%- @descriptions.each do |description| -%>
+    <h3>Description Title goes in here</h3>
+    <%= load_description(description) %>
+    <%# #link_to "Essay: \"#{description.title}\"", essay_path(params[:collection_id], @essay.pid) description.introduction %>
+    <%# link_to "[Read the complete essay]", essay_path(params[:collection_id], @essay.pid) %>
+  <%- end -%>
+<%- else -%>
+  <%- if editor? -%>
+    <h2>Description</h2>
+    <p><%= "Essay forthcoming..." %></p>
+  <%- end -%>
+<%- end -%>
+
+<%- if @subset && @subset.highlighted.any? -%>
+  <h2>Featured sources</h2>
   <dl class="item-list featured">
     <%- @subset.highlighted(:response_format=>:solr).each_with_index do |document, counter| -%>
-      <% item = load_af_instance_from_solr(document)%>
-      <% item.respond_to?(:title) ? title = item.title : title = document[:id]%>
-      <%= render_document_index_partial(SolrDocument.new(document), title, counter, :index)%>
+      <%- item = load_af_instance_from_solr(document) -%>
+      <%- item.respond_to?(:title) ? title = item.title : title = document[:id] -%>
+      <%= render_document_index_partial(SolrDocument.new(document), title, counter, :index) %>
     <%- end -%>
   </dl>
 <%- else -%>
-  <h3>No highlighted items defined</h3>
+  <%- if editor? -%>
+    <h2>Featured sources</h2>
+    <p>No highlighted items defined</p>
+  <%- end -%>
 <%- end -%>
 
 <hr />
 
-
-<h2>Complete sources</h2>
-<dl class="item-list"></dl>
-<h3><em><%= grouped_result_count(@browse_response, nil, nil) %> found</em></h3>
+<h2>Complete Sources</h2>
+<p><em><%= grouped_result_count(@browse_response, nil, nil) %> found</em></p>
 <div class="pagination">
   <%= will_paginate @browse_response.docs, :page_links => false, :class => 'prev_next_links' %>
   <%= will_paginate @browse_response.docs, :container => false %>
@@ -56,4 +55,3 @@
   <%= will_paginate @browse_response.docs, :page_links => false, :class => 'prev_next_links' %>
   <%= will_paginate @browse_response.docs, :container => false%>
 </div>
-    
