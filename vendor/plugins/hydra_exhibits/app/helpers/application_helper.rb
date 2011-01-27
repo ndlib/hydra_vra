@@ -452,6 +452,7 @@ module ApplicationHelper
 
   def render_document_index_partial(doc, title, counter, action_name, thumbnail=nil)
     format = document_partial_name(doc)
+    logger.debug("format: #{format}")
     begin
       locals = {:document=>doc, :counter=>counter, :title=>title}
       locals.merge!(:thumbnail=>thumbnail) unless thumbnail.nil?
