@@ -264,21 +264,22 @@ module ApplicationHelper
   #def link_to_document(doc, opts={:label=>Blacklight.config[:index][:show_link].to_sym, :counter => nil,:title => nil})
   #  url = hydra_link_to_document(doc,opts)
   #  params[:controller] == "exhibits" ? exhibit_id = params[:id] : exhibit_id = params[:exhibit_id]
-  #  exhibit_id ? link_to_with_data(label, url, {:render_search=>"false", :exhibit_id=>exhibit_id, :f=>params[:f]}) : url
-    #label = case opts[:label]
-    #  when Symbol
-    #    doc.get(opts[:label])
-    #  when String
-    #    opts[:label]
-    #  else
-    #    raise 'Invalid label argument'
-    #  end
-    #
-    #if label.blank?
-    #  label = doc[:id]
-    #end
-    
-    #link_to_with_data(label, catalog_path(doc[:id]), {:method => :put, :data => {:counter => opts[:counter]},:title=>opts[:title]})
+  #  render_search = "false" if exhibit_id
+  #  
+  #  label = case opts[:label]
+  #    when Symbol
+  #      doc.get(opts[:label])
+  #    when String
+  #      opts[:label]
+  #    else
+  #      raise 'Invalid label argument'
+  #    end
+  #  
+  #  if label.blank?
+  #    label = doc[:id]
+  #  end
+  #  
+  #  link_to_with_data(label, catalog_path(doc[:id],:render_search=>render_search, :exhibit_id=>exhibit_id, :f=>params[:f]), {:method => :put, :data => {:counter => opts[:counter]},:title=>opts[:title]})
   #end
 
   def link_to_exhibit(opts={})
@@ -537,6 +538,12 @@ module ApplicationHelper
     rescue Exception=>e
       logger.info("No exhibit was found for id #{exhibit_id}: #{e.to_s}")
     end
+  end
+
+  #Gets a search result given a pid array
+  def get_pids_search_results(pid_array)
+    query = ActiveFedora::SolrService.construct_query_for_pids(pid_array)
+    get_search_results({:q=>query})
   end
   
 end

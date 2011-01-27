@@ -238,16 +238,16 @@ a.destructive {
 .editable-container, .textile-container {width:100%;}
 
 #ajaxBusy{
-  background:#FFF url('../images/ajax-loader.gif') no-repeat 1em center;
+  background:#FFF url('../images/ajax-loader.gif') no-repeat center center;
+  display:none;
   font-size:1.5em;
-  height:1.5em;
+  height:100%;
   left:0;
-  padding:1em 1em 1em 4em;
+  padding-top:50%;
   position:absolute;
-  text-align:left;
+  text-align:center;
   top:0;
   width:100%;
-  display:none;
   opacity: .85;
   -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=85)";
   filter: alpha(opacity=85);
