@@ -1,0 +1,22 @@
+<% thumbnail = nil unless thumbnail%>
+<%# default partial to display solr document fields in catalog index view -%>
+<%= link_to_catalog_item truncate(title, :length => 80), document[:id] %>
+<div class="with-thumbnail">
+  <div class="thumbnail-container">
+    <%= link_to_catalog_item image_tag( thumbnail.nil? ? '/images/no_thumbnail.png' : thumbnail), document[:id] %>
+  </div>
+  <dl class="defList">
+    <% collection_field_names.each do |solr_fname| -%>
+      <% if document.get solr_fname %>
+        <dt><%= h collection_field_labels[solr_fname]%></dt>
+        <dd><%= h document.get(solr_fname) %></dd>
+      <% end -%>
+    <% end -%>
+  </dl>
+</div>
+
+<p class="description">
+  <%= document.get("ead_archive_desc_t") %>
+</p>
+
+

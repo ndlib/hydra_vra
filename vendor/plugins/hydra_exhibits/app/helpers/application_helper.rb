@@ -13,6 +13,16 @@ module ApplicationHelper
     'Hydrangea (Hydra ND Demo App)'
   end
 
+  # used in the _index_partials/_collection view
+  def collection_field_names
+    Blacklight.config[:collections_index_fields][:field_names]
+  end
+
+  # used in the _index_partials/_collection view
+  def collection_field_labels
+    Blacklight.config[:collections_index_fields][:labels]
+  end
+
   # Standard display of a facet value in a list. Used in both _facets sidebar
   # partial and catalog/facet expanded list. Will output facet value name as
   # a link to add that to your restrictions, with count in parens. 

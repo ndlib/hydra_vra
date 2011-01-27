@@ -1,6 +1,6 @@
 <dl class="item-list"></dl>
 <h3><em><%= grouped_result_count(@browse_response, nil, nil) %> found</em></h3>
-<div class="pagination">
+<div class="pagination">  
   <%= will_paginate @browse_response.docs, :page_links => false, :class => 'prev_next_links' %>
   <%= will_paginate @browse_response.docs, :container => false %>
 </div>

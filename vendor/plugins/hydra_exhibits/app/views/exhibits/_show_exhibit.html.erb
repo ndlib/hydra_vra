@@ -10,15 +10,45 @@
 <%- if @exhibit.descriptions.any? -%>
   <h2>Description</h2>
   <%- @exhibit.descriptions.each do |description| -%>
-    <h3>Description Title goes in here</h3>
-    <%= load_description(description) %>
+    <em><%= description.title %></em>
+    <p class="collection_desc"><%= load_description(description) %></p>
     <%# #link_to "Essay: \"#{description.title}\"", essay_path(params[:collection_id], description.pid) description.introduction %>
     <%# link_to "[Read the complete essay]", essay_path(params[:collection_id], @essay.pid) %>
   <%- end -%>
 <%- else -%>
   <%- if editor? -%>
     <h2>Description</h2>
-    <p><%= "Essay forthcoming..." %></p>
+    <p class="collection_desc"><%= "Essay forthcoming..." %></p>
+  <%- end -%>
+<%- end -%>
+
+<%- if @exhibit && @exhibit.collections.any? -%>
+  <h2>Collection details</h2>
+  <dl class="item-list featured">
+    <%- @exhibit.collections(:response_format=>:solr).each_with_index do |document, counter| -%>
+      <%- item = load_af_instance_from_solr(document) -%>      
+      <%= render_document_index_partial(SolrDocument.new(document), item.title, counter, :index) %>
+    <%- end -%>
+  </dl>
+
+    <%- collection = @exhibit.collections.first-%>
+    <%- if collection.descriptions.any? -%>
+      <em>Collection Description</em>
+      <%- collection.descriptions.each do |description| -%>
+        <h3><%= description.title %></h3>
+        <p class="collection_desc"> <%= load_description(description) %> </p>
+      <%- end -%>
+    <%- else -%>
+      <%- if editor? -%>
+        <em>Collection Essay</em>
+        <p class="collection_desc">"Collection Essay forthcoming..."</p>
+      <%- end -%>
+    <%- end -%>
+  
+<%- else -%>
+  <%- if editor? -%>
+    <h2>Collection Details</h2>
+    <p>No Collection Associated</p>
   <%- end -%>
 <%- end -%>
 
@@ -30,7 +60,7 @@
       <%-  item.item_title.blank? ? title = item.sub_collection_title : title = item.item_title -%>
       <%= render_document_index_partial(SolrDocument.new(document), title, counter, :index) %>
     <%- end -%>
-  </dl>
+  </dl>  
 <%- else -%>
   <%- if editor? -%>
     <h2>Featured Sources</h2>

@@ -49,7 +49,7 @@
           <dd id="browse_facets" class="browse_facets">
             <ol>
               <%- get_values_from_datastream(document_fedora,"filters", [:facets]).each do |item| -%>
-                <li index="<%= get_values_from_datastream(document_fedora,"filters", [:facets]).index(item)%>">
+                <li class="browse_facets_level"index="<%= get_values_from_datastream(document_fedora,"filters", [:facets]).index(item)%>">
                   Level-<%= get_values_from_datastream(document_fedora,"filters", [:facets]).index(item) + 1%>: <%= facet_field_labels[item].blank? ? item : facet_field_labels[item]%>
                   <a class="destructive remove_facet" value="<%= item%>" index="<%= get_values_from_datastream(document_fedora,"filters", [:facets]).index(item)%>" href=# action="<%= asset_path(params[:id], :content_type=>content)%>" title="Remove Facet"> Delete this facet</a>
                 </li>

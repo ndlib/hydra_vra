@@ -1,196 +1,196 @@
   <fieldset id="collection_fields">
     <legend> Collection </legend>
     <dl>
-      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:ead_header, :eadid]).first.empty?%>
+      <% unless get_values_from_datastream(document_fedora,"descMetadata", [:ead_header, :eadid]).first.empty?%>
           <dt class="eadid">
             <%= fedora_field_label("descMetadata", [:ead_header, :eadid], "Ead ID:") %>
           </dt>
           <dd>
-            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:ead_header, :eadid])%>
+            <%= get_values_from_datastream(document_fedora,"descMetadata", [:ead_header, :eadid])%>
           </dd>
       <%end%>
-      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:ead_header, :filedesc, :titlestmt, :titleproper]).first.empty?%>
+      <% unless get_values_from_datastream(document_fedora,"descMetadata", [:ead_header, :filedesc, :titlestmt, :titleproper]).first.empty?%>
           <dt class="title">
             <%= fedora_field_label("descMetadata", [:ead_header, :filedesc, :titlestmt, :titleproper], "Title:") %>
           </dt>
           <dd>
-            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:ead_header, :filedesc, :titlestmt, :titleproper])%>
+            <%= get_values_from_datastream(document_fedora,"descMetadata", [:ead_header, :filedesc, :titlestmt, :titleproper])%>
           </dd>
       <%end%>
-      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:ead_header, :filedesc, :titlestmt, :author]).first.empty?%>
+      <% unless get_values_from_datastream(document_fedora,"descMetadata", [:ead_header, :filedesc, :titlestmt, :author]).first.empty?%>
           <dt class="author">
             <%= fedora_field_label("descMetadata", [:ead_header, :filedesc, :titlestmt, :author], "Author:") %>
           </dt>
           <dd>
-            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:ead_header, :filedesc, :titlestmt, :author])%>
+            <%= get_values_from_datastream(document_fedora,"descMetadata", [:ead_header, :filedesc, :titlestmt, :author])%>
           </dd>
       <%end%>
-      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:ead_header, :filedesc, :publicationstmt, :publisher]).first.empty?%>
+      <% unless get_values_from_datastream(document_fedora,"descMetadata", [:ead_header, :filedesc, :publicationstmt, :publisher]).first.empty?%>
           <dt class="publisher">
             <%= fedora_field_label("descMetadata", [:ead_header, :filedesc, :publicationstmt, :publisher], "Publisher:") %>
           </dt>
           <dd>
-            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:ead_header, :filedesc, :publicationstmt, :publisher])%>
+            <%= get_values_from_datastream(document_fedora,"descMetadata", [:ead_header, :filedesc, :publicationstmt, :publisher])%>
           </dd>
       <%end%>
-      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:ead_header, :filedesc, :publicationstmt, :address, :addressline]).first.empty?%>
+      <% unless get_values_from_datastream(document_fedora,"descMetadata", [:ead_header, :filedesc, :publicationstmt, :address, :addressline]).first.empty?%>
           <dt class="publisher_address">
             <%= fedora_field_label("descMetadata", [:ead_header, :filedesc, :publicationstmt, :address, :addressline], "Publisher Address:") %>
           </dt>
           <dd>
-            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:ead_header, :filedesc, :publicationstmt, :address, :addressline])%>
+            <%= get_values_from_datastream(document_fedora,"descMetadata", [:ead_header, :filedesc, :publicationstmt, :address, :addressline])%>
           </dd>
       <%end%>
-      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:ead_header, :filedesc, :publicationstmt, :date]).first.empty?%>
+      <% unless get_values_from_datastream(document_fedora,"descMetadata", [:ead_header, :filedesc, :publicationstmt, :date]).first.empty?%>
           <dt class="published_date">
             <%= fedora_field_label("descMetadata", [:ead_header, :filedesc, :publicationstmt, :date], "Publisher Date:") %>
           </dt>
           <dd>
-            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:ead_header, :filedesc, :publicationstmt, :date])%>
+            <%= get_values_from_datastream(document_fedora,"descMetadata", [:ead_header, :filedesc, :publicationstmt, :date])%>
           </dd>
       <%end%>
-      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:ead_header, :profiledesc, :creation]).first.empty?%>
+      <% unless get_values_from_datastream(document_fedora,"descMetadata", [:ead_header, :profiledesc, :creation]).first.empty?%>
           <dt class="finding_aid_creation">
             <%= fedora_field_label("descMetadata", [:ead_header, :profiledesc, :creation], "Finding Aid Creator:") %>
           </dt>
           <dd>
-            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:ead_header, :profiledesc, :creation])%>
+            <%= get_values_from_datastream(document_fedora,"descMetadata", [:ead_header, :profiledesc, :creation])%>
           </dd>
       <%end%>
-      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:ead_header, :profiledesc, :creation, :date]).first.empty?%>
+      <% unless get_values_from_datastream(document_fedora,"descMetadata", [:ead_header, :profiledesc, :creation, :date]).first.empty?%>
           <dt class="creation_date">
             <%= fedora_field_label("descMetadata", [:ead_header, :profiledesc, :creation, :date], "Finding Aid Creation Date:") %>
           </dt>
           <dd>
-            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:ead_header, :profiledesc, :creation, :date])%>
+            <%= get_values_from_datastream(document_fedora,"descMetadata", [:ead_header, :profiledesc, :creation, :date])%>
           </dd>
       <%end%>
-      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:ead_header, :profiledesc, :langusage]).first.empty?%>
+      <% unless get_values_from_datastream(document_fedora,"descMetadata", [:ead_header, :profiledesc, :langusage]).first.empty?%>
           <dt class="langusage">
             <%= fedora_field_label("descMetadata", [:ead_header, :profiledesc, :langusage], "Langusage:") %>
           </dt>
           <dd>
-            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:ead_header, :profiledesc, :langusage])%>
+            <%= get_values_from_datastream(document_fedora,"descMetadata", [:ead_header, :profiledesc, :langusage])%>
           </dd>
       <%end%>
-      <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:ead_header, :profiledesc, :langusage, :language]).first.empty?%>
+      <% unless get_values_from_datastream(document_fedora,"descMetadata", [:ead_header, :profiledesc, :langusage, :language]).first.empty?%>
           <dt class="language">
             <%= fedora_field_label("descMetadata", [:ead_header, :profiledesc, :langusage, :language], "Language:") %>
           </dt>
           <dd>
-            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:ead_header, :profiledesc, :langusage, :language])%>
+            <%= get_values_from_datastream(document_fedora,"descMetadata", [:ead_header, :profiledesc, :langusage, :language])%>
           </dd>
       <%end%>
-	  <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:archive_desc, :did, :head]).first.empty?%>
+	  <% unless get_values_from_datastream(document_fedora,"descMetadata", [:archive_desc, :did, :head]).first.empty?%>
           <dt class="unit_head">
             <%= fedora_field_label("descMetadata", [:archive_desc, :did, :head], "Unit Head:") %>
           </dt>
           <dd>
-            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:archive_desc, :did, :head])%>
+            <%= get_values_from_datastream(document_fedora,"descMetadata", [:archive_desc, :did, :head])%>
           </dd>
       <%end%>
-	  <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:archive_desc, :did, :unittitle]).first.empty?%>
+	  <% unless get_values_from_datastream(document_fedora,"descMetadata", [:archive_desc, :did, :unittitle]).first.empty?%>
           <dt class="unit_title">
             <%= fedora_field_label("descMetadata", [:archive_desc, :did, :unittitle], "Unit Title:") %>
           </dt>
           <dd>
-            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:archive_desc, :did, :unittitle])%>
+            <%= get_values_from_datastream(document_fedora,"descMetadata", [:archive_desc, :did, :unittitle])%>
           </dd>
       <%end%>
-	  <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:archive_desc, :did, :unitid]).first.empty?%>
+	  <% unless get_values_from_datastream(document_fedora,"descMetadata", [:archive_desc, :did, :unitid]).first.empty?%>
           <dt class="unit_id">
             <%= fedora_field_label("descMetadata", [:archive_desc, :did, :unitid], "Unit Id:") %>
           </dt>
           <dd>
-            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:archive_desc, :did, :unitid])%>
+            <%= get_values_from_datastream(document_fedora,"descMetadata", [:archive_desc, :did, :unitid])%>
           </dd>
       <%end%>
-	  <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:archive_desc, :did, :unitdate]).first.empty?%>
+	  <% unless get_values_from_datastream(document_fedora,"descMetadata", [:archive_desc, :did, :unitdate]).first.empty?%>
           <dt class="unit_date">
             <%= fedora_field_label("descMetadata", [:archive_desc, :did, :unitdate], "Unit Date:") %>
           </dt>
           <dd>
-            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:archive_desc, :did, :unitdate])%>
+            <%= get_values_from_datastream(document_fedora,"descMetadata", [:archive_desc, :did, :unitdate])%>
           </dd>
       <%end%>
-	  <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:archive_desc, :did, :lang, :language]).first.empty?%>
+	  <% unless get_values_from_datastream(document_fedora,"descMetadata", [:archive_desc, :did, :lang, :language]).first.empty?%>
           <dt class="unit_language">
             <%= fedora_field_label("descMetadata", [:archive_desc, :did, :lang, :language], "Unit Language:") %>
           </dt>
           <dd>
-            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:archive_desc, :did, :lang, :language])%>
+            <%= get_values_from_datastream(document_fedora,"descMetadata", [:archive_desc, :did, :lang, :language])%>
           </dd>
       <%end%>
-	  <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:archive_desc, :did, :repo, :corpname]).first.empty?%>
+	  <% unless get_values_from_datastream(document_fedora,"descMetadata", [:archive_desc, :did, :repo, :corpname]).first.empty?%>
           <dt class="organization">
             <%= fedora_field_label("descMetadata", [:archive_desc, :did, :repo, :corpname], "Organization:") %>
           </dt>
           <dd>
-            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:archive_desc, :did, :repo, :corpname])%>
+            <%= get_values_from_datastream(document_fedora,"descMetadata", [:archive_desc, :did, :repo, :corpname])%>
           </dd>
       <%end%>
-	  <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:archive_desc, :did, :repo, :corpname, :subarea]).first.empty?%>
+	  <% unless get_values_from_datastream(document_fedora,"descMetadata", [:archive_desc, :did, :repo, :corpname, :subarea]).first.empty?%>
           <dt class="department">
             <%= fedora_field_label("descMetadata", [:archive_desc, :did, :repo, :corpname, :subarea], "Department:") %>
           </dt>
           <dd>
-            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:archive_desc, :did, :repo, :corpname, :subarea])%>
+            <%= get_values_from_datastream(document_fedora,"descMetadata", [:archive_desc, :did, :repo, :corpname, :subarea])%>
           </dd>
       <%end%>
-	  <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:archive_desc, :did, :repo, :address, :addressline]).first.empty?%>
+	  <% unless get_values_from_datastream(document_fedora,"descMetadata", [:archive_desc, :did, :repo, :address, :addressline]).first.empty?%>
           <dt class="organization_address">
             <%= fedora_field_label("descMetadata", [:archive_desc, :did, :repo, :address, :addressline], "Organization Address:") %>
           </dt>
           <dd>
-            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:archive_desc, :did, :repo, :address, :addressline])%>
+            <%= get_values_from_datastream(document_fedora,"descMetadata", [:archive_desc, :did, :repo, :address, :addressline])%>
           </dd>
       <%end%>
-	  <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:archive_desc, :accessrestrict]).first.empty?%>
+	  <% unless get_values_from_datastream(document_fedora,"descMetadata", [:archive_desc, :accessrestrict]).first.empty?%>
           <dt class="access_restriction_info">
             <%= fedora_field_label("descMetadata", [:archive_desc, :accessrestrict], "Access Restriction Info:") %>
           </dt>
           <dd>
-            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:archive_desc, :accessrestrict])%>
+            <%= get_values_from_datastream(document_fedora,"descMetadata", [:archive_desc, :accessrestrict])%>
           </dd>
       <%end%>
-	  <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:archive_desc, :accessrestrict, :head]).first.empty?%>
+	  <% unless get_values_from_datastream(document_fedora,"descMetadata", [:archive_desc, :accessrestrict, :head]).first.empty?%>
           <dt class="access_restriction_head">
             <%= fedora_field_label("descMetadata", [:archive_desc, :accessrestrict, :head], "Access Restriction Head:") %>
           </dt>
           <dd>
-            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:archive_desc, :accessrestrict, :head])%>
+            <%= get_values_from_datastream(document_fedora,"descMetadata", [:archive_desc, :accessrestrict, :head])%>
           </dd>
       <%end%>
-	  <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:archive_desc, :acqinfo]).first.empty?%>
+	  <% unless get_values_from_datastream(document_fedora,"descMetadata", [:archive_desc, :acqinfo]).first.empty?%>
           <dt class="acq_info">
             <%= fedora_field_label("descMetadata", [:archive_desc, :acqinfo], "Acquisition Info:") %>
           </dt>
           <dd>
-            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:archive_desc, :acqinfo])%>
+            <%= get_values_from_datastream(document_fedora,"descMetadata", [:archive_desc, :acqinfo])%>
           </dd>
       <%end%>
-	  <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:archive_desc, :acqinfo, :head]).first.empty?%>
+	  <% unless get_values_from_datastream(document_fedora,"descMetadata", [:archive_desc, :acqinfo, :head]).first.empty?%>
           <dt class="acq_head">
             <%= fedora_field_label("descMetadata", [:archive_desc, :acqinfo, :head], "Acquisition Head:") %>
           </dt>
           <dd>
-            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:archive_desc, :acqinfo, :head])%>
+            <%= get_values_from_datastream(document_fedora,"descMetadata", [:archive_desc, :acqinfo, :head])%>
           </dd>
       <%end%>
-	  <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:archive_desc, :prefercite]).first.empty?%>
+	  <% unless get_values_from_datastream(document_fedora,"descMetadata", [:archive_desc, :prefercite]).first.empty?%>
           <dt class="prefercite_info">
             <%= fedora_field_label("descMetadata", [:archive_desc, :prefercite], "Prefercite Info:") %>
           </dt>
           <dd>
-            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:archive_desc, :prefercite])%>
+            <%= get_values_from_datastream(document_fedora,"descMetadata", [:archive_desc, :prefercite])%>
           </dd>
       <%end%>
-	  <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:archive_desc, :prefercite, :head]).first.empty?%>
+	  <% unless get_values_from_datastream(document_fedora,"descMetadata", [:archive_desc, :prefercite, :head]).first.empty?%>
           <dt class="prefercite_head">
             <%= fedora_field_label("descMetadata", [:archive_desc, :prefercite, :head], "Prefercite Head:") %>
           </dt>
           <dd>
-            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:archive_desc, :prefercite, :head])%>
+            <%= get_values_from_datastream(document_fedora,"descMetadata", [:archive_desc, :prefercite, :head])%>
           </dd>
       <%end%>
     </dl>

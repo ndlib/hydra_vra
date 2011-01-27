@@ -252,3 +252,7 @@ a.destructive {
   -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=85)";
   filter: alpha(opacity=85);
 }
+
+dd.browse_facets ol li.browse_facets_level {position: relative; padding-left: 0em}
+
+p.collection_desc {padding-left:2em;}
