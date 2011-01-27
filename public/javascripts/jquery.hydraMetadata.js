@@ -234,9 +234,8 @@
        var field_selectors = $("input.fieldselector[rel="+$editNode.attr("rel")+"]").fieldSerialize();
 
        var params = field_param + "&" + content_type_param + "&" + field_selectors + "&_method=put";
-         alert("SaveEdit=>"+ params)
        
-       /*$.ajax({
+       $.ajax({
          type: "PUT",
          url: url,
          dataType : "json",
@@ -261,7 +260,7 @@
              type:                   'error'                // could also be error, succes
             });
          }
-       });*/
+       });
      },
      
      // Submit a destroy request
