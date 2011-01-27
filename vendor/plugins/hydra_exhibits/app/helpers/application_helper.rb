@@ -10,7 +10,7 @@ module ApplicationHelper
   include HydraHelper
   
   def application_name
-    'Hydrangea (Hydra ND Demo App)'
+    'Hydrangea (ND Demo App)'
   end
 
   # used in the _index_partials/_collection view
