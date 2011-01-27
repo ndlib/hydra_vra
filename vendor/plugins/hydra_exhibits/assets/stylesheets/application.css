@@ -236,3 +236,5 @@ a.destructive {
   width:15px;
 } 
 .editable-container, .textile-container {width:100%;}
+
+dd.browse_facets ol li {position: relative; padding-left: 0em}
