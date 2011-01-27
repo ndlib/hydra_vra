@@ -237,4 +237,20 @@ a.destructive {
 } 
 .editable-container, .textile-container {width:100%;}
 
+#ajaxBusy{
+  background:#FFF url('../images/ajax-loader.gif') no-repeat 1em center;
+  font-size:1.5em;
+  height:1.5em;
+  left:0;
+  padding:1em 1em 1em 4em;
+  position:absolute;
+  text-align:left;
+  top:0;
+  width:100%;
+  display:none;
+  opacity: .85;
+  -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=85)";
+  filter: alpha(opacity=85);
+}
+
 dd.browse_facets ol li {position: relative; padding-left: 0em}

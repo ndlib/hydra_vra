@@ -40,13 +40,31 @@
           </div>
         </div>
         
-        <div class="yui-b sidebar"><%= sidebar_items.join('') %>
+        <div class="yui-b sidebar">
+          <%- if params[:controller] == "catalog" -%>
+            <%- if params[:render_search].blank? -%>
+              <%= sidebar_items.join('') %>
+              <%- if params[:exhibit_id] -%>
+                <h3><%= link_to_exhibit(:label=>"Back to Browse Exhibit") %></h3>
+              <%- end -%>
+            <%- else -%>
+              <%= render :partial => 'shared/exhibit_search_form' %> 
+              <%= render :partial => 'shared/navigation' %>
+            <%- end -%>  
+          <%- else -%>
+            <%= render :partial => 'shared/exhibit_search_form' %> 
+            <%= render :partial => 'shared/navigation' -%>
+          <%- end -%>
           <%= yield :sidebar %>
         </div>
         
 	    </div>
 	    
-	    <div id="ft"><%= @footer %></div>
+	    <div id="ft">
+              <%= @footer %>
+              <%= render :partial => 'shared/footer' -%>
+              <div class="powered_by">Powered by Hydra</div>
+            </div>
 	    
 	  </div>
   </body>

@@ -3,24 +3,7 @@
    $(document).ready(function() {
 
       // Setup the ajax indicator
-     $('body').append('<div id="ajaxBusy"><p><img src="/images/ajax-loader.gif"></p></div>');
-
-     $('#ajaxBusy').css({
-        display:"none",
-        width:"100px",
-        height: "100px",
-        position: "fixed",
-        top: "50%",
-        left: "50%",
-        //background:"url(/images/ajax-loader.gif) no-repeat center #ffff",
-        textAlign:"center",
-        padding:"10px",
-        font:"normal 16px Tahoma, Geneva, sans-serif",
-        border:"1px solid #666",
-        marginLeft: "-50px",
-        marginTop: "-50px",
-        overflow: "auto"
-     });
+     $('body').append('<div id="ajaxBusy">Your request is being processed.</div>');
 
      /*shows the loading div every time we have an Ajax call*/
      $(document).ajaxStart(function(){

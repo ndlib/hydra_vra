@@ -7,6 +7,7 @@ module ApplicationHelper
   include MediaShelf::ActiveFedoraHelper
   include Blacklight::SolrHelper
   include Hydra::AccessControlsEnforcement
+  include HydraHelper
   
   def application_name
     'Hydrangea (Hydra ND Demo App)'
@@ -20,7 +21,7 @@ module ApplicationHelper
   # :suppress_link => true # do not make it a link, used for an already selected value for instance
   def render_browse_facet_value(facet_solr_field, item, options ={})
     p = params.dup
-    p.delete(:f)
+    #p.delete(:f)
     p.delete(:q)
     p.delete(:commit)
     p.delete(:search_field)
@@ -76,6 +77,23 @@ module ApplicationHelper
     end
 
     return false
+  end
+
+  alias :hydra_edit_and_browse_links :edit_and_browse_links
+
+  def edit_and_browse_links
+    if params[:exhibit_id]
+      result = ""
+    if params[:action] == "edit"
+      result << "<a href=\"#{catalog_path(@document[:id], :viewing_context=>"browse", :exhibit_id=>params[:exhibit_id], :f=>params[:f])}\" class=\"browse toggle\">View</a>"
+      result << "<span class=\"edit toggle active\">Edit</span>"
+    else
+      result << "<span class=\"browse toggle active\">View</span>"
+      result << "<a href=\"#{edit_catalog_path(@document[:id], :class => "facet_selected", :exhibit_id => params[:exhibit_id], :f => params[:f])}\" class=\"edit toggle\">Edit</a>"
+    end
+    else
+      hydra_edit_and_browse_links
+    end    
   end
 
   def edit_and_browse_exhibit_links(exhibit)
@@ -202,40 +220,7 @@ module ApplicationHelper
   def link_to_catalog_item(label, id)
     puts "params in link catalog item: #{params.inspect}"
     params[:controller] == "exhibits" ? exhibit_id = params[:id] : exhibit_id = params[:exhibit_id]
-    exhibit_id ? link_to(label, catalog_path(id, :render_search=>"false", :exhibit_id=>exhibit_id)) : link_to(label, catalog_path(id))
-  end
-
-  #
-  #  Link to the main browse page for the collection of items displayed
-  #
-  def link_to_browse()
-    models_for_url= []
-    values_for_url= []
-    path = ''
-#    if params[:genre_form_id]
-#      unless params[:collection_id]
-#        if !@collection.nil?
-#          params.merge!({:collection_id=>@collection.pid})
-#        elsif !@genre_form.nil?
-#          params.merge!({:collection_id=>@genre_form.parent_id})
-#        else
-#          @genre_form = Component.load_instance_from_solr(params[:member_id])
-#          params.merge!({:collection_id=>@genre_form.parent_id})
-#        end
-#      end
-#      models_for_url.push("collection")
-#      values_for_url.push(params[:collection_id])
-#      models_for_url.push("genre_form")
-#      values_for_url.push(params[:member_id])
-#      link_to "Browse related content", eval("#{models_for_url.join('_')}_path(\"#{values_for_url.join('", "')}\")")
-#    elsif params[:collection_id]
-#      models_for_url.push("collection")
-#      values_for_url.push(params[:collection_id])
-#      link_to "Return to collection home", eval("#{models_for_url.join('_')}_path(\"#{values_for_url.join('", "')}\")")
-#    else
-      link_to "Return to collection home", collections_path
-#    end
-    
+    exhibit_id ? link_to(label, catalog_path(id, :render_search=>"false", :exhibit_id=>exhibit_id, :f=>params[:f])) : link_to(label, catalog_path(id))
   end
 
   def add_facet_params(field, value, p=nil)
@@ -263,6 +248,28 @@ module ApplicationHelper
       link_to_document(document, :label => Blacklight.config[:show][:heading].to_sym, :counter => (counter + 1 + @response.params[:start].to_i))
     end
   end
+
+  #alias :hydra_link_to_document :link_to_document
+
+  #def link_to_document(doc, opts={:label=>Blacklight.config[:index][:show_link].to_sym, :counter => nil,:title => nil})
+  #  url = hydra_link_to_document(doc,opts)
+  #  params[:controller] == "exhibits" ? exhibit_id = params[:id] : exhibit_id = params[:exhibit_id]
+  #  exhibit_id ? link_to_with_data(label, url, {:render_search=>"false", :exhibit_id=>exhibit_id, :f=>params[:f]}) : url
+    #label = case opts[:label]
+    #  when Symbol
+    #    doc.get(opts[:label])
+    #  when String
+    #    opts[:label]
+    #  else
+    #    raise 'Invalid label argument'
+    #  end
+    #
+    #if label.blank?
+    #  label = doc[:id]
+    #end
+    
+    #link_to_with_data(label, catalog_path(doc[:id]), {:method => :put, :data => {:counter => opts[:counter]},:title=>opts[:title]})
+  #end
 
   def link_to_exhibit(opts={})
     # params[:f].dup ||
@@ -484,7 +491,12 @@ module ApplicationHelper
    def initialize_exhibit
     require_fedora
     require_solr
-    params[:exhibit_id] ? exhibit_id = params[:exhibit_id] : exhibit_id = params[:id]
+    if params[:controller] == "exhibits"
+      exhibit_id = params[:id]
+    else
+      exhibit_id = params[:exhibit_id]
+    end
+
     unless exhibit_id
       logger.info("No exhibit was found for id #{exhibit_id}")
       return
