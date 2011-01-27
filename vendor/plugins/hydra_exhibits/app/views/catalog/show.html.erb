@@ -4,7 +4,8 @@
     <div class="tools"><%= render :partial => 'show_tools' %></div>
     <%- if params[:class].blank? -%>
       <%- if params[:render_search].blank? -%>
-        <span class="back_to_cat"><%= link_back_to_catalog :label=>'&laquo; Back to Search' %></span>
+        <% session[:search].merge!({:exhibit_id=>params[:exhibit_id]}) if params[:exhibit_id]%>
+        <span class="back_to_cat"><%= link_back_to_catalog :label=>'&laquo; Back to Search'%></span>
         <% if @previous_document || @next_document %>
           <div id="previousNextDocument">
             <span class="previous"><%= link_to_previous_document(@previous_document) %></span>
