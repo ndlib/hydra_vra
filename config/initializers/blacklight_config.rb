@@ -119,6 +119,27 @@ Blacklight.configure(:shared) do |config|
     }
   }
 
+  config[:collections_index_fields] = {
+    :field_names => [
+        "id_t",
+        "ead_ead_header_filedesc_titlestmt_titleproper_t",
+        "ead_archive_desc_did_lang_t",
+        "ead_archive_desc_did_unitdate_t",
+        "ead_header_filedesc_titlestmt_author_t",
+        "did_ref_0_head_t",
+        "did_ref_unittitle_t"
+      ],
+    :labels => {
+      "id_t"=>"Pid",
+      "ead_ead_header_filedesc_titlestmt_titleproper_t" =>"Title",
+      "ead_archive_desc_did_lang_t"                     => "Language",
+      "ead_archive_desc_did_unitdate_t"                 => "Date",
+      "ead_header_filedesc_titlestmt_author_t"          => "Author",
+      "did_ref_0_head_t"                                => "Heading",
+      "did_ref_unittitle_t"                             => "Genre"
+    }
+  }
+
   # solr fields to be displayed in the show (single result) view
   #   The ordering of the field names is the order of the display 
   config[:show_fields] = {
