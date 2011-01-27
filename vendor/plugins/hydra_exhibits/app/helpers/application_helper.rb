@@ -1,6 +1,6 @@
 require "#{RAILS_ROOT}/vendor/plugins/hydra_repository/lib/mediashelf/active_fedora_helper.rb"
-require "#{RAILS_ROOT}/vendor/plugins/hydra_repository/app/helpers/application_helper.rb"
 require "#{RAILS_ROOT}/vendor/plugins/hydra_exhibits/app/models/ead_xml.rb"
+require 'cgi'
 
 module ApplicationHelper
 
@@ -259,28 +259,39 @@ module ApplicationHelper
     end
   end
 
-  #alias :hydra_link_to_document :link_to_document
+  alias :blacklight_link_to_with_data :link_to_with_data
 
-  #def link_to_document(doc, opts={:label=>Blacklight.config[:index][:show_link].to_sym, :counter => nil,:title => nil})
-  #  url = hydra_link_to_document(doc,opts)
-  #  params[:controller] == "exhibits" ? exhibit_id = params[:id] : exhibit_id = params[:exhibit_id]
-  #  render_search = "false" if exhibit_id
-  #  
-  #  label = case opts[:label]
-  #    when Symbol
-  #      doc.get(opts[:label])
-  #    when String
-  #      opts[:label]
-  #    else
-  #      raise 'Invalid label argument'
-  #    end
-  #  
-  #  if label.blank?
-  #    label = doc[:id]
-  #  end
-  #  
-  #  link_to_with_data(label, catalog_path(doc[:id],:render_search=>render_search, :exhibit_id=>exhibit_id, :f=>params[:f]), {:method => :put, :data => {:counter => opts[:counter]},:title=>opts[:title]})
-  #end
+  # Need to override this to get exhibit_id's in the url if defined
+  # Tried to override link_to_document but had problems overriding one
+  # in hydra_repository plugin because of load order issues
+  def link_to_with_data(*args, &block)
+    path = args.second
+    params[:controller] == "exhibits" ? exhibit_id = params[:id] : exhibit_id = params[:exhibit_id]
+    use_amp = path.include?("?")
+    if exhibit_id
+      use_amp ? path << "&" : path << "?"
+      path << "exhibit_id=#{CGI::escape(exhibit_id)}"
+      path << "&render_search=false" unless params[:render_search].blank?
+      use_amp = true
+    end
+
+    if params[:f] && !params[:render_search].blank?
+      params[:f].each_pair do |facet,values|
+        values.each do |value|
+          use_amp ? path << "&" : path << "?"
+          path << "f[#{facet}][]=#{CGI::escape(value)}"
+          use_amp = true
+        end
+      end
+    end
+
+    temp = args
+    args = []
+    args << temp.first
+    args << path
+    args << temp.slice(3) if temp.length > 2
+    blacklight_link_to_with_data(*args, &block)
+  end
 
   def link_to_exhibit(opts={})
     # params[:f].dup ||
