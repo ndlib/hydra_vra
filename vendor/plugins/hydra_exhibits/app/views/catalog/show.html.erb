@@ -3,25 +3,28 @@
   <div id="showUtils">
     <div class="tools"><%= render :partial => 'show_tools' %></div>
     <%- if params[:class].blank? -%>
-      <span class="back_to_cat"><%= link_back_to_catalog :label=>'&laquo; Back to Search' %></span>
-      <% if @previous_document || @next_document %>
-        <div id="previousNextDocument">
-          <span class="previous"><%= link_to_previous_document(@previous_document) %></span>
-      <% end %>
-      <%- if session[:search][:counter].to_i > 0 -%>
-        #<%= session[:search][:counter].to_i %> of <%= format_num(session[:search][:total]) %>
-      <%- end -%>
-      <% if @previous_document || @next_document %>
-          <span class="next"><%= link_to_next_document(@next_document)%></span>
-        </div>
-      <% end %>
+      <%- if params[:render_search].blank? -%>
+        <span class="back_to_cat"><%= link_back_to_catalog :label=>'&laquo; Back to Search' %></span>
+        <% if @previous_document || @next_document %>
+          <div id="previousNextDocument">
+            <span class="previous"><%= link_to_previous_document(@previous_document) %></span>
+        <% end %>
+        <%- if session[:search][:counter].to_i > 0 -%>
+          #<%= session[:search][:counter].to_i %> of <%= format_num(session[:search][:total]) %>
+        <%- end -%>
+        <% if @previous_document || @next_document %>
+            <span class="next"><%= link_to_next_document(@next_document)%></span>
+          </div>
+        <% end %>
+     <%- end -%>
       <span class="edit-browse">
-        <% if editor? %>
+        <%- if params[:exhibit_id]-%>
+            <h3><%= link_to_exhibit(:label=>"Back to Complete List") %></h3>
+        <%- end -%>
+        <%- if editor? -%>
           <%= edit_and_browse_links %>
-        <% end -%>
+        <%- end -%>
       </span>
-    <%- else -%>        
-        <span class="back_to_cat"><%= link_to_exhibit :label=>'Back to Browse' %></span>
     <%- end -%>
 
   </div>
