@@ -1,11 +1,11 @@
 <div id="sortAndPerPage">
-	<div class="currently-showing">
+	<p class="currently-showing">
 		<%- if params[:action] == 'index' -%>
 			<%= page_entries_info @response.docs, :entry_name=>'item' %>
 		<%- else -%>
 			Showing <%= session[:search][:counter].to_i %> of <%= format_num(session[:search][:total]) %> items from your search.
 		<%- end -%>
-	</div>
+	</p>
 	
 	<% form_tag catalog_index_path, :method=>:get, :class=>'per_page' do %>
 	<fieldset>
