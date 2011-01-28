@@ -561,30 +561,5 @@ module ApplicationHelper
     #query = ActiveFedora::SolrService.construct_query_for_pids(pid_array)
     get_search_results({:fq=>fq})
   end
-
-  #alias :blacklight_facet_limit_for :facet_limit_for
-
-  # If exhibit is defined and in an exhibit browse view 
-  # then do not set limit on facet values displayed.
-  # Otherwise call version in blacklight plugin
-  #def facet_limit_for(facet_field)
-    
-  #  limits_hash = facet_limit_hash
-  #  return nil unless limits_hash
-
-  #  limit = limits_hash[facet_field]
-  #  limit = limits_hash[nil] unless limit
-
-  #  return limit
-  #end
-  #helper_method :facet_limit_for
-  # Returns complete hash of key=facet_field, value=limit.
-  # Used by SolrHelper#solr_search_params to add limits to solr
-  # request for all configured facet limits.
-  #def facet_limit_hash
-  #  Blacklight.config[:facet][:limits]           
-  #end
-  #helper_method :facet_limit_hash
-  
 end
 
