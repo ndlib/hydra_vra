@@ -43,10 +43,13 @@ module ApplicationHelper
   # Standard display of a SELECTED facet value, no link, special span
   # with class, and 'remove' button.
   def render_selected_browse_facet_value(facet_solr_field, item, browse_facets)
+    remove_params = remove_browse_facet_params(facet_solr_field, item.value, params, browse_facets)
+    remove_params.delete(:render_search) #need to remove if we are in search view and click takes back to browse
+    remove_params.merge!(:id=>params[:exhibit_id]) if params[:exhibit_id]
     '<span class="selected">' +
     render_facet_value(facet_solr_field, item, :suppress_link => true) +
     '</span>' +
-      ' [' + link_to("remove", exhibit_path(remove_browse_facet_params(facet_solr_field, item.value, params, browse_facets)), :class=>"remove") + ']'
+      ' [' + link_to("remove", exhibit_path(remove_params), :class=>"remove") + ']'
   end
 
   #Remove current selected facet plus any child facets selected
@@ -225,12 +228,6 @@ module ApplicationHelper
     logger.error("Model: #{description_obj.class}, resource:#{resource.pid}")
     content = resource.descriptiondatastream(resource.descriptiondatastream_ids.first).first.content
     return content
-  end
-
-  def link_to_catalog_item(label, id)
-    puts "params in link catalog item: #{params.inspect}"
-    params[:controller] == "exhibits" ? exhibit_id = params[:id] : exhibit_id = params[:exhibit_id]
-    exhibit_id ? link_to(label, catalog_path(id, :render_search=>"false", :exhibit_id=>exhibit_id, :f=>params[:f])) : link_to(label, catalog_path(id))
   end
 
   def add_facet_params(field, value, p=nil)
@@ -564,6 +561,30 @@ module ApplicationHelper
     #query = ActiveFedora::SolrService.construct_query_for_pids(pid_array)
     get_search_results({:fq=>fq})
   end
+
+  #alias :blacklight_facet_limit_for :facet_limit_for
+
+  # If exhibit is defined and in an exhibit browse view 
+  # then do not set limit on facet values displayed.
+  # Otherwise call version in blacklight plugin
+  #def facet_limit_for(facet_field)
+    
+  #  limits_hash = facet_limit_hash
+  #  return nil unless limits_hash
+
+  #  limit = limits_hash[facet_field]
+  #  limit = limits_hash[nil] unless limit
+
+  #  return limit
+  #end
+  #helper_method :facet_limit_for
+  # Returns complete hash of key=facet_field, value=limit.
+  # Used by SolrHelper#solr_search_params to add limits to solr
+  # request for all configured facet limits.
+  #def facet_limit_hash
+  #  Blacklight.config[:facet][:limits]           
+  #end
+  #helper_method :facet_limit_hash
   
 end
 
