@@ -552,9 +552,17 @@ module ApplicationHelper
   end
 
   #Gets a search result given a pid array
+  #Use filter query (fq) instead of query since solr bombs out if the list is too long in query
   def get_pids_search_results(pid_array)
-    query = ActiveFedora::SolrService.construct_query_for_pids(pid_array)
-    get_search_results({:q=>query})
+    unless pid_array.empty?
+      fq = "#{SOLR_DOCUMENT_ID}:("
+      fq << pid_array.join(' OR ')
+      fq << ")"
+    else
+      fq ="#{SOLR_DOCUMENT_ID:NEVER_USE_THIS_ID}"
+    end
+    #query = ActiveFedora::SolrService.construct_query_for_pids(pid_array)
+    get_search_results({:fq=>fq})
   end
   
 end
