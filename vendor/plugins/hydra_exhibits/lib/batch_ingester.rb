@@ -73,7 +73,7 @@ module BatchIngester
         prefercite_head = row[22]
         prefercite_info = row[23]
         key = "COLLECTION_#{ead_id}"
-        attributes= {:pid_key => key, :ead_id => ead_id, :title => title, :author => author, :publisher => publisher, :creator => creation_person, :creation_date => creation_date, :address => address, :date => date, :langusage => langusage, :language => language, :unit_title => unit_title, :unit_head => unit_head, :unit_id => unit_id, :unit_date => unit_date, :unit_language => unit_language, :corp_name => corp_name, :subarea => subarea, :unit_address => unit_address, :access_restrict_head => access_restrict_head, :access_restrict_info => access_restrict_info, :prefercite_head => prefercite_head, :prefercite_info => prefercite_info}
+        attributes= {:pid_key => key, :ead_id => ead_id, :title => title, :author => author, :publisher => publisher, :creator => creation_person, :creation_date => creation_date, :address => address, :date => date, :langusage => langusage, :language => language, :unit_title => unit_title, :unit_head => unit_head, :unit_id => unit_id, :unit_date => unit_date, :unit_language => unit_language, :corp_name => corp_name, :subarea => subarea, :unit_address => unit_address, :access_restrict_head => access_restrict_head, :access_restrict_info => access_restrict_info, :prefercite_head => prefercite_head, :prefercite_info => prefercite_info, :acquisition_head => acquisition_head, :acquisition_info => acquisition_info}
         ingest_collection('collection', attributes)
       end
     end
@@ -113,8 +113,8 @@ module BatchIngester
         update_fields(collection, [:archive_desc, :did, :repo, :address, :addressline], args[:unit_address])
         update_fields(collection, [:archive_desc, :accessrestrict], args[:access_restrict_info])
         update_fields(collection, [:archive_desc, :accessrestrict, :head], args[:access_restrict_head])
-	      update_fields(collection, [:archive_desc, :acqinfo], args[:prefercite_info])
-        update_fields(collection, [:archive_desc, :acqinfo, :head], args[:prefercite_head])
+        update_fields(collection, [:archive_desc, :acqinfo], args[:acquisition_info])
+        update_fields(collection, [:archive_desc, :acqinfo, :head], args[:acquisition_head])
         update_fields(collection, [:archive_desc, :prefercite], args[:prefercite_info])
         update_fields(collection, [:archive_desc, :prefercite, :head], args[:prefercite_head])
         collection.save

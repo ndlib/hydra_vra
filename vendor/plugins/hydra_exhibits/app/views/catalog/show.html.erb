@@ -38,7 +38,7 @@
     
     <% if((@document_fedora.methods.include? "list_childern") && !(@document_fedora.type.to_s.eql?"item")) %>
     <% #if(@document_feodra.respond_to?(:list_childern)) #Ideal but not working %>
-      <%= render :partial => "catalog/show_items" %>
+      <%= render :partial => "catalog/show_subcollections" %>
     <% end %>
     
   </div>
