@@ -33,6 +33,7 @@
     });    
   </script>
 <% end %>
+
 <div class="document_viewer" id="cover_container">
   <div class="multipleEdit">
     <div id="loading" style="display:none;">
@@ -49,8 +50,8 @@
       <h2 class="section-title"><a href="#">Details</a></h2>
       <% if @document_fedora.kind_of? Exhibit%>
         <%= render :partial => "exhibits/edit_exhibit", :locals => { :content => "exhibit", :label => "exhibit", :document_fedora => @document_fedora} %>
-      <% else %>
-        <%= render :partial => "sub_collections/edit_sub_collection", :locals => { :content => "sub_collection", :label => "sub collection", :document_fedora => @document_fedora} %>     
+      <%# else %>
+        <%# render :partial => "sub_collections/edit_sub_collection", :locals => { :content => "sub_collection", :label => "sub collection", :document_fedora => @document_fedora} %>     
       <% end %>      
       <h2 class="section-title"><a href="#">Set permissions</a></h2>
       <div id="permissions">

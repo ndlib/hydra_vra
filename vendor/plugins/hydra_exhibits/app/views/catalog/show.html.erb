@@ -17,11 +17,10 @@
             <span class="next"><%= link_to_next_document(@next_document)%></span>
           </div>
         <% end %>
-     <%- end -%>
+      <%- elsif params[:exhibit_id]-%>
+        <span class="back_to_cat"><h3><%= link_to_exhibit(:label=>"&laquo; Back to Complete List") %></h3></span>
+      <%- end -%>
       <span class="edit-browse">
-        <%- if params[:exhibit_id]-%>
-            <h3><%= link_to_exhibit(:label=>"Back to Complete List") %></h3>
-        <%- end -%>
         <%- if editor? -%>
           <%= edit_and_browse_links %>
         <%- end -%>

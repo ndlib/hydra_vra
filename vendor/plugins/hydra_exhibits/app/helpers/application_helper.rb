@@ -49,7 +49,7 @@ module ApplicationHelper
     '<span class="selected">' +
     render_facet_value(facet_solr_field, item, :suppress_link => true) +
     '</span>' +
-      ' [' + link_to("remove", exhibit_path(remove_params), :class=>"remove") + ']'
+      ' [' + link_to("remove", exhibit_path(remove_params.merge!(:action=>"show")), :class=>"remove") + ']'
   end
 
   #Remove current selected facet plus any child facets selected
@@ -97,13 +97,22 @@ module ApplicationHelper
   def edit_and_browse_links
     if params[:exhibit_id]
       result = ""
-    if params[:action] == "edit"
-      result << "<a href=\"#{catalog_path(@document[:id], :viewing_context=>"browse", :exhibit_id=>params[:exhibit_id], :f=>params[:f])}\" class=\"browse toggle\">View</a>"
-      result << "<span class=\"edit toggle active\">Edit</span>"
-    else
-      result << "<span class=\"browse toggle active\">View</span>"
-      result << "<a href=\"#{edit_catalog_path(@document[:id], :class => "facet_selected", :exhibit_id => params[:exhibit_id], :f => params[:f])}\" class=\"edit toggle\">Edit</a>"
-    end
+      if params[:action] == "edit"
+        browse_params = params.dup
+        browse_params.delete(:action)
+        browse_params.delete(:controller)
+        browse_params.merge!(:viewing_context=>"browse")
+        result << "<a href=\"#{catalog_path(@document[:id], browse_params)}\" class=\"browse toggle\">View</a>"
+        result << "<span class=\"edit toggle active\">Edit</span>"
+      else
+        edit_params = params.dup
+        edit_params.delete(:viewing_context)
+        edit_params.delete(:action)
+        edit_params.delete(:controller)
+        logger.debug("Edit params: #{edit_params.inspect}")
+        result << "<span class=\"browse toggle active\">View</span>"
+        result << "<a href=\"#{edit_catalog_path(@document[:id], edit_params)}\" class=\"edit toggle\">Edit</a>"
+      end
     else
       hydra_edit_and_browse_links
     end    
@@ -112,11 +121,11 @@ module ApplicationHelper
   def edit_and_browse_exhibit_links(exhibit)
     result = ""
     if params[:action] == "edit"
-      result << "<a href=\"#{catalog_path(@document[:id], :viewing_context=>"browse")}\" class=\"browse toggle\">Browse</a>"
-      result << "<span class=\"edit toggle active\">Edit Exhibit</span>"
+      result << "<a href=\"#{exhibit_path(params[:exhibit_id])}\" class=\"browse toggle\">View</a>"
+      result << "<span class=\"edit toggle active\">Edit</span>"
     else
-      result << "<span class=\"browse toggle active\">Browse</span>"
-      result << "<a href=\"#{edit_catalog_path(@document[:id], :class => "facet_selected", :exhibit_id => @document[:id], :f => params[:f])}\" class=\"edit toggle\">Edit Exhibit</a>"
+      result << "<span class=\"browse toggle active\">View</span>"
+      result << "<a href=\"#{edit_catalog_path(@document[:id], :class => "facet_selected", :exhibit_id => @document[:id])}\" class=\"edit toggle\">Edit</a>"
     end
     return result
   end
@@ -124,14 +133,23 @@ module ApplicationHelper
   def edit_and_browse_subcollection_links(subcollection)
     result = ""
     if params[:action] == "edit"
-      result << "<a href=\"#{catalog_path(@document[:id], :viewing_context=>"browse")}\" class=\"browse toggle\">Browse</a>"
-      result << "<span class=\"edit toggle active\">Edit Subcollection</span>"
+      browse_params = params.dup
+      browse_params.delete(:action)
+      browse_params.delete(:controller)
+      browse_params.merge!(:viewing_context=>"browse")
+      result << "<a href=\"#{exhibit_path(browse_params.merge!(:id=>params[:exhibit_id]))}\" class=\"browse toggle\">View</a>"
+      result << "<span class=\"edit toggle active\">Edit</span>"
     else
-      result << "<span class=\"browse toggle active\">Browse</span>"
+      result << "<span class=\"browse toggle active\">View</span>"
       if(subcollection.nil?)
-        result << "<a href=\"#{url_for(:action => "new", :controller => "sub_collections", :content_type => "sub_collection", :exhibit_id => @document[:id], :selected_facets => params[:f] )}\" class=\"edit toggle\">Edit Subcollection</a>"
+        result << "<a href=\"#{url_for(:action => "new", :controller => "sub_collections", :content_type => "sub_collection", :exhibit_id => @document[:id], :selected_facets => params[:f])}\" class=\"edit toggle\">Edit</a>"
       else
-        result << "<a href=\"#{edit_catalog_path(subcollection.id, :class => "facet_selected", :exhibit_id => @document[:id], :f => params[:f])}\" class=\"edit toggle\">Edit Subcollection</a>"
+        result << "<a href=\"#{edit_catalog_path(subcollection.id, :class => "facet_selected", :exhibit_id => @document[:id], :f => params[:f], :render_search=>"false")}\" class=\"edit toggle\">Edit</a>"
+        #edit_params = params.dup
+        #edit_params.delete(:viewing_context)
+        #edit_params.delete(:action)
+        #edit_params.delete(:controller)
+        #result << "<a href=\"#{edit_catalog_path(subcollection.id, edit_params)}\" class=\"edit toggle\">Edit</a>"
       end
 
     end
@@ -269,6 +287,8 @@ module ApplicationHelper
       use_amp ? path << "&" : path << "?"
       path << "exhibit_id=#{CGI::escape(exhibit_id)}"
       path << "&render_search=false" unless params[:render_search].blank? && params[:controller] == "catalog"
+      #always go to browse view first when viewing a catalog item
+      path << "&viewing_context=browse"
       use_amp = true
     end
 
@@ -299,7 +319,7 @@ module ApplicationHelper
      # f = opts[:f]
     #end 
     query_params.merge!({:id=>exhibit_id})
-    query_params.merge!({:f=>f}) if f && !f.empty?
+    query_params.merge!({:f=>f}) if f && !f.empty? && !params[:render_search].blank?
     link_url = exhibit_path(query_params)
     opts[:label] = params[:exhibit_id] unless opts[:label]
     link_to opts[:label], link_url    
@@ -339,7 +359,7 @@ module ApplicationHelper
   end 
 
   def render_browse_facet_div
-    initialize_exhibit if @exhibit.nil?
+    initialize_exhibit #if @exhibit.nil?
     @exhibit.nil? ? '' : get_browse_facet_div(@browse_facets,@browse_response,@extra_controller_params)
   end
 

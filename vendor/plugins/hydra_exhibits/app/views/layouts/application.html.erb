@@ -45,7 +45,7 @@
             <%- if params[:render_search].blank? -%>
               <%= sidebar_items.join('') %>
               <%- if params[:exhibit_id] -%>
-                <h3><%= link_to_exhibit(:label=>"Back to Browse Exhibit",:f=>"") %></h3>
+                <h3><%= link_to_exhibit(:label=>"Back to Browse Exhibit") %></h3>
               <%- end -%>
             <%- else -%>
               <%= render :partial => 'shared/exhibit_search_form' %> 
