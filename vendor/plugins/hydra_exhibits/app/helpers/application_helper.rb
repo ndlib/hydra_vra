@@ -23,6 +23,15 @@ module ApplicationHelper
     Blacklight.config[:collections_index_fields][:labels]
   end
 
+  def item_field_names
+    Blacklight.config[:items_index_fields][:field_names]
+  end
+
+  # used in the _index_partials/_collection view
+  def item_field_labels
+    Blacklight.config[:items_index_fields][:labels]
+  end
+
   # Standard display of a facet value in a list. Used in both _facets sidebar
   # partial and catalog/facet expanded list. Will output facet value name as
   # a link to add that to your restrictions, with count in parens. 
@@ -271,11 +280,11 @@ module ApplicationHelper
     if exhibit_id
       use_amp ? path << "&" : path << "?"
       path << "exhibit_id=#{CGI::escape(exhibit_id)}"
-      path << "&render_search=false" unless params[:render_search].blank?
+      path << "&render_search=false" unless params[:render_search].blank? && params[:controller] == "catalog"
       use_amp = true
     end
 
-    if params[:f] && !params[:render_search].blank?
+    if params[:f] && (params[:controller] != "catalog" || !params[:render_search].blank?)
       params[:f].each_pair do |facet,values|
         values.each do |value|
           use_amp ? path << "&" : path << "?"
@@ -551,18 +560,13 @@ module ApplicationHelper
     end
   end
 
-  #Gets a search result given a pid array
-  #Use filter query (fq) instead of query since solr bombs out if the list is too long in query
+  #  Expects Array of PIDs and returns array of Response and DocumentList
   def get_pids_search_results(pid_array)
-    unless pid_array.empty?
-      fq = "#{SOLR_DOCUMENT_ID}:("
-      fq << pid_array.join(' OR ')
-      fq << ")"
-    else
-      fq ="#{SOLR_DOCUMENT_ID:NEVER_USE_THIS_ID}"
-    end
-    #query = ActiveFedora::SolrService.construct_query_for_pids(pid_array)
-    get_search_results({:fq=>fq})
+    fq = ActiveFedora::SolrService.construct_query_for_pids(pid_array)
+    @extra_controller_params ||= {}
+    @extra_controller_params.merge!(:q=>build_lucene_query(params[:q]))
+    @extra_controller_params.merge!(:fq=>fq)
+    get_search_results(@extra_controller_params)
   end
   
 end
