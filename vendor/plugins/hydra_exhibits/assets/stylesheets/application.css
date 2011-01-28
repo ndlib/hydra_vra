@@ -82,7 +82,7 @@ ul.facet_extended_list li {list-style:none; margin: 0.5em 0;}
 /* Page Navigation */
 .constraints {margin: 0px; padding: 0px;}
 
-.pagination {text-align:right; margin-bottom:.5em;}
+.pagination {text-align:right; margin-bottom:.5em; clear:both;}
 .pagination h2 {display: none;}
 #results_text {display: none;}
 .pagination a, .pagination span {padding: 0px 5px; border: 0px;}
@@ -96,20 +96,25 @@ ul.facet_extended_list li {list-style:none; margin: 0.5em 0;}
 #sortAndPerPage fieldset {display:inline; border:none; margin:0;}
 
 /* Search Results */
-.document {background-color: #fff; border-bottom: 1px dotted #ccc;}
+.document {background-color:#FFF; border-bottom:1px dotted #CCC;}
 
-#documents {background-color: #FFF; color: #333; width: 650px;}
+#documents {background-color:#FFF; clear:both; color:#333; float:left; margin-bottom:1em; width:100%;}
 #documents .documentHeader {background-color: #fff; padding: 0px;}
 #documents .yui-u {width:100%;}
 #documents .documentHeader .documentFunctions {text-align:right;}
 #documents .per_page {padding-right: 5px;}
 #documents #results_label {margin-left: 5px;}
-#documents .thumbnail-container a {border-bottom:none;}
-.with-thumbnail .defList {margin-left:120px;}
-.thumbnail-container {float:left; padding:10px;}
+
+.exhibit-listing .document {clear:both; float:left; width:100%;}
+#documents.exhibit-listing {float:right; width:98%;}
+.with-thumbnail {clear:both; float:left; width:100%;}
+.thumbnail-container {float:left; padding:.5em;}
+.thumbnail-container a {border-bottom:none;}
+.thumbnail-container img {margin-top:2px;}
 
 /* Result List (http://www.quirksmode.org/css/clearing.html) */
 h3.index_title {clear: both; margin: 0px; padding: 0px; width: 460px;}
+.title_count {display:inline-block; width:5%; margin-left:-5%; padding-right:.5em; text-align:right;}
 
 dl {margin: 0px; padding: 0px;}
 dl.defList {overflow: auto; padding: 0.5em 0;}
@@ -267,3 +272,5 @@ p.collection_desc {padding-left:2em;}
 #collection-search fieldset {border:none; padding:0;}
 #collection-search h3 {margin:0 0 .5em;}
 #collection-search label {font-weight:normal;}
+
+.index_title {margin-bottom:.5em;}
