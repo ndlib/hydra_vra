@@ -271,11 +271,11 @@ module ApplicationHelper
     if exhibit_id
       use_amp ? path << "&" : path << "?"
       path << "exhibit_id=#{CGI::escape(exhibit_id)}"
-      path << "&render_search=false" unless params[:render_search].blank?
+      path << "&render_search=false" unless params[:render_search].blank? && params[:controller] == "catalog"
       use_amp = true
     end
 
-    if params[:f] && !params[:render_search].blank?
+    if params[:f] && (params[:controller] != "catalog" || !params[:render_search].blank?)
       params[:f].each_pair do |facet,values|
         values.each do |value|
           use_amp ? path << "&" : path << "?"
