@@ -140,6 +140,27 @@ Blacklight.configure(:shared) do |config|
     }
   }
 
+  config[:items_index_fields] = {
+    :field_names => [
+      "id_t",
+      "item_did_unittitle_t",
+      "item_did_unitid_t",
+      "item_did_origination_signer_persname_normal_t",
+      "item_did_physdesc_dimensions_t",
+      "item_controlaccess_genreform_t",
+      "item_ref_0_acqinfo_t"
+      ],
+    :labels => {
+      "id_t"						=>"Pid",
+      "item_did_unittitle_t" 				=> "Title",
+      "item_did_unitid_t"             		        => "ID",
+      "item_did_origination_signer_persname_normal_t"   => "Signers",
+      "item_did_physdesc_dimensions_t"          	=> "Physical Dimensions",
+      "item_controlaccess_genreform_t"                  => "Page Turn",
+      "item_ref_0_acqinfo_t"                            => "Provenance"
+    }
+  }
+
   # solr fields to be displayed in the show (single result) view
   #   The ordering of the field names is the order of the display 
   config[:show_fields] = {

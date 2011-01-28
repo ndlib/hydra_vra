@@ -27,7 +27,7 @@
       setUpNewPermissionsForm();      
       $("#add-contributor-box").hydraNewContributorForm();      
       $("div.description_div").insertTextareaValue();
-      $("#add-image-box").hydraNewImageForm();
+//      $("#add-image-box").hydraNewImageForm();
       $("dd.remove-description-div").descriptionDeleteButton();
       $("a.inline").fancybox({
       		'hideOnContentClick': true,
@@ -58,7 +58,7 @@
       //   e.preventDefault();
       // });
       $(".contributor a.destructive").hydraContributorDeleteButton();
-      $(".image_tag a.destructive").imageDeleteButton();
+//      $(".image_tag a.destructive").imageDeleteButton();
       $(".grant a.destructive").hydraGrantDeleteButton();     
 
       
