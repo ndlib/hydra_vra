@@ -3,6 +3,8 @@ class CatalogController
   #include application helper in order to get override of build_lucene_query method
   include ApplicationHelper
 
+  before_filter :set_page_style, :only => [:show, :index]
+
   alias :blacklight_facet_limit_for :facet_limit_for
 
   # If exhibit is defined and in an exhibit browse view 
