@@ -44,6 +44,7 @@ module ApplicationHelper
     p.delete(:q)
     p.delete(:commit)
     p.delete(:search_field)
+    p.delete(:controller)
     p.merge!(:id=>params[:exhibit_id]) if p[:exhibit_id]
     p = add_facet_params(facet_solr_field,item.value,p)
     link_to(item.value, exhibit_path(p.merge!({:class=>"facet_select", :action=>"show"}))) + " (" + format_num(item.hits) + ")"
@@ -55,6 +56,7 @@ module ApplicationHelper
     remove_params = remove_browse_facet_params(facet_solr_field, item.value, params, browse_facets)
     remove_params.delete(:render_search) #need to remove if we are in search view and click takes back to browse
     remove_params.merge!(:id=>params[:exhibit_id]) if params[:exhibit_id]
+    remove_params.delete(:controller)
     '<span class="selected">' +
     render_facet_value(facet_solr_field, item, :suppress_link => true) +
     '</span>' +
