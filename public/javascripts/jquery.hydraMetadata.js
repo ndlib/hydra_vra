@@ -234,7 +234,7 @@
        var field_selectors = $("input.fieldselector[rel="+$editNode.attr("rel")+"]").fieldSerialize();
 
        var params = field_param + "&" + content_type_param + "&" + field_selectors + "&_method=put";
-       
+       //alert(url + params)
        $.ajax({
          type: "PUT",
          url: url,

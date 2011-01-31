@@ -13,6 +13,13 @@
 
      $.fn.initialize_setting();
 
+     $(".content").hide();
+     //toggle the componenet with class msg_body
+     $(".heading").click(function(){
+        $(this).next(".content").slideToggle(500);
+     });
+
+
      $('input.update_embedded_search').bind('click',function(){
        var url = $("input#update_embedded_search").first().attr("value")       
        var params =  "q="+$("input#q").first().attr("value")+"&search_field"+$("select#search_field").first().attr("value")     
@@ -206,8 +213,6 @@
       });
     });
 
-
-
     $('li.facet').live('click',function(){
        var $closestForm = $(this).closest("form");
        var url = $closestForm.attr("action");
@@ -278,6 +283,42 @@
             });
          }
        });
+    });
+
+    $("dd.display input").live('click',function(){
+      var $closestForm = $("input#description_id");
+      var url = $closestForm.attr("action");
+      var name = $(this).attr("datastream")
+      var params =  name + "="+$(this).attr("value")+"&_method=put";      
+       $.ajax({
+         type: "PUT",
+         url: url,
+         dataType : "json",
+         data: params,
+         success: function(msg){
+     			$.noticeAdd({
+             inEffect:               {opacity: 'show'},      // in effect
+             inEffectDuration:       600,                    // in effect duration in miliseconds
+             stayTime:               6000,                   // time in miliseconds before the item has to disappear
+             text:                   "Your edit to "+ msg.updated[0].field_name +" has been saved as "+msg.updated[0].value+" at index "+msg.updated[0].index,   // content of the item
+             stay:                   false,                  // should the notice item stay or not?
+             type:                   'notice'                // could also be error, succes
+            });
+            $.fn.hydraExhibit.resetSetting();
+            $.fn.initialize_setting();
+         },
+         error: function(xhr, textStatus, errorThrown){
+     			$.noticeAdd({
+             inEffect:               {opacity: 'show'},      // in effect
+             inEffectDuration:       600,                    // in effect duration in miliseconds
+             stayTime:               6000,                   // time in miliseconds before the item has to disappear
+             text:                   'Your changes to' + $editNode.attr("rel") + ' could not be saved because of '+ xhr.statusText + ': '+ xhr.responseText,   // content of the item
+             stay:                   true,                  // should the notice item stay or not?
+             type:                   'error'                // could also be error, succes
+            });
+         }
+       });
+
     });
 
    });
@@ -353,26 +394,21 @@
      if (settings) $.extend(config, settings);
 
      this.each(function() {
-      //alert("textile each")
       var $this = $(this);
       var $editNode = $(".textile-edit", this).first();
       var $textNode = $(".textile-text", this).first();
-      //var $closestForm =  $editNode.closest("form");
       var name = $editNode.attr("name");
 
       var pid = $editNode.attr("data-pid");
       var content_type = $editNode.attr("data-content-type");
       var datastream_name = $editNode.attr("data-datastream-name");
+      var load_datastream = $editNode.attr("load-from-datastream");
 
-
-      // collect submit parameters.  These should probably be shoved into a data hash instead of a url string...
-      // var field_param = $editNode.fieldSerialize();
       var field_selectors = $("input.fieldselector[rel="+$editNode.attr("rel")+"]").fieldSerialize();         
 
-      var params = "?datastream_name="+datastream_name+"&content_type="+content_type+"&description_id="+pid+"&description_action=update_description"
+      var params = "?datastream="+datastream_name+"&load_datastream="+load_datastream+"&name="+name+"&content_type="+content_type+
+                    "&description_id="+pid
 
-      //Field Selectors are the only update params to be passed in the url
-      //var assetUrl = $closestForm.attr("action") + "&" + field_selectors;
       var assetUrl = $("input#show_description_url").first().attr("value")+params;
       var submitUrl = $.fn.hydraMetadata.appendFormat(assetUrl, {format: "textile"});
 
@@ -387,7 +423,7 @@
       var nodeSpecificSettings = {
         tooltip   : "Click to edit "+$this.attr("id")+" ...",
         name      : name,
-        loadurl  : submitUrl //+ "?" + $.param(load_params)
+        loadurl  : submitUrl + "&" + $.param(load_params)
       };
       $textNode.editable(submitUrl, $.extend(nodeSpecificSettings, config));
       $editNode.hide();
@@ -409,6 +445,7 @@
      var config = {};
      if (settings) $.extend(config, settings);
      $("a.destroy_description", this).live("click", function(e) {
+       alert("call delete")
        $.fn.hydraExhibit.deleteDescription(this,e);
      });
     //return this;
@@ -430,20 +467,7 @@
           $(wholeDiv).last().after(data);
           $(perviousNode).remove();
           // repeat the whole set in every drop down ajax call to render the select box again on ajax call
-           $(".editable-container").hydraTextField();
-           /*$("div.split-button input.button").next().button( {
-            text: false,
-            icons: { primary: "ui-icon-triangle-1-s" }
-           })
-           .click(function() {
-             var ulelement= $(this).siblings('ul')
-             ulelement.is(":hidden") ?
-             ulelement.show() : ulelement.hide();
-           })
-           .parent().buttonset();
-           $('div.split-button ul').mouseleave(function(){
-             $(this).hide();
-           });*/
+           $(".editable-container").hydraTextField();           
            $.fn.initialize_setting();
          }
       });
@@ -485,10 +509,9 @@
        var description_id = $editNode.attr("data-pid");
        var contentType = $editNode.attr("data-content-type");
        var datastreamName = $editNode.attr("data-datastream-name");
-
-       var params = "datastream_name="+datastreamName+"&content_type="+contentType+ "&description_id="+description_id+ "&description_title="+ $editNode.val()+"&description_action=update_description_title"+"&_method=put"
-       var url = $("input#show_description_url").first().attr("value")
-       //alert(params)
+       var params = "datastream_name="+datastreamName+"&content_type="+contentType+ "&description_id="+description_id+ "&description_title="+ $editNode.val()+"&_method=put"
+       var url = $("input#update_title_url").first().attr("value")
+       //$.fn.hydraMetadata.saveDescription(url, params)
        $.ajax({
          type: "PUT",
          url: url,
@@ -518,6 +541,38 @@
        });
      },
 
+     /*saveDescription: function(url, params) {
+         alert($(url))
+         $.ajax({
+         type: "PUT",
+         url: $(url),
+         dataType : "json",
+         data: $(params),
+         success: function(msg){
+     	    $.noticeAdd({
+             inEffect:               {opacity: 'show'},      // in effect
+             inEffectDuration:       600,                    // in effect duration in miliseconds
+             stayTime:               6000,                   // time in miliseconds before the item has to disappear
+             text:                   "Your edit to "+ msg.updated[0].field_name +" has been saved as "+msg.updated[0].value+" at index "+msg.updated[0].index,   // content of the item
+             stay:                   false,                  // should the notice item stay or not?
+             type:                   'notice'                // could also be error, succes
+            });
+            $.fn.hydraExhibit.resetSetting();
+         },
+         error: function(xhr, textStatus, errorThrown){
+     			$.noticeAdd({
+             inEffect:               {opacity: 'show'},      // in effect
+             inEffectDuration:       600,                    // in effect duration in miliseconds
+             stayTime:               6000,                   // time in miliseconds before the item has to disappear
+             text:                   'Your changes to' + $editNode.attr("rel") + ' could not be saved because of '+ xhr.statusText + ': '+ xhr.responseText,   // content of the item
+             stay:                   true,                  // should the notice item stay or not?
+             type:                   'error'                // could also be error, succes
+            });
+         }
+       });
+
+     },*/
+
      insertDescription: function(element){
        //alert("insert essay")
        $element = $(element)
@@ -527,20 +582,20 @@
 
        var values_list = $("ol[rel="+fieldName+"]");
        var new_value_index = values_list.children('li').size();       
-       var params = "?datastream_name="+datastreamName+"&content_type="+contentType
-       var assetUrl = $("input#show_description_url").first().attr("value")+params;
+       var params = "?datastream="+datastreamName+"&content_type="+contentType
+       var assetUrl = $("input#add_description_url").first().attr("value")+params;
        var addDiv = $("div#add-description-div").first()
        var essayDiv=$("div.description_div")
        var essayNode=$(element).closest("div.description_div")
 
-       var $item = jQuery('<li class=\"field_value description-textarea-container field\" name="asset[' + fieldName + '][' + new_value_index + ']">' +
+       var $item = jQuery('<li class=\"field_value description-textarea-container field\" name="asset[' + datastreamName + '][' + new_value_index + ']">' +
               '<a href="" class="destructive"><img src="/images/delete.png" border="0" /></a>' +
               '<label>Description Title</label> <input type="text" name="description_title" class="editable-edit" value="" /> ' +
                '<div class="textile-text text" id="'+fieldName+'_'+new_value_index+'">click to add Description content</div></li>');
 
        $item.appendTo(essayDiv);
        //alert("Essay Title=> "+$("input.editable-edit").val())
-       var submitUrl= assetUrl+"&description_action=insert_description" +"&format=html"+"&temp_content="+$("div#"+fieldName+"_"+new_value_index).html();
+       var submitUrl= assetUrl+"&format=html"+"&temp_content="+$("div#"+fieldName+"_"+new_value_index).html();
 
       function submitEditableTextArea(value, settings) {
        //alert("Submit from function")
@@ -576,7 +631,7 @@
           cancel    : "Cancel",
           placeholder : "click to edit description",
           onblur    : "ignore",
-          name      : "asset["+new_value_index+"]["+fieldName+"]",
+          name      : "asset["+new_value_index+"]["+datastreamName+"]",
           id        : "field_id",
           height    : "100",          
           ckeditor  : { toolbar:
@@ -589,14 +644,14 @@
      },
 
      deleteDescription: function(element){
-       $element = $(element)
+       //$element = $(element)
        var $essayNode = $(element).closest(".remove-description-div")
        var url =$(element).attr("action");
        var parent_pid = $("form#document_metadata").first().attr("data-pid");
        var parent_content_type = $("form#document_metadata").attr("data-content-type");
        var params ="?asset_id="+parent_pid+"&asset_content_type="+parent_content_type;
        url=url+params;
-       //alert("URL: "+url +" Closet Node"+$essayNode);
+       alert("URL: "+url +" Closet Node"+$essayNode);
        $.ajax({
          type: "DELETE",
          url: url,

@@ -91,10 +91,6 @@ class SubCollectionsController < ApplicationController
       @asset.save
       render :text => "Successfully removed #{obj.pid}from highlighted list"
     end
-  end
-
-  def show
-      
-  end
+  end  
 
 end

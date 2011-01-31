@@ -18,6 +18,7 @@ class Exhibit < ActiveFedora::Base
   # Uses the Hydra MODS Article profile for tracking most of the descriptive metadata
   has_metadata :name => "descMetadata", :type => ActiveFedora::MetadataDatastream do |m|
     m.field "main_description", :string, :xml_node => "main_description"
+    m.field "exhibit_title", :string, :xml_node => "exhibit_title"
   end
 
   # A datastream to hold browseable facet list
@@ -27,6 +28,11 @@ class Exhibit < ActiveFedora::Base
     m.field "tags", :string
   end 
 
+  def exhibit_title
+   return @exhibit_title if (defined? @exhibit_title)
+    values = self.fields[:exhibit_title][:values]
+    @exhibit_title = values.any? ? values.first : ""
+  end
 
   def build_members_query
     q = ""

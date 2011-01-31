@@ -1,4 +1,4 @@
-<h1>Exhibit Title</h1>
+<h1><%=  @exhibit.exhibit_title %></h1>
 
 <%- if editor? -%>
   <span class="edit-browse">
@@ -10,10 +10,11 @@
 <%- if @exhibit.descriptions.any? -%>
   <h2>Description</h2>
   <%- @exhibit.descriptions.each do |description| -%>
-    <em><%= description.title %></em>
-    <p class="collection_desc"><%= load_description(description) %></p>
-    <%# #link_to "Essay: \"#{description.title}\"", essay_path(params[:collection_id], description.pid) description.introduction %>
-    <%# link_to "[Read the complete essay]", essay_path(params[:collection_id], @essay.pid) %>
+    <div class="truncated_content">
+      <em><%= description.title %></em>
+      <span class="heading"> <%= "#{truncate( load_description(description), :length =>150, :ommision => "....")}"%> </span>
+      <div class="content"><%= load_description(description) %></div>
+    </div>
   <%- end -%>
 <%- else -%>
   <%- if editor? -%>
