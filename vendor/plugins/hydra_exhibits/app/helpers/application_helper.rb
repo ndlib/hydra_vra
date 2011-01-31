@@ -136,7 +136,7 @@ module ApplicationHelper
       result << "<span class=\"edit toggle active\">Edit</span>"
     else
       result << "<span class=\"browse toggle active\">View</span>"
-      result << "<a href=\"#{edit_catalog_path(@document[:id], :class => "facet_selected", :exhibit_id => @document[:id])}\" class=\"edit toggle\">Edit</a>"
+      result << "<a href=\"#{edit_catalog_path(@document[:id], :class => "edit_exhibit", :exhibit_id => @document[:id], :render_search=>"false")}\" class=\"edit toggle\">Edit</a>"
     end
     return result
   end

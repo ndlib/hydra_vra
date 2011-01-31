@@ -2,7 +2,6 @@
 <div id="showHead">
   <div id="showUtils">
     <div class="tools"><%= render :partial => 'show_tools' %></div>
-    <%- if params[:class].blank? -%>
       <%- if params[:render_search].blank? -%>
         <% session[:search].merge!({:exhibit_id=>params[:exhibit_id]}) if params[:exhibit_id]%>
         <span class="back_to_cat"><%= link_back_to_catalog :label=>'&laquo; Back to Search'%></span>
@@ -22,11 +21,15 @@
       <%- end -%>
       <span class="edit-browse">
         <%- if editor? -%>
-          <%= edit_and_browse_links %>
+          <%- if @document_fedora.class == SubCollection -%>
+            <%= edit_and_browse_subcollection_links(@document_fedora) %>
+          <%- elsif @document_fedora.class == Exhibit-%>
+            <%= edit_and_browse_exhibit_links(@document_fedora) %>
+          <%- else -%> 
+            <%= edit_and_browse_links %>
+          <%- end -%>
         <%- end -%>
       </span>
-    <%- end -%>
-
   </div>
 </div>
 <div id="document">
