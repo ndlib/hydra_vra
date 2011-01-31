@@ -12,17 +12,14 @@
 <h1><%=  @exhibit.exhibit_title %></h1>
 <%- if @exhibit.descriptions.any? -%>
   <h2>Description</h2>
-  <%- @exhibit.descriptions.each do |description| -%>
-    <div class="truncated_content">
-      <em><%= description.title %></em>
-      <span class="heading"> <%= "#{truncate( load_description(description), :length =>150, :ommision => "....")}"%> </span>
-      <div class="content"><%= load_description(description) %></div>
-    </div>
+  <%- @exhibit.descriptions(:response_format=>:solr).each_with_index do |document, counter| -%>
+    <%- description = load_af_instance_from_solr(document) -%>
+    <%= render :partial=>'descriptions/show_description', :locals => {:description => description, :document=> SolrDocument.new(document), :exhibit_id => params[:id]}%>
   <%- end -%>
 <%- else -%>
   <%- if editor? -%>
     <h2>Description</h2>
-    <p class="collection_desc"><%= "Essay forthcoming..." %></p>
+    <p><%= "Essay forthcoming..." %></p>
   <%- end -%>
 <%- end -%>
 

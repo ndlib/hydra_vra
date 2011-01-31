@@ -18,14 +18,14 @@
         <% end %>
       <%- elsif params[:exhibit_id]-%>
         <span class="back_to_cat"><h3><%= link_to_exhibit(:label=>"&laquo; Back to Browse Exhibit") %></h3></span>
-      <%- end -%>
+      <%- end -%>      
       <span class="edit-browse">
         <%- if editor? -%>
           <%- if @document_fedora.class == SubCollection -%>
             <%= edit_and_browse_subcollection_links(@document_fedora) %>
           <%- elsif @document_fedora.class == Exhibit-%>
             <%= edit_and_browse_exhibit_links(@document_fedora) %>
-          <%- else -%> 
+          <%- elsif @document_fedora.type.to_s != "Description"-%> 
             <%= edit_and_browse_links %>
           <%- end -%>
         <%- end -%>
@@ -38,12 +38,12 @@
     <div class="document">
       <%= render_document_partial @document, params["action"] %>
     </div>
-    
+
     <% if((@document_fedora.methods.include? "list_childern") && !(@document_fedora.type.to_s.eql?"item")) %>
     <% #if(@document_feodra.respond_to?(:list_childern)) #Ideal but not working %>
       <%= render :partial => "catalog/show_subcollections" %>
     <% end %>
-    
+
   </div>
 </div>
 

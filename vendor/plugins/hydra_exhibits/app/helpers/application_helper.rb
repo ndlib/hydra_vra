@@ -106,6 +106,12 @@ module ApplicationHelper
   alias :hydra_edit_and_browse_links :edit_and_browse_links
 
   def edit_and_browse_links
+=begin
+logger.debug("Params in edit_and_browse_links: #{params.inspect}")
+    asset = load_af_instance_from_solr(params[:id])
+    the_model = ActiveFedora::ContentModel.known_models_for( asset ).first
+    logger.debug("Model in edit_and_browse_links: #{the_model.inspect}")
+=end
     if params[:exhibit_id]
       result = ""
       if params[:action] == "edit"
@@ -178,7 +184,7 @@ module ApplicationHelper
     field_values.each_with_index do |current_value, z|
       name = "asset[#{datastream_name}][#{field_name}][#{z}][#{resource.pid}]"
       logger.debug("field_values : #{current_value}")
-      result << radio_button_tag (name, opts.first[0], (opts.first[0].to_s==current_value),:datastream=>"asset[#{datastream_name}][#{field_name}][#{z}]", :class=>"fieldselector", :rel=>h_name)      
+      result << radio_button_tag (name, opts.first[0], (opts.first[0].to_s==current_value),:data_pid=>resource.pid,:datastream=>"asset[#{datastream_name}][#{field_name}][#{z}]", :class=>"fieldselector", :rel=>h_name)      
       result << " #{opts.first[1]}"
     end
     return result

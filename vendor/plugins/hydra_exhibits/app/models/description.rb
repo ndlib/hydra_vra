@@ -30,4 +30,16 @@ class Description < ActiveFedora::Base
     @description_title = values.any? ? values.first : ""
   end
 
+  def summary
+    return @summary if (defined? @summary)
+    values = self.fields[:summary][:values]
+    @summary = values.any? ? values.first : ""
+  end
+
+  def style
+    return @style if (defined? @style)
+    values = self.fields[:page_display][:values]
+    @style = values.any? ? values.first : "newpage"
+  end
+
 end
