@@ -10,7 +10,7 @@ class Description < ActiveFedora::Base
   has_metadata   :name => "descMetadata",                   :type =>ActiveFedora::MetadataDatastream do |m|
     m.field "title", :string, :xml_node => "title"
     m.field "page_display", :string, :xml_node => "page_display"
-    m.field "introduction", :string, :xml_node => "introduction"
+    m.field "summary", :string, :xml_node => "summary"
   end
 
   has_datastream :name=>"descriptiondatastream", :type=>ActiveFedora::Datastream, :mimeType=>"text/html", :controlGroup=>'M'
