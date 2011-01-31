@@ -429,7 +429,7 @@ module ApplicationHelper
     display_facet = response_without_f_param.facets.detect {|f| f.name == solr_fname}
     display_facet_with_f = response.facets.detect {|f| f.name == solr_fname}
     unless display_facet.nil?
-      if display_facet.items.any?          
+      if display_facet.items.any?
         return_str += '<h3 class="facet-heading">' + facet_field_labels[display_facet.name] + '</h3>'
         return_str += '<ul>'
         display_facet.items.each do |item|
@@ -470,8 +470,8 @@ module ApplicationHelper
     q = build_lucene_query(params[:q])
     featured_query = [featured_query_to_append]
     lucene_query = "#{featured_query} AND #{q}" unless featured_query.empty?
-    @extra_controller_params = {}
-    get_search_results( @extra_controller_params.merge!(:q=>lucene_query) )    
+    extra_controller_params = {}
+    get_search_results(extra_controller_params.merge!(:q=>lucene_query) )    
   end
 
   def get_selected_browse_facets(browse_facets)
@@ -547,8 +547,8 @@ module ApplicationHelper
       ex = Exhibit.load_instance_from_solr(params[:exhibit_id])      
     end    
     lucene_query = "#{collection_query} AND #{q}" unless collection_query.empty?
-    @extra_controller_params ||= {}
-    (@collection_response, @collection_document_list) = get_search_results( @extra_controller_params.merge!(:q=>lucene_query))
+    extra_controller_params ||= {}
+    (@collection_response, @collection_document_list) = get_search_results( extra_controller_params.merge!(:q=>lucene_query))
     render :partial => "shared/add_collections", :locals => {:collection_list => @collection_response, :facet_name => nil, :facet_value => nil, :content=>content, :asset=>ex}    
   end
 
@@ -596,10 +596,10 @@ module ApplicationHelper
   #  Expects Array of PIDs and returns array of Response and DocumentList
   def get_pids_search_results(pid_array)
     fq = ActiveFedora::SolrService.construct_query_for_pids(pid_array)
-    @extra_controller_params ||= {}
-    @extra_controller_params.merge!(:q=>build_lucene_query(params[:q]))
-    @extra_controller_params.merge!(:fq=>fq)
-    get_search_results(@extra_controller_params)
+    extra_controller_params ||= {}
+    extra_controller_params.merge!(:q=>build_lucene_query(params[:q]))
+    extra_controller_params.merge!(:fq=>fq)
+    get_search_results(extra_controller_params)
   end
 
   # Apply a class to the body element if the browse conditions are met.
