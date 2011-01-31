@@ -394,7 +394,7 @@ module ApplicationHelper
     display_facet = response_without_f_param.facets.detect {|f| f.name == solr_fname}
     display_facet_with_f = response.facets.detect {|f| f.name == solr_fname}
     unless display_facet.nil?
-      if display_facet.items.length > 0          
+      if display_facet.items.any?          
         return_str += '<h3 class="facet-heading">' + facet_field_labels[display_facet.name] + '</h3>'
         return_str += '<ul>'
         display_facet.items.each do |item|
@@ -402,7 +402,7 @@ module ApplicationHelper
           return_str += '<li>'
           params[:f]=temp if temp
           if facet_in_params?(display_facet.name, item.value )
-            if display_facet_with_f.items.length > 0
+            if display_facet_with_f.items.any?
               display_facet_with_f.items.each do |item_with_f|
                 return_str += render_selected_browse_facet_value(display_facet_with_f.name, item_with_f, browse_facets)
                 if browse_facets.length > 1
@@ -440,7 +440,7 @@ module ApplicationHelper
       @facet_subsets_map = @exhibit.facet_subsets_map
       @selected_browse_facets = get_selected_browse_facets(@browse_facets)
       #subset will be nil if the condition fails
-      @subset = @facet_subsets_map[@selected_browse_facets] if @selected_browse_facets.length > 0 && @facet_subsets_map[@selected_browse_facets]
+      @subset = @facet_subsets_map[@selected_browse_facets] if @selected_browse_facets.any? && @facet_subsets_map[@selected_browse_facets]
     end
     if(content.eql?("exhibit"))
       asset=@exhibit
@@ -556,7 +556,7 @@ module ApplicationHelper
       @facet_subsets_map = @exhibit.facet_subsets_map
       @selected_browse_facets = get_selected_browse_facets(@browse_facets) 
       #subset will be nil if the condition fails
-      @subset = @facet_subsets_map[@selected_browse_facets] if @selected_browse_facets.length > 0 && @facet_subsets_map[@selected_browse_facets]
+      @subset = @facet_subsets_map[@selected_browse_facets] if @selected_browse_facets.any? && @facet_subsets_map[@selected_browse_facets]
       #call exhibit.discriptions once since querying solr everytime on inbound relationship
       if browse_facet_selected?(@browse_facets)
         @subset.nil? ? @descriptions = [] : @descriptions = @subset.descriptions
@@ -584,6 +584,12 @@ module ApplicationHelper
     @extra_controller_params.merge!(:q=>build_lucene_query(params[:q]))
     @extra_controller_params.merge!(:fq=>fq)
     get_search_results(@extra_controller_params)
+  end
+
+  # Apply a class to the body element if the browse conditions are met.
+  # TODO: Extend this method to support exhibit-specific themes
+  def set_page_style
+    @body_class ||= "exhibit" if !params[:exhibit_id].blank? || params[:controller] == "exhibits"
   end
 end
 

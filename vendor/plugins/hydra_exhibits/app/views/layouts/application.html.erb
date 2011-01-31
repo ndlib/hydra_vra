@@ -7,11 +7,7 @@
     
     <%= render_head_content %>
   </head>
-  <% if params[:q].to_s.empty? and params[:f].to_s.empty? and params[:id].nil? %>
-    <body onload="$('input#q').focus();">
-  <% else %>
-    <body>
-  <% end %>
+  <body class="<%= @body_class %>"<%= " onload=\"$('input#q').focus();\"" if params[:q].to_s.empty? && params[:f].to_s.empty? && params[:id].nil? %>>
 	  <div id="doc4" class="yui-t2">
 	    
 	    <div id="hd">

@@ -6,6 +6,7 @@ class ExhibitsController < CatalogController
 
   before_filter :initialize_exhibit, :except=>[:index, :new]
   before_filter :require_solr, :require_fedora, :only=>[:new,:index]
+  before_filter :set_page_style, :only => :show
 
   include Hydra::AssetsControllerHelper
   include ApplicationHelper
