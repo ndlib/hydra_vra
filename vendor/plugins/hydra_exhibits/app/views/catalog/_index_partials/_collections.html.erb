@@ -1,6 +1,4 @@
 <% thumbnail = nil unless thumbnail%>
-<%# default partial to display solr document fields in catalog index view -%>
-<%= link_to_document document, :label=>truncate(title, :length => 80) %>
 <div class="with-thumbnail">
   <div class="thumbnail-container">
     <%= link_to_document document, :label=>(image_tag( thumbnail.nil? ? '/images/no_thumbnail.png' : thumbnail))%>
@@ -18,5 +16,3 @@
 <p class="description">
   <%= document.get("ead_archive_desc_t") %>
 </p>
-
-

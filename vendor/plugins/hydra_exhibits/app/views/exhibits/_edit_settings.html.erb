@@ -6,14 +6,14 @@
       <input id="content_type" type="hidden" name="content_type" value="<%= content %>" />
     <dl>
       <dt>
-        Title:
+        <%= fedora_field_label("descMetadata", "exhibit_title", "Exhibit Title:")%>
       </dt>
       <dd class="title">
-
+        <%= fedora_text_field(document_fedora,"descMetadata", "exhibit_title")%>
       </dd>
 
       <dt>
-        <%= fedora_field_label("filters", "query", "Solr Queries:")%>
+        <%= fedora_field_label("filters", "query", "Solr Query:")%>
       </dt>
       <dd id="queries">
         <%= fedora_text_field(document_fedora,"filters", "query", :multiple=>true)%>        

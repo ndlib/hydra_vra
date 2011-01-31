@@ -194,7 +194,7 @@ module Blacklight::SolrHelper
   # a solr query method
   # retrieve a solr document, given the doc id
   # TODO: shouldn't hardcode id field;  should be setable to unique_key field in schema.xml
-  def get_solr_response_for_doc_id(id=nil, extra_controller_params={})
+  def get_solr_response_for_doc_id(id=nil, extra_controller_params={})    
     solr_response = Blacklight.solr.find solr_doc_params(id, extra_controller_params)
     raise InvalidSolrID.new if solr_response.docs.empty?
     document = SolrDocument.new(solr_response.docs.first)

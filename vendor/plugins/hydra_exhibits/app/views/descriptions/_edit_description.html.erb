@@ -1,23 +1,40 @@
 <div class="description_div">
     <input id="show_description_url" type="hidden" name="url" asset-pid="<%= asset.pid %>" value="<%= description_path(asset.pid) %>" />
-    <%# debug asset.pid %>
+    <input id="add_description_url" type="hidden" name="url" asset-pid="<%= asset.pid %>" value="<%= add_description_path(asset.pid) %>" />
+    <input id="update_title_url" type="hidden" name="url" asset-pid="<%= asset.pid %>" value="<%= update_title_description_path(asset.pid) %>" />
     <%- unless asset.description_list.blank? -%>
-      <% descriptions = asset.description_list %>
-      <%# debug descriptions.count %>
+      <% descriptions = asset.description_list %>      
       <dl class="related-descriptions">
         <%- descriptions.each do |description| -%>
-          <dt><label>Description Title:</label></dt>
-          <dd class="remove-description-div">
-            <%= custom_text_field(description,"descMetadata", [:title]) %>
-            <%=app_rich_text_area("description",description.pid, description.descriptiondatastream_ids.first) %>
-            <a style="position: absolute" class="destructive destroy_description" href=# action="<%= description_path(description.pid)%>" title="Remove Description"> Delete this description</a>
-          </dd>        
+          <div class="remove-description-div">
+              <input id="description_id" type="hidden" name="description details" action="<%= asset_path(:id=>description.pid, :content_type=>"description")%>" value="<%= description.pid %>" />
+              <dt><label>Description Title:</label></dt>
+              <dd>
+                <%= custom_text_field(description,"descMetadata", [:title]) %>
+                <%=custom_rich_text_area(description, "descriptiondatastream", description.descriptiondatastream_ids.first, :datastream=>true) %>
+                <a style="position: absolute" class="destructive destroy_description" href=# action="<%= description_path(description.pid)%>" title="Remove Description"> Delete this description</a>
+              </dd>
+              <dt>
+                <%= fedora_field_label(description, "descMetadata", "Summary")%>
+              </dt>
+              <dd class="summary">
+                <%=custom_rich_text_area(description, "descMetadata", "summary", :datastream=>false) %>
+              </dd>              
+              <dt>
+                <%= fedora_field_label("descMetadata", "page_display", "Display Style:")%>
+              </dt>
+              <dd class="display">
+                <%= custom_radio_button(description,"descMetadata", "page_display", :inline=>"Display in the same page")%>
+                <%= custom_radio_button(description,"descMetadata", "page_display", :newpage=>"Display in the new page")%>
+              </dd>
+          </div>
         <%- end -%>
       </dl>
     <%- end -%>
     <div id="add-description-div">
       <%= description_text_area_insert_link "descriptiondatastream", {:label=>"Description", :content_type=>"description"}%>
     </div>
+
 </div>
 
 

@@ -12,7 +12,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :webauths, :protocol => ((defined?(SSL_ENABLED) and SSL_ENABLED) ? 'https' : 'http')
   map.resources :components
   map.resources :images_tag
-  map.resources :descriptions
+  map.resources :descriptions, {:member => {:add=> :put, :update_title => :put } }
   map.resources :collections
   map.resources :sub_collections
   map.resources :exhibits, {:member => {:update_embedded_search=> :post, :add_main_description=> :put, :add_collection=> :put, :remove_collection=> :post, :refresh_setting=> :get}}

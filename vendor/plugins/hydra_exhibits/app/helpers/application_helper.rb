@@ -167,13 +167,28 @@ module ApplicationHelper
     return result
   end
 
+   def custom_radio_button(resource, datastream_name, field_key, opts={})
+    field_name = field_name_for(field_key)
+    field_values = get_values_from_datastream(resource, datastream_name, field_key, opts)
+    base_id = generate_base_id(field_name, field_values.first, field_values, opts.merge({:multiple=>false}))
+    result = ""
+    h_name = OM::XML::Terminology.term_hierarchical_name(*field_key)
+    field_values.each_with_index do |current_value, z|
+      name = "asset[#{datastream_name}][#{field_name}][#{z}][#{resource.pid}]"
+      logger.debug("field_values : #{current_value}")
+      result << radio_button_tag (name, opts.first[0], (opts.first[0].to_s==current_value),:datastream=>"asset[#{datastream_name}][#{field_name}][#{z}]", :class=>"fieldselector", :rel=>h_name)      
+      result << " #{opts.first[1]}"
+    end
+    return result
+  end
+
   def custom_text_field(resource, datastream_name, field_key, opts={})
     field_name = field_name_for(field_key)
     field_values = get_values_from_datastream(resource, datastream_name, field_key, opts)
     content_type = ActiveFedora::ContentModel.known_models_for( resource ).first
-        if content_type.nil?
-          raise "Unknown content type for the object with pid #{@obj.pid}"
-        end
+    if content_type.nil?
+      raise "Unknown content type for the object with pid #{@obj.pid}"
+    end
     if opts.fetch(:multiple, true)
       container_tag_type = :li
     else
@@ -202,43 +217,61 @@ module ApplicationHelper
     return result
   end
   
-  def app_rich_text_area(content_type,pid, datastream_name, opts={})
-    field_name = "description_content"
-    af_model = retrieve_af_model(content_type)
-    logger.error("cm:#{content_type.inspect}, pid:#{pid.inspect}, ds:#{datastream_name.inspect}")
-    raise "Content model #{content_type} is not of type ActiveFedora:Base" unless af_model
-    resource = af_model.load_instance(pid)
-    logger.error("Model: #{af_model}, resource:#{resource.pid}")
-    field_values = resource.descriptiondatastream(datastream_name).first.content
+  def custom_rich_text_area(resource, datastream_name, datastream_name_key, opts={})
+    content_type = ActiveFedora::ContentModel.known_models_for( resource ).first
+    if content_type.nil?
+      raise "Unknown content type for the object with pid #{@obj.pid}"
+    end
+    logger.error("Model: #{content_type}, resource:#{resource.pid}")
     if opts.fetch(:multiple, true)
       container_tag_type = :li
     else
       field_values = [field_values.first]
       container_tag_type = :span
     end
-    body = ""
-    base_id = "base_id"
-    name = "asset[#{datastream_name}][#{field_name}]"
-    processed_field_value = white_list( RedCloth.new(field_values, [:sanitize_html]).to_html)
+    if opts.fetch(:datastream, true)
+      field_name = datastream_name
+      field_values = resource.content
+      body = ""
+      base_id = "base_id"
+      name = "asset[#{datastream_name_key}][#{field_name}]"
+      processed_field_value = white_list( RedCloth.new(field_values, [:sanitize_html]).to_html)
 
-    body << "<#{container_tag_type.to_s} class=\"field_value description-textarea-container field\" id=\"#{base_id}-container\">"
-      # Not sure why there is we're not allowing the for the first textile to be deleted, but this was in the original helper.
-      #body << "<a href=\"\" title=\"Delete '#{h(current_value)}'\" class=\"destructive field\">Delete</a>" unless z == 0
-      body << "<div class=\"textile-text text\" id=\"#{base_id}-text\">#{processed_field_value}</div>"
-      body << "<input class=\"textile-edit edit\" id=\"#{base_id}\"  data-pid=\"#{pid}\" data-content-type=\"#{content_type}\" data-datastream-name=\"#{datastream_name}\" rel=\"#{field_name}\" name=\"#{name}\" title=\"description_title\" value=\"#{h(field_values)}\"/>"
-    body << "</#{container_tag_type}>"
+      body << "<#{container_tag_type.to_s} class=\"field_value description-textarea-container field\" id=\"#{base_id}-container\">"
+        # Not sure why there is we're not allowing the for the first textile to be deleted, but this was in the original helper.
+        #body << "<a href=\"\" title=\"Delete '#{h(current_value)}'\" class=\"destructive field\">Delete</a>" unless z == 0
+        body << "<div class=\"textile-text text\" id=\"#{base_id}-text\">#{processed_field_value}</div>"
+        body << "<input class=\"textile-edit edit\" id=\"#{base_id}\"  data-pid=\"#{resource.pid}\"data-content-type=\"#{content_type}\"
+                  data-datastream-name=\"#{datastream_name}\" rel=\"#{field_name}\" name=\"#{name}\" load-from-datastream=\"true\" value=\"#{h(field_values)}\"/>"
+      body << "</#{container_tag_type}>"
 
+      result = ""
+    else
+      field_name = field_name_for(datastream_name_key)
+      field_values = get_values_from_datastream(resource, datastream_name, datastream_name_key, opts)
+      body = ""
 
-    result = ""
+    field_values.each_with_index do |current_value, z|
+      base_id = generate_base_id(field_name, current_value, field_values, opts)
+      name = "asset[#{datastream_name}][#{field_name}][#{z}]"
+      processed_field_value = white_list( RedCloth.new(current_value, [:sanitize_html]).to_html)
 
+      body << "<#{container_tag_type.to_s} class=\"field_value description-textarea-container field\" id=\"#{base_id}-container\">"
+        # Not sure why there is we're not allowing the for the first textile to be deleted, but this was in the original helper.
+        body << "<a href=\"\" title=\"Delete '#{h(current_value)}'\" class=\"destructive field\">Delete</a>" unless z == 0
+        body << "<div class=\"textile-text text\" id=\"#{base_id}-text\">#{processed_field_value}</div>"
+        body << "<input class=\"textile-edit edit\" id=\"#{base_id}\" data-pid=\"#{resource.pid}\"data-content-type=\"#{content_type}\"
+                  data-datastream-name=\"#{datastream_name}\" rel=\"#{field_name}\" name=\"#{name}\" load-from-datastream=\"false\"  value=\"#{h(current_value)}\"/>"
+      body << "</#{container_tag_type}>"
+    end
+    result = field_selectors_for(datastream_name, datastream_name_key)
+    end
     if opts.fetch(:multiple, true)
       result << content_tag(:ol, body, :rel=>field_name, :title=>"description_title")
     else
       result << body
     end
-
     return result
-
   end
 
   def description_text_area_insert_link(datastream_name, opts={})
@@ -394,7 +427,7 @@ module ApplicationHelper
     display_facet = response_without_f_param.facets.detect {|f| f.name == solr_fname}
     display_facet_with_f = response.facets.detect {|f| f.name == solr_fname}
     unless display_facet.nil?
-      if display_facet.items.length > 0          
+      if display_facet.items.any?          
         return_str += '<h3 class="facet-heading">' + facet_field_labels[display_facet.name] + '</h3>'
         return_str += '<ul>'
         display_facet.items.each do |item|
@@ -402,7 +435,7 @@ module ApplicationHelper
           return_str += '<li>'
           params[:f]=temp if temp
           if facet_in_params?(display_facet.name, item.value )
-            if display_facet_with_f.items.length > 0
+            if display_facet_with_f.items.any?
               display_facet_with_f.items.each do |item_with_f|
                 return_str += render_selected_browse_facet_value(display_facet_with_f.name, item_with_f, browse_facets)
                 if browse_facets.length > 1
@@ -537,7 +570,7 @@ module ApplicationHelper
       @facet_subsets_map = @exhibit.facet_subsets_map
       @selected_browse_facets = get_selected_browse_facets(@browse_facets) 
       #subset will be nil if the condition fails
-      @subset = @facet_subsets_map[@selected_browse_facets] if @selected_browse_facets.length > 0 && @facet_subsets_map[@selected_browse_facets]
+      @subset = @facet_subsets_map[@selected_browse_facets] if @selected_browse_facets.any? && @facet_subsets_map[@selected_browse_facets]
       #call exhibit.discriptions once since querying solr everytime on inbound relationship
       if browse_facet_selected?(@browse_facets)
         @subset.nil? ? @descriptions = [] : @descriptions = @subset.descriptions
@@ -565,6 +598,12 @@ module ApplicationHelper
     @extra_controller_params.merge!(:q=>build_lucene_query(params[:q]))
     @extra_controller_params.merge!(:fq=>fq)
     get_search_results(@extra_controller_params)
+  end
+
+  # Apply a class to the body element if the browse conditions are met.
+  # TODO: Extend this method to support exhibit-specific themes
+  def set_page_style
+    @body_class ||= "exhibit" if !params[:exhibit_id].blank? || params[:controller] == "exhibits"
   end
 end
 

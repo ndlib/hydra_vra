@@ -163,8 +163,7 @@ module HydraFedoraMetadataHelper
     base_id = generate_base_id(field_name, field_values.first, field_values, opts.merge({:multiple=>false}))
     
     result = ""
-    h_name = OM::XML::Terminology.term_hierarchical_name(*field_key)    
-    
+    h_name = OM::XML::Terminology.term_hierarchical_name(*field_key)
     field_values.each_with_index do |current_value, z|
       result << tag(:input, :type=>"radio", :class=>"fieldselector", :rel=>h_name, :name=>"field_selectors[#{datastream_name}][#{h_name}][#{opts[0]}]", :value=>opts.first[0])
       result << " #{opts.first[1]}"

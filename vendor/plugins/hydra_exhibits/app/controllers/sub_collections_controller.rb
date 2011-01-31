@@ -23,7 +23,7 @@ class SubCollectionsController < ApplicationController
       not_found = not_found.concat("#{param} parameter is required\n") unless params.has_key?(param)
     end
   end
-  raise not_found if not_found.length > 0
+  raise not_found if not_found.any?
   end
 
   def index
@@ -90,10 +90,6 @@ class SubCollectionsController < ApplicationController
       @asset.save
       render :text => "Successfully removed #{obj.pid}from highlighted list"
     end
-  end
-
-  def show
-      
-  end
+  end  
 
 end

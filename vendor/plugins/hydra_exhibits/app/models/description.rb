@@ -7,8 +7,10 @@ class Description < ActiveFedora::Base
   has_bidirectional_relationship  "description_of", :is_description_of, :has_description
 
   has_metadata   :name => "rightsMetadata",                 :type =>Hydra::RightsMetadata
-  has_metadata   :name => "descMetadata",                   :type =>ActiveFedora::QualifiedDublinCoreDatastream do |m|
+  has_metadata   :name => "descMetadata",                   :type =>ActiveFedora::MetadataDatastream do |m|
     m.field "title", :string, :xml_node => "title"
+    m.field "page_display", :string, :xml_node => "page_display"
+    m.field "summary", :string, :xml_node => "summary"
   end
 
   has_datastream :name=>"descriptiondatastream", :type=>ActiveFedora::Datastream, :mimeType=>"text/html", :controlGroup=>'M'
