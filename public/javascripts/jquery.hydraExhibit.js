@@ -309,10 +309,13 @@
     });
 
     $("dd.display input").live('click',function(){
-      var $closestForm = $("input#description_id");
+      var $closestdd = $(this).closest('dd.display')
+      var $closestForm=$closestdd.siblings('input.update_description_display');
       var url = $closestForm.attr("action");
       var name = $(this).attr("datastream")
-      var params =  name + "="+$(this).attr("value")+"&_method=put";      
+      var data_pid = $(this).attr("data_pid")
+      var params =  name + "="+$(this).attr("value")+"&_method=put";
+      //alert("Radio update: "+url)
        $.ajax({
          type: "PUT",
          url: url,

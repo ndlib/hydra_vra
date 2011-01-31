@@ -5,7 +5,7 @@
     </em></h3>
     <p>
       <%= description.summary %>
-      <%= link_to "[Read the complete essay]", catalog_path(description.pid, :viewing_context => "browse") %>
+      <%= link_to_document document, :label=>("[Read the complete essay]")%>
     </p>
   <%- else -%>
     <h3> <em><%= description.title %></em> </h3>

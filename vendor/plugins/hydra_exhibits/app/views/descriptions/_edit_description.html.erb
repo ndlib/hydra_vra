@@ -1,13 +1,13 @@
 <div class="description_div">
     <input id="show_description_url" type="hidden" name="url" asset-pid="<%= asset.pid %>" value="<%= description_path(asset.pid) %>" />
     <input id="add_description_url" type="hidden" name="url" asset-pid="<%= asset.pid %>" value="<%= add_description_path(asset.pid) %>" />
-    <input id="update_title_url" type="hidden" name="url" asset-pid="<%= asset.pid %>" value="<%= update_title_description_path(asset.pid) %>" />
+    <input id="update_title_url" type="hidden" name="url" asset-pid="<%= asset.pid %>" value="<%= update_title_description_path(asset.pid) %>" />    
     <%- unless asset.description_list.blank? -%>
       <% descriptions = asset.description_list %>      
       <dl class="related-descriptions">
         <%- descriptions.each do |description| -%>
           <div class="remove-description-div">
-              <input id="description_id" type="hidden" name="description details" action="<%= asset_path(:id=>description.pid, :content_type=>"description")%>" value="<%= description.pid %>" />
+              <input class="update_description_display" type="hidden" name="description display" action="<%= asset_path(description.pid,:content_type=>"description")%>"/>
               <dt><label>Description Title:</label></dt>
               <dd>
                 <%= custom_text_field(description,"descMetadata", [:title]) %>

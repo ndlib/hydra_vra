@@ -9,8 +9,7 @@
 <%= debug @subset ? "Matched subset" : "Did not match subset" if RAILS_ENV == "development" -%>
 
 <%- if @descriptions.any? -%>
-  <h2>Description</h2>
-  <%#@descriptions.each do |description| -%>
+  <h2>Description</h2>  
   <%- @subset.descriptions(:response_format=>:solr).each_with_index do |document, counter| -%>
     <%- description = load_af_instance_from_solr(document) -%>
     <%= render :partial=>'shared/show_description', :locals => {:description => description, :document=> SolrDocument.new(document), :exhibit_id => params[:id]}%>
@@ -21,6 +20,7 @@
     <p><%= "Essay forthcoming..." %></p>
   <%- end -%>
 <%- end -%>
+
 
 <%- if @subset && @subset.highlighted.any? -%>
   <h2>Featured sources</h2>
