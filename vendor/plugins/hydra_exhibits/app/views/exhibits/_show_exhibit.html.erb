@@ -11,7 +11,7 @@
   <h2>Description</h2>
   <%- @exhibit.descriptions(:response_format=>:solr).each_with_index do |document, counter| -%>
     <%- description = load_af_instance_from_solr(document) -%>
-    <%= render :partial=>'shared/show_description', :locals => {:description => description, :document=> SolrDocument.new(document), :exhibit_id => params[:id]}%>
+    <%= render :partial=>'descriptions/show_description', :locals => {:description => description, :document=> SolrDocument.new(document), :exhibit_id => params[:id]}%>
   <%- end -%>
 <%- else -%>
   <%- if editor? -%>
