@@ -1,10 +1,15 @@
-<h1>Sub Collection Title</h1>
+<div id="showHead">
+  <div id="showUtils">
+    <div class="tools"><%= render :partial => 'show_tools' %></div>
+     <span class="edit-browse">
+      <%- if editor? -%>
+        <%= edit_and_browse_subcollection_links(@subset) %>
+      <%- end -%>
+    </span>
+  </div>
+</div>
 
-<%- if editor? -%>
-  <span class="edit-browse">
-    <%= edit_and_browse_subcollection_links(@subset) %>
-  </span>
-<%- end -%>
+<h1>Sub Collection Title</h1>
 
 <%= debug @subset ? "Matched subset" : "Did not match subset" if RAILS_ENV == "development" -%>
 
