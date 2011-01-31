@@ -1,0 +1,5 @@
+<fieldset id="work_fields">
+  <legend> Featured Sources </legend>
+  <%= render :partial=>'shared/item_list', :locals=>{:content=>content} %>
+  <a class='addhighlighted' href='#' title='add as featured' exhibit-id="<%= params[:exhibit_id] %>" >Add Selected to Featured Sources</a>
+</fieldset>

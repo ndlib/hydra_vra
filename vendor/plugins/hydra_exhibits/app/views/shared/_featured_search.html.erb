@@ -1,9 +1,6 @@
-<div class="highlighted_search">
-
-<div class="show_highlighted_div"> <%= render :partial => 'shared/show_highlighted', :locals => {:content=>content, :asset=>asset} %> </div>
-
-
-<h3>Available <%=h facet_value if facet_value %> <em><%= grouped_result_count(@component_response, facet_name, facet_value) %> to be added as highlighted</em></h3>
+<%- query =  "active_fedora_model_s:Component" -%>
+<%# query += " AND #{q}" unless q.nil? -%>
+<%- (@component_response, @document_list) = get_featured_available(content, query) -%>
 <div class="pagination">
   <%= will_paginate @component_response.docs, :page_links => false, :class => 'prev_next_links' %>
   <%= will_paginate @component_response.docs, :container => false %>
@@ -13,7 +10,7 @@
   <tr>
     <th class="title">Title</th>
     <th class="type">Type</th>
-    <th class="type">Highlighted in <%=content %></th>
+    <th class="type">Feature in <%=content %></th>
   </tr>
   <% end %>
   <% @component_response.docs.each_with_index do |document,counter| %>
@@ -27,7 +24,7 @@
         <%=  document_type(document).gsub("Hydrangea","") %>
       </td>
       <td>
-        <input type="checkbox" name="sub_collection_highlighted" class="sub_collection" value=<%=document[:id]%>>
+        <input type="checkbox" name="featured" class="featured" value=<%=document[:id]%>>
       </td>
     </tr>
   <% end %>
@@ -36,7 +33,3 @@
   <%= will_paginate @component_response.docs, :page_links => false, :class => 'prev_next_links' %>
   <%= will_paginate @component_response.docs, :container => false %>
 </div>
-</div>
-
-
-    

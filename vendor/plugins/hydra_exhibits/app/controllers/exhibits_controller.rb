@@ -31,7 +31,7 @@ class ExhibitsController < CatalogController
   end
 
   def update_embedded_search
-    get_components(params[:content_type],"active_fedora_model_s:Component")
+    render :partial => "shared/featured_search", :locals=>{:content=>params[:content_type]}
   end
 
   def add_main_description

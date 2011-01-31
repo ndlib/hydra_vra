@@ -1,0 +1,20 @@
+<fieldset id="work_fields">
+  <legend> Featured Sources </legend>
+  <%- initialize_exhibit if @exhibit.nil? -%> 
+  <%- if(content.eql?("exhibit")) -%>
+    <%- asset=@exhibit -%>
+  <%- elsif(content.eql?("sub_collection")) -%>
+    <%- asset=@subset -%>
+  <%- else -%>
+    <%- asset=nil -%>
+  <%- end -%>
+  <div class="show_highlighted_div"> <%= render :partial => 'shared/show_highlighted', :locals => {:content=>content, :asset=>asset} %> </div>
+  <div class="update_featured">
+    <h3>Available Sources</h3>
+    <%= render :partial => "shared/featured_search_form" %>
+    <div class="highlighted_search">
+      <%= render :partial => "shared/featured_search", :locals=>{:content=>content} %>
+    </div>
+    <a class='addhighlighted' href='#' title='add as featured' exhibit-id="<%= params[:exhibit_id] %>" >Add Checked to Featured Sources</a>
+  </div>
+</fieldset>

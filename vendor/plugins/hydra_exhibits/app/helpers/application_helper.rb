@@ -431,31 +431,12 @@ module ApplicationHelper
     temp and temp[field] and temp[field].include?(value)
   end
 
-  def get_components(content, component_query_to_append)
-    logger.debug("param in helper: #{params.inspect}")
-    if !params[:exhibit_id].blank?
-      exhibit_id = params[:exhibit_id]
-      @exhibit = Exhibit.load_instance_from_solr(exhibit_id)
-      @browse_facets = @exhibit.browse_facets
-      @facet_subsets_map = @exhibit.facet_subsets_map
-      @selected_browse_facets = get_selected_browse_facets(@browse_facets)
-      #subset will be nil if the condition fails
-      @subset = @facet_subsets_map[@selected_browse_facets] if @selected_browse_facets.length > 0 && @facet_subsets_map[@selected_browse_facets]
-    end
-    if(content.eql?("exhibit"))
-      asset=@exhibit
-    elsif(content.eql?("sub_collection"))
-      asset=@subset
-    else
-      asset=nil
-    end
+  def get_featured_available(content, featured_query_to_append)
     q = build_lucene_query(params[:q])
-    component_query = [component_query_to_append]
-    lucene_query = "#{component_query} AND #{q}" unless component_query.empty?
+    featured_query = [featured_query_to_append]
+    lucene_query = "#{featured_query} AND #{q}" unless featured_query.empty?
     @extra_controller_params = {}
-    (@component_response, @document_list) = get_search_results( @extra_controller_params.merge!(:q=>lucene_query) )    
-    render :partial => "shared/edit_highlighted", :locals => {:docs => @component_response.docs, :facet_name => nil, :facet_value => nil, :content=>content, :asset=>asset}
-
+    get_search_results( @extra_controller_params.merge!(:q=>lucene_query) )    
   end
 
   def get_selected_browse_facets(browse_facets)

@@ -25,9 +25,7 @@
          dataType: "html",
          data: params,
          success: function(data){
-           $(showDiv).last().after(data);
-           $(perviousNode).remove();
-           $inserted = $(showDiv).last();
+           $(showDiv).html(data);
          },
          error: function(xhr, textStatus, errorThrown){
      		$.noticeAdd({
@@ -58,10 +56,37 @@
          hideDiv.hide();
       return false;
     });
+
+     /*$('input.featured').bind('click',function(){
+       var selectedSubcollectionItems = new Array();
+       $("input.featured:checked").each(function() {selectedSubcollectionItems.push($(this).val());});       
+       var url = $("input#update_url").first().attr("value")       
+       var params =  "highlighted_items="+selectedSubcollectionItems+"&highlighted_action='add'"
+        $.ajax({
+         type: "PUT",
+         url: url,
+         dataType: "html",
+         data: params,
+         success: function(data){
+           $(showDiv).html(data);
+         },
+         error: function(xhr, textStatus, errorThrown){
+     		$.noticeAdd({
+             inEffect:               {opacity: 'show'},      // in effect
+             inEffectDuration:       600,                    // in effect duration in milliseconds
+             stayTime:               6000,                   // time in milliseconds before the item has to disappear
+             text:                   'Your changes failed'+ xhr.statusText + ': '+ xhr.responseText,
+             stay:                   true,                  // should the notice item stay or not?
+             type:                   'error'                // could also be error, success
+            });
+         }
+       });
+      return false;
+    });*/
      
      $('a.addhighlighted').bind('click',function(){
        var selectedSubcollectionItems = new Array();
-       $("input.sub_collection:checked").each(function() {selectedSubcollectionItems.push($(this).val());});       
+       $("input.featured:checked").each(function() {selectedSubcollectionItems.push($(this).val());});       
        var url = $("input#update_url").first().attr("value")       
        var params =  "highlighted_items="+selectedSubcollectionItems+"&highlighted_action='add'"
        var showDiv=$("div.show_highlighted_div")
@@ -73,9 +98,7 @@
          dataType: "html",
          data: params,
          success: function(data){
-           $(showDiv).last().after(data);
-           $(perviousNode).remove();
-           $inserted = $(showDiv).last();
+           $(showDiv).html(data);
          },
          error: function(xhr, textStatus, errorThrown){
      		$.noticeAdd({
@@ -91,7 +114,7 @@
       return false;
     });
 
-    $('a.destroy_highlighted').bind('click',function(){
+    $('a.destroy_highlighted').live('click',function(){
       var url = $(this).attr("action");
       var $itemNode = $(this).closest("dd.item_highlighted")
       $.ajax({

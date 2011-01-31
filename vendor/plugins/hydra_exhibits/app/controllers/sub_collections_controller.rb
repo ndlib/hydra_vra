@@ -79,7 +79,6 @@ class SubCollectionsController < ApplicationController
         end
         response["updated"] << {"#{af_model}_highlighted"=>sub_collection_highlighted}
       end
-      #render :partial => "shared/item_list", :locals => {:content => params[:content_type]}
       render :partial => 'shared/show_highlighted', :locals => {:content=>params[:content_type], :asset=>@asset}
     else
       raise "error, Item id not available in parameters list for removing from highlighted list" if params[:item_id].blank?
