@@ -442,7 +442,7 @@ class EadXml < ActiveFedora::NokogiriDatastream
         nodeset = self.find_by_terms(:archive_desc, :dsc, :collection, :item)
       when :image
         node = EadXml.image_template
-        nodeset = self.find_by_terms(:collection)
+        nodeset = self.find_by_terms(:item, :daogrp, :daoloc)
       else
         ActiveFedora.logger.warn("#{type} is not a valid argument for EadXml.insert_node")
         node = nil

@@ -18,7 +18,7 @@ module BatchIngester
           subcollection_ingest_each_row( row )
         elsif(filename.include? "Item")
           puts "Ingesting Item Object"
-          item_ingest_each_row( row )
+          item_ingest_each_row( row, filename )
         elsif(filename.include? "Image")
           puts "Ingesting Page Object"
           page_ingest_each_row( row )
@@ -73,7 +73,7 @@ module BatchIngester
         prefercite_head = row[22]
         prefercite_info = row[23]
         key = "COLLECTION_#{ead_id}"
-        attributes= {:pid_key => key, :ead_id => ead_id, :title => title, :author => author, :publisher => publisher, :creator => creation_person, :creation_date => creation_date, :address => address, :date => date, :langusage => langusage, :language => language, :unit_title => unit_title, :unit_head => unit_head, :unit_id => unit_id, :unit_date => unit_date, :unit_language => unit_language, :corp_name => corp_name, :subarea => subarea, :unit_address => unit_address, :access_restrict_head => access_restrict_head, :access_restrict_info => access_restrict_info, :prefercite_head => prefercite_head, :prefercite_info => prefercite_info}
+        attributes= {:pid_key => key, :ead_id => ead_id, :title => title, :author => author, :publisher => publisher, :creator => creation_person, :creation_date => creation_date, :address => address, :date => date, :langusage => langusage, :language => language, :unit_title => unit_title, :unit_head => unit_head, :unit_id => unit_id, :unit_date => unit_date, :unit_language => unit_language, :corp_name => corp_name, :subarea => subarea, :unit_address => unit_address, :access_restrict_head => access_restrict_head, :access_restrict_info => access_restrict_info, :prefercite_head => prefercite_head, :prefercite_info => prefercite_info, :acquisition_head => acquisition_head, :acquisition_info => acquisition_info}
         ingest_collection('collection', attributes)
       end
     end
@@ -113,8 +113,8 @@ module BatchIngester
         update_fields(collection, [:archive_desc, :did, :repo, :address, :addressline], args[:unit_address])
         update_fields(collection, [:archive_desc, :accessrestrict], args[:access_restrict_info])
         update_fields(collection, [:archive_desc, :accessrestrict, :head], args[:access_restrict_head])
-	      update_fields(collection, [:archive_desc, :acqinfo], args[:prefercite_info])
-        update_fields(collection, [:archive_desc, :acqinfo, :head], args[:prefercite_head])
+        update_fields(collection, [:archive_desc, :acqinfo], args[:acquisition_info])
+        update_fields(collection, [:archive_desc, :acqinfo, :head], args[:acquisition_head])
         update_fields(collection, [:archive_desc, :prefercite], args[:prefercite_info])
         update_fields(collection, [:archive_desc, :prefercite, :head], args[:prefercite_head])
         collection.save
@@ -235,7 +235,7 @@ module BatchIngester
             update_fields(subcollection, [:dsc, :collection, :did, :unittitle, :imprint, :geogname], args[:geography])
             update_fields(subcollection, [:dsc, :collection, :did, :unittitle, :imprint, :publisher], args[:publisher])
             update_fields(subcollection, [:dsc, :collection, :did, :unittitle, :unittitle_content], args[:date]) #new stuff
-            update_fields(subcollection, [:dsc, :collection, :scopecontent], utf_desc)
+            update_fields(subcollection, [:dsc, :collection, :scopecontent], args[:description])#utf_desc
             update_fields(subcollection, [:dsc, :collection, :odd], args[:display])
             update_fields(subcollection, [:dsc, :collection, :controlaccess, :genreform], args[:genreform])
             subcollection.update_indexed_attributes({:subcollection_id=>{0=>args[:key]}})
@@ -252,7 +252,7 @@ module BatchIngester
 #      end
     end
 
-    def item_ingest_each_row(row)
+    def item_ingest_each_row(row, filename)
       puts "Rows: #{row.inspect}"
       if (row[0].blank? || row[1].blank?)
          puts "This entry #{row.inspect} has empty item information, skip to next row"
@@ -271,8 +271,9 @@ module BatchIngester
         page_turn = row[9]
         #Get the image names and signers name for the item from the respective files
         # image names in Image_partila_Set.csv and singers in Signers_partial_Set.csv in the shared directory
-        images = load_dependency_file(item_id.to_s, "/Path/to/the/Currency/dir/Image_Set.csv")
-        signers = load_dependency_file(item_id.to_s, "/Path/to/the/Currency/dir/Signers_Set.csv")
+	src_filename = filename.split('/')
+        images = load_dependency_file(item_id.to_s, filename.sub(src_filename[src_filename.size-1], "Image_Set.csv"))
+        signers = load_dependency_file(item_id.to_s, filename.sub(src_filename[src_filename.size-1], "Signers_Set.csv"))
         display_signer = ""
         count = 1
         for i in signers
@@ -283,6 +284,7 @@ module BatchIngester
           end
           count += 1
         end
+	puts "Signers: #{display_signer}"
 #        puts "Converted to: key ->#{key}, item_id ->#{serial_number}, collection_id -> #{collection_id}"
         attributes= {:pid_key => key, :subcollection_id => collection_id, :dispay_title => display_title, :title => title, :item_id => item_id, :serial_number => serial_number, :display_signer => display_signer, :signer => signer, :physdesc => physdesc, :description => description, :plate_letter => plate_letter, :page_turn => page_turn, :provenance => provenance}
         ingest_item('component', attributes, images)
@@ -297,6 +299,9 @@ module BatchIngester
       end
 #      pid= generate_pid(args[:pid_key], nil)
 #      if(!asset_available(pid,content_type))
+	desc = Iconv.conv('utf-8','ISO-8859-1',args[:description])
+        c = Iconv.new('UTF-8','ISO-8859-1')
+        utf_desc = c.iconv(desc)
         result = Component.find_by_fields_by_solr({"subcollection_id_s"=>args[:subcollection_id]})
         if(result.to_a.length > 0)
           item_check = Component.find_by_fields_by_solr({"item_did_unitid_s"=>args[:item_id]})
@@ -305,20 +310,23 @@ module BatchIngester
             item.datastreams["descMetadata"].ng_xml = EadXml.item_template
             item.save
 	    item.member_of_append(result.to_a[0]["id"])
+	    item.update_indexed_attributes({:item_id=>{0=>args[:item_id]}})
+            item.update_indexed_attributes({:component_type=>{0=>"item"}})
             item.save
             disp = args[:display_title].nil? ? "" : args[:display_title]
             item.datastreams["rightsMetadata"].update_permissions({"group"=>{"archivist"=>"edit","public"=>"read"}})
             update_fields(item, [:item, :did, :unitid], args[:item_id])
-            update_fields(item, [:item, :did, :origination, :signer, :persname_normal], args[:display_signer])
-            update_fields(item, [:item, :did, :origination, :signer], args[:signer])
+            update_fields(item, [:item, :did, :origination, :persname, :persname_normal], args[:display_signer])
+            update_fields(item, [:item, :did, :origination, :persname], args[:signer])
             update_fields(item, [:item, :did, :unittitle], args[:title])
             update_fields(item, [:item, :did, :unittitle, :unittitle_label], disp)
             update_fields(item, [:item, :did, :unittitle, :num], args[:serial_number])
             update_fields(item, [:item, :did, :physdesc, :dimensions], args[:physdesc])
-            update_fields(item, [:item, :scopecontent], args[:description])
+            update_fields(item, [:item, :scopecontent], "#{args[:description]}")
             update_fields(item, [:item, :controlaccess, :genreform], args[:page_turn])
             update_fields(item, [:item, :odd], args[:plate_letter])
             update_fields(item, [:item, :acqinfo], args[:provenance])
+            item.save
             counter = 1
             for i in images
               if(counter > 1)
@@ -327,8 +335,6 @@ module BatchIngester
               update_image_fields(item, [:item, :daogrp, :daoloc, :daoloc_href], "#{i.to_s}", (counter - 1).to_s)
               counter += 1
             end
-            item.update_indexed_attributes({:item_id=>{0=>args[:item_id]}})
-            item.update_indexed_attributes({:component_type=>{0=>"item"}})
             item.save
           else
             puts "Item already exists with Id: #{item_check.to_a[0]["id"]}. Cannot create duplicate object"

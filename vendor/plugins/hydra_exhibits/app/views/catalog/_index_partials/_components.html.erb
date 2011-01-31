@@ -1,16 +1,24 @@
 <% thumbnail = nil unless thumbnail%>
-<%# default partial to display solr document fields in catalog index view -%>
-<%= link_to_document document, :label=>truncate(title, :length => 80) %>
 <div class="with-thumbnail">
   <div class="thumbnail-container">
     <%= link_to_document document, :label=>(image_tag(thumbnail.nil? ? '/images/no_thumbnail.png' : thumbnail)) %>
   </div>
+  <% component = load_af_instance_from_solr(document) %>
   <dl class="defList">
-    <% index_field_names.each do |solr_fname| -%>
-      <% if document.get solr_fname %>
-        <dt><%= h index_field_labels[solr_fname]%></dt>
-        <dd><%= h document.get(solr_fname) %></dd>
+    <% if((component.item_id.nil?) || (component.item_id.empty?)) %>
+      <% index_field_names.each do |solr_fname| -%>
+        <% if document.get solr_fname %>
+          <dt><%= h index_field_labels[solr_fname]%></dt>
+          <dd><%= h document.get(solr_fname) %></dd>
+        <% end -%>
       <% end -%>
-    <% end -%>
+    <% else %>
+      <% item_field_names.each do |solr_fname| -%>
+        <% if document.get solr_fname %>
+          <dt><%= h item_field_labels[solr_fname]%></dt>
+          <dd><%= h document.get(solr_fname) %></dd>
+        <% end -%>
+      <% end -%>
+    <% end %>
   </dl>
 </div>

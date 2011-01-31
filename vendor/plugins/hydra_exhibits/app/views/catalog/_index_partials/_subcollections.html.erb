@@ -1,25 +1,22 @@
-<% # container for all documents in index view -%>
-<div id="documents" class="exhibit-listing">
-  
-  <% # loop thru each doc -%>
   <% document_list = @document_list if document_list.nil?%>
   <% response = @response if response.nil?%>
   <% document_list.each_with_index do |document,counter| %>
-    <% # container for a single doc -%>
+    <% item = load_af_instance_from_solr(document) %>
+    <% item.respond_to?(:title) ? title = item.title : title = document[:id] %>
     <div class="document<%= thumbnail_class( document ) %>">
       
       <% # header bar for doc items in index view -%>
       <div class="documentHeader yui-g">
         <% # main title container for doc partial view -%>
         <div class="yui-u">
-          <h2 class="index_title"><span class="title_count"><%= counter + 1 + response.params[:start].to_i %>. </span><%= link_to_document document, :label=>document_show_link_field, :counter => (counter + 1 + response.params[:start].to_i) %></h2>
+          <h2 class="index_title"><%= counter + 1 + response.params[:start].to_i %>. <%= link_to item.pid, catalog_path(item.pid), :label=>document_show_link_field, :counter => (counter + 1 + response.params[:start].to_i) %></h2>
         </div>
       </div>
       
       <% # main container for doc partial view -%>
-      <%= render_document_index_partial document, document[:id], counter, :index %>      
+      <%= render_document_index_partial(SolrDocument.new(document), title, counter, :index) %>  
 
     </div>
     
   <% end %>
-</div>
+

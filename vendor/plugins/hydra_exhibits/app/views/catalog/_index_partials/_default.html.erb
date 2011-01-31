@@ -1,7 +1,6 @@
 <%# default partial to display solr document fields in catalog index view -%>
 <%- if RAILS_ENV == 'development' -%>
 <p><%= link_to document[:id], "/catalog/#{document[:id]}" %></p>
-<%# debug document %>
 <%- end -%>
 <dl class="defList">
   <% index_field_names.each do |solr_fname| -%>

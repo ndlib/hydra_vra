@@ -23,6 +23,15 @@ module ApplicationHelper
     Blacklight.config[:collections_index_fields][:labels]
   end
 
+  def item_field_names
+    Blacklight.config[:items_index_fields][:field_names]
+  end
+
+  # used in the _index_partials/_collection view
+  def item_field_labels
+    Blacklight.config[:items_index_fields][:labels]
+  end
+
   # Standard display of a facet value in a list. Used in both _facets sidebar
   # partial and catalog/facet expanded list. Will output facet value name as
   # a link to add that to your restrictions, with count in parens. 
@@ -43,10 +52,13 @@ module ApplicationHelper
   # Standard display of a SELECTED facet value, no link, special span
   # with class, and 'remove' button.
   def render_selected_browse_facet_value(facet_solr_field, item, browse_facets)
+    remove_params = remove_browse_facet_params(facet_solr_field, item.value, params, browse_facets)
+    remove_params.delete(:render_search) #need to remove if we are in search view and click takes back to browse
+    remove_params.merge!(:id=>params[:exhibit_id]) if params[:exhibit_id]
     '<span class="selected">' +
     render_facet_value(facet_solr_field, item, :suppress_link => true) +
     '</span>' +
-      ' [' + link_to("remove", exhibit_path(remove_browse_facet_params(facet_solr_field, item.value, params, browse_facets)), :class=>"remove") + ']'
+      ' [' + link_to("remove", exhibit_path(remove_params.merge!(:action=>"show")), :class=>"remove") + ']'
   end
 
   #Remove current selected facet plus any child facets selected
@@ -94,13 +106,22 @@ module ApplicationHelper
   def edit_and_browse_links
     if params[:exhibit_id]
       result = ""
-    if params[:action] == "edit"
-      result << "<a href=\"#{catalog_path(@document[:id], :viewing_context=>"browse", :exhibit_id=>params[:exhibit_id], :f=>params[:f])}\" class=\"browse toggle\">View</a>"
-      result << "<span class=\"edit toggle active\">Edit</span>"
-    else
-      result << "<span class=\"browse toggle active\">View</span>"
-      result << "<a href=\"#{edit_catalog_path(@document[:id], :class => "facet_selected", :exhibit_id => params[:exhibit_id], :f => params[:f])}\" class=\"edit toggle\">Edit</a>"
-    end
+      if params[:action] == "edit"
+        browse_params = params.dup
+        browse_params.delete(:action)
+        browse_params.delete(:controller)
+        browse_params.merge!(:viewing_context=>"browse")
+        result << "<a href=\"#{catalog_path(@document[:id], browse_params)}\" class=\"browse toggle\">View</a>"
+        result << "<span class=\"edit toggle active\">Edit</span>"
+      else
+        edit_params = params.dup
+        edit_params.delete(:viewing_context)
+        edit_params.delete(:action)
+        edit_params.delete(:controller)
+        logger.debug("Edit params: #{edit_params.inspect}")
+        result << "<span class=\"browse toggle active\">View</span>"
+        result << "<a href=\"#{edit_catalog_path(@document[:id], edit_params)}\" class=\"edit toggle\">Edit</a>"
+      end
     else
       hydra_edit_and_browse_links
     end    
@@ -109,11 +130,11 @@ module ApplicationHelper
   def edit_and_browse_exhibit_links(exhibit)
     result = ""
     if params[:action] == "edit"
-      result << "<a href=\"#{catalog_path(@document[:id], :viewing_context=>"browse")}\" class=\"browse toggle\">Browse</a>"
-      result << "<span class=\"edit toggle active\">Edit Exhibit</span>"
+      result << "<a href=\"#{exhibit_path(params[:exhibit_id])}\" class=\"browse toggle\">View</a>"
+      result << "<span class=\"edit toggle active\">Edit</span>"
     else
-      result << "<span class=\"browse toggle active\">Browse</span>"
-      result << "<a href=\"#{edit_catalog_path(@document[:id], :class => "facet_selected", :exhibit_id => @document[:id], :f => params[:f])}\" class=\"edit toggle\">Edit Exhibit</a>"
+      result << "<span class=\"browse toggle active\">View</span>"
+      result << "<a href=\"#{edit_catalog_path(@document[:id], :class => "facet_selected", :exhibit_id => @document[:id])}\" class=\"edit toggle\">Edit</a>"
     end
     return result
   end
@@ -121,14 +142,23 @@ module ApplicationHelper
   def edit_and_browse_subcollection_links(subcollection)
     result = ""
     if params[:action] == "edit"
-      result << "<a href=\"#{catalog_path(@document[:id], :viewing_context=>"browse")}\" class=\"browse toggle\">Browse</a>"
-      result << "<span class=\"edit toggle active\">Edit Subcollection</span>"
+      browse_params = params.dup
+      browse_params.delete(:action)
+      browse_params.delete(:controller)
+      browse_params.merge!(:viewing_context=>"browse")
+      result << "<a href=\"#{exhibit_path(browse_params.merge!(:id=>params[:exhibit_id]))}\" class=\"browse toggle\">View</a>"
+      result << "<span class=\"edit toggle active\">Edit</span>"
     else
-      result << "<span class=\"browse toggle active\">Browse</span>"
+      result << "<span class=\"browse toggle active\">View</span>"
       if(subcollection.nil?)
-        result << "<a href=\"#{url_for(:action => "new", :controller => "sub_collections", :content_type => "sub_collection", :exhibit_id => @document[:id], :selected_facets => params[:f] )}\" class=\"edit toggle\">Edit Subcollection</a>"
+        result << "<a href=\"#{url_for(:action => "new", :controller => "sub_collections", :content_type => "sub_collection", :exhibit_id => @document[:id], :selected_facets => params[:f])}\" class=\"edit toggle\">Edit</a>"
       else
-        result << "<a href=\"#{edit_catalog_path(subcollection.id, :class => "facet_selected", :exhibit_id => @document[:id], :f => params[:f])}\" class=\"edit toggle\">Edit Subcollection</a>"
+        result << "<a href=\"#{edit_catalog_path(subcollection.id, :class => "facet_selected", :exhibit_id => @document[:id], :f => params[:f], :render_search=>"false")}\" class=\"edit toggle\">Edit</a>"
+        #edit_params = params.dup
+        #edit_params.delete(:viewing_context)
+        #edit_params.delete(:action)
+        #edit_params.delete(:controller)
+        #result << "<a href=\"#{edit_catalog_path(subcollection.id, edit_params)}\" class=\"edit toggle\">Edit</a>"
       end
 
     end
@@ -260,12 +290,6 @@ module ApplicationHelper
     return content
   end
 
-  def link_to_catalog_item(label, id)
-    puts "params in link catalog item: #{params.inspect}"
-    params[:controller] == "exhibits" ? exhibit_id = params[:id] : exhibit_id = params[:exhibit_id]
-    exhibit_id ? link_to(label, catalog_path(id, :render_search=>"false", :exhibit_id=>exhibit_id, :f=>params[:f])) : link_to(label, catalog_path(id))
-  end
-
   def add_facet_params(field, value, p=nil)
     p = params.dup if p.nil?
     p[:f]||={}
@@ -304,11 +328,13 @@ module ApplicationHelper
     if exhibit_id
       use_amp ? path << "&" : path << "?"
       path << "exhibit_id=#{CGI::escape(exhibit_id)}"
-      path << "&render_search=false" unless params[:render_search].blank?
+      path << "&render_search=false" unless params[:render_search].blank? && params[:controller] == "catalog"
+      #always go to browse view first when viewing a catalog item
+      path << "&viewing_context=browse"
       use_amp = true
     end
 
-    if params[:f] && !params[:render_search].blank?
+    if params[:f] && (params[:controller] != "catalog" || !params[:render_search].blank?)
       params[:f].each_pair do |facet,values|
         values.each do |value|
           use_amp ? path << "&" : path << "?"
@@ -335,7 +361,7 @@ module ApplicationHelper
      # f = opts[:f]
     #end 
     query_params.merge!({:id=>exhibit_id})
-    query_params.merge!({:f=>f}) if f && !f.empty?
+    query_params.merge!({:f=>f}) if f && !f.empty? && !params[:render_search].blank?
     link_url = exhibit_path(query_params)
     opts[:label] = params[:exhibit_id] unless opts[:label]
     link_to opts[:label], link_url    
@@ -375,7 +401,7 @@ module ApplicationHelper
   end 
 
   def render_browse_facet_div
-    initialize_exhibit if @exhibit.nil?
+    initialize_exhibit #if @exhibit.nil?
     @exhibit.nil? ? '' : get_browse_facet_div(@browse_facets,@browse_response,@extra_controller_params)
   end
 
@@ -401,7 +427,7 @@ module ApplicationHelper
     display_facet = response_without_f_param.facets.detect {|f| f.name == solr_fname}
     display_facet_with_f = response.facets.detect {|f| f.name == solr_fname}
     unless display_facet.nil?
-      if display_facet.items.length > 0          
+      if display_facet.items.any?          
         return_str += '<h3 class="facet-heading">' + facet_field_labels[display_facet.name] + '</h3>'
         return_str += '<ul>'
         display_facet.items.each do |item|
@@ -409,7 +435,7 @@ module ApplicationHelper
           return_str += '<li>'
           params[:f]=temp if temp
           if facet_in_params?(display_facet.name, item.value )
-            if display_facet_with_f.items.length > 0
+            if display_facet_with_f.items.any?
               display_facet_with_f.items.each do |item_with_f|
                 return_str += render_selected_browse_facet_value(display_facet_with_f.name, item_with_f, browse_facets)
                 if browse_facets.length > 1
@@ -447,7 +473,7 @@ module ApplicationHelper
       @facet_subsets_map = @exhibit.facet_subsets_map
       @selected_browse_facets = get_selected_browse_facets(@browse_facets)
       #subset will be nil if the condition fails
-      @subset = @facet_subsets_map[@selected_browse_facets] if @selected_browse_facets.length > 0 && @facet_subsets_map[@selected_browse_facets]
+      @subset = @facet_subsets_map[@selected_browse_facets] if @selected_browse_facets.any? && @facet_subsets_map[@selected_browse_facets]
     end
     if(content.eql?("exhibit"))
       asset=@exhibit
@@ -563,7 +589,7 @@ module ApplicationHelper
       @facet_subsets_map = @exhibit.facet_subsets_map
       @selected_browse_facets = get_selected_browse_facets(@browse_facets) 
       #subset will be nil if the condition fails
-      @subset = @facet_subsets_map[@selected_browse_facets] if @selected_browse_facets.length > 0 && @facet_subsets_map[@selected_browse_facets]
+      @subset = @facet_subsets_map[@selected_browse_facets] if @selected_browse_facets.any? && @facet_subsets_map[@selected_browse_facets]
       #call exhibit.discriptions once since querying solr everytime on inbound relationship
       if browse_facet_selected?(@browse_facets)
         @subset.nil? ? @descriptions = [] : @descriptions = @subset.descriptions
@@ -584,11 +610,19 @@ module ApplicationHelper
     end
   end
 
-  #Gets a search result given a pid array
+  #  Expects Array of PIDs and returns array of Response and DocumentList
   def get_pids_search_results(pid_array)
-    query = ActiveFedora::SolrService.construct_query_for_pids(pid_array)
-    get_search_results({:q=>query})
+    fq = ActiveFedora::SolrService.construct_query_for_pids(pid_array)
+    @extra_controller_params ||= {}
+    @extra_controller_params.merge!(:q=>build_lucene_query(params[:q]))
+    @extra_controller_params.merge!(:fq=>fq)
+    get_search_results(@extra_controller_params)
   end
-  
+
+  # Apply a class to the body element if the browse conditions are met.
+  # TODO: Extend this method to support exhibit-specific themes
+  def set_page_style
+    @body_class ||= "exhibit" if !params[:exhibit_id].blank? || params[:controller] == "exhibits"
+  end
 end
 

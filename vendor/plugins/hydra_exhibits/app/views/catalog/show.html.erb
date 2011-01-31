@@ -17,11 +17,10 @@
             <span class="next"><%= link_to_next_document(@next_document)%></span>
           </div>
         <% end %>
-     <%- end -%>
+      <%- elsif params[:exhibit_id]-%>
+        <span class="back_to_cat"><h3><%= link_to_exhibit(:label=>"&laquo; Back to Complete List") %></h3></span>
+      <%- end -%>
       <span class="edit-browse">
-        <%- if params[:exhibit_id]-%>
-            <h3><%= link_to_exhibit(:label=>"Back to Complete List") %></h3>
-        <%- end -%>
         <%- if editor? -%>
           <%= edit_and_browse_links %>
         <%- end -%>
@@ -39,7 +38,7 @@
     
     <% if((@document_fedora.methods.include? "list_childern") && !(@document_fedora.type.to_s.eql?"item")) %>
     <% #if(@document_feodra.respond_to?(:list_childern)) #Ideal but not working %>
-      <%= render :partial => "catalog/show_items" %>
+      <%= render :partial => "catalog/show_subcollections" %>
     <% end %>
     
   </div>

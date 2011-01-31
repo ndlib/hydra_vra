@@ -33,6 +33,11 @@
     });    
   </script>
 <% end %>
+ <span class="edit-browse">
+        <%- if editor? -%>
+          <%= edit_and_browse_subcollection_links(@document_fedora) %>
+        <%- end -%>
+      </span>
 <div class="document_viewer" id="cover_container">
   <div class="multipleEdit">
     <div id="loading" style="display:none;">
@@ -58,7 +63,6 @@
     // This hidden form really belongs elsewhere, but putting it inside of an
     // accordion section un-hides it, so I stuck it here for now. -MZ
     %>
-
   </div>
 </div>
 <% sidebar_items << capture do %>

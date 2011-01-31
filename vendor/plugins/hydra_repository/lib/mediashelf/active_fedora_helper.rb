@@ -52,32 +52,32 @@ module MediaShelf
       end
     end
 
-    def add_named_relationship(asset, relationship_name, target_pid)
-    if asset.nil?
-      raise "Assest Missing"
-    else
-      if asset.respond_to?(:add_named_relationship)
-        if asset.is_named_relationship?(relationship_name,true)
-          #check if :type is defined for this relationship, if so instantiate with that type
-          if asset.named_relationship_type(relationship_name).nil?
-             @object = ActiveFedora::Base.load_instance(target_pid)
-          else
-            @object = (asset.named_relationship_type(relationship_name)).load_instance(target_pid)                        
-          end
-          if @object.nil?
-            raise "Unable to find #{relationship_name} object with pid #{target_pid}"
-          else
-            asset.add_named_relationship(relationship_name,@object)
-            asset.save
-          end        	
-        else
-          raise "outbound relationship: #{relationship_name} does not exist for content model: #{asset.class}"
-        end
-      else
-        raise "Content model: #{asset.class} does not implement add_named_relationship"
-      end
-    end
-  end
+#    def add_named_relationship(asset, relationship_name, target_pid)
+#    if asset.nil?
+#      raise "Assest Missing"
+#    else
+#      if asset.respond_to?(:add_named_relationship)
+#        if asset.is_named_relationship?(relationship_name,true)
+#          #check if :type is defined for this relationship, if so instantiate with that type
+#          if asset.named_relationship_type(relationship_name).nil?
+#             @object = ActiveFedora::Base.load_instance(target_pid)
+#          else
+#            @object = (asset.named_relationship_type(relationship_name)).load_instance(target_pid)                        
+#          end
+#          if @object.nil?
+#            raise "Unable to find #{relationship_name} object with pid #{target_pid}"
+#          else
+#            asset.add_named_relationship(relationship_name,@object)
+#            asset.save
+#          end        	
+#        else
+#          raise "outbound relationship: #{relationship_name} does not exist for content model: #{asset.class}"
+#        end
+#      else
+#        raise "Content model: #{asset.class} does not implement add_named_relationship"
+#      end
+#    end
+#  end
 
   def remove_named_relationship(asset, relationship_name, target_pid)
     if asset.nil?
