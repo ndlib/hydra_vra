@@ -1,4 +1,4 @@
-<h3>Highlighted Item </h3>
+<h3>Current Featured Sources </h3>
 <%#debug @subset %>
 <% if asset &&  asset.highlighted.any? %>
   <dl class="item-list">
@@ -10,7 +10,7 @@
     <%- end -%>
   </dl>
 <%- else -%>
-  <h3>No highlighted items defined</h3>
+  <h3><i>None</i></h3>
 <%- end -%>
 
 <%# render :partial => "shared/edit_highlighted", :locals => {:facet_name => nil, :facet_value => nil, :content=>content} %>
