@@ -13,8 +13,7 @@ class DescriptionsController < ApplicationController
   include DescriptionsHelper
 
   helper :hydra, :metadata, :infusion_view
-  before_filter :require_fedora, :require_solr
-  #before_filter :require_solr, :only=>[:index, :create, :show, :destroy]
+  before_filter :require_fedora, :require_solr  
 
   def check_required_params(required_params)
   not_found = ""
@@ -47,16 +46,14 @@ class DescriptionsController < ApplicationController
     logger.debug "Description params: #{params.inspect}"
     @description = create_and_save_description
     apply_depositor_metadata(@description)
-    #rights_ds = @description.datastreams_in_memory["rightsMetadata"]
-    @description.datastreams["rightsMetadata"].update_permissions({"group"=>{"public"=>"read"}})
-    #rights_ds.update_indexed_attributes([:read_access, :person]=>"public") unless rights_ds.nil?
+    rights_ds = @description.datastreams_in_memory["rightsMetadata"]
+    rights_ds.update_indexed_attributes([:read_access, :person]=>"public") unless rights_ds.nil?
     @description.save
     if !params[:asset_id].nil?
       @asset =  ActiveFedora::Base.load_instance(params[:asset_id])      
       @description.description_of_append(@asset)
       @description.save      
     end
-
     the_model = ActiveFedora::ContentModel.known_models_for( @asset ).first
     if the_model.nil?
       raise "Unknown content type for the object with pid #{@asset.pid}"
@@ -95,7 +92,6 @@ class DescriptionsController < ApplicationController
         end
       end
     end
-
     respond_to do |want|
       want.js {
         logger.debug("render js response-> #{response.inspect}")
@@ -125,33 +121,33 @@ class DescriptionsController < ApplicationController
   end
 
   def show
-      af_model = retrieve_af_model(params[:content_type])
-      logger.error("cm:#{params[:content_type].inspect}, pid:#{params[:id].inspect}")
-      raise "Content model #{params[:content_type]} is not of type ActiveFedora:Base" unless af_model        
-      if params.has_key?(:description_id) && params[:load_datastream] == "true"
-        resource = af_model.load_instance(params[:description_id])
-        logger.error("Model: #{af_model}, resource:#{resource.pid}")
-        description_content= resource.content
-        logger.error("Actual Content: #{description_content.inspect}")
-      else
-        if params.has_key?("field")
-          @response, @description_document = get_solr_response_for_doc_id(params[:description_id])
-          #logger.debug("ID: #{@description_document["id_t"].inspect}")
-          @description_document["#{params["field"]}_t"].blank? ? description_content = "" : description_content = @description_document["#{params["field"]}_t"]          
-          unless description_content.nil?
-            if params.has_key?("field_index")
-              description_content = description_content[params["field_index"].to_i-1]
-            elsif description_content.kind_of?(Array)
-              description_content = description_content.first
-            end
+    af_model = retrieve_af_model(params[:content_type])
+    logger.error("cm:#{params[:content_type].inspect}, pid:#{params[:id].inspect}")
+    raise "Content model #{params[:content_type]} is not of type ActiveFedora:Base" unless af_model
+    if params.has_key?(:description_id) && params[:load_datastream] == "true"
+      resource = af_model.load_instance(params[:description_id])
+      logger.error("Model: #{af_model}, resource:#{resource.pid}")
+      description_content= resource.content
+      logger.error("Actual Content: #{description_content.inspect}")
+    else
+      if params.has_key?("field")
+        @response, @description_document = get_solr_response_for_doc_id(params[:description_id])
+        #logger.debug("ID: #{@description_document["id_t"].inspect}")
+        @description_document["#{params["field"]}_t"].blank? ? description_content = "" : description_content = @description_document["#{params["field"]}_t"]
+        unless description_content.nil?
+          if params.has_key?("field_index")
+            description_content = description_content[params["field_index"].to_i-1]
+          elsif description_content.kind_of?(Array)
+            description_content = description_content.first
           end
         end
       end
-      logger.debug("content: #{description_content.inspect}")
-      respond_to do |format|
-          format.html     { render :text=>description_content }
-          format.textile  { render :text=> description_content.blank? ? "Add content here" : white_list( RedCloth.new(description_content, [:sanitize_html]).to_html ) }
-      end
+    end
+    logger.debug("content: #{description_content.inspect}")
+    respond_to do |format|
+        format.html     { render :text=>description_content }
+        format.textile  { render :text=> description_content.blank? ? "Add content here" : white_list( RedCloth.new(description_content, [:sanitize_html]).to_html ) }
+    end
   end
 
   def add
@@ -196,7 +192,7 @@ class DescriptionsController < ApplicationController
   end
 
   def update_title
-     if params.has_key?(:description_id)
+    if params.has_key?(:description_id)
       af_model = retrieve_af_model(params[:content_type])
       unless af_model
         af_model = Description
@@ -210,7 +206,6 @@ class DescriptionsController < ApplicationController
       response = Hash["updated"=>[]]
       response["updated"] << {"title update"=>params[:description_title]}
     end
-
     respond_to do |want|
       want.js {
         logger.debug("render js response-> #{response.inspect}")

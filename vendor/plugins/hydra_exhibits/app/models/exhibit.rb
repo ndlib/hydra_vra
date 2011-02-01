@@ -17,7 +17,7 @@ class Exhibit < ActiveFedora::Base
 
   # Uses the Hydra MODS Article profile for tracking most of the descriptive metadata
   has_metadata :name => "descMetadata", :type => ActiveFedora::MetadataDatastream do |m|
-    m.field "main_description", :string, :xml_node => "main_description"
+    #m.field "main_description", :string, :xml_node => "main_description"
     m.field "exhibit_title", :string, :xml_node => "exhibit_title"
   end
 
@@ -98,10 +98,12 @@ class Exhibit < ActiveFedora::Base
     return result
   end
 
+=begin
   def title
     return @exhibit_description_title if (defined? @exhibit_description_title)
     values = self.fields[:main_description][:values]
     @exhibit_description_title = values.any? ? values.first : ""
   end
-  
+=end
+
 end
