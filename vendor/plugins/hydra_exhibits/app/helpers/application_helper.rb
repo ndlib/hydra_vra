@@ -372,9 +372,7 @@ logger.debug("Params in edit_and_browse_links: #{params.inspect}")
     query_params.merge!({:f=>f}) if f && !f.empty? && !params[:render_search].blank?
     link_url = exhibit_path(query_params)
     opts[:label] = exhibit_id unless opts[:label]
-    val = link_to opts[:label], link_url    
-    logger.debug("Created exhibit link: #{val.inspect}")
-    val
+    opts[:style] ? link_to(opts[:label], link_url, :style=>opts[:style]) : link_to(opts[:label], link_url)
   end
 
   def breadcrumb_builder

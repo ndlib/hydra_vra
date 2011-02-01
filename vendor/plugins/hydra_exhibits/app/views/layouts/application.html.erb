@@ -17,11 +17,11 @@
               <table>
                 <tr>
                   <td><%= link_to image_tag('rbsc_mark.png', :alt => 'Rare Books and Special Collections'), 'http://www.library.nd.edu/rarebooks/', :class=> 'image', :rel => 'external'  %></td>
-                  <td><h2><a href="http://www.library.nd.edu/rarebooks/" rel="external">Rare Books &amp; Special Collections</a></h2>
-                    <h3><a href="http://www.library.nd.edu/" rel="external">Hesburgh Libraries of Notre Dame</a></h3>
+                  <td><h2><a style="text-decoration:none;border-bottom:medium none" href="http://www.library.nd.edu/rarebooks/" rel="external">Rare Books &amp; Special Collections</a></h2>
+                    <h3><a style="text-decoration:none;border-bottom:medium none" href="http://www.library.nd.edu/" rel="external">Hesburgh Libraries of Notre Dame</a></h3>
                     <%- params[:exhibit_id] ? exhibit_id = params[:exhibit_id] : exhibit_id = params[:id] -%> 
                     <%- @exhibit.nil? ? exhibit = Exhibit.load_instance_from_solr(exhibit_id) : exhibit = @exhibit -%>
-                    <h3><%= link_to_exhibit :exhibit_id=>exhibit_id, :label=>"#{exhibit.exhibit_title}" %></h1>
+                    <h3><%= link_to_exhibit :exhibit_id=>exhibit_id, :label=>"#{exhibit.exhibit_title}", :style=>"text-decoration:none;border-bottom:medium none" %></h1>
                   </td>
                 </tr>
               </table>
