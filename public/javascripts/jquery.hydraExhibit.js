@@ -23,8 +23,8 @@
      $('input.update_embedded_search').bind('click',function(){
        var url = $("input#update_embedded_search").first().attr("value")       
        var params =  "q="+$("input#q").first().attr("value")+"&search_field"+$("select#search_field").first().attr("value")     
-       var showDiv=$("div.highlighted_search")
-       var perviousNode=$("div.highlighted_search").first();
+       var showDiv=$("div.featured_search")
+       var perviousNode=$("div.featured_search").first();
 
        $.ajax({
          type: "POST",
@@ -68,7 +68,7 @@
        var selectedSubcollectionItems = new Array();
        $("input.featured:checked").each(function() {selectedSubcollectionItems.push($(this).val());});       
        var url = $("input#update_url").first().attr("value")       
-       var params =  "highlighted_items="+selectedSubcollectionItems+"&highlighted_action='add'"
+       var params =  "featured_items="+selectedSubcollectionItems+"&featured_action='add'"
         $.ajax({
          type: "PUT",
          url: url,
@@ -91,13 +91,13 @@
       return false;
     });*/
      
-     $('a.addhighlighted').bind('click',function(){
+     $('a.addfeatured').bind('click',function(){
        var selectedSubcollectionItems = new Array();
        $("input.featured:checked").each(function() {selectedSubcollectionItems.push($(this).val());});       
        var url = $("input#update_url").first().attr("value")       
-       var params =  "highlighted_items="+selectedSubcollectionItems+"&highlighted_action='add'"
-       var showDiv=$("div.show_highlighted_div")
-       var perviousNode=$("div.show_highlighted_div").first();
+       var params =  "featured_items="+selectedSubcollectionItems+"&featured_action='add'"
+       var showDiv=$("div.show_featured_div")
+       var perviousNode=$("div.show_featured_div").first();
 
        $.ajax({
          type: "PUT",
@@ -121,9 +121,9 @@
       return false;
     });
 
-    $('a.destroy_highlighted').live('click',function(){
+    $('a.destroy_featured').live('click',function(){
       var url = $(this).attr("action");
-      var $itemNode = $(this).closest("dd.item_highlighted")
+      var $itemNode = $(this).closest("dd.item_featured")
       $.ajax({
          type: "PUT",
          url: url,

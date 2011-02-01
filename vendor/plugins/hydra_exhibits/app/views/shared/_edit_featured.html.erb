@@ -8,13 +8,13 @@
   <%- else -%>
     <%- asset=nil -%>
   <%- end -%>
-  <div class="show_highlighted_div"> <%= render :partial => 'shared/show_highlighted', :locals => {:content=>content, :asset=>asset} %> </div>
+  <div class="show_featured_div"> <%= render :partial => 'shared/show_featured', :locals => {:content=>content, :asset=>asset} %> </div>
   <div class="update_featured">
     <h3>Available Sources</h3>
     <%= render :partial => "shared/featured_search_form" %>
-    <div class="highlighted_search">
+    <div class="featured_search">
       <%= render :partial => "shared/featured_search", :locals=>{:content=>content} %>
     </div>
-    <a class='addhighlighted' href='#' title='add as featured' exhibit-id="<%= params[:exhibit_id] %>" >Add Checked to Featured Sources</a>
+    <a class='addfeatured' href='#' title='add as featured' exhibit-id="<%= params[:exhibit_id] %>" >Add Checked to Featured Sources</a>
   </div>
 </fieldset>
