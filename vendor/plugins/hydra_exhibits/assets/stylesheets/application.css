@@ -263,7 +263,9 @@ p.collection_desc {padding-left:2em;}
 
 #ft div {display:-moz-inline-block; display:inline-block;}
 #ft .center {padding-top:5px; width:59%;}
-#ft .left, #ft .right {width:20%; padding-top:1em;}
+#ft .left, #ft .right {width:20%;}
+#ft .left a, #ft .right a {border-bottom:none;}
+#ft .right {padding-top:1em;}
 #ft .center ul {margin:0; padding:0; list-style-type:none;}
 #ft .center li {display:-moz-inline-block; display:inline-block; margin:0 .5em;}
 

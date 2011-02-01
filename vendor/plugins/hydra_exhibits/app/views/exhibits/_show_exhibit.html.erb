@@ -16,11 +16,9 @@
     <%- description = load_af_instance_from_solr(document) -%>
     <%= render :partial=>'descriptions/show_description', :locals => {:description => description, :document=> SolrDocument.new(document), :exhibit_id => params[:id]}%>
   <%- end -%>
-<%- else -%>
-  <%- if editor? -%>
-    <h2>Description</h2>
-    <p><%= "Essay forthcoming..." %></p>
-  <%- end -%>
+<%- elsif editor? -%>
+  <h2>Description</h2>
+  <p><%= "Essay forthcoming..." %></p>
 <%- end -%>
 
 <%- if @exhibit && @exhibit.collections.any? -%>
@@ -31,7 +29,6 @@
       <%= render_document_index_partial(SolrDocument.new(document), item.title, counter, :index) %>
     <%- end -%>
   </dl>
-
     <%- collection = @exhibit.collections.first-%>
     <%- if collection.descriptions.any? -%>
       <em>Collection Description</em>
@@ -45,12 +42,9 @@
         <p class="collection_desc">"Collection Essay forthcoming..."</p>
       <%- end -%>
     <%- end -%>
-  
-<%- else -%>
-  <%- if editor? -%>
-    <h2>Collection Details</h2>
-    <p>No Collection Associated</p>
-  <%- end -%>
+<%- elsif editor? -%>
+  <h2>Collection Details</h2>
+  <p>No Collection Associated</p>
 <%- end -%>
 
 <%- if @exhibit && @exhibit.featured.any? -%>
@@ -62,21 +56,15 @@
       <%= render_document_index_partial(SolrDocument.new(document), title, counter, :index) %>
     <%- end -%>
   </dl>  
-<%- else -%>
-  <%- if editor? -%>
-    <h2>Featured Sources</h2>
-    <p>No featured items defined</p>
-  <%- end -%>
+<%- elsif editor? -%>
+  <h2>Featured Sources</h2>
+  <p>No featured sources defined</p>
 <%- end -%>
 
 <hr />
 
-<h2>Complete sources</h2>
-<div class="show_complete_sources_div">
-   <a class="hidecompletesources" href="#" title="Hide Complete Sources" exhibit-id="<%= params[:exhibit_id] %>" >Hide Complete Sources</a>
-  <dl class="item-list"></dl>
+<h2>Complete Sources</h2>
+<a id="toggle_sources" href="#" title="Hide the complete listing of sources.">Hide Complete Sources</a>
+<div id="complete_sources">
   <%= render :partial=>'shared/complete_sources'%>
-</div>
-<div class="hide_complete_sources_div">
-  <a class="showcompletesources" href="#" title="Show Complete Sources" exhibit-id="<%= params[:exhibit_id] %>" >Show Complete Sources</a>
 </div>

@@ -55,21 +55,13 @@
       return false;
     });
 
-     $('a.hidecompletesources').bind('click',function(){
-	 var showDiv=$("div.show_complete_sources_div");
-         var hideDiv=$("div.hide_complete_sources_div");
-	 hideDiv.show();
-         showDiv.hide();
-      return false;
-    });
- 
-     $('a.showcompletesources').bind('click',function(){
-	 var showDiv=$("div.show_complete_sources_div");
-         var hideDiv=$("div.hide_complete_sources_div");
-	 showDiv.show();
-         hideDiv.hide();
-      return false;
-    });
+     $('#toggle_sources').toggle(function(){
+       $(this).html('Show Complete Sources').attr('title', 'Reveal the complete listing of sources.');
+       $('#complete_sources').slideUp();
+     }, function(){
+       $(this).html('Hide Complete Sources').attr('title', 'Hide the complete listing of sources.');
+       $('#complete_sources').slideDown();
+     });
 
      /*$('input.featured').bind('click',function(){
        var selectedSubcollectionItems = new Array();
