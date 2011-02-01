@@ -9,7 +9,7 @@
     </p>
   <%- else -%>
     <h3> <em><%= description.title %></em> </h3>
-    <span class="heading"> <%= "#{truncate( load_description(description), :length =>150, :ommision => "....")}"%> </span>
+    <span id="testheading" class="heading"> <%= "#{truncate( load_description(description), :length =>150, :ommision => "....")}"%> </span>
     <div class="content"><%= load_description(description) %></div>
    <%- end -%>
 </div>

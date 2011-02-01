@@ -16,8 +16,15 @@
      $(".content").hide();
      //toggle the componenet with class msg_body
      $(".heading").click(function(){
+        //$(this).hide()
         $(this).next(".content").slideToggle(500);
      });
+
+     //toggle the componenet with class msg_body
+     /*$(".content").click(function(){
+        $(this).hide()
+        $(this).sibling(".heading").show();
+     });*/
 
 
      $('input.update_embedded_search').bind('click',function(){
@@ -48,21 +55,13 @@
       return false;
     });
 
-     $('a.hidecompletesources').bind('click',function(){
-	 var showDiv=$("div.show_complete_sources_div");
-         var hideDiv=$("div.hide_complete_sources_div");
-	 hideDiv.show();
-         showDiv.hide();
-      return false;
-    });
- 
-     $('a.showcompletesources').bind('click',function(){
-	 var showDiv=$("div.show_complete_sources_div");
-         var hideDiv=$("div.hide_complete_sources_div");
-	 showDiv.show();
-         hideDiv.hide();
-      return false;
-    });
+     $('#toggle_sources').toggle(function(){
+       $(this).html('Show Complete Sources').attr('title', 'Reveal the complete listing of sources.');
+       $('#complete_sources').slideUp();
+     }, function(){
+       $(this).html('Hide Complete Sources').attr('title', 'Hide the complete listing of sources.');
+       $('#complete_sources').slideDown();
+     });
 
      /*$('input.featured').bind('click',function(){
        var selectedSubexhibitItems = new Array();
@@ -470,8 +469,7 @@
    $.fn.descriptionDeleteButton = function(settings) {
      var config = {};
      if (settings) $.extend(config, settings);
-     $("a.destroy_description", this).live("click", function(e) {
-       alert("call delete")
+     $("a.destroy_description", this).live("click", function(e) {       
        $.fn.hydraExhibit.deleteDescription(this,e);
      });
     //return this;
@@ -567,38 +565,6 @@
        });
      },
 
-     /*saveDescription: function(url, params) {
-         alert($(url))
-         $.ajax({
-         type: "PUT",
-         url: $(url),
-         dataType : "json",
-         data: $(params),
-         success: function(msg){
-     	    $.noticeAdd({
-             inEffect:               {opacity: 'show'},      // in effect
-             inEffectDuration:       600,                    // in effect duration in miliseconds
-             stayTime:               6000,                   // time in miliseconds before the item has to disappear
-             text:                   "Your edit to "+ msg.updated[0].field_name +" has been saved as "+msg.updated[0].value+" at index "+msg.updated[0].index,   // content of the item
-             stay:                   false,                  // should the notice item stay or not?
-             type:                   'notice'                // could also be error, succes
-            });
-            $.fn.hydraExhibit.resetSetting();
-         },
-         error: function(xhr, textStatus, errorThrown){
-     			$.noticeAdd({
-             inEffect:               {opacity: 'show'},      // in effect
-             inEffectDuration:       600,                    // in effect duration in miliseconds
-             stayTime:               6000,                   // time in miliseconds before the item has to disappear
-             text:                   'Your changes to' + $editNode.attr("rel") + ' could not be saved because of '+ xhr.statusText + ': '+ xhr.responseText,   // content of the item
-             stay:                   true,                  // should the notice item stay or not?
-             type:                   'error'                // could also be error, succes
-            });
-         }
-       });
-
-     },*/
-
      insertDescription: function(element){
        //alert("insert essay")
        $element = $(element)
@@ -677,7 +643,7 @@
        var parent_content_type = $("form#document_metadata").attr("data-content-type");
        var params ="?asset_id="+parent_pid+"&asset_content_type="+parent_content_type;
        url=url+params;
-       alert("URL: "+url +" Closet Node"+$essayNode);
+       //alert("URL: "+url +" Closet Node"+$essayNode);
        $.ajax({
          type: "DELETE",
          url: url,
