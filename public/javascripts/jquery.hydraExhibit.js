@@ -16,15 +16,15 @@
      $(".content").hide();
      //toggle the componenet with class msg_body
      $(".heading").click(function(){
-        $(this).hide()
+        //$(this).hide()
         $(this).next(".content").slideToggle(500);
      });
 
      //toggle the componenet with class msg_body
-     $(".content").click(function(){
+     /*$(".content").click(function(){
         $(this).hide()
         $(this).sibling(".heading").show();
-     });
+     });*/
 
 
      $('input.update_embedded_search').bind('click',function(){
