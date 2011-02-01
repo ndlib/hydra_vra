@@ -27,10 +27,10 @@
 <%- end -%>
 
 
-<%- if @subset && @subset.highlighted.any? -%>
+<%- if @subset && @subset.featured.any? -%>
   <h2>Featured sources</h2>
   <dl class="item-list featured">
-    <%- @subset.highlighted(:response_format=>:solr).each_with_index do |document, counter| -%>
+    <%- @subset.featured(:response_format=>:solr).each_with_index do |document, counter| -%>
       <%- item = load_af_instance_from_solr(document) -%>
       <%-  item.item_title.blank? ? title = item.sub_collection_title : title = item.item_title -%>
       <%= render_document_index_partial(SolrDocument.new(document), title, counter, :index) %>
@@ -39,7 +39,7 @@
 <%- else -%>
   <%- if editor? -%>
     <h2>Featured sources</h2>
-    <p>No highlighted items defined</p>
+    <p>No featured items defined</p>
   <%- end -%>
 <%- end -%>
 

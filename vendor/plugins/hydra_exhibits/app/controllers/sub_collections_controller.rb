@@ -65,30 +65,30 @@ class SubCollectionsController < ApplicationController
     if af_model
       @asset = af_model.load_instance(params[:id])
     end
-    if params[:highlighted_action].eql?("add")
-      if !params[:highlighted_items].blank?
-        items=params[:highlighted_items].split(',')
+    if params[:featured_action].eql?("add")
+      if !params[:featured_items].blank?
+        items=params[:featured_items].split(',')
         logger.debug("Items to Highlight in #{af_model} => #{items.inspect}")
-        sub_collection_highlighted = Array.new
+        sub_collection_featured = Array.new
         items.each do |item|
           obj=ActiveFedora::Base.load_instance(item)
-          @asset.highlighted_append(obj)
+          @asset.featured_append(obj)
           obj.save
           @asset.save
-          sub_collection_highlighted<<item
+          sub_collection_featured<<item
         end
-        response["updated"] << {"#{af_model}_highlighted"=>sub_collection_highlighted}
+        response["updated"] << {"#{af_model}_featured"=>sub_collection_featured}
       end
-      render :partial => 'shared/show_highlighted', :locals => {:content=>params[:content_type], :asset=>@asset}
+      render :partial => 'shared/show_featured', :locals => {:content=>params[:content_type], :asset=>@asset}
     else
-      raise "error, Item id not available in parameters list for removing from highlighted list" if params[:item_id].blank?
+      raise "error, Item id not available in parameters list for removing from featured list" if params[:item_id].blank?
       params[:item_id]? item = params[:item_id] : item =""
       logger.debug("Items to remove as Highlight from sub_collection => #{item.inspect}")
       obj=ActiveFedora::Base.load_instance(item)
-      @asset.highlighted_remove(obj)
+      @asset.featured_remove(obj)
       obj.save
       @asset.save
-      render :text => "Successfully removed #{obj.pid}from highlighted list"
+      render :text => "Successfully removed #{obj.pid}from featured list"
     end
   end  
 
