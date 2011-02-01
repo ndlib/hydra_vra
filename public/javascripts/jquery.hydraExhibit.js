@@ -609,7 +609,7 @@
           $(".description-textarea-container").descriptionTextareaField();
           $(".custom-editable-container").exhibitTextField();
           $inserted.insertTextareaValue();
-          $.fn.hydraExhibit.resetSetting();
+          //$.fn.hydraExhibit.resetSetting();
           return(result);
          }
        });
@@ -654,7 +654,7 @@
          success: function() {
            $essayNode.slideUp(300,function() {
              $essayNode.remove();
-             $.fn.hydraExhibit.resetSetting();
+             //$.fn.hydraExhibit.resetSetting();
            });
          }
        });
