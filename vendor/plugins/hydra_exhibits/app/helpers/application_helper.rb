@@ -147,7 +147,7 @@ logger.debug("Params in edit_and_browse_links: #{params.inspect}")
     return result
   end
 
-  def edit_and_browse_subcollection_links(subcollection)
+  def edit_and_browse_subexhibit_links(subexhibit)
     result = ""
     if params[:action] == "edit"
       browse_params = params.dup
@@ -158,15 +158,15 @@ logger.debug("Params in edit_and_browse_links: #{params.inspect}")
       result << "<span class=\"edit toggle active\">Edit</span>"
     else
       result << "<span class=\"browse toggle active\">View</span>"
-      if(subcollection.nil?)
-        result << "<a href=\"#{url_for(:action => "new", :controller => "sub_collections", :content_type => "sub_collection", :exhibit_id => @document[:id], :selected_facets => params[:f])}\" class=\"edit toggle\">Edit</a>"
+      if(subexhibit.nil?)
+        result << "<a href=\"#{url_for(:action => "new", :controller => "sub_exhibits", :content_type => "sub_exhibit", :exhibit_id => @document[:id], :selected_facets => params[:f])}\" class=\"edit toggle\">Edit</a>"
       else
-        result << "<a href=\"#{edit_catalog_path(subcollection.id, :class => "facet_selected", :exhibit_id => @document[:id], :f => params[:f], :render_search=>"false")}\" class=\"edit toggle\">Edit</a>"
+        result << "<a href=\"#{edit_catalog_path(subexhibit.id, :class => "facet_selected", :exhibit_id => @document[:id], :f => params[:f], :render_search=>"false")}\" class=\"edit toggle\">Edit</a>"
         #edit_params = params.dup
         #edit_params.delete(:viewing_context)
         #edit_params.delete(:action)
         #edit_params.delete(:controller)
-        #result << "<a href=\"#{edit_catalog_path(subcollection.id, edit_params)}\" class=\"edit toggle\">Edit</a>"
+        #result << "<a href=\"#{edit_catalog_path(subexhibit.id, edit_params)}\" class=\"edit toggle\">Edit</a>"
       end
 
     end
@@ -306,19 +306,19 @@ logger.debug("Params in edit_and_browse_links: #{params.inspect}")
     p
   end
 
-  def document_link_to_exhibit_sub_collection(label, document, counter)
-    sub_collection = load_af_instance_from_solr(document)
-    if !sub_collection.nil? && sub_collection.respond_to?(:selected_facets)
+  def document_link_to_exhibit_sub_exhibit(label, document, counter)
+    sub_exhibit = load_af_instance_from_solr(document)
+    if !sub_exhibit.nil? && sub_exhibit.respond_to?(:selected_facets)
       p = params.dup
       #remove any previous f params from search
       p.delete(:f)
-      sub_collection.selected_facets.each_pair do |facet_solr_field,value|
+      sub_exhibit.selected_facets.each_pair do |facet_solr_field,value|
         p = add_facet_params(facet_solr_field,value,p)
       end
       p.delete(:commit)
       p.delete(:search_field)
       p.delete(:q)
-      link_to(label, exhibit_path(p.merge!({:id=>sub_collection.subset_of_ids.first, :class=>"facet_select", :action=>"show", :exhibit_id=>sub_collection.subset_of_ids.first})))
+      link_to(label, exhibit_path(p.merge!({:id=>sub_exhibit.subset_of_ids.first, :class=>"facet_select", :action=>"show", :exhibit_id=>sub_exhibit.subset_of_ids.first})))
     else
       link_to_document(document, :label => Blacklight.config[:show][:heading].to_sym, :counter => (counter + 1 + @response.params[:start].to_i))
     end
@@ -543,7 +543,7 @@ logger.debug("Params in edit_and_browse_links: #{params.inspect}")
         q = "#{exhibit_members_query} AND #{q}" unless exhibit_members_query.empty?
       end
     end
-    q = "#{q} AND NOT _query_:\"info\\\\:fedora/afmodel\\\\:Exhibit\" AND NOT _query_:\"info\\\\:fedora/afmodel\\\\:SubCollection\""
+    q = "#{q} AND NOT _query_:\"info\\\\:fedora/afmodel\\\\:Exhibit\" AND NOT _query_:\"info\\\\:fedora/afmodel\\\\:SubExhibit\""
   end
 
   def get_collections(content, user_query_to_append)

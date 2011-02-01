@@ -1,6 +1,6 @@
 require "hydra"
 
-class SubCollection < ActiveFedora::Base
+class SubExhibit < ActiveFedora::Base
 
   include Hydra::GenericContent
 

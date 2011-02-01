@@ -1,6 +1,6 @@
 <tr class="document" class="<%= cycle("even","odd") %>">
   <td>
-    <%= document_link_to_exhibit_sub_collection(document.id,document,counter) %>
+    <%= document_link_to_exhibit_sub_exhibit(document.id,document,counter) %>
   </td>
   <td>
     <% creator = get_person_from_role(document, "Creator") %>

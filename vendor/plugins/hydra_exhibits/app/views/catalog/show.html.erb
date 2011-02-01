@@ -21,8 +21,8 @@
       <%- end -%>      
       <span class="edit-browse">
         <%- if editor? -%>
-          <%- if @document_fedora.class == SubCollection -%>
-            <%= edit_and_browse_subcollection_links(@document_fedora) %>
+          <%- if @document_fedora.class == SubExhibit -%>
+            <%= edit_and_browse_subexhibit_links(@document_fedora) %>
           <%- elsif @document_fedora.class == Exhibit-%>
             <%= edit_and_browse_exhibit_links(@document_fedora) %>
           <%- elsif @document_fedora.type.to_s != "Description"-%> 

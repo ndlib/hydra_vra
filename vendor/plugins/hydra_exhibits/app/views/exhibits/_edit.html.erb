@@ -51,7 +51,7 @@
       <% if @document_fedora.kind_of? Exhibit%>
         <%= render :partial => "exhibits/edit_exhibit", :locals => { :content => "exhibit", :label => "exhibit", :document_fedora => @document_fedora} %>
       <%# else %>
-        <%# render :partial => "sub_collections/edit_sub_collection", :locals => { :content => "sub_collection", :label => "sub collection", :document_fedora => @document_fedora} %>     
+        <%# render :partial => "sub_exhibits/edit_sub_exhibit", :locals => { :content => "sub_exhibit", :label => "sub exhibit", :document_fedora => @document_fedora} %>     
       <% end %>      
       <h2 class="section-title"><a href="#">Set permissions</a></h2>
       <div id="permissions">
@@ -70,7 +70,7 @@
   <% if @document_fedora.kind_of? Exhibit%>
     <%= delete_asset_link(params[:id], "Exhibit") %>
   <% else %>
-    <%= delete_asset_link(params[:id], "Sub Collection") %>
+    <%= delete_asset_link(params[:id], "Sub Exhibit") %>
   <% end %>
   
 <% end %>

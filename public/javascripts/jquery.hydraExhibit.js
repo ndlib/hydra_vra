@@ -65,10 +65,10 @@
     });
 
      /*$('input.featured').bind('click',function(){
-       var selectedSubcollectionItems = new Array();
-       $("input.featured:checked").each(function() {selectedSubcollectionItems.push($(this).val());});       
+       var selectedSubexhibitItems = new Array();
+       $("input.featured:checked").each(function() {selectedSubexhibitItems.push($(this).val());});       
        var url = $("input#update_url").first().attr("value")       
-       var params =  "featured_items="+selectedSubcollectionItems+"&featured_action='add'"
+       var params =  "featured_items="+selectedSubexhibitItems+"&featured_action='add'"
         $.ajax({
          type: "PUT",
          url: url,
@@ -92,10 +92,10 @@
     });*/
      
      $('a.addfeatured').bind('click',function(){
-       var selectedSubcollectionItems = new Array();
-       $("input.featured:checked").each(function() {selectedSubcollectionItems.push($(this).val());});       
+       var selectedSubexhibitItems = new Array();
+       $("input.featured:checked").each(function() {selectedSubexhibitItems.push($(this).val());});       
        var url = $("input#update_url").first().attr("value")       
-       var params =  "featured_items="+selectedSubcollectionItems+"&featured_action='add'"
+       var params =  "featured_items="+selectedSubexhibitItems+"&featured_action='add'"
        var showDiv=$("div.show_featured_div")
        var perviousNode=$("div.show_featured_div").first();
 

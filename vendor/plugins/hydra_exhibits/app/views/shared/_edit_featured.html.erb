@@ -3,7 +3,7 @@
   <%- initialize_exhibit if @exhibit.nil? -%> 
   <%- if(content.eql?("exhibit")) -%>
     <%- asset=@exhibit -%>
-  <%- elsif(content.eql?("sub_collection")) -%>
+  <%- elsif(content.eql?("sub_exhibit")) -%>
     <%- asset=@subset -%>
   <%- else -%>
     <%- asset=nil -%>
