@@ -4,6 +4,7 @@ class CatalogController
   include ApplicationHelper
 
   before_filter :set_page_style, :only => [:show, :index]
+  before_filter :initialize_exhibit
 
   alias :blacklight_facet_limit_for :facet_limit_for
 

@@ -142,7 +142,7 @@ logger.debug("Params in edit_and_browse_links: #{params.inspect}")
       result << "<span class=\"edit toggle active\">Edit</span>"
     else
       result << "<span class=\"browse toggle active\">View</span>"
-      result << "<a href=\"#{edit_catalog_path(@document[:id], :class => "edit_exhibit", :exhibit_id => @document[:id], :render_search=>"false")}\" class=\"edit toggle\">Edit</a>"
+      result << "<a href=\"#{edit_catalog_path(@document[:id], :class => "edit_exhibit", :render_search=>"false")}\" class=\"edit toggle\">Edit</a>"
     end
     return result
   end
@@ -371,8 +371,10 @@ logger.debug("Params in edit_and_browse_links: #{params.inspect}")
     query_params.merge!({:id=>exhibit_id})
     query_params.merge!({:f=>f}) if f && !f.empty? && !params[:render_search].blank?
     link_url = exhibit_path(query_params)
-    opts[:label] = params[:exhibit_id] unless opts[:label]
-    link_to opts[:label], link_url    
+    opts[:label] = exhibit_id unless opts[:label]
+    val = link_to opts[:label], link_url    
+    logger.debug("Created exhibit link: #{val.inspect}")
+    val
   end
 
   def breadcrumb_builder
@@ -409,7 +411,7 @@ logger.debug("Params in edit_and_browse_links: #{params.inspect}")
   end 
 
   def render_browse_facet_div
-    initialize_exhibit #if @exhibit.nil?
+    initialize_exhibit if @exhibit.nil?
     @exhibit.nil? ? '' : get_browse_facet_div(@browse_facets,@browse_response,@extra_controller_params)
   end
 

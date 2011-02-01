@@ -9,7 +9,9 @@
     </span>
   </div>
 </div>
-<h1><%=  @exhibit.exhibit_title %></h1>
+
+<%=render :partial=>'shared/exhibit_title_header'%>
+
 <%- if @exhibit.descriptions.any? -%>
   <h2>Description</h2>
   <%- @exhibit.descriptions(:response_format=>:solr).each_with_index do |document, counter| -%>

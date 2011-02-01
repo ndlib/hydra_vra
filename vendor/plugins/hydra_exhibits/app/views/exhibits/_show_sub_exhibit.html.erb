@@ -9,9 +9,7 @@
   </div>
 </div>
 
-<h1>Sub Collection Title</h1>
-
-<%= debug @subset ? "Matched subset" : "Did not match subset" if RAILS_ENV == "development" -%>
+<%=render :partial=>'shared/exhibit_title_header'%>
 
 <%- if @descriptions.any? -%>
   <h2>Description</h2>  
