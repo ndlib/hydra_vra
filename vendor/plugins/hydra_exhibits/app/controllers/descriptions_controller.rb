@@ -47,6 +47,10 @@ class DescriptionsController < ApplicationController
     logger.debug "Description params: #{params.inspect}"
     @description = create_and_save_description
     apply_depositor_metadata(@description)
+    #rights_ds = @description.datastreams_in_memory["rightsMetadata"]
+    @description.datastreams["rightsMetadata"].update_permissions({"group"=>{"public"=>"read"}})
+    #rights_ds.update_indexed_attributes([:read_access, :person]=>"public") unless rights_ds.nil?
+    @description.save
     if !params[:asset_id].nil?
       @asset =  ActiveFedora::Base.load_instance(params[:asset_id])      
       @description.description_of_append(@asset)
@@ -155,6 +159,9 @@ class DescriptionsController < ApplicationController
     content = updater_method_args[:params]["descriptiondatastream"]
     logger.error("Param: #{updater_method_args[:params]["descriptiondatastream"].inspect}, opts: #{updater_method_args[:opts][:datastreams].inspect}")
     @description = create_and_save_description(content)
+    rights_ds = @description.datastreams_in_memory["rightsMetadata"]    
+    rights_ds.update_indexed_attributes([:read_access, :person]=>"public") unless rights_ds.nil?
+    @description.save
     apply_depositor_metadata(@description)
     @description.save
     if !params[:id].nil?
