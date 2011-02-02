@@ -18,33 +18,42 @@
       <dd id="queries">
         <%= fedora_text_field(document_fedora,"filters", "query", :multiple=>true)%>        
       </dd>
-      <%- unless document_fedora.collections.empty?-%>
-         <dt class="collections">
-            <label>Related Collections:</label>
-         </dt>
-         <dd class="collections">
-           <%- document_fedora.collections.each do |collection| -%>
-             <%= collection.title%>
-             <a class="destructive remove_collections" pid="<%= collection.pid%>" href=# action="<%= remove_collection_exhibit_path(params[:id], :content_type=>content)%>" title="Remove Relation"> Delete Collection Relations</a>
-           <%- end -%>
-         </dd>
-      <%-end-%>
+      <dt>
+        <label>Related Collections:</label>
+      </dt>
+      <dd class="collections">
+        <%- unless document_fedora.collections.empty? -%>
+          <%- document_fedora.collections.each do |collection| -%>
+            <%= collection.title%>
+            <a class="destructive remove_collections" pid="<%= collection.pid%>" href=# action="<%= remove_collection_exhibit_path(params[:id], :content_type=>content)%>" title="Remove Relation"> Delete Collection Relations</a>
+          <%- end -%>
+        <%- else -%>
+           <span class="text fl-inlineEdit-invitation-text">Select Below</span>
+        <%- end -%>
+      </dd>
+    </dl>
+    <ul>
+      <%= get_collections(content,"active_fedora_model_s:Collection")%>
+    </ul>
+    <dl>
+      <dt>
+        <%= fedora_field_label("filters", "facets", "Browse Facets:") %>
+      </dt>
+      <dd id="browse_facets" class="browse_facets">
 
-      <% unless get_values_from_datastream(document_fedora,"filters", [:facets]).first.empty?%>
-        <dt>
-          <%= fedora_field_label("filters", "facets", "Browse Facets:") %>
-        </dt>
-          <dd id="browse_facets" class="browse_facets">
-            <ol>
-              <%- get_values_from_datastream(document_fedora,"filters", [:facets]).each do |item| -%>
-                <li class="browse_facets_level"index="<%= get_values_from_datastream(document_fedora,"filters", [:facets]).index(item)%>">
-                  Level-<%= get_values_from_datastream(document_fedora,"filters", [:facets]).index(item) + 1%>: <%= facet_field_labels[item].blank? ? item : facet_field_labels[item]%>
-                  <a class="destructive remove_facet" value="<%= item%>" index="<%= get_values_from_datastream(document_fedora,"filters", [:facets]).index(item)%>" href=# action="<%= asset_path(params[:id], :content_type=>content)%>" title="Remove Facet"> Delete this facet</a>
-                </li>
-              <%- end -%>
-            </ol>
-          </dd>
-      <%- end -%>
+        <%- unless get_values_from_datastream(document_fedora,"filters", [:facets]).first.empty? -%>
+          <ol>
+           <%- get_values_from_datastream(document_fedora,"filters", [:facets]).each do |item| -%>
+              <li class="browse_facets_level"index="<%= get_values_from_datastream(document_fedora,"filters", [:facets]).index(item)%>">
+                Level-<%= get_values_from_datastream(document_fedora,"filters", [:facets]).index(item) + 1%>: <%= facet_field_labels[item].blank? ? item : facet_field_labels[item]%>
+                <a class="destructive remove_facet" value="<%= item%>" index="<%= get_values_from_datastream(document_fedora,"filters", [:facets]).index(item)%>" href=# action="<%= asset_path(params[:id], :content_type=>content)%>" title="Remove Facet"> Delete this facet</a>
+              </li>
+            <%- end -%>
+          </ol>
+        <%- else -%>
+          <span class="text fl-inlineEdit-invitation-text">Select Below</span>
+        <%- end -%>
+      </dd>
     </dl>
     <div id="add-facet-box" class="split-button">
     <input id="re-run-add-facet-action" type="button" class="button" value="Select Browse Facets" />
@@ -59,7 +68,6 @@
         <%- end -%>
       </ul>
     </div>    
-    <%= get_collections(content,"active_fedora_model_s:Collection")%>
 
     </fieldset>
   </div>

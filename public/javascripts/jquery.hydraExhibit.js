@@ -220,17 +220,14 @@
          data: params,
          dataType: "html",
          beforeSend: function() {
-   			dtNode.animate({'backgroundColor':'#fb6c6c'},300);
             ddNode.animate({'backgroundColor':'#fb6c6c'},300);
          },
          success: function() {
-           dtNode.slideUp(300,function() {
-             dtNode.remove();
-           });
            ddNode.slideUp(300,function() {
-             ddNode.remove();
+               ddNode.remove();
            });
            $.fn.initialize_setting();
+           $.fn.hydraExhibit.resetSetting();
          }
       });
     });
