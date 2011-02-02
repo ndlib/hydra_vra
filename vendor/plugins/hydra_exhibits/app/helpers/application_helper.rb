@@ -285,7 +285,7 @@ logger.debug("Params in edit_and_browse_links: #{params.inspect}")
   def description_text_area_insert_link(datastream_name, opts={})
     field_name = "description_content"
     link_text = "Add #{(opts[:label]).to_s.camelize.titlecase}"
-    "<a class='addval rich-textarea' href='#' data-datastream-name=\"#{datastream_name}\" content-type=\"#{opts[:content_type]}\" rel=\"#{field_name}\" title='#{link_text}'>#{link_text}</a>"    
+    "<input type=\"button\" class='addval rich-textarea' href='#' data-datastream-name=\"#{datastream_name}\" content-type=\"#{opts[:content_type]}\" rel=\"#{field_name}\" title='#{link_text}' value='#{link_text}'/>"    
   end
 
   def load_description(description_obj)

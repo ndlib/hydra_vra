@@ -1,14 +1,17 @@
+
 <div class="description_div">
+  <fieldset id="description_fields">
+    <legend>Descriptions</legend>
     <input id="show_description_url" type="hidden" name="url" asset-pid="<%= asset.pid %>" value="<%= description_path(asset.pid) %>" />
     <input id="add_description_url" type="hidden" name="url" asset-pid="<%= asset.pid %>" value="<%= add_description_path(asset.pid) %>" />
     <input id="update_title_url" type="hidden" name="url" asset-pid="<%= asset.pid %>" value="<%= update_title_description_path(asset.pid) %>" />    
     <%- unless asset.description_list.blank? -%>
       <% descriptions = asset.description_list %>      
       <dl class="related-descriptions">
-        <%- descriptions.each do |description| -%>
+        <%- descriptions.each_with_index do |description,index| -%>
           <div class="remove-description-div">
               <input class="update_description_display" type="hidden" name="description display" action="<%= asset_path(description.pid,:content_type=>"description")%>"/>
-              <dt><label>Description Title:</label></dt>
+              <dt><label><%=index+1%>.&nbsp;Description Title:</label></dt>
               <dd>
                 <%= custom_text_field(description,"descMetadata", [:title]) %>
                 <%=custom_rich_text_area(description, "descriptiondatastream", description.descriptiondatastream_ids.first, :datastream=>true) %>
@@ -30,11 +33,15 @@
           </div>
         <%- end -%>
       </dl>
+    <%- else -%>
+      <span class="text fl-inlineEdit-invitation-text">No descriptions defined</span>
     <%- end -%>
-    <div id="add-description-div">
-      <%= description_text_area_insert_link "descriptiondatastream", {:label=>"Description", :content_type=>"description"}%>
-    </div>
-
+  </fieldset>
+  <div class="new-description-div"></div>
+  <br/>
+  <div id="add-description-div">
+    <%= description_text_area_insert_link "descriptiondatastream", {:label=>"Description", :content_type=>"description"}%>
+  </div>
 </div>
 
 

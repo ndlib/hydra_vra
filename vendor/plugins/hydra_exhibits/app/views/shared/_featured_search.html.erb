@@ -1,6 +1,7 @@
 <%- query =  "active_fedora_model_s:Component" -%>
 <%# query += " AND #{q}" unless q.nil? -%>
 <%- (@component_response, @document_list) = get_featured_available(content, query) -%>
+<h3><em><%= "Select from #{pluralize(@component_response.docs.total, 'source')} listed below"%> </em></h3>
 <div class="pagination">
   <%= will_paginate @component_response.docs, :page_links => false, :class => 'prev_next_links' %>
   <%= will_paginate @component_response.docs, :container => false %>

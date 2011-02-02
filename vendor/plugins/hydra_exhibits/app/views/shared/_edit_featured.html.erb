@@ -2,11 +2,11 @@
   <legend> Featured Sources </legend>
   <div class="show_featured_div"> <%= render :partial => 'shared/show_featured', :locals => {:content=>content, :asset=>@document_fedora} %> </div>
   <div class="update_featured">
-    <h3>Available Sources</h3>
+    <h3>Select Featured Sources</h3>
     <%= render :partial => "shared/featured_search_form" %>
     <div class="featured_search">
       <%= render :partial => "shared/featured_search", :locals=>{:content=>content} %>
     </div>
-    <a class='addfeatured' href='#' title='add as featured' exhibit-id="<%= params[:exhibit_id] %>" >Add Checked to Featured Sources</a>
+    <input type="button" class='addfeatured' value="Add Selected Sources">
   </div>
 </fieldset>

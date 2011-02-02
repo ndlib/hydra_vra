@@ -90,7 +90,7 @@
       return false;
     });*/
      
-     $('a.addfeatured').bind('click',function(){
+     $('input.addfeatured').bind('click',function(){
        var selectedSubexhibitItems = new Array();
        $("input.featured:checked").each(function() {selectedSubexhibitItems.push($(this).val());});       
        var url = $("input#update_url").first().attr("value")       
@@ -458,7 +458,7 @@
      //alert("insertTextareaValue")
      var config = {};
      if (settings) $.extend(config, settings);
-     $("a.addval.rich-textarea", this).live("click",function(e) {       
+     $("input.addval.rich-textarea", this).live("click",function(e) {       
        $.fn.hydraExhibit.insertDescription(this,e);
      });
    };
@@ -575,14 +575,16 @@
        var assetUrl = $("input#add_description_url").first().attr("value")+params;
        var addDiv = $("div#add-description-div").first()
        var essayDiv=$("div.description_div")
+       var newEssayDiv=$("div.new-description-div")
        var essayNode=$(element).closest("div.description_div")
 
-       var $item = jQuery('<li class=\"field_value description-textarea-container field\" name="asset[' + datastreamName + '][' + new_value_index + ']">' +
+       var $item = jQuery('<fieldset id="new_description"><legend>New Description</legend><li class=\"field_value description-textarea-container field\" name="asset[' + datastreamName + '][' + new_value_index + ']">' +
               '<a href="" class="destructive"><img src="/images/delete.png" border="0" /></a>' +
               '<label>Description Title</label> <input type="text" name="description_title" class="editable-edit" value="" /> ' +
-               '<div class="textile-text text" id="'+fieldName+'_'+new_value_index+'">click to add Description content</div></li>');
+               '<div class="textile-text text new" id="'+fieldName+'_'+new_value_index+'">click to add Description content</div></li></fieldset>');
 
-       $item.appendTo(essayDiv);
+       $item.appendTo(newEssayDiv);
+
        //alert("Essay Title=> "+$("input.editable-edit").val())
        var submitUrl= assetUrl+"&format=html"+"&temp_content="+$("div#"+fieldName+"_"+new_value_index).html();
 
