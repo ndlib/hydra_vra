@@ -1,14 +1,6 @@
 <fieldset id="work_fields">
   <legend> Featured Sources </legend>
-  <%- initialize_exhibit if @exhibit.nil? -%> 
-  <%- if(content.eql?("exhibit")) -%>
-    <%- asset=@exhibit -%>
-  <%- elsif(content.eql?("sub_exhibit")) -%>
-    <%- asset=@subset -%>
-  <%- else -%>
-    <%- asset=nil -%>
-  <%- end -%>
-  <div class="show_featured_div"> <%= render :partial => 'shared/show_featured', :locals => {:content=>content, :asset=>asset} %> </div>
+  <div class="show_featured_div"> <%= render :partial => 'shared/show_featured', :locals => {:content=>content, :asset=>@document_fedora} %> </div>
   <div class="update_featured">
     <h3>Available Sources</h3>
     <%= render :partial => "shared/featured_search_form" %>

@@ -1,5 +1,4 @@
 <h3>Current Featured Sources </h3>
-<%#debug @subset %>
 <% if asset &&  asset.featured.any? %>
   <dl class="item-list">
     <%-  asset.featured.each do |item| -%>
@@ -13,4 +12,3 @@
   <h3><i>None</i></h3>
 <%- end -%>
 
-<%# render :partial => "shared/edit_featured", :locals => {:facet_name => nil, :facet_value => nil, :content=>content} %>
