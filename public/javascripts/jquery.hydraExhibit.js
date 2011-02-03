@@ -16,16 +16,10 @@
      $(".content").hide();
      //toggle the componenet with class msg_body
      $(".heading").click(function(){
-        //$(this).hide()
-        $(this).next(".content").slideToggle(500);
-     });
-
-     //toggle the componenet with class msg_body
-     /*$(".content").click(function(){
-        $(this).hide()
-        $(this).sibling(".heading").show();
-     });*/
-
+        $(this).siblings("span.intro").toggle()
+        $(this).next(".content").slideToggle(300);
+        $(this).text($(this).text() == '[Read the complete essay]' ? '[Hide essay]' : '[Read the complete essay]');
+     });     
 
      $('input.update_embedded_search').bind('click',function(){
        var url = $("input#update_embedded_search").first().attr("value")       
