@@ -365,7 +365,7 @@
 
      $('dd.browse_facets ol li').each(function(){
        index = $(this).attr("index")
-       $(this).attr('style', ' position: relative; padding-left:'+index+'em');;
+       $(this).attr('style', 'text-indent:'+index+'em');;
      });     
    }
 

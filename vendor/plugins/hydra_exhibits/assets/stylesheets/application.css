@@ -276,3 +276,6 @@ p.collection_desc {padding-left:2em;}
 #collection-search label {font-weight:normal;}
 
 .index_title {margin-bottom:.5em;}
+
+.description-textarea-container {width:100%;}
+.featured-controls {border:none;}
