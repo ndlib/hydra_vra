@@ -399,13 +399,13 @@
         mods_gps_t, mods_region_t, mods_site_t, mods_ecosystem_t,
         mods_timespan_start_t, mods_timespan_end_t, description_t,
 
-	ead_ead_header_filedesc_titlestmt_titleproper_t,
         dsc_collection_did_unitid_t,
         dsc_collection_did_unitid_unitid_identifier_t,
         dsc_collection_did_unittitle_unittitle_content_t,
         dsc_collection_did_unittitle_imprint_publisher_t,
         dsc_collection_controlaccess_genreform_t,
         dsc_collection_scopecontent_t,
+        ead_ead_header_filedesc_titlestmt_titleproper_t,
 
         item_did_unittitle_unittitle_content_t,
         item_did_unittitle_t,
