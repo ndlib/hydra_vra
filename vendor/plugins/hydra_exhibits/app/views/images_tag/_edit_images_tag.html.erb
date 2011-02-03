@@ -1,5 +1,5 @@
-<% image = edit_image_tag %>
-<% image_counter = edit_image_tag_counter %>
+<% image = edit_images_tag %>
+<% image_counter = edit_images_tag_counter %>
 <% base_id = "image_#{image_counter}" %>
 
 <li>
@@ -9,12 +9,11 @@
         <li class="image">
           <%= fedora_field_label("descMetadata", [:item, :daogrp, {:daoloc => image_counter}, :daoloc_href], "Image:") %>
           <%= fedora_text_field(@document_fedora,"descMetadata", [:item, :daogrp, {:daoloc => image_counter}, :daoloc_href], :multiple=>false) %>
-		  <%= debug "#{image_counter}"%>
         </li>
     </ul>
     <% if ( (params[:action] == "edit" || params[:action] == "create")) %>
-        <%= field_selectors_for("descMetadata", [{:image=>image_counter}]) %>
-        <a class="destructive destroy_image" href="<%= images_tag_path(@document_fedora.pid, :image=>image_counter) %>" title="Delete Image"> Delete</a>
+        <%= field_selectors_for("descMetadata", [{:image=>image_counter}]) %>  
+	<%= link_to("", url_for(:action => "destroy", :controller => "images_tag", :item_id => @document_fedora.pid, :image_counter=>image_counter), :method => :delete, :class => "destructive destroy_image") %>
     <% end %>
   </dd>
   </dl>

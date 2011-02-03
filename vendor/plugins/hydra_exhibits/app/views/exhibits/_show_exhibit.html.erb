@@ -44,6 +44,7 @@
     <%- @exhibit.featured(:response_format=>:solr).each_with_index do |document, counter| -%>
       <%- item = load_af_instance_from_solr(document) -%>      
       <%-  item.item_title.blank? ? title = item.sub_collection_title : title = item.item_title -%>
+      <%= debug document.inspect %>
       <%= render_document_index_partial(SolrDocument.new(document), title, counter, :index) %>
     <%- end -%>
   </dl>

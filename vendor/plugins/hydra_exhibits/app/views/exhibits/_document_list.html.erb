@@ -5,9 +5,10 @@
   <% document_list = @document_list if document_list.nil?%>
   <% response = @response if response.nil?%>
   <% document_list.each_with_index do |document,counter| %>
+  <% debug document %>
     <% # container for a single doc -%>
     <div class="document<%= thumbnail_class( document ) %>">
-      
+      <%= debug document.inspect %>
       <% # header bar for doc items in index view -%>
       <div class="documentHeader yui-g">
         <% # main title container for doc partial view -%>

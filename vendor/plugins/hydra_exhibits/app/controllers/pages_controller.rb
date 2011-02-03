@@ -124,6 +124,11 @@ class PagesController < ApplicationController
         set_collection_type(@asset, params[:content_type])
 	@asset.item_append(params[:item_id])
         @asset.save
+	@parent = Component.load_instance(params[:item_id])
+	if(@parent.main_page.nil? || @parent.main_page.empty?)
+	  @parent.update_indexed_attributes({:main_page=>{0=>@asset.pid}})
+	  @parent.save
+	end
       end
       redirect_to url_for(:action=>"edit", :controller=>"catalog", :label => params[:label], :id=>@asset.pid)
     end
