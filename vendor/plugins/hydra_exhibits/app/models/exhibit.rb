@@ -7,7 +7,7 @@ class Exhibit < ActiveFedora::Base
 
   has_bidirectional_relationship "members", :has_member, :is_member_of
   #reusing parts here because has_subset taken already
-  has_bidirectional_relationship "highlighted", :has_part, :is_part_of
+  has_bidirectional_relationship "featured", :has_part, :is_part_of
   has_bidirectional_relationship "subsets", :has_subset, :is_subset_of
   has_bidirectional_relationship  "descriptions",   :has_description, :is_description_of
   has_relationship "collections", :has_constituent
@@ -17,7 +17,8 @@ class Exhibit < ActiveFedora::Base
 
   # Uses the Hydra MODS Article profile for tracking most of the descriptive metadata
   has_metadata :name => "descMetadata", :type => ActiveFedora::MetadataDatastream do |m|
-    m.field "main_description", :string, :xml_node => "main_description"
+    #m.field "main_description", :string, :xml_node => "main_description"
+    m.field "exhibit_title", :string, :xml_node => "exhibit_title"
   end
 
   # A datastream to hold browseable facet list
@@ -27,6 +28,11 @@ class Exhibit < ActiveFedora::Base
     m.field "tags", :string
   end 
 
+  def exhibit_title
+   return @exhibit_title if (defined? @exhibit_title)
+    values = self.fields[:exhibit_title][:values]
+    @exhibit_title = values.any? ? values.first : ""
+  end
 
   def build_members_query
     q = ""
@@ -92,10 +98,12 @@ class Exhibit < ActiveFedora::Base
     return result
   end
 
+=begin
   def title
     return @exhibit_description_title if (defined? @exhibit_description_title)
     values = self.fields[:main_description][:values]
     @exhibit_description_title = values.any? ? values.first : ""
   end
-  
+=end
+
 end

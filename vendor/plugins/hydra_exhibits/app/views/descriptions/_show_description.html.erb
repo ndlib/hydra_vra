@@ -1,0 +1,15 @@
+<div class="truncated_content">
+  <%- if description.style == "newpage" -%>
+    <h3><em>
+      <%= link_to_document document, :label=>("Essay: \"#{description.title}\"") %>
+    </em></h3>
+    <p>
+      <%= description.summary %>
+      <%= link_to_document document, :label=>("[Read the complete essay]")%>
+    </p>
+  <%- else -%>
+    <h3> <em><%= description.title %></em> </h3>
+    <span id="testheading" class="heading"> <%= "#{truncate( load_description(description), :length =>150, :ommision => "....")}"%> </span>
+    <div class="content"><%= load_description(description) %></div>
+   <%- end -%>
+</div>

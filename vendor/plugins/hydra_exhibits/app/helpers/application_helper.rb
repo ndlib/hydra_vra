@@ -44,6 +44,7 @@ module ApplicationHelper
     p.delete(:q)
     p.delete(:commit)
     p.delete(:search_field)
+    p.delete(:controller)
     p.merge!(:id=>params[:exhibit_id]) if p[:exhibit_id]
     p = add_facet_params(facet_solr_field,item.value,p)
     link_to(item.value, exhibit_path(p.merge!({:class=>"facet_select", :action=>"show"}))) + " (" + format_num(item.hits) + ")"
@@ -55,6 +56,7 @@ module ApplicationHelper
     remove_params = remove_browse_facet_params(facet_solr_field, item.value, params, browse_facets)
     remove_params.delete(:render_search) #need to remove if we are in search view and click takes back to browse
     remove_params.merge!(:id=>params[:exhibit_id]) if params[:exhibit_id]
+    remove_params.delete(:controller)
     '<span class="selected">' +
     render_facet_value(facet_solr_field, item, :suppress_link => true) +
     '</span>' +
@@ -104,6 +106,12 @@ module ApplicationHelper
   alias :hydra_edit_and_browse_links :edit_and_browse_links
 
   def edit_and_browse_links
+=begin
+logger.debug("Params in edit_and_browse_links: #{params.inspect}")
+    asset = load_af_instance_from_solr(params[:id])
+    the_model = ActiveFedora::ContentModel.known_models_for( asset ).first
+    logger.debug("Model in edit_and_browse_links: #{the_model.inspect}")
+=end
     if params[:exhibit_id]
       result = ""
       if params[:action] == "edit"
@@ -134,12 +142,12 @@ module ApplicationHelper
       result << "<span class=\"edit toggle active\">Edit</span>"
     else
       result << "<span class=\"browse toggle active\">View</span>"
-      result << "<a href=\"#{edit_catalog_path(@document[:id], :class => "facet_selected", :exhibit_id => @document[:id])}\" class=\"edit toggle\">Edit</a>"
+      result << "<a href=\"#{edit_catalog_path(@document[:id], :class => "edit_exhibit", :render_search=>"false")}\" class=\"edit toggle\">Edit</a>"
     end
     return result
   end
 
-  def edit_and_browse_subcollection_links(subcollection)
+  def edit_and_browse_subexhibit_links(subexhibit)
     result = ""
     if params[:action] == "edit"
       browse_params = params.dup
@@ -150,15 +158,15 @@ module ApplicationHelper
       result << "<span class=\"edit toggle active\">Edit</span>"
     else
       result << "<span class=\"browse toggle active\">View</span>"
-      if(subcollection.nil?)
-        result << "<a href=\"#{url_for(:action => "new", :controller => "sub_collections", :content_type => "sub_collection", :exhibit_id => @document[:id], :selected_facets => params[:f])}\" class=\"edit toggle\">Edit</a>"
+      if(subexhibit.nil?)
+        result << "<a href=\"#{url_for(:action => "new", :controller => "sub_exhibits", :content_type => "sub_exhibit", :exhibit_id => @document[:id], :selected_facets => params[:f])}\" class=\"edit toggle\">Edit</a>"
       else
-        result << "<a href=\"#{edit_catalog_path(subcollection.id, :class => "facet_selected", :exhibit_id => @document[:id], :f => params[:f], :render_search=>"false")}\" class=\"edit toggle\">Edit</a>"
+        result << "<a href=\"#{edit_catalog_path(subexhibit.id, :class => "facet_selected", :exhibit_id => @document[:id], :f => params[:f], :render_search=>"false")}\" class=\"edit toggle\">Edit</a>"
         #edit_params = params.dup
         #edit_params.delete(:viewing_context)
         #edit_params.delete(:action)
         #edit_params.delete(:controller)
-        #result << "<a href=\"#{edit_catalog_path(subcollection.id, edit_params)}\" class=\"edit toggle\">Edit</a>"
+        #result << "<a href=\"#{edit_catalog_path(subexhibit.id, edit_params)}\" class=\"edit toggle\">Edit</a>"
       end
 
     end
@@ -167,13 +175,28 @@ module ApplicationHelper
     return result
   end
 
+   def custom_radio_button(resource, datastream_name, field_key, opts={})
+    field_name = field_name_for(field_key)
+    field_values = get_values_from_datastream(resource, datastream_name, field_key, opts)
+    base_id = generate_base_id(field_name, field_values.first, field_values, opts.merge({:multiple=>false}))
+    result = ""
+    h_name = OM::XML::Terminology.term_hierarchical_name(*field_key)
+    field_values.each_with_index do |current_value, z|
+      name = "asset[#{datastream_name}][#{field_name}][#{z}][#{resource.pid}]"
+      logger.debug("field_values : #{current_value}")
+      result << radio_button_tag (name, opts.first[0], (opts.first[0].to_s==current_value),:data_pid=>resource.pid,:datastream=>"asset[#{datastream_name}][#{field_name}][#{z}]", :class=>"fieldselector", :rel=>h_name)      
+      result << " #{opts.first[1]}"
+    end
+    return result
+  end
+
   def custom_text_field(resource, datastream_name, field_key, opts={})
     field_name = field_name_for(field_key)
     field_values = get_values_from_datastream(resource, datastream_name, field_key, opts)
     content_type = ActiveFedora::ContentModel.known_models_for( resource ).first
-        if content_type.nil?
-          raise "Unknown content type for the object with pid #{@obj.pid}"
-        end
+    if content_type.nil?
+      raise "Unknown content type for the object with pid #{@obj.pid}"
+    end
     if opts.fetch(:multiple, true)
       container_tag_type = :li
     else
@@ -202,49 +225,67 @@ module ApplicationHelper
     return result
   end
   
-  def app_rich_text_area(content_type,pid, datastream_name, opts={})
-    field_name = "description_content"
-    af_model = retrieve_af_model(content_type)
-    logger.error("cm:#{content_type.inspect}, pid:#{pid.inspect}, ds:#{datastream_name.inspect}")
-    raise "Content model #{content_type} is not of type ActiveFedora:Base" unless af_model
-    resource = af_model.load_instance(pid)
-    logger.error("Model: #{af_model}, resource:#{resource.pid}")
-    field_values = resource.descriptiondatastream(datastream_name).first.content
+  def custom_rich_text_area(resource, datastream_name, datastream_name_key, opts={})
+    content_type = ActiveFedora::ContentModel.known_models_for( resource ).first
+    if content_type.nil?
+      raise "Unknown content type for the object with pid #{@obj.pid}"
+    end
+    logger.error("Model: #{content_type}, resource:#{resource.pid}")
     if opts.fetch(:multiple, true)
       container_tag_type = :li
     else
       field_values = [field_values.first]
       container_tag_type = :span
     end
-    body = ""
-    base_id = "base_id"
-    name = "asset[#{datastream_name}][#{field_name}]"
-    processed_field_value = white_list( RedCloth.new(field_values, [:sanitize_html]).to_html)
+    if opts.fetch(:datastream, true)
+      field_name = datastream_name
+      field_values = resource.content
+      body = ""
+      base_id = "base_id"
+      name = "asset[#{datastream_name_key}][#{field_name}]"
+      processed_field_value = white_list( RedCloth.new(field_values, [:sanitize_html]).to_html)
 
-    body << "<#{container_tag_type.to_s} class=\"field_value description-textarea-container field\" id=\"#{base_id}-container\">"
-      # Not sure why there is we're not allowing the for the first textile to be deleted, but this was in the original helper.
-      #body << "<a href=\"\" title=\"Delete '#{h(current_value)}'\" class=\"destructive field\">Delete</a>" unless z == 0
-      body << "<div class=\"textile-text text\" id=\"#{base_id}-text\">#{processed_field_value}</div>"
-      body << "<input class=\"textile-edit edit\" id=\"#{base_id}\"  data-pid=\"#{pid}\" data-content-type=\"#{content_type}\" data-datastream-name=\"#{datastream_name}\" rel=\"#{field_name}\" name=\"#{name}\" title=\"description_title\" value=\"#{h(field_values)}\"/>"
-    body << "</#{container_tag_type}>"
+      body << "<#{container_tag_type.to_s} class=\"field_value description-textarea-container field\" id=\"#{base_id}-container\">"
+        # Not sure why there is we're not allowing the for the first textile to be deleted, but this was in the original helper.
+        #body << "<a href=\"\" title=\"Delete '#{h(current_value)}'\" class=\"destructive field\">Delete</a>" unless z == 0
+        body << "<div class=\"textile-text text\" id=\"#{base_id}-text\">#{processed_field_value}</div>"
+        body << "<input class=\"textile-edit edit\" id=\"#{base_id}\"  data-pid=\"#{resource.pid}\"data-content-type=\"#{content_type}\"
+                  data-datastream-name=\"#{datastream_name}\" rel=\"#{field_name}\" name=\"#{name}\" load-from-datastream=\"true\" value=\"#{h(field_values)}\"/>"
+      body << "</#{container_tag_type}>"
 
+      result = ""
+    else
+      field_name = field_name_for(datastream_name_key)
+      field_values = get_values_from_datastream(resource, datastream_name, datastream_name_key, opts)
+      body = ""
 
-    result = ""
+    field_values.each_with_index do |current_value, z|
+      base_id = generate_base_id(field_name, current_value, field_values, opts)
+      name = "asset[#{datastream_name}][#{field_name}][#{z}]"
+      processed_field_value = white_list( RedCloth.new(current_value, [:sanitize_html]).to_html)
 
+      body << "<#{container_tag_type.to_s} class=\"field_value description-textarea-container field\" id=\"#{base_id}-container\">"
+        # Not sure why there is we're not allowing the for the first textile to be deleted, but this was in the original helper.
+        body << "<a href=\"\" title=\"Delete '#{h(current_value)}'\" class=\"destructive field\">Delete</a>" unless z == 0
+        body << "<div class=\"textile-text text\" id=\"#{base_id}-text\">#{processed_field_value}</div>"
+        body << "<input class=\"textile-edit edit\" id=\"#{base_id}\" data-pid=\"#{resource.pid}\"data-content-type=\"#{content_type}\"
+                  data-datastream-name=\"#{datastream_name}\" rel=\"#{field_name}\" name=\"#{name}\" load-from-datastream=\"false\"  value=\"#{h(current_value)}\"/>"
+      body << "</#{container_tag_type}>"
+    end
+    result = field_selectors_for(datastream_name, datastream_name_key)
+    end
     if opts.fetch(:multiple, true)
       result << content_tag(:ol, body, :rel=>field_name, :title=>"description_title")
     else
       result << body
     end
-
     return result
-
   end
 
   def description_text_area_insert_link(datastream_name, opts={})
     field_name = "description_content"
     link_text = "Add #{(opts[:label]).to_s.camelize.titlecase}"
-    "<a class='addval rich-textarea' href='#' data-datastream-name=\"#{datastream_name}\" content-type=\"#{opts[:content_type]}\" rel=\"#{field_name}\" title='#{link_text}'>#{link_text}</a>"    
+    "<input type=\"button\" class='addval rich-textarea' href='#' data-datastream-name=\"#{datastream_name}\" content-type=\"#{opts[:content_type]}\" rel=\"#{field_name}\" title='#{link_text}' value='#{link_text}'/>"    
   end
 
   def load_description(description_obj)
@@ -265,19 +306,19 @@ module ApplicationHelper
     p
   end
 
-  def document_link_to_exhibit_sub_collection(label, document, counter)
-    sub_collection = load_af_instance_from_solr(document)
-    if !sub_collection.nil? && sub_collection.respond_to?(:selected_facets)
+  def document_link_to_exhibit_sub_exhibit(label, document, counter)
+    sub_exhibit = load_af_instance_from_solr(document)
+    if !sub_exhibit.nil? && sub_exhibit.respond_to?(:selected_facets)
       p = params.dup
       #remove any previous f params from search
       p.delete(:f)
-      sub_collection.selected_facets.each_pair do |facet_solr_field,value|
+      sub_exhibit.selected_facets.each_pair do |facet_solr_field,value|
         p = add_facet_params(facet_solr_field,value,p)
       end
       p.delete(:commit)
       p.delete(:search_field)
       p.delete(:q)
-      link_to(label, exhibit_path(p.merge!({:id=>sub_collection.subset_of_ids.first, :class=>"facet_select", :action=>"show", :exhibit_id=>sub_collection.subset_of_ids.first})))
+      link_to(label, exhibit_path(p.merge!({:id=>sub_exhibit.subset_of_ids.first, :class=>"facet_select", :action=>"show", :exhibit_id=>sub_exhibit.subset_of_ids.first})))
     else
       link_to_document(document, :label => Blacklight.config[:show][:heading].to_sym, :counter => (counter + 1 + @response.params[:start].to_i))
     end
@@ -330,8 +371,8 @@ module ApplicationHelper
     query_params.merge!({:id=>exhibit_id})
     query_params.merge!({:f=>f}) if f && !f.empty? && !params[:render_search].blank?
     link_url = exhibit_path(query_params)
-    opts[:label] = params[:exhibit_id] unless opts[:label]
-    link_to opts[:label], link_url    
+    opts[:label] = exhibit_id unless opts[:label]
+    opts[:style] ? link_to(opts[:label], link_url, :style=>opts[:style]) : link_to(opts[:label], link_url)
   end
 
   def breadcrumb_builder
@@ -368,7 +409,7 @@ module ApplicationHelper
   end 
 
   def render_browse_facet_div
-    initialize_exhibit #if @exhibit.nil?
+    initialize_exhibit if @exhibit.nil?
     @exhibit.nil? ? '' : get_browse_facet_div(@browse_facets,@browse_response,@extra_controller_params)
   end
 
@@ -394,7 +435,7 @@ module ApplicationHelper
     display_facet = response_without_f_param.facets.detect {|f| f.name == solr_fname}
     display_facet_with_f = response.facets.detect {|f| f.name == solr_fname}
     unless display_facet.nil?
-      if display_facet.items.any?          
+      if display_facet.items.any?
         return_str += '<h3 class="facet-heading">' + facet_field_labels[display_facet.name] + '</h3>'
         return_str += '<ul>'
         display_facet.items.each do |item|
@@ -431,31 +472,12 @@ module ApplicationHelper
     temp and temp[field] and temp[field].include?(value)
   end
 
-  def get_components(content, component_query_to_append)
-    logger.debug("param in helper: #{params.inspect}")
-    if !params[:exhibit_id].blank?
-      exhibit_id = params[:exhibit_id]
-      @exhibit = Exhibit.load_instance_from_solr(exhibit_id)
-      @browse_facets = @exhibit.browse_facets
-      @facet_subsets_map = @exhibit.facet_subsets_map
-      @selected_browse_facets = get_selected_browse_facets(@browse_facets)
-      #subset will be nil if the condition fails
-      @subset = @facet_subsets_map[@selected_browse_facets] if @selected_browse_facets.any? && @facet_subsets_map[@selected_browse_facets]
-    end
-    if(content.eql?("exhibit"))
-      asset=@exhibit
-    elsif(content.eql?("sub_collection"))
-      asset=@subset
-    else
-      asset=nil
-    end
+  def get_featured_available(content, featured_query_to_append)
     q = build_lucene_query(params[:q])
-    component_query = [component_query_to_append]
-    lucene_query = "#{component_query} AND #{q}" unless component_query.empty?
-    @extra_controller_params = {}
-    (@component_response, @document_list) = get_search_results( @extra_controller_params.merge!(:q=>lucene_query) )    
-    render :partial => "shared/edit_highlighted", :locals => {:docs => @component_response.docs, :facet_name => nil, :facet_value => nil, :content=>content, :asset=>asset}
-
+    featured_query = [featured_query_to_append]
+    lucene_query = "#{featured_query} AND #{q}" unless featured_query.empty?
+    extra_controller_params = {}
+    get_search_results(extra_controller_params.merge!(:q=>lucene_query) )    
   end
 
   def get_selected_browse_facets(browse_facets)
@@ -521,7 +543,7 @@ module ApplicationHelper
         q = "#{exhibit_members_query} AND #{q}" unless exhibit_members_query.empty?
       end
     end
-    q = "#{q} AND NOT _query_:\"info\\\\:fedora/afmodel\\\\:Exhibit\" AND NOT _query_:\"info\\\\:fedora/afmodel\\\\:SubCollection\""
+    q = "#{q} AND NOT _query_:\"info\\\\:fedora/afmodel\\\\:Exhibit\" AND NOT _query_:\"info\\\\:fedora/afmodel\\\\:SubExhibit\" AND NOT _query_:\"info\\\\:fedora/afmodel\\\\:Description\" "
   end
 
   def get_collections(content, user_query_to_append)
@@ -531,8 +553,8 @@ module ApplicationHelper
       ex = Exhibit.load_instance_from_solr(params[:exhibit_id])      
     end    
     lucene_query = "#{collection_query} AND #{q}" unless collection_query.empty?
-    @extra_controller_params ||= {}
-    (@collection_response, @collection_document_list) = get_search_results( @extra_controller_params.merge!(:q=>lucene_query))
+    extra_controller_params ||= {}
+    (@collection_response, @collection_document_list) = get_search_results( extra_controller_params.merge!(:q=>lucene_query))
     render :partial => "shared/add_collections", :locals => {:collection_list => @collection_response, :facet_name => nil, :facet_value => nil, :content=>content, :asset=>ex}    
   end
 
@@ -580,10 +602,10 @@ module ApplicationHelper
   #  Expects Array of PIDs and returns array of Response and DocumentList
   def get_pids_search_results(pid_array)
     fq = ActiveFedora::SolrService.construct_query_for_pids(pid_array)
-    @extra_controller_params ||= {}
-    @extra_controller_params.merge!(:q=>build_lucene_query(params[:q]))
-    @extra_controller_params.merge!(:fq=>fq)
-    get_search_results(@extra_controller_params)
+    extra_controller_params ||= {}
+    extra_controller_params.merge!(:q=>build_lucene_query(params[:q]))
+    extra_controller_params.merge!(:fq=>fq)
+    get_search_results(extra_controller_params)
   end
 
   # Apply a class to the body element if the browse conditions are met.

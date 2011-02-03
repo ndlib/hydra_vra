@@ -1,0 +1,36 @@
+<%- query =  "active_fedora_model_s:Component" -%>
+<%# query += " AND #{q}" unless q.nil? -%>
+<%- (@component_response, @document_list) = get_featured_available(content, query) -%>
+<h3><em><%= "Select from #{pluralize(@component_response.docs.total, 'source')} in search results below"%> </em></h3>
+<div class="pagination">
+  <%= will_paginate @component_response.docs, :page_links => false, :class => 'prev_next_links' %>
+  <%= will_paginate @component_response.docs, :container => false %>
+</div>
+<% # container for all documents in index view -%>
+<div id="documents" class="exhibit-listing">
+  
+  <% # loop thru each doc -%>
+  <% @component_response.docs.each_with_index do |document,counter| %>
+    <% # container for a single doc -%>
+    <div class="document<%= thumbnail_class( document ) %>">
+      
+      <% # header bar for doc items in index view -%>
+      <div class="documentHeader yui-g">
+        <% # main title container for doc partial view -%>
+        <div class="yui-u">
+          <h2 class="index_title"><span class="title_count"><input type="checkbox" name="featured" class="featured" value=<%=document[:id]%>></span><%= link_to_document document, :label=>document_show_link_field, :counter => (counter + 1 + @component_response.params[:start].to_i) %></h2>
+        </div>
+      </div>
+      
+      <% # main container for doc partial view -%>
+      <%= render_document_index_partial document, document[:id], counter, :index %>      
+
+    </div>
+    
+  <% end %>
+</div>
+
+<div class="pagination">
+  <%= will_paginate @component_response.docs, :page_links => false, :class => 'prev_next_links' %>
+  <%= will_paginate @component_response.docs, :container => false %>
+</div>

@@ -1,6 +1,6 @@
 require 'mediashelf/active_fedora_helper'
 
-class SubCollectionsController < ApplicationController
+class SubExhibitsController < ApplicationController
 
   include Hydra::AssetsControllerHelper
   include Hydra::FileAssetsHelper
@@ -33,28 +33,28 @@ class SubCollectionsController < ApplicationController
   def new
     af_model = retrieve_af_model(params[:content_type])
     if af_model
-      @subcollection = af_model.new(:namespace=>"RBSC-CURRENCY")
-      apply_depositor_metadata(@subcollection)
-      set_collection_type(@subcollection, params[:content_type])
-      @subcollection.datastreams["rightsMetadata"].update_permissions({"group"=>{"public"=>"read"}})
-      @subcollection.save
+      @subexhibit = af_model.new(:namespace=>"RBSC-CURRENCY")
+      apply_depositor_metadata(@subexhibit)
+      set_collection_type(@subexhibit, params[:content_type])
+      @subexhibit.datastreams["rightsMetadata"].update_permissions({"group"=>{"public"=>"read"}})
+      @subexhibit.save
     end
 
     if !params[:selected_facets].nil?
       logger.debug("Selected facets: #{params[:selected_facets].inspect}")
-      @subcollection.selected_facets_append(params[:selected_facets])
-      @subcollection.save
+      @subexhibit.selected_facets_append(params[:selected_facets])
+      @subexhibit.save
     end
 
     if !params[:exhibit_id].nil?
       @exhibit =  ActiveFedora::Base.load_instance(params[:exhibit_id])
-      @subcollection.subset_of_append(@exhibit)
-      @subcollection.save
+      @subexhibit.subset_of_append(@exhibit)
+      @subexhibit.save
       @exhibit.save
     end
-    logger.debug("Selected faceted added to subcollection: #{@subcollection.selected_facets}")
+    logger.debug("Selected faceted added to subexhibit: #{@subexhibit.selected_facets}")
     
-    redirect_to url_for(:action=>"edit", :controller=>"catalog", :id=>@subcollection.id, :f=>@subcollection.selected_facets_for_params,:class=>"facet_selected", :exhibit_id=>params[:exhibit_id], :render_search=>"false")
+    redirect_to url_for(:action=>"edit", :controller=>"catalog", :id=>@subexhibit.id, :f=>@subexhibit.selected_facets_for_params,:class=>"facet_selected", :exhibit_id=>params[:exhibit_id], :render_search=>"false")
   end
 
   def update
@@ -65,36 +65,31 @@ class SubCollectionsController < ApplicationController
     if af_model
       @asset = af_model.load_instance(params[:id])
     end
-    if params[:highlighted_action].eql?("add")
-      if !params[:highlighted_items].blank?
-        items=params[:highlighted_items].split(',')
+    if params[:featured_action].eql?("add")
+      if !params[:featured_items].blank?
+        items=params[:featured_items].split(',')
         logger.debug("Items to Highlight in #{af_model} => #{items.inspect}")
-        sub_collection_highlighted = Array.new
+        sub_exhibit_featured = Array.new
         items.each do |item|
           obj=ActiveFedora::Base.load_instance(item)
-          @asset.highlighted_append(obj)
+          @asset.featured_append(obj)
           obj.save
           @asset.save
-          sub_collection_highlighted<<item
+          sub_exhibit_featured<<item
         end
-        response["updated"] << {"#{af_model}_highlighted"=>sub_collection_highlighted}
+        response["updated"] << {"#{af_model}_featured"=>sub_exhibit_featured}
       end
-      #render :partial => "shared/item_list", :locals => {:content => params[:content_type]}
-      render :partial => 'shared/show_highlighted', :locals => {:content=>params[:content_type], :asset=>@asset}
+      render :partial => 'shared/show_featured', :locals => {:content=>params[:content_type], :asset=>@asset}
     else
-      raise "error, Item id not available in parameters list for removing from highlighted list" if params[:item_id].blank?
+      raise "error, Item id not available in parameters list for removing from featured list" if params[:item_id].blank?
       params[:item_id]? item = params[:item_id] : item =""
-      logger.debug("Items to remove as Highlight from sub_collection => #{item.inspect}")
+      logger.debug("Items to remove as Featured from sub_exhibit => #{item.inspect}")
       obj=ActiveFedora::Base.load_instance(item)
-      @asset.highlighted_remove(obj)
+      @asset.featured_remove(obj)
       obj.save
       @asset.save
-      render :text => "Successfully removed #{obj.pid}from highlighted list"
+      render :text => "Successfully removed #{obj.pid}from featured list"
     end
-  end
-
-  def show
-      
-  end
+  end  
 
 end

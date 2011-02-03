@@ -13,7 +13,21 @@
 	    <div id="hd">
         <div class="yui-g">
           <div class="yui-u first">
-            <h1 class="site_title"><%= link_to application_name, root_path %><%= (params[:controller] == "catalog" and !params[:id]) ? "<span id='results_text'>Search Results</span>" : "" %></h1>
+            <%- if params[:exhibit_id] || (params[:controller] == "exhibits" && params[:id]) -%>
+              <table>
+                <tr>
+                  <td><%= link_to image_tag('rbsc_mark.png', :alt => 'Rare Books and Special Collections'), 'http://www.library.nd.edu/rarebooks/', :class=> 'image', :rel => 'external'  %></td>
+                  <td><h2><a style="text-decoration:none;border-bottom:medium none" href="http://www.library.nd.edu/rarebooks/" rel="external">Rare Books &amp; Special Collections</a></h2>
+                    <h3><a style="text-decoration:none;border-bottom:medium none" href="http://www.library.nd.edu/" rel="external">Hesburgh Libraries of Notre Dame</a></h3>
+                    <%- params[:exhibit_id] ? exhibit_id = params[:exhibit_id] : exhibit_id = params[:id] -%> 
+                    <%- @exhibit.nil? ? exhibit = Exhibit.load_instance_from_solr(exhibit_id) : exhibit = @exhibit -%>
+                    <h3><%= link_to_exhibit :exhibit_id=>exhibit_id, :label=>"#{exhibit.exhibit_title}", :style=>"text-decoration:none;border-bottom:medium none" %></h1>
+                  </td>
+                </tr>
+              </table>
+            <%- else -%>
+              <h1 class="site_title"><%= link_to application_name, root_path %><%= (params[:controller] == "catalog" and !params[:id]) ? "<span id='results_text'>Search Results</span>" : "" %></h1>
+            <%- end -%>
           </div>
           <div class="yui-u">
             <%= render :partial=>'/user_util_links' %>
@@ -32,7 +46,7 @@
         
         <div class="yui-b sidebar">
           <%- if params[:controller] == "catalog" -%>
-            <%- if params[:render_search].blank? -%>
+            <%- if params[:render_search].blank? || params[:class] == "edit_exhibit" -%>
               <%= sidebar_items.join('') %>
               <%- if params[:exhibit_id] -%>
                 <h3><%= link_to_exhibit(:label=>"Back to Browse Exhibit") %></h3>
@@ -41,7 +55,7 @@
               <%= render :partial => 'shared/exhibit_search_form' %> 
               <%= render :partial => 'shared/navigation' %>
             <%- end -%>  
-          <%- else -%>
+          <%- elsif params[:controller] != "user_sessions" -%>
             <%= render :partial => 'shared/exhibit_search_form' %> 
             <%= render :partial => 'shared/navigation' -%>
           <%- end -%>

@@ -1,25 +1,26 @@
-<h1>Exhibit Title</h1>
-
-<%- if editor? -%>
-  <span class="edit-browse">
-    <%= edit_and_browse_exhibit_links(@exhibit) %>
-  </span>
-<%- end -%>
-
 <%- @exhibit ||= exhibit -%>
+<div id="showHead">
+  <div id="showUtils">
+    <div class="tools"><%= render :partial => 'show_tools' %></div>
+    <span class="edit-browse">
+      <%- if editor? -%>
+        <%= edit_and_browse_exhibit_links(@exhibit) %>
+      <%- end -%>
+    </span>
+  </div>
+</div>
+
+<%=render :partial=>'shared/exhibit_title_header'%>
+
 <%- if @exhibit.descriptions.any? -%>
   <h2>Description</h2>
-  <%- @exhibit.descriptions.each do |description| -%>
-    <em><%= description.title %></em>
-    <p class="collection_desc"><%= load_description(description) %></p>
-    <%# #link_to "Essay: \"#{description.title}\"", essay_path(params[:collection_id], description.pid) description.introduction %>
-    <%# link_to "[Read the complete essay]", essay_path(params[:collection_id], @essay.pid) %>
+  <%- @exhibit.descriptions(:response_format=>:solr).each_with_index do |document, counter| -%>
+    <%- description = load_af_instance_from_solr(document) -%>
+    <%= render :partial=>'descriptions/show_description', :locals => {:description => description, :document=> SolrDocument.new(document), :exhibit_id => params[:id]}%>
   <%- end -%>
-<%- else -%>
-  <%- if editor? -%>
-    <h2>Description</h2>
-    <p class="collection_desc"><%= "Essay forthcoming..." %></p>
-  <%- end -%>
+<%- elsif editor? -%>
+  <h2>Description</h2>
+  <p><%= "Essay forthcoming..." %></p>
 <%- end -%>
 
 <%- if @exhibit && @exhibit.collections.any? -%>
@@ -30,7 +31,6 @@
       <%= render_document_index_partial(SolrDocument.new(document), item.title, counter, :index) %>
     <%- end -%>
   </dl>
-
     <%- collection = @exhibit.collections.first-%>
     <%- if collection.descriptions.any? -%>
       <em>Collection Description</em>
@@ -44,39 +44,30 @@
         <p class="collection_desc">"Collection Essay forthcoming..."</p>
       <%- end -%>
     <%- end -%>
-  
-<%- else -%>
-  <%- if editor? -%>
-    <h2>Collection Details</h2>
-    <p>No Collection Associated</p>
-  <%- end -%>
+<%- elsif editor? -%>
+  <h2>Collection Details</h2>
+  <p>No Collection Associated</p>
 <%- end -%>
 
-<%- if @exhibit && @exhibit.highlighted.any? -%>
+<%- if @exhibit && @exhibit.featured.any? -%>
   <h2>Featured Sources</h2>
   <dl class="item-list featured">
-    <%- @exhibit.highlighted(:response_format=>:solr).each_with_index do |document, counter| -%>
+    <%- @exhibit.featured(:response_format=>:solr).each_with_index do |document, counter| -%>
       <%- item = load_af_instance_from_solr(document) -%>      
       <%-  item.item_title.blank? ? title = item.sub_collection_title : title = item.item_title -%>
       <%= debug document.inspect %>
       <%= render_document_index_partial(SolrDocument.new(document), title, counter, :index) %>
     <%- end -%>
   </dl>  
-<%- else -%>
-  <%- if editor? -%>
-    <h2>Featured Sources</h2>
-    <p>No highlighted items defined</p>
-  <%- end -%>
+<%- elsif editor? -%>
+  <h2>Featured Sources</h2>
+  <p>No featured sources defined</p>
 <%- end -%>
 
 <hr />
 
-<h2>Complete sources</h2>
-<div class="show_complete_sources_div">
-   <a class="hidecompletesources" href="#" title="Hide Complete Sources" exhibit-id="<%= params[:exhibit_id] %>" >Hide Complete Sources</a>
-  <dl class="item-list"></dl>
+<h2>Complete Sources</h2>
+<a id="toggle_sources" href="#" title="Hide the complete listing of sources.">Hide Complete Sources</a>
+<div id="complete_sources">
   <%= render :partial=>'shared/complete_sources'%>
-</div>
-<div class="hide_complete_sources_div">
-  <a class="showcompletesources" href="#" title="Show Complete Sources" exhibit-id="<%= params[:exhibit_id] %>" >Show Complete Sources</a>
 </div>

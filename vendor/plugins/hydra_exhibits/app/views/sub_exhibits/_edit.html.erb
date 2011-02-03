@@ -33,11 +33,7 @@
     });    
   </script>
 <% end %>
- <span class="edit-browse">
-        <%- if editor? -%>
-          <%= edit_and_browse_subcollection_links(@document_fedora) %>
-        <%- end -%>
-      </span>
+
 <div class="document_viewer" id="cover_container">
   <div class="multipleEdit">
     <div id="loading" style="display:none;">
@@ -51,8 +47,8 @@
     <% end %>
 
     <div id="accordion" style="height:600px;">
-      <h2 class="section-title"><a href="#">Description</a></h2>
-      <%= render :partial => "sub_collections/edit_sub_collection", :locals => { :content => "sub_collection", :label => "sub collection", :document_fedora => @document_fedora} %>      
+      <h2 class="section-title"><a href="#">Sub Exhibit Details</a></h2>
+      <%= render :partial => "sub_exhibits/edit_sub_exhibit", :locals => { :content => "sub_exhibit", :label => "sub exhibit", :document_fedora => @document_fedora} %>      
       <h2 class="section-title"><a href="#">Set permissions</a></h2>
       <div id="permissions">
         <%= render :partial => "permissions/index", :locals => {:document => document, :asset_id=>params[:id]} %>
@@ -66,7 +62,7 @@
   </div>
 </div>
 <% sidebar_items << capture do %>
-  <%= delete_asset_link(params[:id], "Sub Collection") %>
+  <%= delete_asset_link(params[:id], "Sub Exhibit") %>
 <% end %>
 
 

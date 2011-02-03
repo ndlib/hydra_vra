@@ -2,61 +2,58 @@
 <input id="exhibit_refresh_setting_url" type="hidden" name="url" value="<%= refresh_setting_exhibit_path(params[:id], :content_type=>content)%>" />
 <div class="edit_setting">
   <fieldset id="work_fields2">
-    <legend> Exhibit </legend>
+    <legend> Settings </legend>
       <input id="content_type" type="hidden" name="content_type" value="<%= content %>" />
     <dl>
       <dt>
-        Title:
+        <%= fedora_field_label("descMetadata", "exhibit_title", "Exhibit Title:")%>
       </dt>
       <dd class="title">
-
+        <%= fedora_text_field(document_fedora,"descMetadata", "exhibit_title")%>
       </dd>
 
       <dt>
-        <%= fedora_field_label("filters", "query", "Solr Queries:")%>
+        <%= fedora_field_label("filters", "query", "Member Solr Filter:")%>
       </dt>
       <dd id="queries">
         <%= fedora_text_field(document_fedora,"filters", "query", :multiple=>true)%>        
       </dd>
-      <%- unless document_fedora.collections.empty?-%>
-         <dt class="collections">
-            <label>Related Collections:</label>
-         </dt>
-         <dd class="collections">
-           <%- document_fedora.collections.each do |collection| -%>
-             <%= collection.title%>
-             <a class="destructive remove_collections" pid="<%= collection.pid%>" href=# action="<%= remove_collection_exhibit_path(params[:id], :content_type=>content)%>" title="Remove Relation"> Delete Collection Relations</a>
-           <%- end -%>
-         </dd>
-      <%-end-%>
+      <dt>
+        <label>Related Collections:</label>
+      </dt>
+      <dd class="collections">
+        <%- unless document_fedora.collections.empty? -%>
+          <%- document_fedora.collections.each do |collection| -%>
+            <%= collection.title%>
+            <a class="destructive remove_collections" pid="<%= collection.pid%>" href=# action="<%= remove_collection_exhibit_path(params[:id], :content_type=>content)%>" title="Remove Relation"> Delete Collection Relations</a>
+          <%- end -%>
+        <%- else -%>
+           <span class="text fl-inlineEdit-invitation-text">Select Below</span>
+        <%- end -%>
+      </dd>
+    </dl>
+    <ul>
+      <%= get_collections(content,"active_fedora_model_s:Collection")%>
+    </ul>
+    <dl>
+      <dt>
+        <%= fedora_field_label("filters", "facets", "Browse Facets:") %>
+      </dt>
+      <dd id="browse_facets" class="browse_facets">
 
-      <% unless get_values_from_datastream(document_fedora,"descMetadata", [:main_description]).first.empty?%>
-          <dt class="main_description">
-            <%= fedora_field_label("descMetadata", "main_description", "Main Description Title:")%>
-          </dt>
-          <dd>
-             <%- document_fedora.descriptions.each do |item| -%>
-                <%- if item.pid.eql?(get_values_from_datastream(document_fedora,"descMetadata", [:main_description]).first)-%>
-                    <%= item.title%>
-                 <%- end -%>
-             <%- end -%>
-          </dd>
-      <%end%>
-      <% unless get_values_from_datastream(document_fedora,"filters", [:facets]).first.empty?%>
-        <dt>
-          <%= fedora_field_label("filters", "facets", "Browse Facets:") %>
-        </dt>
-          <dd id="browse_facets" class="browse_facets">
-            <ol>
-              <%- get_values_from_datastream(document_fedora,"filters", [:facets]).each do |item| -%>
-                <li class="browse_facets_level"index="<%= get_values_from_datastream(document_fedora,"filters", [:facets]).index(item)%>">
-                  Level-<%= get_values_from_datastream(document_fedora,"filters", [:facets]).index(item) + 1%>: <%= facet_field_labels[item].blank? ? item : facet_field_labels[item]%>
-                  <a class="destructive remove_facet" value="<%= item%>" index="<%= get_values_from_datastream(document_fedora,"filters", [:facets]).index(item)%>" href=# action="<%= asset_path(params[:id], :content_type=>content)%>" title="Remove Facet"> Delete this facet</a>
-                </li>
-              <%- end -%>
-            </ol>
-          </dd>
-      <%- end -%>
+        <%- unless get_values_from_datastream(document_fedora,"filters", [:facets]).first.empty? -%>
+          <ol>
+           <%- get_values_from_datastream(document_fedora,"filters", [:facets]).each do |item| -%>
+              <li class="browse_facets_level"index="<%= get_values_from_datastream(document_fedora,"filters", [:facets]).index(item)%>">
+                Level-<%= get_values_from_datastream(document_fedora,"filters", [:facets]).index(item) + 1%>: <%= facet_field_labels[item].blank? ? item : facet_field_labels[item]%>
+                <a class="destructive remove_facet" value="<%= item%>" index="<%= get_values_from_datastream(document_fedora,"filters", [:facets]).index(item)%>" href=# action="<%= asset_path(params[:id], :content_type=>content)%>" title="Remove Facet"> Delete this facet</a>
+              </li>
+            <%- end -%>
+          </ol>
+        <%- else -%>
+          <span class="text fl-inlineEdit-invitation-text">Select Below</span>
+        <%- end -%>
+      </dd>
     </dl>
     <div id="add-facet-box" class="split-button">
     <input id="re-run-add-facet-action" type="button" class="button" value="Select Browse Facets" />
@@ -70,20 +67,7 @@
           <%- end -%>
         <%- end -%>
       </ul>
-    </div>
-    <input id="exhibit_add_main_description_url" type="hidden" name="url" value="<%= url_for(:action=>"add_main_description", :controller=>"exhibits", :content_type=>content)%>" />
-    <div id="add-main-description-box" class="split-button">
-        <input id="re-run-add-main-description-action" type="button" class="button" value="Select Description" />
-        <button id="select-main-description-type" type="button">Select main description</button>
-        <ul id="add-main-description-menu">
-        <%- document_fedora.descriptions.each do |item| -%>
-          <li class="description" pid="<%= item.pid%>">
-            <%= item.title%>
-          </li>
-        <%- end -%>
-        </ul>
-    </div>
-    <%= get_collections(content,"active_fedora_model_s:Collection")%>
+    </div>    
 
     </fieldset>
   </div>

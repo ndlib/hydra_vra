@@ -13,11 +13,25 @@
 
      $.fn.initialize_setting();
 
+     $(".content").hide();
+     //toggle the componenet with class msg_body
+     $(".heading").click(function(){
+        //$(this).hide()
+        $(this).next(".content").slideToggle(500);
+     });
+
+     //toggle the componenet with class msg_body
+     /*$(".content").click(function(){
+        $(this).hide()
+        $(this).sibling(".heading").show();
+     });*/
+
+
      $('input.update_embedded_search').bind('click',function(){
        var url = $("input#update_embedded_search").first().attr("value")       
        var params =  "q="+$("input#q").first().attr("value")+"&search_field"+$("select#search_field").first().attr("value")     
-       var showDiv=$("div.highlighted_search")
-       var perviousNode=$("div.highlighted_search").first();
+       var showDiv=$("div.featured_search")
+       var perviousNode=$("div.featured_search").first();
 
        $.ajax({
          type: "POST",
@@ -25,9 +39,7 @@
          dataType: "html",
          data: params,
          success: function(data){
-           $(showDiv).last().after(data);
-           $(perviousNode).remove();
-           $inserted = $(showDiv).last();
+           $(showDiv).html(data);
          },
          error: function(xhr, textStatus, errorThrown){
      		$.noticeAdd({
@@ -43,29 +55,48 @@
       return false;
     });
 
-     $('a.hidecompletesources').bind('click',function(){
-	 var showDiv=$("div.show_complete_sources_div");
-         var hideDiv=$("div.hide_complete_sources_div");
-	 hideDiv.show();
-         showDiv.hide();
-      return false;
-    });
- 
-     $('a.showcompletesources').bind('click',function(){
-	 var showDiv=$("div.show_complete_sources_div");
-         var hideDiv=$("div.hide_complete_sources_div");
-	 showDiv.show();
-         hideDiv.hide();
-      return false;
-    });
-     
-     $('a.addhighlighted').bind('click',function(){
-       var selectedSubcollectionItems = new Array();
-       $("input.sub_collection:checked").each(function() {selectedSubcollectionItems.push($(this).val());});       
+     $('#toggle_sources').toggle(function(){
+       $(this).html('Show Complete Sources').attr('title', 'Reveal the complete listing of sources.');
+       $('#complete_sources').slideUp();
+     }, function(){
+       $(this).html('Hide Complete Sources').attr('title', 'Hide the complete listing of sources.');
+       $('#complete_sources').slideDown();
+     });
+
+     /*$('input.featured').bind('click',function(){
+       var selectedSubexhibitItems = new Array();
+       $("input.featured:checked").each(function() {selectedSubexhibitItems.push($(this).val());});       
        var url = $("input#update_url").first().attr("value")       
-       var params =  "highlighted_items="+selectedSubcollectionItems+"&highlighted_action='add'"
-       var showDiv=$("div.show_highlighted_div")
-       var perviousNode=$("div.show_highlighted_div").first();
+       var params =  "featured_items="+selectedSubexhibitItems+"&featured_action='add'"
+        $.ajax({
+         type: "PUT",
+         url: url,
+         dataType: "html",
+         data: params,
+         success: function(data){
+           $(showDiv).html(data);
+         },
+         error: function(xhr, textStatus, errorThrown){
+     		$.noticeAdd({
+             inEffect:               {opacity: 'show'},      // in effect
+             inEffectDuration:       600,                    // in effect duration in milliseconds
+             stayTime:               6000,                   // time in milliseconds before the item has to disappear
+             text:                   'Your changes failed'+ xhr.statusText + ': '+ xhr.responseText,
+             stay:                   true,                  // should the notice item stay or not?
+             type:                   'error'                // could also be error, success
+            });
+         }
+       });
+      return false;
+    });*/
+     
+     $('input.addfeatured').bind('click',function(){
+       var selectedSubexhibitItems = new Array();
+       $("input.featured:checked").each(function() {selectedSubexhibitItems.push($(this).val());});       
+       var url = $("input#update_url").first().attr("value")       
+       var params =  "featured_items="+selectedSubexhibitItems+"&featured_action='add'"
+       var showDiv=$("div.show_featured_div")
+       var perviousNode=$("div.show_featured_div").first();
 
        $.ajax({
          type: "PUT",
@@ -73,9 +104,7 @@
          dataType: "html",
          data: params,
          success: function(data){
-           $(showDiv).last().after(data);
-           $(perviousNode).remove();
-           $inserted = $(showDiv).last();
+           $(showDiv).html(data);
          },
          error: function(xhr, textStatus, errorThrown){
      		$.noticeAdd({
@@ -91,9 +120,9 @@
       return false;
     });
 
-    $('a.destroy_highlighted').bind('click',function(){
+    $('a.destroy_featured').live('click',function(){
       var url = $(this).attr("action");
-      var $itemNode = $(this).closest("dd.item_highlighted")
+      var $itemNode = $(this).closest("dd.item_featured")
       $.ajax({
          type: "PUT",
          url: url,
@@ -191,22 +220,17 @@
          data: params,
          dataType: "html",
          beforeSend: function() {
-   			dtNode.animate({'backgroundColor':'#fb6c6c'},300);
             ddNode.animate({'backgroundColor':'#fb6c6c'},300);
          },
          success: function() {
-           dtNode.slideUp(300,function() {
-             dtNode.remove();
-           });
            ddNode.slideUp(300,function() {
-             ddNode.remove();
+               ddNode.remove();
            });
            $.fn.initialize_setting();
+           $.fn.hydraExhibit.resetSetting();
          }
       });
     });
-
-
 
     $('li.facet').live('click',function(){
        var $closestForm = $(this).closest("form");
@@ -278,6 +302,45 @@
             });
          }
        });
+    });
+
+    $("dd.display input").live('click',function(){
+      var $closestdd = $(this).closest('dd.display')
+      var $closestForm=$closestdd.siblings('input.update_description_display');
+      var url = $closestForm.attr("action");
+      var name = $(this).attr("datastream")
+      var data_pid = $(this).attr("data_pid")
+      var params =  name + "="+$(this).attr("value")+"&_method=put";
+      //alert("Radio update: "+url)
+       $.ajax({
+         type: "PUT",
+         url: url,
+         dataType : "json",
+         data: params,
+         success: function(msg){
+     			$.noticeAdd({
+             inEffect:               {opacity: 'show'},      // in effect
+             inEffectDuration:       600,                    // in effect duration in miliseconds
+             stayTime:               6000,                   // time in miliseconds before the item has to disappear
+             text:                   "Your edit to "+ msg.updated[0].field_name +" has been saved as "+msg.updated[0].value+" at index "+msg.updated[0].index,   // content of the item
+             stay:                   false,                  // should the notice item stay or not?
+             type:                   'notice'                // could also be error, succes
+            });
+            $.fn.hydraExhibit.resetSetting();
+            $.fn.initialize_setting();
+         },
+         error: function(xhr, textStatus, errorThrown){
+     			$.noticeAdd({
+             inEffect:               {opacity: 'show'},      // in effect
+             inEffectDuration:       600,                    // in effect duration in miliseconds
+             stayTime:               6000,                   // time in miliseconds before the item has to disappear
+             text:                   'Your changes to' + $editNode.attr("rel") + ' could not be saved because of '+ xhr.statusText + ': '+ xhr.responseText,   // content of the item
+             stay:                   true,                  // should the notice item stay or not?
+             type:                   'error'                // could also be error, succes
+            });
+         }
+       });
+
     });
 
    });
@@ -353,26 +416,21 @@
      if (settings) $.extend(config, settings);
 
      this.each(function() {
-      //alert("textile each")
       var $this = $(this);
       var $editNode = $(".textile-edit", this).first();
       var $textNode = $(".textile-text", this).first();
-      //var $closestForm =  $editNode.closest("form");
       var name = $editNode.attr("name");
 
       var pid = $editNode.attr("data-pid");
       var content_type = $editNode.attr("data-content-type");
       var datastream_name = $editNode.attr("data-datastream-name");
+      var load_datastream = $editNode.attr("load-from-datastream");
 
-
-      // collect submit parameters.  These should probably be shoved into a data hash instead of a url string...
-      // var field_param = $editNode.fieldSerialize();
       var field_selectors = $("input.fieldselector[rel="+$editNode.attr("rel")+"]").fieldSerialize();         
 
-      var params = "?datastream_name="+datastream_name+"&content_type="+content_type+"&description_id="+pid+"&description_action=update_description"
+      var params = "?datastream="+datastream_name+"&load_datastream="+load_datastream+"&name="+name+"&content_type="+content_type+
+                    "&description_id="+pid
 
-      //Field Selectors are the only update params to be passed in the url
-      //var assetUrl = $closestForm.attr("action") + "&" + field_selectors;
       var assetUrl = $("input#show_description_url").first().attr("value")+params;
       var submitUrl = $.fn.hydraMetadata.appendFormat(assetUrl, {format: "textile"});
 
@@ -387,7 +445,7 @@
       var nodeSpecificSettings = {
         tooltip   : "Click to edit "+$this.attr("id")+" ...",
         name      : name,
-        loadurl  : submitUrl //+ "?" + $.param(load_params)
+        loadurl  : submitUrl + "&" + $.param(load_params)
       };
       $textNode.editable(submitUrl, $.extend(nodeSpecificSettings, config));
       $editNode.hide();
@@ -400,7 +458,7 @@
      //alert("insertTextareaValue")
      var config = {};
      if (settings) $.extend(config, settings);
-     $("a.addval.rich-textarea", this).live("click",function(e) {       
+     $("input.addval.rich-textarea", this).live("click",function(e) {       
        $.fn.hydraExhibit.insertDescription(this,e);
      });
    };
@@ -408,7 +466,7 @@
    $.fn.descriptionDeleteButton = function(settings) {
      var config = {};
      if (settings) $.extend(config, settings);
-     $("a.destroy_description", this).live("click", function(e) {
+     $("a.destroy_description", this).live("click", function(e) {       
        $.fn.hydraExhibit.deleteDescription(this,e);
      });
     //return this;
@@ -430,20 +488,7 @@
           $(wholeDiv).last().after(data);
           $(perviousNode).remove();
           // repeat the whole set in every drop down ajax call to render the select box again on ajax call
-           $(".editable-container").hydraTextField();
-           /*$("div.split-button input.button").next().button( {
-            text: false,
-            icons: { primary: "ui-icon-triangle-1-s" }
-           })
-           .click(function() {
-             var ulelement= $(this).siblings('ul')
-             ulelement.is(":hidden") ?
-             ulelement.show() : ulelement.hide();
-           })
-           .parent().buttonset();
-           $('div.split-button ul').mouseleave(function(){
-             $(this).hide();
-           });*/
+           $(".editable-container").hydraTextField();           
            $.fn.initialize_setting();
          }
       });
@@ -485,10 +530,9 @@
        var description_id = $editNode.attr("data-pid");
        var contentType = $editNode.attr("data-content-type");
        var datastreamName = $editNode.attr("data-datastream-name");
-
-       var params = "datastream_name="+datastreamName+"&content_type="+contentType+ "&description_id="+description_id+ "&description_title="+ $editNode.val()+"&description_action=update_description_title"+"&_method=put"
-       var url = $("input#show_description_url").first().attr("value")
-       //alert(params)
+       var params = "datastream_name="+datastreamName+"&content_type="+contentType+ "&description_id="+description_id+ "&description_title="+ $editNode.val()+"&_method=put"
+       var url = $("input#update_title_url").first().attr("value")
+       //$.fn.hydraMetadata.saveDescription(url, params)
        $.ajax({
          type: "PUT",
          url: url,
@@ -527,20 +571,22 @@
 
        var values_list = $("ol[rel="+fieldName+"]");
        var new_value_index = values_list.children('li').size();       
-       var params = "?datastream_name="+datastreamName+"&content_type="+contentType
-       var assetUrl = $("input#show_description_url").first().attr("value")+params;
+       var params = "?datastream="+datastreamName+"&content_type="+contentType
+       var assetUrl = $("input#add_description_url").first().attr("value")+params;
        var addDiv = $("div#add-description-div").first()
        var essayDiv=$("div.description_div")
+       var newEssayDiv=$("div.new-description-div")
        var essayNode=$(element).closest("div.description_div")
 
-       var $item = jQuery('<li class=\"field_value description-textarea-container field\" name="asset[' + fieldName + '][' + new_value_index + ']">' +
+       var $item = jQuery('<fieldset id="new_description"><legend>New Description</legend><li class=\"field_value description-textarea-container field\" name="asset[' + datastreamName + '][' + new_value_index + ']">' +
               '<a href="" class="destructive"><img src="/images/delete.png" border="0" /></a>' +
               '<label>Description Title</label> <input type="text" name="description_title" class="editable-edit" value="" /> ' +
-               '<div class="textile-text text" id="'+fieldName+'_'+new_value_index+'">click to add Description content</div></li>');
+               '<div class="textile-text text new" id="'+fieldName+'_'+new_value_index+'">click to add Description content</div></li></fieldset>');
 
-       $item.appendTo(essayDiv);
+       $item.appendTo(newEssayDiv);
+
        //alert("Essay Title=> "+$("input.editable-edit").val())
-       var submitUrl= assetUrl+"&description_action=insert_description" +"&format=html"+"&temp_content="+$("div#"+fieldName+"_"+new_value_index).html();
+       var submitUrl= assetUrl+"&format=html"+"&temp_content="+$("div#"+fieldName+"_"+new_value_index).html();
 
       function submitEditableTextArea(value, settings) {
        //alert("Submit from function")
@@ -562,7 +608,7 @@
           $(".description-textarea-container").descriptionTextareaField();
           $(".custom-editable-container").exhibitTextField();
           $inserted.insertTextareaValue();
-          $.fn.hydraExhibit.resetSetting();
+          //$.fn.hydraExhibit.resetSetting();
           return(result);
          }
        });
@@ -576,7 +622,7 @@
           cancel    : "Cancel",
           placeholder : "click to edit description",
           onblur    : "ignore",
-          name      : "asset["+new_value_index+"]["+fieldName+"]",
+          name      : "asset["+new_value_index+"]["+datastreamName+"]",
           id        : "field_id",
           height    : "100",          
           ckeditor  : { toolbar:
@@ -589,7 +635,7 @@
      },
 
      deleteDescription: function(element){
-       $element = $(element)
+       //$element = $(element)
        var $essayNode = $(element).closest(".remove-description-div")
        var url =$(element).attr("action");
        var parent_pid = $("form#document_metadata").first().attr("data-pid");
@@ -607,7 +653,7 @@
          success: function() {
            $essayNode.slideUp(300,function() {
              $essayNode.remove();
-             $.fn.hydraExhibit.resetSetting();
+             //$.fn.hydraExhibit.resetSetting();
            });
          }
        });

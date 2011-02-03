@@ -28,13 +28,14 @@ class ExhibitsController < CatalogController
       set_collection_type(@exhibit, params[:content_type])
       @exhibit.save
     end
-    redirect_to url_for(:action=>"edit", :controller=>"catalog", :label => params[:label], :id=>@exhibit.pid)
+    redirect_to url_for(:action=>"edit", :controller=>"catalog", :label => params[:label], :id=>@exhibit.pid, :render_search=>"false", :class=>"edit_exhibit")
   end
 
   def update_embedded_search
-    get_components(params[:content_type],"active_fedora_model_s:Component")
+    render :partial => "shared/featured_search", :locals=>{:content=>params[:content_type]}
   end
 
+=begin
   def add_main_description
     content_type = params[:content_type]
     af_model = retrieve_af_model(content_type)
@@ -50,6 +51,7 @@ class ExhibitsController < CatalogController
     logger.debug("New description id: #{@exhibit.title}, param description id:#{params[:description_id]}")
     render :partial => "exhibits/edit_settings", :locals => {:content => "exhibit", :document_fedora => @exhibit}
   end
+=end
 
   def add_collection
     content_type = params[:content_type]

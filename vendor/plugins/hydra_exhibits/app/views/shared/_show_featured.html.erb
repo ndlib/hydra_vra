@@ -1,0 +1,14 @@
+<h3>Current Featured Sources </h3>
+<% if asset &&  asset.featured.any? %>
+  <dl class="item-list">
+    <%-  asset.featured.each do |item| -%>
+    <dd class="item_featured">      
+      <%=  item.item_title.blank? ? item.sub_collection_title : item.item_title %>
+      <a id="remove_featured" style="position: absolute" class="destructive destroy_featured" href=# action="<%=sub_exhibit_path(params[:id], :content_type=>content, :featured_action=>"remove", :item_id=>item.pid)%>" title="Remove as featured"> Remove from Featured list</a>
+    </dd>
+    <%- end -%>
+  </dl>
+<%- else -%>
+  <h3><i>None</i></h3>
+<%- end -%>
+

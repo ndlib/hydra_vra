@@ -66,24 +66,23 @@ Blacklight.configure(:shared) do |config|
   # solr fields that will be treated as facets by the blacklight application
   #   The ordering of the field names is the order of the display 
   config[:facet] = {
-    :field_names => ["date_t",
-      "title_t",
-      "medium_t",
-      "location_t",
-      "id",
-      "active_fedora_model_s",
+    :field_names => [
       "dsc_0_collection_0_did_0_unittitle_0_imprint_0_publisher_facet",
-      "dsc_0_collection_0_did_0_unittitle_0_unittitle_content_facet"
+      "dsc_0_collection_0_did_0_unittitle_0_unittitle_content_facet",
+      "dsc_0_collection_0_did_0_unittitle_0_imprint_0_geogname_facet",
+      "dsc_0_collection_0_did_0_origination_0_printer_facet",
+      "dsc_0_collection_0_did_0_origination_0_engraver_facet",
+      "item_0_did_0_physdesc_0_dimensions_facet",
+      "item_0_acqinfo_facet",
+      "item_0_did_0_origination_0_persname_facet"
       ],
     :labels => {
-      "date_t"=>"Date",
-      "title_t"=>"Title",
-      "medium_t"=>"Content Type",
-      "location_t"=>"Location",
-      "id"=>"Pid",
-      "active_fedora_model_s"=>"Model",
       "dsc_0_collection_0_did_0_unittitle_0_imprint_0_publisher_facet"=>"Publisher",
-      "dsc_0_collection_0_did_0_unittitle_0_unittitle_content_facet"=>"Print Date"
+      "dsc_0_collection_0_did_0_unittitle_0_unittitle_content_facet"=>"Print Date",
+      "dsc_0_collection_0_did_0_unittitle_0_imprint_0_geogname_facet"=>"Printing Location",
+      "dsc_0_collection_0_did_0_origination_0_printer_facet"=>"Printer",
+      "dsc_0_collection_0_did_0_origination_0_engraver_facet"=>"Engraver",
+      "item_0_did_0_origination_0_persname_0_persname_normal_facet"=>"Signers"      
     },
     :limits=> {nil=>10}
   }
