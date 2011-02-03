@@ -49,5 +49,11 @@ class Collection < ActiveFedora::Base
     end
     return arr
   end
+
+  #Calls to solr on the descMetadata datastream to be used by children to solrize its parent values
+  #for searching only
+  def to_solr_desc_metadata(solr_doc = Solr::Document.new)
+    datastreams["descMetadata"].to_solr(solr_doc)
+  end
   
 end

@@ -1,12 +1,10 @@
 <% # container for all documents in index view -%>
 <div id="documents" class="exhibit-listing">
-  
   <% # loop thru each doc -%>
   <% document_list = @document_list if document_list.nil?%>
   <% response = @response if response.nil?%>
-  <% document_list.each_with_index do |document,counter| %>  
-    <% # container for a single doc -%>
-    <div class="document<%= thumbnail_class( document ) %>">
+  <% document_list.each_with_index do |document,counter| %>
+    <div class="document<%= thumbnail_class( document ) %>">     
       <% # header bar for doc items in index view -%>
       <div class="documentHeader yui-g">
         <% # main title container for doc partial view -%>
