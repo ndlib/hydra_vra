@@ -55,7 +55,7 @@
               <%= render :partial => 'shared/exhibit_search_form' %> 
               <%= render :partial => 'shared/navigation' %>
             <%- end -%>  
-          <%- elsif params[:controller] != "user_sessions" -%>
+          <%- elsif params[:controller] != "user_sessions" && !(params[:controller] == "exhibits" && params[:action] == "index")-%>
             <%= render :partial => 'shared/exhibit_search_form' %> 
             <%= render :partial => 'shared/navigation' -%>
           <%- end -%>
