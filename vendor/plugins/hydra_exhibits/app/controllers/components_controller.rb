@@ -58,10 +58,11 @@ class ComponentsController < ApplicationController
         af_model = HydrangeaArticle
       end
       @document = af_model.find(params[:id])
-      if(params.has_keys?"essay_id")
-	logger.debug "In the select method with value #{params[:essay_id]}"
+      puts params.keys
+      if(params.has_keys?"description_id")
+	logger.debug "In the select method with value #{params[:description_id]}"
         @asset = af_model.load_instance(params[:id])
-        @asset.update_indexed_attributes({:main_page=>{0=>params[:essay_id]}})
+        @asset.update_indexed_attributes({:main_page=>{0=>params[:description_id]}})
         @asset.save
 	redirect_to url_for(:action=>"edit", :controller=>"catalog", :id=>@asset.pid)
       else

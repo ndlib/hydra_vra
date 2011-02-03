@@ -21,7 +21,7 @@ module BatchIngester
           item_ingest_each_row( row, filename )
         elsif(filename.include? "Image")
           puts "Ingesting Page Object"
-          page_ingest_each_row( row )
+          page_ingest_each_row( row, filename )
         elsif(filename.include? "Header")
           if cnter >1
             puts "Ingesting Ead Collection Object"
@@ -129,7 +129,7 @@ module BatchIngester
         puts "Collection already exists with Id: #{objmap["id"]}. Cannot create duplicate object"
       end
     end
-    def page_ingest_each_row(row)
+    def page_ingest_each_row(row, filename)
       puts "Rows: #{row.inspect}"
       if (row[0].blank? || row[1].blank?)
         raise "This entry #{row.inspect} has empty collection information"
@@ -139,7 +139,9 @@ module BatchIngester
         image_title = row[3]
         image_name = row[4]
         key = "PAGE_#{image_id}"
-        attributes= {:pid_key => key, :item_id => item_id, :image_title => image_title, :image_name => image_name}
+	src_filename = filename.split('/')
+	image_file = filename.sub("#{src_filename[src_filename.size-2]}/#{src_filename[src_filename.size-1]}", "Currency_Scans_2008 (B786)/#{image_name.to_s.strip}")
+        attributes= {:pid_key => key, :item_id => item_id, :image_title => image_title, :image_name => image_name, :image_file => image_file}
         ingest_page('page', attributes)
       end
     end
@@ -154,7 +156,7 @@ module BatchIngester
 	page_check = Page.find_by_fields_by_solr({"name_s"=>args[:image_name]})
 	if(page_check.to_a.length < 1)
           map = Hash.new
-          image_path = "/Path/of/the/image/dir/#{args[:image_name]}"
+          image_path = args[:image_file]
 	  if(File.exists?(image_path))
             map[:file] = File.new(image_path)
             map[:mimeType] = "image/jpg"
@@ -168,6 +170,11 @@ module BatchIngester
             page.save
             page.derive_all
             page.save
+	    if(args[:image_name].to_s.strip.end_with? "front.jpg")
+	      parent = Component.load_instance(item_check.to_a[0]["id"])
+	      parent.update_indexed_attributes({:main_page=>{0=>page.pid}})
+	      parent.save
+	    end
 	  else
 	    puts "Image not found: #{args[:image_name]}"
 	  end
@@ -261,13 +268,13 @@ module BatchIngester
         serial_number = row[12]
         item_id = row[1]
         collection_id = row[16]
-        description = row[3]
+        description = row[3].to_s
         provenance = row[11]
         physdesc = row[5]
         signer = row[4]
         title = row[14]
-        display_title = row[0]
-        plate_letter = row[12]
+        display_title = row[0].to_s
+        plate_letter = row[10]
         page_turn = row[9]
         #Get the image names and signers name for the item from the respective files
         # image names in Image_partila_Set.csv and singers in Signers_partial_Set.csv in the shared directory
@@ -286,7 +293,7 @@ module BatchIngester
         end
 	puts "Signers: #{display_signer}"
 #        puts "Converted to: key ->#{key}, item_id ->#{serial_number}, collection_id -> #{collection_id}"
-        attributes= {:pid_key => key, :subcollection_id => collection_id, :dispay_title => display_title, :title => title, :item_id => item_id, :serial_number => serial_number, :display_signer => display_signer, :signer => signer, :physdesc => physdesc, :description => description, :plate_letter => plate_letter, :page_turn => page_turn, :provenance => provenance}
+        attributes= {:pid_key => key, :subcollection_id => collection_id, :display_title => display_title, :title => title, :item_id => item_id, :serial_number => serial_number, :display_signer => display_signer, :signer => signer, :physdesc => physdesc, :description => description, :plate_letter => plate_letter, :page_turn => page_turn, :provenance => provenance}
         ingest_item('component', attributes, images)
         puts "Attributes: #{attributes.inspect}"
       end
@@ -297,6 +304,7 @@ module BatchIngester
       unless af_model
         af_model = Component
       end
+	puts "Description: #{args[:description]}"
 #      pid= generate_pid(args[:pid_key], nil)
 #      if(!asset_available(pid,content_type))
 	desc = Iconv.conv('utf-8','ISO-8859-1',args[:description])
@@ -319,10 +327,10 @@ module BatchIngester
             update_fields(item, [:item, :did, :origination, :persname, :persname_normal], args[:display_signer])
             update_fields(item, [:item, :did, :origination, :persname], args[:signer])
             update_fields(item, [:item, :did, :unittitle], args[:title])
-            update_fields(item, [:item, :did, :unittitle, :unittitle_label], disp)
+            update_fields(item, [:item, :did, :unittitle, :unittitle_label], args[:display_title])
             update_fields(item, [:item, :did, :unittitle, :num], args[:serial_number])
             update_fields(item, [:item, :did, :physdesc, :dimensions], args[:physdesc])
-            update_fields(item, [:item, :scopecontent], "#{args[:description]}")
+            update_fields(item, [:item, :scopecontent], args[:description])
             update_fields(item, [:item, :controlaccess, :genreform], args[:page_turn])
             update_fields(item, [:item, :odd], args[:plate_letter])
             update_fields(item, [:item, :acqinfo], args[:provenance])
@@ -353,8 +361,10 @@ module BatchIngester
         arr_of_data.each do |row|
           if(file.include? "Image")
             if((row[1].to_s).eql?(id))
-              data_arr.push(row[3].to_s)
-              puts "Image_Title: #{row[3].to_s}"
+              if(!((row[4].to_s).end_with? "tmb.jpg"))
+                data_arr.push(row[4].to_s)
+                puts "Image_Title: #{row[4].to_s}"
+	      end
             end
           else
             if((row[0].to_s).eql?(id))

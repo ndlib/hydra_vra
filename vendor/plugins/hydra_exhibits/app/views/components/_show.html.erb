@@ -18,18 +18,17 @@
     <% else %>
       <%= render :partial => "components/show_subcollection", :locals => {:content_type => "component", :label => "subcollection", :document_fedora => @document_fedora} %>
     <% end %>
-    <% if (!get_values_from_datastream(@document_fedora,"descMetadata", [:item]).first.empty?) %>
       <h2 class="section-title"><a href="#">Images</a></h2>
       <div id="childern">
         <%= render :partial => "components/pages", :locals => {:content => "component", :document_fedora => @document_fedora, :asset_id=>params[:id]} %>
       </div>
-    <% else %>
+
 <!--      <h2 class="section-title"><a href="#">Items</a></h2>
       <div id="childern">
         <%= render :partial => "components/items", :locals => {:content => "component", :document_fedora => @document_fedora, :asset_id=>params[:id]} %>
       </div> 
 -->
-    <% end %>
+
   </div>
 
 </div>

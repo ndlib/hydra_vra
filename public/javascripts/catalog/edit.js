@@ -27,8 +27,9 @@
       setUpNewPermissionsForm();      
       $("#add-contributor-box").hydraNewContributorForm();      
       $("div.description_div").insertTextareaValue();
-//      $("#add-image-box").hydraNewImageForm();
+//      $("div.add-image-box").hydraNewImageForm();
       $("dd.remove-description-div").descriptionDeleteButton();
+//      $(".image_tag a.destructive").imageDeleteButton();
       $("a.inline").fancybox({
       		'hideOnContentClick': true,
       		'autoDimensions' : false

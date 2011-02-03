@@ -8,11 +8,12 @@
 
 <div class="document_viewer" id="cover_container">
   <div id="accordion">
-    <h2 class="section-title"><a href="#">Items</a></h2>
+    <h2 class="section-title">Child Components</h2>
     <% response = @response if response.nil? %>
     <% collection_obj = load_af_instance_from_solr(@document) %>
     <% arr = Array.new %>
     <% pid_arr = Array.new %>
+    <% if(collection_obj.members.size > 0 ) %>
     <% collection_obj.members(:rows=> "1024", :response_format=>:solr).each_with_index do |doc, counter| %>
       <% item = load_af_instance_from_solr(doc) %>
       <% pid_arr << item.pid %>
@@ -32,6 +33,9 @@
       <%= will_paginate response.docs, :page_links => false, :class => 'prev_next_links' %>
       <%= will_paginate response.docs, :container => false %>
     </div>
+    <% else %>
+      <p>No child components available to display</p>
+    <% end %>
   </div>
 </div>
 
