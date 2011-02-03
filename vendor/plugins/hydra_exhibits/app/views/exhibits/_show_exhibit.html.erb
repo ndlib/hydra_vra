@@ -18,9 +18,6 @@
     <%- description = load_af_instance_from_solr(document) -%>
     <%= render :partial=>'descriptions/show_description', :locals => {:description => description, :document=> SolrDocument.new(document), :exhibit_id => params[:id]}%>
   <%- end -%>
-<%- elsif editor? -%>
-  <h2>Description</h2>
-  <p><%= "Essay forthcoming..." %></p>
 <%- end -%>
 
 <%- if @exhibit && @exhibit.collections.any? -%>
@@ -38,15 +35,7 @@
         <h3><%= description.title %></h3>
         <p class="collection_desc"> <%= load_description(description) %> </p>
       <%- end -%>
-    <%- else -%>
-      <%- if editor? -%>
-        <em>Collection Essay</em>
-        <p class="collection_desc">"Collection Essay forthcoming..."</p>
-      <%- end -%>
     <%- end -%>
-<%- elsif editor? -%>
-  <h2>Collection Details</h2>
-  <p>No Collection Associated</p>
 <%- end -%>
 
 <%- if @exhibit && @exhibit.featured.any? -%>
@@ -57,10 +46,7 @@
       <%-  item.item_title.blank? ? title = item.sub_collection_title : title = item.item_title -%>
       <%= render_document_index_partial(SolrDocument.new(document), title, counter, :index) %>
     <%- end -%>
-  </dl>  
-<%- elsif editor? -%>
-  <h2>Featured Sources</h2>
-  <p>No featured sources defined</p>
+  </dl>
 <%- end -%>
 
 <hr />
