@@ -543,7 +543,7 @@ logger.debug("Params in edit_and_browse_links: #{params.inspect}")
         q = "#{exhibit_members_query} AND #{q}" unless exhibit_members_query.empty?
       end
     end
-    q = "#{q} AND NOT _query_:\"info\\\\:fedora/afmodel\\\\:Exhibit\" AND NOT _query_:\"info\\\\:fedora/afmodel\\\\:SubExhibit\""
+    q = "#{q} AND NOT _query_:\"info\\\\:fedora/afmodel\\\\:Exhibit\" AND NOT _query_:\"info\\\\:fedora/afmodel\\\\:SubExhibit\" AND NOT _query_:\"info\\\\:fedora/afmodel\\\\:Description\" "
   end
 
   def get_collections(content, user_query_to_append)
