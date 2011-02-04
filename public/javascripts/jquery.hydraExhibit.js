@@ -5,6 +5,8 @@
       // Setup the ajax indicator
      $('body').append('<div id="ajaxBusy">Your request is being processed.</div>');
 
+     $('button, input:submit, input.button').button();
+
      /*shows the loading div every time we have an Ajax call*/
      $(document).ajaxStart(function(){
         $('#ajaxBusy').show();

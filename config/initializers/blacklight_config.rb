@@ -74,7 +74,7 @@ Blacklight.configure(:shared) do |config|
       "dsc_0_collection_0_did_0_origination_0_engraver_facet",
       "item_0_did_0_physdesc_0_dimensions_facet",
       "item_0_acqinfo_facet",
-      "item_0_did_0_origination_0_persname_facet"
+      "item_0_did_0_origination_0_persname_0_persname_normal_facet"
       ],
     :labels => {
       "dsc_0_collection_0_did_0_unittitle_0_imprint_0_publisher_facet"=>"Publisher",

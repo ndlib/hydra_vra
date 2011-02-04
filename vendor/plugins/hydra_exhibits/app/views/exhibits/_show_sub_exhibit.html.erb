@@ -17,9 +17,6 @@
     <%- description = load_af_instance_from_solr(document) -%>
     <%= render :partial=>'descriptions/show_description', :locals => {:description => description, :document=> SolrDocument.new(document), :exhibit_id => params[:id]}%>
   <%- end -%>
-<%- elsif editor? -%>
-  <h2>Description</h2>
-  <p><%= "Essay forthcoming..." %></p>
 <%- end -%>
 
 
@@ -32,9 +29,6 @@
       <%= render_document_index_partial(SolrDocument.new(document), title, counter, :index) %>
     <%- end -%>
   </dl>
-<%- elsif editor? -%>
-  <h2>Featured sources</h2>
-  <p>No featured sources defined</p>
 <%- end -%>
 
 <hr />

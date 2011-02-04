@@ -613,5 +613,10 @@ logger.debug("Params in edit_and_browse_links: #{params.inspect}")
   def set_page_style
     @body_class ||= "exhibit" if !params[:exhibit_id].blank? || params[:controller] == "exhibits"
   end
+
+  def get_exhibits_list
+    Exhibit.find_by_solr(:all).hits.map{|result| Exhibit.load_instance_from_solr(result["id"])}
+  end
+
 end
 

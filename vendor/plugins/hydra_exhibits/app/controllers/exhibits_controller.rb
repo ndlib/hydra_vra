@@ -13,10 +13,6 @@ class ExhibitsController < CatalogController
 
   helper :hydra, :metadata, :infusion_view
  
-  def index
-    @exhibits = Exhibit.find_by_solr(:all).hits.map{|result| Exhibit.load_instance_from_solr(result["id"])}
-  end
-
   def new
     content_type = params[:content_type]
     af_model = retrieve_af_model(content_type)
