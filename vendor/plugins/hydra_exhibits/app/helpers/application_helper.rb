@@ -47,7 +47,7 @@ module ApplicationHelper
     p.delete(:controller)
     p.merge!(:id=>params[:exhibit_id]) if p[:exhibit_id]
     p = add_facet_params(facet_solr_field,item.value,p)
-    link_to(item.value, exhibit_path(p.merge!({:class=>"browse_facet_select", :action=>"show"})), :style=>"text-decoration:none;border-bottom:medium none")
+    link_to(item.value, exhibit_path(p.merge!({:class=>"browse_facet_select", :action=>"show"})))
   end
 
   # Standard display of a SELECTED facet value, no link, special span
@@ -58,8 +58,8 @@ module ApplicationHelper
     remove_params.merge!(:id=>params[:exhibit_id]) if params[:exhibit_id]
     remove_params.delete(:controller)
     '<span class="selected">' +
-      link_to("-", exhibit_path(remove_params.merge!(:action=>"show")), :class=>"browse_facet", :style=>"text-decoration:none;border-bottom:medium none") + ' ' +
-    link_to("#{item.value}", exhibit_path(remove_params.merge!(:action=>"show")), :class=>"remove", :style=>"text-decoration:none;border-bottom:medium none") +
+      link_to("-", exhibit_path(remove_params.merge!(:action=>"show")), :class=>"remove") + 
+      link_to("#{item.value}", exhibit_path(remove_params.merge!(:action=>"show")), :class=>"browse_facet") +
     '</span>'
       
   end

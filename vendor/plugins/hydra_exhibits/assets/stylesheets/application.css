@@ -279,3 +279,6 @@ p.collection_desc {padding-left:2em;}
 
 .description-textarea-container {width:100%;}
 .featured-controls {border:none;}
+.facet-list .selected {margin-left:-12px;}
+.facet-list .remove {display:-moz-inline-block; display:inline-block; width:7px; margin-right:5px; font-weight:bold;}
+.facet-list a {border-bottom:none;}
