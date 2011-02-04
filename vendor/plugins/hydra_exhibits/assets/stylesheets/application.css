@@ -281,7 +281,8 @@ p.collection_desc {padding-left:2em;}
 
 .description-textarea-container {width:100%;}
 .featured-controls {border:none;}
-.facet-list .selected {margin-left:-12px;}
-.facet-list .remove {display:-moz-inline-block; display:inline-block; width:7px; margin-right:5px; font-weight:bold;}
+.facet-list .selected {margin-left:-20px;}
 .facet-list a {border-bottom:none;}
+.facet-list .remove {background-color: #DEDEDE; border-color: #EFEFEF #BBB #BBB #EFEFEF; border-style: solid; border-width: 1px; color: #333; display: -moz-inline-block; display: inline-block; font-weight: bold; margin-right: 5px; padding: 0 3px; text-align: center; width: 7px;}
 h1.document_heading{clear:both;}
+a.image {border-bottom:none;}

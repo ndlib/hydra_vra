@@ -135,7 +135,7 @@ Blacklight.configure(:shared) do |config|
 
   config[:items_index_fields] = {
     :field_names => [
-      "item_did_unittitle_t",
+      "item_did_unittitle_unittitle_content_t",
       "item_did_unitid_t",
       "dsc_0_collection_0_did_0_origination_0_engraver_t",
       "item_0_did_0_origination_0_persname_0_persname_normal_t",
@@ -146,15 +146,15 @@ Blacklight.configure(:shared) do |config|
       "ead_ead_header_filedesc_titlestmt_titleproper_t"
       ],
     :labels => {
-      "item_did_unittitle_t" 				=> "Title",
-      "item_did_unitid_t"             		        => "ID",
-      "dsc_0_collection_0_did_0_origination_0_engraver_t"=>"Engraver",
-      "item_0_did_0_origination_0_persname_0_persname_normal_t"=>"Signers" ,
-      "item_did_physdesc_dimensions_t"          	=> "Physical Dimensions",
-      "item_ref_0_acqinfo_t"                            => "Provenance",
-      "dsc_collection_did_unittitle_imprint_publisher_t" => "Publisher",
-      "dsc_collection_did_unittitle_unittitle_content_t" => "Print Date",
-      "ead_ead_header_filedesc_titlestmt_titleproper_t" => "Parent Collection"
+      "item_did_unittitle_unittitle_content_t"                  => "Title",
+      "item_did_unitid_t"                                       => "ID",
+      "dsc_0_collection_0_did_0_origination_0_engraver_t"       => "Engraver",
+      "item_0_did_0_origination_0_persname_0_persname_normal_t" => "Signers" ,
+      "item_did_physdesc_dimensions_t"                          => "Physical Dimensions",
+      "item_ref_0_acqinfo_t"                                    => "Provenance",
+      "dsc_collection_did_unittitle_imprint_publisher_t"        => "Publisher",
+      "dsc_collection_did_unittitle_unittitle_content_t"        => "Print Date",
+      "ead_ead_header_filedesc_titlestmt_titleproper_t"         => "Parent Collection"
     }
   }
 
