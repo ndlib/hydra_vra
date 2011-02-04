@@ -94,8 +94,7 @@ Blacklight.configure(:shared) do |config|
       "date_t",
       "title_t",
       "medium_t",
-      "location_t",
-      "id",
+      "location_t",      
       "active_fedora_model_s",
       "dsc_collection_did_unitid_t",
       "dsc_collection_did_unitid_unitid_identifier_t",
@@ -108,19 +107,17 @@ Blacklight.configure(:shared) do |config|
       "title_t"=>"Title",
       "medium_t"=>"Content Type",
       "location_t"=>"Location",
-      "id"=>"Pid",
       "active_fedora_model_s"=>"Model",
-      "dsc_collection_did_unitid_t"                      => "Unique ID",
-      "dsc_collection_did_unitid_unitid_identifier_t"    => "ID",
+      "dsc_collection_did_unitid_t"                      => "ID",
       "dsc_collection_did_unittitle_unittitle_content_t" => "Print Date",
       "dsc_collection_did_unittitle_imprint_publisher_t" => "Publisher",
-      "dsc_collection_controlaccess_genreform_t"         => "Genre"
+      "dsc_collection_controlaccess_genreform_t"         => "Genre",
+      "ead_ead_header_filedesc_titlestmt_titleproper_t" => "Parent Collection"
     }
   }
 
   config[:collections_index_fields] = {
-    :field_names => [
-        "id_t",
+    :field_names => [        
         "ead_ead_header_filedesc_titlestmt_titleproper_t",
         "ead_archive_desc_did_lang_t",
         "ead_archive_desc_did_unitdate_t",
@@ -129,7 +126,6 @@ Blacklight.configure(:shared) do |config|
         "did_ref_unittitle_t"
       ],
     :labels => {
-      "id_t"=>"Pid",
       "ead_ead_header_filedesc_titlestmt_titleproper_t" =>"Title",
       "ead_archive_desc_did_lang_t"                     => "Language",
       "ead_archive_desc_did_unitdate_t"                 => "Date",
@@ -141,22 +137,26 @@ Blacklight.configure(:shared) do |config|
 
   config[:items_index_fields] = {
     :field_names => [
-      "id_t",
       "item_did_unittitle_t",
       "item_did_unitid_t",
-      "item_did_origination_signer_persname_normal_t",
+      "dsc_0_collection_0_did_0_origination_0_engraver_t",
+      "item_0_did_0_origination_0_persname_0_persname_normal_t",
       "item_did_physdesc_dimensions_t",
-      "item_controlaccess_genreform_t",
-      "item_ref_0_acqinfo_t"
+      "item_ref_0_acqinfo_t",
+      "dsc_collection_did_unittitle_imprint_publisher_t",
+      "dsc_collection_did_unittitle_unittitle_content_t",
+      "ead_ead_header_filedesc_titlestmt_titleproper_t"
       ],
     :labels => {
-      "id_t"						=>"Pid",
       "item_did_unittitle_t" 				=> "Title",
       "item_did_unitid_t"             		        => "ID",
-      "item_did_origination_signer_persname_normal_t"   => "Signers",
+      "dsc_0_collection_0_did_0_origination_0_engraver_t"=>"Engraver",
+      "item_0_did_0_origination_0_persname_0_persname_normal_t"=>"Signers" ,
       "item_did_physdesc_dimensions_t"          	=> "Physical Dimensions",
-      "item_controlaccess_genreform_t"                  => "Page Turn",
-      "item_ref_0_acqinfo_t"                            => "Provenance"
+      "item_ref_0_acqinfo_t"                            => "Provenance",
+      "dsc_collection_did_unittitle_imprint_publisher_t" => "Publisher",
+      "dsc_collection_did_unittitle_unittitle_content_t" => "Print Date",
+      "ead_ead_header_filedesc_titlestmt_titleproper_t" => "Parent Collection"
     }
   }
 
