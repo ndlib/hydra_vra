@@ -105,7 +105,7 @@ class Component < ActiveFedora::Base
 
   def item_title
     return @item_title if (defined? @item_title)
-    values = self.datastreams["descMetadata"].term_values(:item, :did, :unittitle)
+    values = self.datastreams["descMetadata"].term_values(:item, :did, :unittitle, :unittitle_content)
     @item_title = values.any? ? values.first : ""
   end
 
@@ -113,6 +113,18 @@ class Component < ActiveFedora::Base
     return @sub_collection_title if (defined? @sub_collection_title)
     values = self.datastreams["descMetadata"].term_values(:dsc, :collection, :did, :unittitle, :unittitle_content)
     @sub_collection_title = values.any? ? values.first : ""
+  end
+
+  # Used this method to display parent's title as the link in the catalog view of C02 level
+  def title
+    return @title if (defined? @title)
+    if(self.type.to_s.eql? "collection")  
+      values = self.datastreams["descMetadata"].term_values(:dsc, :collection, :did, :unittitle, :unittitle_content)
+    else
+      values = self.datastreams["descMetadata"].term_values(:item, :did, :unittitle, :unittitle_content)
+    end
+    logger.debug(@title)
+    @title = values.any? ? values.first : ""
   end
 
   def field_keys

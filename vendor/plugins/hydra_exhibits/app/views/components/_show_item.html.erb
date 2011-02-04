@@ -90,12 +90,23 @@
          </dd>
      <%end%>
       <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:item, :daogrp, :daoloc, :daoloc_href]).first.empty?%>
-         <dt class="images">
-           <%= fedora_field_label("descMetadata", [:item, :daogrp, :daoloc, :daoloc_href], "Images:")%>
-	 </dt>
-         <dd>
-           <%= get_values_from_datastream(@document_fedora,"descMetadata", [:item, :daogrp, :daoloc, :daoloc_href])%>
-         </dd>
+	<% if(get_values_from_datastream(@document_fedora,"descMetadata", [:item, :daogrp, :daoloc, :daoloc_href]).size > 1) %>
+	  <% get_values_from_datastream(@document_fedora,"descMetadata", [:item, :daogrp, :daoloc, :daoloc_href]).each do |img| %>
+            <dt class="images">
+              <%= fedora_field_label("descMetadata", [:item, :daogrp, :daoloc, :daoloc_href], "Image:")%>
+	    </dt>
+            <dd>
+              <%= img %>
+            </dd>
+	  <% end %>
+	<% else %>
+          <dt class="images">
+            <%= fedora_field_label("descMetadata", [:item, :daogrp, :daoloc, :daoloc_href], "Image:")%>
+          </dt>
+          <dd>
+            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:item, :daogrp, :daoloc, :daoloc_href]) %>
+          </dd>
+	<% end %>
      <%end%>
     </dl>
 </fieldset>
