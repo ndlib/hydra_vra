@@ -34,7 +34,8 @@
         <%= flash[:notice] %>
       </div>
     <% end %>
-
+    <%= link_to "Back to #{@document_fedora.item.first.title}", catalog_path(@document_fedora.item.first.pid) %>
+    <br/><br/>
     <div id="accordion">
       <h2 class="section-title"><a href="#">Description</a></h2>
         <%= render :partial => "pages/edit_page", :locals => { :content => "page", :label => "page", :document_fedora => @document_fedora} %>

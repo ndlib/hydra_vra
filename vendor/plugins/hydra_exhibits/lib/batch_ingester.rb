@@ -170,6 +170,8 @@ module BatchIngester
             page.save
             page.derive_all
             page.save
+            page.datastreams["rightsMetadata"].update_permissions({"group"=>{"archivist"=>"edit","public"=>"read"}})
+	    page.save
 	    if(args[:image_name].to_s.strip.end_with? "front.jpg")
 	      parent = Component.load_instance(item_check.to_a[0]["id"])
 	      parent.update_indexed_attributes({:main_page=>{0=>page.pid}})
