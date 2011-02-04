@@ -35,7 +35,7 @@
 </div>
 <div id="document">
   <div id="doc_<%= @document[:id] %>">
-    <h1 class="document_heading"><%= h(document_heading) %><br/><%= h(vern_document_heading) %></h1>
+    <h1 class="document_heading"><br/><%= h(document_heading) %> <%= h(vern_document_heading) %></h1>
     <div class="document">
       <%= render_document_partial @document, params["action"] %>
     </div>

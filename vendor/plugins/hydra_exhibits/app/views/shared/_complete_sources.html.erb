@@ -6,7 +6,7 @@
 </div>
 <%= render :partial=>'shared/sort_and_per_page', :locals => {:response=>@browse_response} if @browse_response.response['numFound'] > 10 %>
 
-<%= render :partial=>'catalog/document_list', :locals => {:document_list=>@browse_document_list, :response=>@browse_response} %>
+<%= render :partial=>'shared/document_list', :locals => {:document_list=>@browse_document_list, :response=>@browse_response} %>
 
 <div class="pagination">
   <%= will_paginate @browse_response.docs, :page_links => false, :class => 'prev_next_links' %>

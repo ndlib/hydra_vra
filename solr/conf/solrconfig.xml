@@ -383,21 +383,8 @@
       <str name="qf_dismax">text^0.9</str>
       <str name="pf_dismax">text^0.9</str>
       <str name="fl">
-        id,title_t,date_t,year_facet,month_facet,has_model_s,has_collection_member_s,system_create_dt,
-        person_0_role_t,person_1_role_t,person_2_role_t,person_3_role_t,person_4_role_t,person_5_role_t,person_6_role_t,
-        person_7_role_t,person_8_role_t,person_9_role_t,
-        person_0_first_name_t,person_1_first_name_t,person_2_first_name_t,person_3_first_name_t,person_4_first_name_t,
-        person_5_first_name_t,person_6_first_name_t,person_7_first_name_t,person_8_first_name_t,person_9_first_name_t,
-        person_0_last_name_t,person_1_last_name_t,person_2_last_name_t,person_3_last_name_t,person_4_last_name_t,
-        person_5_last_name_t,person_6_last_name_t,person_7_last_name_t,person_8_last_name_t,person_9_last_name_t,
-        status_t,subject_t,depositor_t,
-        journal_title_info_t,journal_issue_publication_date_t,
-        journal_issue_pages_end_t,journal_issue_volume_t,journal_title_info_main_title_t,journal_issue_pages_start_t,
-        journal_issue_start_page_t, journal_issue_end_page_t, abstract_t,
-        person_0_institution_t,person_1_institution_t,person_2_institution_t,person_3_institution_t,person_4_institution_t,person_5_institution_t,person_institution_role_t,
-        person_7_institution_t,person_8_institution_t,person_9_institution_t,
-        mods_gps_t, mods_region_t, mods_site_t, mods_ecosystem_t,
-        mods_timespan_start_t, mods_timespan_end_t, description_t,
+        id,title_t,has_model_s,has_collection_member_s,system_create_dt,
+        status_t,subject_t,depositor_t,description_t,rights_t,access_t,
 
         dsc_collection_did_unitid_t,
         dsc_collection_did_unitid_unitid_identifier_t,
@@ -417,7 +404,14 @@
         item_controlaccess_genreform_t,
         item_acqinfo_t,
         item_odd_t,
-        item_daogrp_daoloc_daoloc_href_t
+        item_daogrp_daoloc_daoloc_href_t,
+
+        ead_ead_header_filedesc_titlestmt_titleproper_t,
+        ead_archive_desc_did_lang_t,
+        ead_archive_desc_did_unitdate_t,
+        ead_header_filedesc_titlestmt_author_t,
+        did_ref_0_head_t,
+        did_ref_unittitle_t
       </str>
       <str name="mm">
         2&lt;-1 5&lt;-2 6&lt;90%
@@ -447,16 +441,35 @@
       <str name="qf_dismax">id^0.8 id_t^0.8 format text^0.3</str>
       <str name="pf_dismax">id^0.9  id_t^0.9 text^0.5</str>
       <str name="fl">
-        id,text,title_t,date_t,year_facet,month_facet,medium_t,series_facet,box_facet,folder_facet,has_model_s,has_collection_member_s,system_create_dt,
-        person_0_role_t,person_1_role_t,person_2_role_t,person_3_role_t,person_4_role_t,person_5_role_t,person_6_role_t,person_7_role_t,person_8_role_t,person_9_role_t,
-        person_0_first_name_t,person_1_first_name_t,person_2_first_name_t,person_3_first_name_t,person_4_first_name_t,person_5_first_name_t,person_6_first_name_t,person_7_first_name_t,person_8_first_name_t,person_9_first_name_t,
-        person_0_last_name_t,person_1_last_name_t,person_2_last_name_t,person_3_last_name_t,person_4_last_name_t,person_5_last_name_t,person_6_last_name_t,person_7_last_name_t,person_8_last_name_t,person_9_last_name_t,depositor_t,
+        id,title_t,has_model_s,has_collection_member_s,system_create_dt,
+        status_t,subject_t,depositor_t,description_t,rights_t,access_t,
 
-journal_title_info_t, journal_title_info_main_title_t, journal_issue_publication_date_t, journal_issue_pages_start_t, journal_issue_pages_end_t, journal_issue_volume_t, journal_issue_start_page_t, journal_issue_end_page_t, abstract_t,
-        person_0_institution_t,person_1_institution_t,person_2_institution_t,person_3_institution_t,person_4_institution_t,person_5_institution_t,person_institution_role_t,
-        person_7_institution_t,person_8_institution_t,person_9_institution_t,
-        mods_gps_t, mods_region_t, mods_site_t, mods_ecosystem_t,
-        mods_timespan_start_t, mods_timespan_end_t, description_t
+        dsc_collection_did_unitid_t,
+        dsc_collection_did_unitid_unitid_identifier_t,
+        dsc_collection_did_unittitle_unittitle_content_t,
+        dsc_collection_did_unittitle_imprint_publisher_t,
+        dsc_collection_controlaccess_genreform_t,
+        dsc_collection_scopecontent_t,
+        ead_ead_header_filedesc_titlestmt_titleproper_t,
+
+        item_did_unittitle_unittitle_content_t,
+        item_did_unittitle_t,
+        item_did_unitid_t,
+        item_did_unittitle_num_t,
+        item_did_origination_signer_persname_normal_t,
+        item_did_origination_signer_t,
+        item_did_physdesc_dimensions_t,
+        item_controlaccess_genreform_t,
+        item_acqinfo_t,
+        item_odd_t,
+        item_daogrp_daoloc_daoloc_href_t,
+
+        ead_ead_header_filedesc_titlestmt_titleproper_t,
+        ead_archive_desc_did_lang_t,
+        ead_archive_desc_did_unitdate_t,
+        ead_header_filedesc_titlestmt_author_t,
+        did_ref_0_head_t,
+        did_ref_unittitle_t
       </str>
       <str name="mm">
         2&lt;-1 5&lt;-2 6&lt;90%
@@ -483,7 +496,35 @@ journal_title_info_t, journal_title_info_main_title_t, journal_issue_publication
       <str name="qf">id^0.8 id_t^0.8 format text^0.3</str>
        <str name="pf">id^0.9  id_t^0.9 text^0.5</str>
      <str name="fl">
-        id,text,title_t,date_t,year_facet,month_facet,medium_t,series_facet,box_facet,folder_facet
+        id,title_t,has_model_s,has_collection_member_s,system_create_dt,
+        status_t,subject_t,depositor_t,description_t,rights_t,access_t,
+
+        dsc_collection_did_unitid_t,
+        dsc_collection_did_unitid_unitid_identifier_t,
+        dsc_collection_did_unittitle_unittitle_content_t,
+        dsc_collection_did_unittitle_imprint_publisher_t,
+        dsc_collection_controlaccess_genreform_t,
+        dsc_collection_scopecontent_t,
+        ead_ead_header_filedesc_titlestmt_titleproper_t,
+
+        item_did_unittitle_unittitle_content_t,
+        item_did_unittitle_t,
+        item_did_unitid_t,
+        item_did_unittitle_num_t,
+        item_did_origination_signer_persname_normal_t,
+        item_did_origination_signer_t,
+        item_did_physdesc_dimensions_t,
+        item_controlaccess_genreform_t,
+        item_acqinfo_t,
+        item_odd_t,
+        item_daogrp_daoloc_daoloc_href_t,
+
+        ead_ead_header_filedesc_titlestmt_titleproper_t,
+        ead_archive_desc_did_lang_t,
+        ead_archive_desc_did_unitdate_t,
+        ead_header_filedesc_titlestmt_author_t,
+        did_ref_0_head_t,
+        did_ref_unittitle_t
      </str>
      <str name="mm">
         2&lt;-1 5&lt;-2 6&lt;90%
