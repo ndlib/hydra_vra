@@ -96,7 +96,7 @@ ul.facet_extended_list li {list-style:none; margin: 0.5em 0;}
 #sortAndPerPage fieldset {display:inline; border:none; margin:0;}
 
 /* Search Results */
-.document {background-color:#FFF; border-bottom:1px dotted #CCC;}
+.document {background-color:#FFF; border-bottom:1px dotted #CCC; padding-bottom:.5em;}
 
 #documents {background-color:#FFF; clear:both; color:#333; float:left; margin-bottom:1em; width:100%;}
 #documents .documentHeader {background-color: #fff; padding: 0px;}
@@ -108,7 +108,7 @@ ul.facet_extended_list li {list-style:none; margin: 0.5em 0;}
 .exhibit-listing .document {clear:both; float:left; width:100%;}
 #documents.exhibit-listing {float:right; width:98%;}
 .with-thumbnail {clear:both; float:left; width:100%;}
-.thumbnail-container {float:left; padding:.5em;}
+.thumbnail-container {float:left; padding:.5em .5em 0;} 
 .thumbnail-container a {border-bottom:none;}
 .thumbnail-container img {margin-top:2px;}
 
@@ -117,9 +117,10 @@ h3.index_title {clear: both; margin: 0px; padding: 0px; width: 460px;}
 .title_count {display:inline-block; width:5%; margin-left:-5%; padding-right:.5em; text-align:right;}
 
 dl {margin: 0px; padding: 0px;}
-dl.defList {overflow: auto; padding: 0.5em 0;}
+dl.defList {overflow: auto; padding: 0.5em 0 0;} 
 dl.defList dt {float:left; text-align: right; width: 20%; clear: both; color: #888; margin: 0; padding: 2px 1em 2px 0px;}
 dl.defList dd {text-align: left; margin: 0; padding: 2px 0;}
+p.description {padding-top:.5em; clear:both;}
 
 /* Individual Result Listing */
 #document h1 {margin: 0px; padding: 0px 0px 1em 0px;}
@@ -274,6 +275,7 @@ p.collection_desc {padding-left:2em;}
 #collection-search fieldset {border:none; padding:0;}
 #collection-search h3 {margin:0 0 .5em;}
 #collection-search label {font-weight:normal;}
+#collection-search .ui-button {padding:.3em .5em;}
 
 .index_title {margin-bottom:.5em;}
 
@@ -282,3 +284,4 @@ p.collection_desc {padding-left:2em;}
 .facet-list .selected {margin-left:-12px;}
 .facet-list .remove {display:-moz-inline-block; display:inline-block; width:7px; margin-right:5px; font-weight:bold;}
 .facet-list a {border-bottom:none;}
+h1.document_heading{clear:both;}

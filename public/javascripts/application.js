@@ -2,6 +2,9 @@
 // This file is automatically included by javascript_include_tag :defaults
 
 $(function() {
+  // make buttons jquery-ui elements
+  $('button, input:submit, input.button').button()
+
 	// for create asset button at the top
   $("#re-run-action").next().button( {
     text: false,
@@ -40,6 +43,7 @@ $(function() {
   $('#add-contributor-menu').mouseleave(function(){
     $('#add-contributor-menu').hide();
   });
+
 });
 
 function createAssetNavigateTo(elem, link) {
