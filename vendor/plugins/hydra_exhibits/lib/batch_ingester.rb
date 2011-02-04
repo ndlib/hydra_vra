@@ -3,33 +3,38 @@ require 'fastercsv'
 require 'iconv'
 require "#{RAILS_ROOT}/vendor/plugins/hydra_repository/lib/mediashelf/active_fedora_helper.rb"
 require "#{RAILS_ROOT}/vendor/plugins/hydra_repository/app/helpers/application_helper.rb"
+require 'logger'
+
 module BatchIngester
   class CurrencyIngester
     include MediaShelf::ActiveFedoraHelper
     include ApplicationHelper
-
+    def log
+      log = Logger.new('batchIngester.log')
+    end
+#    log.level = Logger::INFO
     def process_ingest_data(filename)
       cnter = 1
       arr_of_data=load_file(filename)
-      puts "Processing Total Rows: #{arr_of_data.length()}"
+      log.info("Processing Total Rows: #{arr_of_data.length()}")
       arr_of_data.each do |row|
         if(filename.include? "Collection")
-          puts "Ingesting Subcollection Object"
+          log.info("Ingesting Subcollection Object")
           subcollection_ingest_each_row( row )
         elsif(filename.include? "Item")
-          puts "Ingesting Item Object"
+          log.info("Ingesting Item Object")
           item_ingest_each_row( row, filename )
         elsif(filename.include? "Image")
-          puts "Ingesting Page Object"
+          log.info("Ingesting Page Object")
           page_ingest_each_row( row, filename )
         elsif(filename.include? "Header")
           if cnter >1
-            puts "Ingesting Ead Collection Object"
+            log.info("Ingesting Ead Collection Object")
             collection_ingest_each_row( row )
           end
           cnter += 1
         else
-          puts "Did not recognize Object"
+          log.info("Did not recognize Object")
         end
       end
     end
@@ -37,14 +42,14 @@ module BatchIngester
     def load_file(csv_file)
       if File.exists? (csv_file)
         arr_of_data = FasterCSV.read(csv_file, :headers=>false)
-        puts "Ingest or Remove  #{arr_of_data.length}  Objects"
+        log.info("Ingest or Remove  #{arr_of_data.length}  Objects")
         return arr_of_data
       else
-        puts "#{csv_file} does not exists!"
+        log.info("#{csv_file} does not exists!")
       end
     end
     def collection_ingest_each_row(row)
-      puts "Rows: #{row.inspect}"
+      log.info("Rows: #{row.inspect}")
       if (row[0].blank? || row[1].blank?)
         raise "This entry #{row.inspect} has empty collection information"
       else
@@ -86,7 +91,7 @@ module BatchIngester
       #if(!asset_available(pid,content_type))
       map = {"EAD_HEADER_0_EADID_S".downcase=>"american_colonial_currency"}
       result = Collection.find_by_fields_by_solr(map)
-      puts "Length of the search result: #{result.to_a.size}"
+      log.info("Length of the search result: #{result.to_a.size}")
       if(result.to_a.size < 1)
         collection= af_model.new(:namespace=>"RBSC-CURRENCY")#(:pid=>pid)
         collection.datastreams["descMetadata"].ng_xml = EadXml.collection_template
@@ -126,11 +131,11 @@ module BatchIngester
         exhibit.save
       else
         objmap = result.to_a[0]
-        puts "Collection already exists with Id: #{objmap["id"]}. Cannot create duplicate object"
+        log.info("Collection already exists with Id: #{objmap["id"]}. Cannot create duplicate object")
       end
     end
     def page_ingest_each_row(row, filename)
-      puts "Rows: #{row.inspect}"
+      log.info("Rows: #{row.inspect}")
       if (row[0].blank? || row[1].blank?)
         raise "This entry #{row.inspect} has empty collection information"
       else
@@ -158,6 +163,7 @@ module BatchIngester
           map = Hash.new
           image_path = args[:image_file]
 	  if(File.exists?(image_path))
+            log.info(image_path)
             map[:file] = File.new(image_path)
             map[:mimeType] = "image/jpg"
             map[:file_name] = args[:image_name]
@@ -178,20 +184,20 @@ module BatchIngester
 	      parent.save
 	    end
 	  else
-	    puts "Image not found: #{args[:image_name]}"
+	    log.info("Image not found: #{args[:image_name]}")
 	  end
 	else
-	  puts "Page already exists with Id:#{page_check.to_a[0]["id"]}"
+	  log.info("Page already exists with Id:#{page_check.to_a[0]["id"]}")
 	end
       else
-	puts "Couldn't find Item: #{args[:item_id]} for the image: #{args[:image_name]}.... Cannot create the page object...."
+	log.info("Couldn't find Item: #{args[:item_id]} for the image: #{args[:image_name]}.... Cannot create the page object....")
       end
     end
     
     def subcollection_ingest_each_row(row)
-      puts "Rows: #{row.inspect}"
+      log.info("Rows: #{row.inspect}")
       if (row[0].blank? || row[1].blank?)
-         puts "This entry #{row.inspect} has empty collection information, skip to next row"
+         log.info("This entry #{row.inspect} has empty collection information, skip to next row")
       else
         key=row[1]
         abr_title = row[0]
@@ -208,7 +214,7 @@ module BatchIngester
         subcol_id = row[13] #"SUBCOLLECTION_#{key}"
         attributes= {:key => subcol_id, :abr_title=> abr_title, :title => title, :subcollection_id => id, :genreform => genreform, :display => display, :date => date, :description => description, :publisher => publisher, :geography => geog, :printer => printer, :engraver => engraver}
         ingest_subcollection('component', attributes)
-        puts "Attributes: #{attributes.inspect}"
+        log.info("Attributes: #{attributes.inspect}")
       end
     end
     
@@ -222,7 +228,7 @@ module BatchIngester
         #hard coding the Eadid as there is only one Collection header at this point of time....
         map = {"EAD_HEADER_0_EADID_T".downcase=>"american_colonial_currency"}
         result = Collection.find_by_fields_by_solr(map)
-        puts "Length of the search result: #{result.to_a.size}"
+        log.info("Length of the search result: #{result.to_a.size}")
         if(result.to_a.size > 0)
           col_map = Component.find_by_fields_by_solr({"dsc_collection_did_unitid_unitid_identifier_s"=>args[:subcollection_id]})
           if(col_map.to_a.size < 1)
@@ -250,21 +256,21 @@ module BatchIngester
             subcollection.update_indexed_attributes({:subcollection_id=>{0=>args[:key]}})
             subcollection.update_indexed_attributes({:component_type=>{0=>"subcollection"}})
             subcollection.save
-            puts "\r\n#{subcollection.datastreams["descMetadata"].to_xml}\r\n"
+            log.info("\r\n#{subcollection.datastreams["descMetadata"].to_xml}\r\n")
           else
             objmap = col_map.to_a[0]
-            puts "Subcollection already exists with Id: #{objmap["id"]}. Cannot create duplicate object"
+            log.info("Subcollection already exists with Id: #{objmap["id"]}. Cannot create duplicate object")
           end
         else
-          puts "Collection does not exist. Cannot create Item without Parent Object"
+          log.info("Collection does not exist. Cannot create Item without Parent Object")
         end
 #      end
     end
 
     def item_ingest_each_row(row, filename)
-      puts "Rows: #{row.inspect}"
+      log.info("Rows: #{row.inspect}")
       if (row[0].blank? || row[1].blank?)
-         puts "This entry #{row.inspect} has empty item information, skip to next row"
+         log.info("This entry #{row.inspect} has empty item information, skip to next row")
       else
         key="ITEM_#{row[1]}"
         serial_number = row[12]
@@ -293,11 +299,11 @@ module BatchIngester
           end
           count += 1
         end
-	puts "Signers: #{display_signer}"
-#        puts "Converted to: key ->#{key}, item_id ->#{serial_number}, collection_id -> #{collection_id}"
+	log.info("Signers: #{display_signer}")
+#        log.info("Converted to: key ->#{key}, item_id ->#{serial_number}, collection_id -> #{collection_id}")
         attributes= {:pid_key => key, :subcollection_id => collection_id, :display_title => display_title, :title => title, :item_id => item_id, :serial_number => serial_number, :display_signer => display_signer, :signer => signer, :physdesc => physdesc, :description => description, :plate_letter => plate_letter, :page_turn => page_turn, :provenance => provenance}
         ingest_item('component', attributes, images)
-        puts "Attributes: #{attributes.inspect}"
+        log.info("Attributes: #{attributes.inspect}")
       end
     end
 
@@ -306,7 +312,7 @@ module BatchIngester
       unless af_model
         af_model = Component
       end
-	puts "Description: #{args[:description]}"
+	log.info("Description: #{args[:description]}")
 #      pid= generate_pid(args[:pid_key], nil)
 #      if(!asset_available(pid,content_type))
 	desc = Iconv.conv('utf-8','ISO-8859-1',args[:description])
@@ -347,16 +353,16 @@ module BatchIngester
             end
             item.save
           else
-            puts "Item already exists with Id: #{item_check.to_a[0]["id"]}. Cannot create duplicate object"
+            log.info("Item already exists with Id: #{item_check.to_a[0]["id"]}. Cannot create duplicate object")
           end
         else
-          puts "Subcollection does not exist. Cannot create Item without Parent Object"
+          log.info("Subcollection does not exist. Cannot create Item without Parent Object")
         end
 #      end
     end
 
     def load_dependency_file(id,file)
-      puts "inside load_signer for #{file}"
+      log.info("inside load_signer for #{file}")
       data_arr = Array.new
       if File.exists? (file)
         arr_of_data = FasterCSV.read(file, :headers=>false)
@@ -365,14 +371,14 @@ module BatchIngester
             if((row[1].to_s).eql?(id))
               if(!((row[4].to_s).end_with? "tmb.jpg"))
                 data_arr.push(row[4].to_s)
-                puts "Image_Title: #{row[4].to_s}"
+                log.info("Image_Title: #{row[4].to_s}")
 	      end
             end
           else
             if((row[0].to_s).eql?(id))
               if(!((row[1].to_s).include? "Thumb"))
                 data_arr.push(row[1].to_s)
-                puts "Signers: #{row[1].to_s}"
+                log.info("Signers: #{row[1].to_s}")
               end
             end
           end
@@ -402,7 +408,7 @@ module BatchIngester
     def remove_each_obj(namespace,row)
       row_str=row
       pid= namespace+":" +row_str.to_s
-      puts "The pid is #{pid}"
+      log.info("The pid is #{pid}")
       delete_object(pid)
     end
     

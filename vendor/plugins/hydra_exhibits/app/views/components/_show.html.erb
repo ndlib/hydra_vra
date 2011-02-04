@@ -10,8 +10,7 @@
 </style>
 
 <div class="document_viewer" id="cover_container">
-  <%= link_to "Back to #{@document_fedora.member_of.first.title}", catalog_path(@document_fedora.member_of.first.pid) %>
-  <br/><br/>
+
   <div id="accordion">
     <h2 class="section-title"><a href="#">Description</a></h2>
     <% if (!get_values_from_datastream(@document_fedora,"descMetadata", [:item]).first.empty?) %>
