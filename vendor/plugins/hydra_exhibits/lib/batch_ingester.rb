@@ -398,7 +398,7 @@ module BatchIngester
     end
         
     def delete_all_obj_from_fedora(namespace)
-      row =715
+      row =1
       while row < 717  do
         remove_each_obj(namespace,row)
         row +=1;
