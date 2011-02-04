@@ -1,6 +1,12 @@
 <fieldset id="page_fields">
   <legend>Page</legend>
     <dl>
+      <dt>
+        <p>Parent: </p>
+      </dt>
+      <dd class="parent">
+	<%= link_to "#{@document_fedora.item.first.title}", catalog_path(@document_fedora.item.first.pid) %>        
+      </dd>
       <% unless get_values_from_datastream(@document_fedora,"properties", [:page_id]).first.empty?%>
           <dt class="page_id">
             <%= fedora_field_label("properties", [:page_id], "ID:") %>

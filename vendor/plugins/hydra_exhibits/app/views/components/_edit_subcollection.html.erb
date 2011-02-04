@@ -8,6 +8,12 @@
       <input id="content_type" type="hidden" name="content_type" value="<%= content %>" />
     <dl>
       <dt>
+        <p> Parent: </p>
+      </dt>
+      <dd class="parent">
+        <%= link_to "#{@document_fedora.member_of.first.title}", catalog_path(@document_fedora.member_of.first.pid) %>
+      </dd>
+      <dt>
         <%= fedora_field_label("descMetadata", [:dsc, :collection, :did, :unittitle, :unittitle_content], "Title:") %>
       </dt>
       <dd class="title">

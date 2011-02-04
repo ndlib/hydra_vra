@@ -1,6 +1,12 @@
 <fieldset id="item_fields">
   <legend>Item</legend>
     <dl>
+      <dt>
+        <p> Parent: </p>
+      </dt>
+      <dd class="parent">
+        <%= link_to "#{@document_fedora.member_of.first.title}", catalog_path(@document_fedora.member_of.first.pid) %>
+      </dd>
       <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:item, :did, :unittitle, :unittitle_label]).first.empty?%>
           <dt class="display_title">
             <%= fedora_field_label("descMetadata", [:item, :did, :unittitle, :unittitle_label], "Display Title:") %>
