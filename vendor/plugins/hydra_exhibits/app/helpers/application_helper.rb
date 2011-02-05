@@ -521,12 +521,11 @@ logger.debug("Params in edit_and_browse_links: #{params.inspect}")
     document[Blacklight.config[:show][:display_type]].first if document[Blacklight.config[:show][:display_type]]
   end
 
-  def render_document_index_partial(doc, title, counter, action_name, thumbnail=nil)
+  def render_document_index_partial(doc, title, counter, action_name)
     format = document_partial_name(doc)
     logger.debug("format: #{format}")
     begin
       locals = {:document=>doc, :counter=>counter, :title=>title}
-      locals.merge!(:thumbnail=>thumbnail) unless thumbnail.nil?
       render :partial=>"catalog/_#{action_name}_partials/#{format}", :locals=>locals      
     rescue ActionView::MissingTemplate
       render :partial=>"catalog/_#{action_name}_partials/default", :locals=>{:document=>doc}

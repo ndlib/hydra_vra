@@ -1,24 +1,25 @@
-<% thumbnail = nil unless thumbnail%>
+<%- component = load_af_instance_from_solr(document) -%>
 <div class="with-thumbnail">
   <div class="thumbnail-container">
-    <%= link_to_document document, :label=>(image_tag(thumbnail.nil? ? '/images/no_thumbnail.png' : thumbnail)) %>
+    <%= link_to_document document, :label=>(
+      image_tag(component.main_page.to_s.blank? ? '/images/no_thumbnail.png' : Page.load_instance(component.main_page.to_s).datastream_url('thumbnail'))
+    ) %>
   </div>
-  <% component = load_af_instance_from_solr(document) %>
   <dl class="defList">
-    <% if((component.item_id.nil?) || (component.item_id.empty?)) %>
-      <% index_field_names.each do |solr_fname| -%>
-        <% if document.get solr_fname %>
+    <%- if component.item_id.blank? -%>
+      <%- index_field_names.each do |solr_fname| -%>
+        <%- if document.get solr_fname %>
           <dt><%= h index_field_labels[solr_fname]%></dt>
           <dd><%= h document.get(solr_fname) %></dd>
-        <% end -%>
-      <% end -%>
-    <% else %>
-      <% item_field_names.each do |solr_fname| -%>
-        <% if document.get solr_fname %>
+        <%- end -%>
+      <%- end -%>
+    <%- else %>
+      <%- item_field_names.each do |solr_fname| -%>
+        <%- if document.get solr_fname -%>
           <dt><%= h item_field_labels[solr_fname]%></dt>
           <dd><%= h document.get(solr_fname) %></dd>
-        <% end -%>
-      <% end -%>
-    <% end %>
+        <%- end -%>
+      <%- end -%>
+    <%- end %>
   </dl>
 </div>

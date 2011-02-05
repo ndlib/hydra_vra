@@ -3,13 +3,6 @@
   <%- document_list.each_with_index do |document,counter| -%>
     <%- item = load_af_instance_from_solr(document) -%>
     <%- item.respond_to?(:title) ? title = item.title : title = document[:id] -%>
-    <%- thumbnail_path = "" -%>
-    <%- if((!item.main_page.to_s.nil?) && (!item.main_page.to_s.empty?)) -%>
-      <%- page = Page.load_instance(item.main_page.to_s) -%>
-      <%- thumbnail_path = page.datastream_url('thumbnail') -%>
-    <%- else -%>
-      <%- thumbnail_path = nil -%>
-    <%- end -%>
     <div class="document">
           
       <%# # header bar for doc items in index view -%>
@@ -21,7 +14,7 @@
       </div>
       
       <%# # main container for doc partial view -%>
-      <%= render_document_index_partial(SolrDocument.new(document), title, counter, :index, thumbnail_path) %>  
+      <%= render_document_index_partial(SolrDocument.new(document), title, counter, :index) %>
 
     </div>
     
