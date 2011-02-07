@@ -51,18 +51,6 @@ class Exhibit < ActiveFedora::Base
     datastreams["filters"].query_values
   end
 
-  def build_collection_query
-    q = ""
-    collection_queries = ["active_fedora_model_s:Collection"]
-    q << "#{collection_queries.join(" AND ")}"
-  end
-
-  def intialize(attrs = {})
-    super
-    @facet_subset_map = {}
-    load_facet_subset_map
-  end
-
   def load_facet_subsets_map
     @facet_subsets_map = {}
     subsets.each do |subset|
