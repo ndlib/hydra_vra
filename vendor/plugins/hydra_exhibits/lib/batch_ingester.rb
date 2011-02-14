@@ -12,7 +12,7 @@ module BatchIngester
     def log
       log = Logger.new('batchIngester.log')
     end
-#    log.level = Logger::INFO
+#    log.level = Logger::WARN
     def process_ingest_data(filename)
       cnter = 1
       arr_of_data=load_file(filename)
@@ -146,7 +146,7 @@ module BatchIngester
         key = "PAGE_#{image_id}"
 	src_filename = filename.split('/')
 	image_file = filename.sub("#{src_filename[src_filename.size-2]}/#{src_filename[src_filename.size-1]}", "Currency_Scans_2008 (B786)/#{image_name.to_s.strip}")
-        attributes= {:pid_key => key, :item_id => item_id, :image_title => image_title, :image_name => image_name, :image_file => image_file}
+        attributes= {:pid_key => key, :item_id => item_id, :page_id => page_id, :image_title => image_title, :image_name => image_name, :image_file => image_file}
         ingest_page('page', attributes)
       end
     end
@@ -169,6 +169,7 @@ module BatchIngester
             map[:file_name] = args[:image_name]
             map[:label] = "#{args[:image_title]}-#{args[:image_name]}"
             page= af_model.new(:namespace=>"RBSC-CURRENCY")#(:pid=>pid)
+	    page.update_indexed_attributes({:page_id=>{0=>args[:page_id]}})
 	    page.update_indexed_attributes({:title=>{0=>args[:image_title]}})
 	    page.update_indexed_attributes({:name=>{0=>args[:image_name]}})
             page.content = map
@@ -190,7 +191,7 @@ module BatchIngester
 	  log.info("Page already exists with Id:#{page_check.to_a[0]["id"]}")
 	end
       else
-	log.info("Couldn't find Item: #{args[:item_id]} for the image: #{args[:image_name]}.... Cannot create the page object....")
+	log.error("Couldn't find Item: #{args[:item_id]} for the image: #{args[:image_name]}.... Cannot create the page object....")
       end
     end
     
@@ -262,7 +263,7 @@ module BatchIngester
             log.info("Subcollection already exists with Id: #{objmap["id"]}. Cannot create duplicate object")
           end
         else
-          log.info("Collection does not exist. Cannot create Item without Parent Object")
+          log.error("Collection does not exist. Cannot create Item without Parent Object")
         end
 #      end
     end
@@ -285,7 +286,6 @@ module BatchIngester
         plate_letter = row[10]
         page_turn = row[9]
         #Get the image names and signers name for the item from the respective files
-        # image names in Image_partila_Set.csv and singers in Signers_partial_Set.csv in the shared directory
 	src_filename = filename.split('/')
         images = load_dependency_file(item_id.to_s, filename.sub(src_filename[src_filename.size-1], "Image_Set.csv"))
         signers = load_dependency_file(item_id.to_s, filename.sub(src_filename[src_filename.size-1], "Signers_Set.csv"))
@@ -356,7 +356,7 @@ module BatchIngester
             log.info("Item already exists with Id: #{item_check.to_a[0]["id"]}. Cannot create duplicate object")
           end
         else
-          log.info("Subcollection does not exist. Cannot create Item without Parent Object")
+          log.error("Subcollection does not exist. Cannot create Item without Parent Object")
         end
 #      end
     end
@@ -418,8 +418,7 @@ module BatchIngester
       rescue Exception => exc
         logger.error("Message for the log file #{exc.message}")
       end
-
-
     end
+
   end
 end
