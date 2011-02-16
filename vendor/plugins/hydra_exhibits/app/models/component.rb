@@ -26,6 +26,8 @@ class Component < ActiveFedora::Base
     m.field "component_type", :string
   end
 
+  alias_method :id, :pid
+
   def subcollection_id
     return @subcollection_id if (defined? @subcollection_id)
     values = self.fields[:subcollection_id][:values]
@@ -56,9 +58,9 @@ class Component < ActiveFedora::Base
     return result
   end
 
-  def get_component_level
-    return @component_level
-  end
+#  def get_component_level
+#    return @component_level
+#  end
 
   def type
     @type ||= get_type_from_datastream
@@ -68,32 +70,29 @@ class Component < ActiveFedora::Base
     @asset = Component.load_instance_from_solr(item_id)
     arr = Array.new
     if(type.eql?"item")
-      childern = @asset.inbound_relationships[:is_part_of]
+      childern = @asset.page #inbound_relationships[:is_part_of]
       if(!(childern.nil?) && childern.size > 0)
         childern.each { |child|
-          child_id = child.split('/')  
-          child_obj = Page.load_instance(child_id[1])
+          child_obj = Page.load_instance_from_solr(child.pid)
           arr.push(child_obj)
         }
       end
     else #if(type.eql?"subcollection")
-      childern = @asset.members #inbound_relationships[:has_member]
-#      if(!(childern.nil?) && childern.size > 0)
-        childern.each { |child|
-          child_id = child.pid #child.split('/')
-	  child_obj = Component.load_instance(child_id)
-          arr.push(child_obj)
-        }
-#      end
+      childern = @asset.members
+      childern.each { |child|
+        child_id = child.pid #child.split('/')
+	child_obj = Component.load_instance_from_solr(child_id)
+        arr.push(child_obj)
+      }
     end
     return arr
   end
 
   def get_type_from_datastream
-    if self.has_value_for("descMetadata", [:dsc, :collection])
-      :collection
-    elsif self.has_value_for("descMetadata", [:item])
+    if self.has_value_for("descMetadata", [:item])
       :item
+    elsif self.has_value_for("descMetadata", [:dsc, :collection])
+      :collection
     else
       :unknown
     end
@@ -118,7 +117,7 @@ class Component < ActiveFedora::Base
   # Used this method to display parent's title as the link in the catalog view of C02 level
   def title
     return @title if (defined? @title)
-    if(self.type.to_s.eql? "collection")  
+    if((self.type.to_s.eql? "collection") && !(self.datastreams["descMetadata"].term_values(:dsc, :collection, :did, :unittitle, :unittitle_content).empty?))  
       values = self.datastreams["descMetadata"].term_values(:dsc, :collection, :did, :unittitle, :unittitle_content)
     else
       values = self.datastreams["descMetadata"].term_values(:item, :did, :unittitle, :unittitle_content)

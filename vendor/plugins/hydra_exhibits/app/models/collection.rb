@@ -14,17 +14,17 @@ class Collection < ActiveFedora::Base
   # Uses the Hydra MODS Article profile for tracking most of the descriptive metadata
   has_metadata :name => "descMetadata", :type => EadXml
 
-  def insert_new_node(type, opts)
-    ds = self.datastreams_in_memory["descMetadata"]
-    node, index = ds.insert_node(type, opts)
-    return node, index
-  end
+#  def insert_new_node(type, opts)
+#    ds = self.datastreams_in_memory["descMetadata"]
+#    node, index = ds.insert_node(type, opts)
+#    return node, index
+#  end
 
-  def remove_image(type, index)
-    ds = self.datastreams_in_memory["descMetadata"]
-    result = ds.remove_node(type,index)
-    return result
-  end
+#  def remove_image(type, index)
+#    ds = self.datastreams_in_memory["descMetadata"]
+#    result = ds.remove_node(type,index)
+#    return result
+#  end
 
   def description_list
     descriptions.any? ? descriptions : nil
@@ -43,7 +43,7 @@ class Collection < ActiveFedora::Base
     if(!(childern.nil?) && childern.size > 0)
       childern.each { |child|
         child_id = child.pid #.split('/')  
-        child_obj = Component.load_instance(child_id)
+        child_obj = Component.load_instance_from_solr(child_id)
         arr.push(child_obj)
       }
     end
