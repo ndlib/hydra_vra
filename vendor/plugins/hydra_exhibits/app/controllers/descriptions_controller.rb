@@ -29,9 +29,7 @@ class DescriptionsController < ApplicationController
     logger.error("Index param: #{params.inspect}")
     if params[:layout] == "false"      
       layout = false
-    end
-    #@essay=Essay.load_instance(params[:id])
-    #@document_fedora = the_model.load_instance(params[:id])
+    end  
     @asset=Collection.load_instance(params[:collection_id])
     description_ids=@asset.description_inbound_ids
     logger.error("pid: #{@asset.pid}")
@@ -110,11 +108,11 @@ class DescriptionsController < ApplicationController
     check_required_params([:asset_content_type,:id,:asset_id])
     logger.debug("Params sent to delete description: #{params.inspect}")
     @description=Description.load_instance(params[:id])
-    if  params[:asset_content_type].eql?("exhibit")
-      @exhibit=Exhibit.load_instance(params[:asset_id])
-      @exhibit.update_indexed_attributes(:main_description=>{"0"=>""})
-      @exhibit.save
-    end
+    #if  params[:asset_content_type].eql?("exhibit")
+      #@exhibit=Exhibit.load_instance(params[:asset_id])
+      #@exhibit.update_indexed_attributes(:main_description=>{"0"=>""})
+      #@exhibit.save
+    #end
     @description.delete
     render :text => "Deleted description Successfully."
     #render :partial => "exhibits/edit_settings", :locals => {:content => "exhibit", :document_fedora => @exhibit}
@@ -122,8 +120,10 @@ class DescriptionsController < ApplicationController
 
   def show
     af_model = retrieve_af_model(params[:content_type])
+    unless af_model
+      af_model = Description
+    end
     logger.error("cm:#{params[:content_type].inspect}, pid:#{params[:id].inspect}")
-    raise "Content model #{params[:content_type]} is not of type ActiveFedora:Base" unless af_model
     if params.has_key?(:description_id) && params[:load_datastream] == "true"
       resource = af_model.load_instance(params[:description_id])
       logger.error("Model: #{af_model}, resource:#{resource.pid}")
@@ -132,9 +132,9 @@ class DescriptionsController < ApplicationController
     else
       if params.has_key?("field")
         @response, @description_document = get_solr_response_for_doc_id(params[:description_id])
-        #logger.debug("ID: #{@description_document["id_t"].inspect}")
+        logger.debug("ID: #{@description_document.inspect}")
         @description_document["#{params["field"]}_t"].blank? ? description_content = "" : description_content = @description_document["#{params["field"]}_t"]
-        unless description_content.nil?
+        unless @description_content.nil?
           if params.has_key?("field_index")
             description_content = description_content[params["field_index"].to_i-1]
           elsif description_content.kind_of?(Array)
@@ -157,7 +157,7 @@ class DescriptionsController < ApplicationController
     @description = create_and_save_description(content)
     rights_ds = @description.datastreams_in_memory["rightsMetadata"]    
     rights_ds.update_indexed_attributes([:read_access, :person]=>"public") unless rights_ds.nil?
-    @description.save
+    #@description.save
     apply_depositor_metadata(@description)
     @description.save
     if !params[:id].nil?
@@ -200,7 +200,7 @@ class DescriptionsController < ApplicationController
       @description=af_model.load_instance(params[:description_id])
     end
     if params.has_key?(:description_title) && !params[:description_title].blank?
-      logger.debug "description title: #{params[:description_title]}, description pid: #{@description.pid}"
+      logger.debug("description title: #{params[:description_title]}, description pid: #{@description.id}")
       @description.update_indexed_attributes(:title=>{"0"=>params[:description_title]})
       @description.save
       response = Hash["updated"=>[]]

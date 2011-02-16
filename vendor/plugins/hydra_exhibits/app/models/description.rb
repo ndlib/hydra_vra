@@ -15,10 +15,7 @@ class Description < ActiveFedora::Base
 
   has_datastream :name=>"descriptiondatastream", :type=>ActiveFedora::Datastream, :mimeType=>"text/html", :controlGroup=>'M'
 
-  def label=(label)
-    super
-    datastreams_in_memory["descMetadata"].title_values = label
-  end
+   alias_method :id, :pid
 
   def content
     descriptiondatastream.first.content unless descriptiondatastream.nil? || descriptiondatastream.empty?
