@@ -20,7 +20,7 @@ module DescriptionsHelper
 
   def add_posted_blob_to_description(content, asset=@description)
     asset.descriptiondatastream_append(:file=>content, :label=>"test", :mimeType=>"text/html")
-    logger.error("List of DS: #{asset.descriptiondatastream_ids}")
+    #logger.error("List of DS: #{asset.descriptiondatastream_ids}")
   end
 
   # Textile textarea varies from the other methods in a few ways

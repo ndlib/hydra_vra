@@ -25,6 +25,7 @@ db/schema.rb
 .project
 .buildpath
 .rvmrc
+jcameron-key.asc
 
 /.bundle
 .idea/
