@@ -7,6 +7,7 @@ describe Description do
   before(:each) do
     Fedora::Repository.stubs(:instance).returns(stub_everything())
     @description = Description.new
+    @description.descriptiondatastream_append(:file=>"description datastream content", :label=>"test", :mimeType=>"text/html")    
   end
 
   describe "#id" do
@@ -46,16 +47,13 @@ describe Description do
   end
 
   describe "#content" do
-    it "should return true if no description datastream defined" do
-      @description.descriptiondatastream.nil? ? true : false
+    it "should not return nil since description datastream defined" do
+      @description.descriptiondatastream.should_not be_nil
     end
-=begin
-  it "should return datastream content from description datastream if defined" do
-      @description.descriptiondatastream_append(:file=>"description datastream content", :label=>"test", :mimeType=>"text/html")
-      puts @description.id
+    it "should return datastream content from description datastream if defined" do
+      @description.descriptiondatastream.first.stubs(:content).returns("description datastream content")
       @description.content.should == "description datastream content"
     end
-=end
   end
 
 end

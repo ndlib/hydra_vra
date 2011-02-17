@@ -524,7 +524,11 @@
        var description_id = $editNode.attr("data-pid");
        var contentType = $editNode.attr("data-content-type");
        var datastreamName = $editNode.attr("data-datastream-name");
-       var params = "datastream_name="+datastreamName+"&content_type="+contentType+ "&description_id="+description_id+ "&description_title="+ $editNode.val()+"&_method=put"
+       var load_datastream = $editNode.attr("load-from-datastream");
+
+      var field_selectors = $("input.fieldselector[rel="+$editNode.attr("rel")+"]").fieldSerialize();
+
+       var params = "datastream_name="+datastreamName+"&load_datastream="+load_datastream+"&name="+name+"&content_type="+contentType+ "&description_id="+description_id+ "&description_title="+ $editNode.val()+"&_method=put"
        var url = $("input#update_title_url").first().attr("value")
        //$.fn.hydraMetadata.saveDescription(url, params)
        $.ajax({
