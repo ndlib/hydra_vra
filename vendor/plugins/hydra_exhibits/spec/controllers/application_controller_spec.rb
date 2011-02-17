@@ -22,7 +22,7 @@ describe ApplicationController do
         controller.stylesheet_links.should include(['yui', {:plugin => :hydra_exhibits, :media=>'all'}])
         controller.stylesheet_links.should include(['redmond/jquery-ui-1.8.5.custom', {:media=>'all'}])
         controller.stylesheet_links.should include(['styles', 'hydrangea', 'hydrangea-split-button', {:media=>'all'}])
-        controller.stylesheet_links.should include(['application', 'hydra-exhibit', {:plugin => :hydra_exhibits, :media=>'all'}])git s
+        controller.stylesheet_links.should include(['application', 'hydra-exhibit', {:plugin => :hydra_exhibits, :media=>'all'}])
       end
     end        
   end
