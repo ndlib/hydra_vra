@@ -285,12 +285,13 @@ describe ApplicationHelper do
   describe "get_collections" do    
     it "should return collection details" do
       #pending "no way to access render partial in rspec so this method cannot be using rspec"
-#      stubs(:build_lucene_query).returns "some string"
-#      stubs(:get_search_results).returns "some search result"
-#      mock_exhibit=mock("exhibit object")
-#      Exhibit.expects(:load_instance_from_solr).with("_PID_").returns(mock_exhibit)
-#      query = build_lucene_query("string")      
-      #get_collections("some content_type","model_name").should_receive(:render).with(hash_including(:partial => "shared/add_collections"))      
+      stubs(:build_lucene_query).returns "some string"
+      stubs(:get_search_results).returns "some search result"
+      mock_exhibit=mock("exhibit object")
+      Exhibit.expects(:load_instance_from_solr).with("_PID_").returns(mock_exhibit)
+      query = build_lucene_query("string")
+      get_collections("some content_type","model_name")
+      #.should_receive(:render).with(hash_including(:partial => "shared/add_collections"))
     end
   end
 
