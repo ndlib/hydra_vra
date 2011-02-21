@@ -19,9 +19,10 @@ class ComponentsController < ApplicationController
       if params.has_key?("field")
         
         @response, @document = get_solr_response_for_doc_id
-        pid = doc[:id] ? doc[:id] : doc[:id.to_s]
+        pid = @document[:id] ? @document[:id] : @document[:id.to_s]
+        logger.debug("PID: #{pid}")
         pid ? @component = Component.load_instance_from_solr(pid,@document) : @component = nil
-	childern = @component.inbound_relationships[:is_part_of]
+#	childern = @component.inbound_relationships[:is_part_of]
         #@sub_collection.nil? @members = [] : @members = @sub_collection.members
         # @document = SolrDocument.new(@response.docs.first)
         result = @document["#{params["field"]}_t"]
@@ -58,14 +59,22 @@ class ComponentsController < ApplicationController
         af_model = HydrangeaArticle
       end
       @document = af_model.find(params[:id])
-      puts params.keys
       if(params.has_keys?"description_id")
 	logger.debug "In the select method with value #{params[:description_id]}"
         @asset = af_model.load_instance(params[:id])
         @asset.update_indexed_attributes({:main_page=>{0=>params[:description_id]}})
         @asset.save
 	redirect_to url_for(:action=>"edit", :controller=>"catalog", :id=>@asset.pid)
+      elsif((params[:field_selectors].has_keys?"properties") && (params[:field_selectors][:properties].has_keys?"subcollection_id"))
+        @asset = af_model.load_instance(params[:id])
+        @asset.update_indexed_attributes({:subcollection_id=>{"0"=>params[:asset][:properties][:subcollection_id].first.second}})
+        @asset.save
+	redirect_to url_for(:action=>"edit", :controller=>"catalog", :id=>@asset.pid)
       else
+	if(params[:field_selectors][:descMetadata].keys.include?"item_did_unitid")
+          @document.update_indexed_attributes({:item_id=>{"0"=>params[:asset][:descMetadata][:item_did_unitid].first.second}})
+	  @document.save
+        end
         updater_method_args = prep_updater_method_args(params)
    
         logger.debug("attributes submitted: #{updater_method_args.inspect}")
