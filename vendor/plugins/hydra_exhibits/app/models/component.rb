@@ -28,6 +28,12 @@ class Component < ActiveFedora::Base
 
   alias_method :id, :pid
 
+  def component_type
+    return @component_type if (defined? @component_type)
+    values = self.fields[:component_type][:values]
+    @component_type = values.any? ? values.first : ""
+  end
+
   def subcollection_id
     return @subcollection_id if (defined? @subcollection_id)
     values = self.fields[:subcollection_id][:values]

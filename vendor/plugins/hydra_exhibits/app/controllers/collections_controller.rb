@@ -23,11 +23,10 @@ class CollectionsController < CatalogController
   def update
     af_model = retrieve_af_model(params[:content_type])
     unless af_model 
-      af_model = HydrangeaArticle
+      af_model = Collection
     end
     @document = af_model.find(params[:id])
     updater_method_args = prep_updater_method_args(params)
-    
     result = @document.update_indexed_attributes(updater_method_args[:params], updater_method_args[:opts])
     @document.save
     response = Hash["updated"=>[]]

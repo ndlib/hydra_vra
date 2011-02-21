@@ -18,7 +18,7 @@ class PagesController < ApplicationController
       if params.has_key?("field")
         
         @response, @document = get_solr_response_for_doc_id
-        pid = doc[:id] ? doc[:id] : doc[:id.to_s]
+        pid = @document[:id] ? @document[:id] : @document[:id.to_s]
         pid ? @page = Page.load_instance_from_solr(pid,@document) : @page = nil
         #@sub_collection.nil? @members = [] : @members = @sub_collection.members
         # @document = SolrDocument.new(@response.docs.first)
@@ -53,16 +53,16 @@ class PagesController < ApplicationController
     def update
       af_model = retrieve_af_model(params[:content_type])
       unless af_model 
-        af_model = HydrangeaArticle
+        af_model = Page
       end
       @document = af_model.find(params[:id])
       
       updater_method_args = prep_updater_method_args(params)
-    
-      logger.debug("attributes submitted: #{updater_method_args.inspect}")
+      puts "Update_method: #{updater_method_args.inspect}"
       # this will only work if there is only one datastream being updated.
       # once ActiveFedora::MetadataDatastream supports .update_datastream_attributes, use that method instead (will also be able to pass through params["asset"] as-is without usin prep_updater_method_args!)
       result = @document.update_indexed_attributes(updater_method_args[:params], updater_method_args[:opts])
+      puts "Result: #{result.inspect}"
       @document.save
       #response = attrs.keys.map{|x| escape_keys({x=>attrs[x].values})}
       response = Hash["updated"=>[]]
@@ -98,19 +98,19 @@ class PagesController < ApplicationController
         raise "No file to process"
       end
       if !params[:container_id].nil? && params[:Filedata]
-        af_base =  ActiveFedora::Base.find(params[:container_id])
-        af_model = retrieve_af_model( af_base.relationships[:self][:has_model].first.split(":")[-1] )
-        logger.debug "#########: af_model = #{af_model.to_s}"
-        generic_content_object = af_model.load_instance(params[:container_id])
+#        af_base =  ActiveFedora::Base.find(params[:container_id])
+#        af_model = retrieve_af_model(params[:content_type]) #retrieve_af_model( af_base.relationships[:self][:has_model].first.split(":")[-1] )
+#        logger.debug "#########: af_model = #{af_model.to_s}"
+        generic_content_object = Page.load_instance(params[:container_id])
         generic_content_object.content={:file => params[:Filedata], :file_name => params[:Filename]}
         logger.debug "#########: set the content"
         generic_content_object.save
         logger.debug "#########: saved #{generic_content_object.pid} with new content #{params[:Filename]}"
-        if af_model == Page
+#        if af_model == Page
           logger.debug "#########: deriving images"
           generic_content_object.derive_all
           logger.debug "#########: finished deriving images"
-        end   
+#        end   
       end
       render :nothing => true
     end
