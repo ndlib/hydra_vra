@@ -20,7 +20,7 @@
       bindDomEvents();
       $(".editable-container").hydraTextField();
       $(".textile-container").hydraTextileField();
-      $(".description-textarea-container").descriptionTextareaField();
+      $(".custom-textile-container").descriptionTextareaField();
       $(".custom-editable-container").exhibitTextField();
       setUpDatePicker();
       setUpSliders();

@@ -134,7 +134,7 @@ class DescriptionsController < ApplicationController
         @response, @description_document = get_solr_response_for_doc_id(params[:description_id])
         logger.debug("ID: #{@description_document.inspect}")
         @description_document["#{params["field"]}_t"].blank? ? description_content = "" : description_content = @description_document["#{params["field"]}_t"]
-        unless @description_content.nil?
+        unless description_content.nil?
           if params.has_key?("field_index")
             description_content = description_content[params["field_index"].to_i-1]
           elsif description_content.kind_of?(Array)
@@ -199,6 +199,7 @@ class DescriptionsController < ApplicationController
       end
       @description=af_model.load_instance(params[:description_id])
     end
+    
     if params.has_key?(:description_title) && !params[:description_title].blank?
       logger.debug("description title: #{params[:description_title]}, description pid: #{@description.id}")
       @description.update_indexed_attributes(:title=>{"0"=>params[:description_title]})
@@ -206,6 +207,7 @@ class DescriptionsController < ApplicationController
       response = Hash["updated"=>[]]
       response["updated"] << {"title update"=>params[:description_title]}
     end
+
     respond_to do |want|
       want.js {
         logger.debug("render js response-> #{response.inspect}")

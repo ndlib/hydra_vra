@@ -13,7 +13,7 @@
               <input class="update_description_display" type="hidden" name="description display" action="<%= asset_path(description.pid,:content_type=>"description")%>"/>
               <dt><label><%=index+1%>.&nbsp;Description Title:</label></dt>
               <dd>
-                <%= custom_text_field(description,"descMetadata", [:title]) %>
+                <%= custom_text_field(description,"descMetadata", [:title], :datastream=>false) %>
                 <%=custom_rich_text_area(description, "descriptiondatastream", description.descriptiondatastream_ids.first, :datastream=>true) %>
                 <a style="position: absolute" class="destructive destroy_description" href=# action="<%= description_path(description.pid)%>" title="Remove Description"> Delete this description</a>
               </dd>

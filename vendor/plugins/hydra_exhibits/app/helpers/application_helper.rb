@@ -179,50 +179,75 @@ logger.debug("Params in edit_and_browse_links: #{params.inspect}")
    def custom_radio_button(resource, datastream_name, field_key, opts={})
     field_name = field_name_for(field_key)
     field_values = get_values_from_datastream(resource, datastream_name, field_key, opts)
+    #logger.debug("Field values: #{field_values.inspect}")
     base_id = generate_base_id(field_name, field_values.first, field_values, opts.merge({:multiple=>false}))
     result = ""
     h_name = OM::XML::Terminology.term_hierarchical_name(*field_key)
     field_values.each_with_index do |current_value, z|
       name = "asset[#{datastream_name}][#{field_name}][#{z}][#{resource.pid}]"
       logger.debug("field_values : #{current_value}")
-      result << radio_button_tag (name, opts.first[0], (opts.first[0].to_s==current_value),:data_pid=>resource.pid,:datastream=>"asset[#{datastream_name}][#{field_name}][#{z}]", :class=>"fieldselector", :rel=>h_name)      
+      result << radio_button_tag (name, opts.first[0], (opts.first[0].to_s==current_value),:data_pid=>resource.pid,
+                                  :datastream=>"asset[#{datastream_name}][#{field_name}][#{z}]", :class=>"fieldselector", :rel=>h_name)
       result << " #{opts.first[1]}"
     end
     return result
   end
 
   def custom_text_field(resource, datastream_name, field_key, opts={})
-    field_name = field_name_for(field_key)
-    field_values = get_values_from_datastream(resource, datastream_name, field_key, opts)
     content_type = ActiveFedora::ContentModel.known_models_for( resource ).first
     if content_type.nil?
       raise "Unknown content type for the object with pid #{@obj.pid}"
     end
-    if opts.fetch(:multiple, true)
-      container_tag_type = :li
-    else
-      field_values = [field_values.first]
-      container_tag_type = :span
-    end
 
-    body = ""
-
-    field_values.each_with_index do |current_value, z|
-      base_id = generate_base_id(field_name, current_value, field_values, opts)
-      name = "asset[#{datastream_name}][#{field_name}][#{z}]"
-      body << "<#{container_tag_type.to_s} class=\"custom-editable-container field\" id=\"#{base_id}-container\">"
-        body << "<a href=\"\" title=\"Delete '#{h(current_value)}'\" class=\"destructive field\">Delete</a>" unless z == 0
-        body << "<span class=\"editable-text text\" id=\"#{base_id}-text\">#{h(current_value)}</span>"
-        body << "<input class=\"editable-edit edit\" id=\"#{base_id}\" data-pid=\"#{resource.pid}\" data-content-type=\"#{content_type}\" data-datastream-name=\"#{datastream_name}\" rel=\"#{field_name}\" name=\"#{name}\" value=\"#{h(current_value)}\"/>"
+    if opts.fetch(:datastream, true)
+      body = ""
+      field_name = datastream_name
+      field_values = resource.content
+      if opts.fetch(:multiple, true)
+        container_tag_type = :li
+      else
+        field_values = [field_values]
+        container_tag_type = :span
+      end
+      #logger.debug("Content: #{field_values.inspect}")
+      body = ""
+      base_id = generate_base_id(field_name, nil, nil, :multiple=>false)
+      name = "asset[#{field_key}][#{field_name}]"
+      processed_field_value = white_list( RedCloth.new(field_values, [:sanitize_html]).to_html)
+      body << "<#{container_tag_type.to_s} class=\"field_value custom-editable-container field\" id=\"#{base_id}-container\">"
+        # Not sure why there is we're not allowing the for the first textile to be deleted, but this was in the original helper.
+        #body << "<a href=\"\" title=\"Delete '#{h(current_value)}'\" class=\"destructive field\">Delete</a>" unless z == 0
+        body << "<span class=\"editable-text text\" id=\"#{base_id}-text\">#{processed_field_value}</span>"
+        body << "<input class=\"editable-edit edit\" id=\"#{base_id}\"  data-pid=\"#{resource.pid}\"data-content-type=\"#{content_type}\"
+                  data-datastream-name=\"#{datastream_name}\" rel=\"#{field_name}\" name=\"#{name}\" load-from-datastream=\"true\" value=\"#{h(field_values)}\"/>"
       body << "</#{container_tag_type}>"
+      result = ""
+    else
+      body = ""
+      field_name = field_name_for(field_key)
+      field_values = get_values_from_datastream(resource, datastream_name, field_key, opts)
+      if opts.fetch(:multiple, true)
+        container_tag_type = :li
+      else
+        field_values = [field_values.first]
+        container_tag_type = :span
+      end
+      field_values.each_with_index do |current_value, z|
+        base_id = generate_base_id(field_name, current_value, field_values, opts)
+        name = "asset[#{datastream_name}][#{field_name}][#{z}]"
+        body << "<#{container_tag_type.to_s} class=\"custom-editable-container field\" id=\"#{base_id}-container\">"
+          body << "<a href=\"\" title=\"Delete '#{h(current_value)}'\" class=\"destructive field\">Delete</a>" unless z == 0
+          body << "<span class=\"editable-text text\" id=\"#{base_id}-text\">#{h(current_value)}</span>"
+          body << "<input class=\"editable-edit edit\" id=\"#{base_id}\" data-pid=\"#{resource.pid}\" data-content-type=\"#{content_type}\" data-datastream-name=\"#{datastream_name}\" rel=\"#{field_name}\" name=\"#{name}\" load-from-datastream=\"false\" value=\"#{h(current_value)}\"/>"
+        body << "</#{container_tag_type}>"
+      end
+      result = field_selectors_for(datastream_name, field_key)
     end
-    result = field_selectors_for(datastream_name, field_key)
     if opts.fetch(:multiple, true)
       result << content_tag(:ol, body, :rel=>field_name)
     else
       result << body
-    end
-
+    end    
     return result
   end
   
@@ -232,21 +257,21 @@ logger.debug("Params in edit_and_browse_links: #{params.inspect}")
       raise "Unknown content type for the object with pid #{@obj.pid}"
     end
     logger.error("Model: #{content_type}, resource:#{resource.pid}")
-    if opts.fetch(:multiple, true)
-      container_tag_type = :li
-    else
-      field_values = [field_values.first]
-      container_tag_type = :span
-    end
-    if opts.fetch(:datastream, true)
+    if opts.fetch(:datastream, true)      
       field_name = datastream_name
       field_values = resource.content
+      if opts.fetch(:multiple, true)
+        container_tag_type = :li
+      else
+        field_values = [field_values]
+        container_tag_type = :span
+      end
       body = ""
-      base_id = "base_id"
+      base_id = generate_base_id(field_name, nil, nil, :multiple=>false)
       name = "asset[#{datastream_name_key}][#{field_name}]"
       processed_field_value = white_list( RedCloth.new(field_values, [:sanitize_html]).to_html)
 
-      body << "<#{container_tag_type.to_s} class=\"field_value description-textarea-container field\" id=\"#{base_id}-container\">"
+      body << "<#{container_tag_type.to_s} class=\"field_value custom-textile-container field\" id=\"#{base_id}-container\">"
         # Not sure why there is we're not allowing the for the first textile to be deleted, but this was in the original helper.
         #body << "<a href=\"\" title=\"Delete '#{h(current_value)}'\" class=\"destructive field\">Delete</a>" unless z == 0
         body << "<div class=\"textile-text text\" id=\"#{base_id}-text\">#{processed_field_value}</div>"
@@ -255,28 +280,34 @@ logger.debug("Params in edit_and_browse_links: #{params.inspect}")
       body << "</#{container_tag_type}>"
 
       result = ""
-    else
+    else      
       field_name = field_name_for(datastream_name_key)
       field_values = get_values_from_datastream(resource, datastream_name, datastream_name_key, opts)
+      if opts.fetch(:multiple, true)
+        container_tag_type = :li
+      else
+        field_values = [field_values.first]
+        container_tag_type = :span
+      end
       body = ""
 
-    field_values.each_with_index do |current_value, z|
-      base_id = generate_base_id(field_name, current_value, field_values, opts)
-      name = "asset[#{datastream_name}][#{field_name}][#{z}]"
-      processed_field_value = white_list( RedCloth.new(current_value, [:sanitize_html]).to_html)
+      field_values.each_with_index do |current_value, z|
+        base_id = generate_base_id(field_name, current_value, field_values, opts)
+        name = "asset[#{datastream_name}][#{field_name}][#{z}]"
+        processed_field_value = white_list( RedCloth.new(current_value, [:sanitize_html]).to_html)
 
-      body << "<#{container_tag_type.to_s} class=\"field_value description-textarea-container field\" id=\"#{base_id}-container\">"
-        # Not sure why there is we're not allowing the for the first textile to be deleted, but this was in the original helper.
-        body << "<a href=\"\" title=\"Delete '#{h(current_value)}'\" class=\"destructive field\">Delete</a>" unless z == 0
-        body << "<div class=\"textile-text text\" id=\"#{base_id}-text\">#{processed_field_value}</div>"
-        body << "<input class=\"textile-edit edit\" id=\"#{base_id}\" data-pid=\"#{resource.pid}\"data-content-type=\"#{content_type}\"
-                  data-datastream-name=\"#{datastream_name}\" rel=\"#{field_name}\" name=\"#{name}\" load-from-datastream=\"false\"  value=\"#{h(current_value)}\"/>"
-      body << "</#{container_tag_type}>"
-    end
-    result = field_selectors_for(datastream_name, datastream_name_key)
+        body << "<#{container_tag_type.to_s} class=\"field_value custom-textile-container field\" id=\"#{base_id}-container\">"
+          # Not sure why there is we're not allowing the for the first textile to be deleted, but this was in the original helper.
+          body << "<a href=\"\" title=\"Delete '#{h(current_value)}'\" class=\"destructive field\">Delete</a>" unless z == 0
+          body << "<div class=\"textile-text text\" id=\"#{base_id}-text\">#{processed_field_value}</div>"
+          body << "<input class=\"textile-edit edit\" id=\"#{base_id}\" data-pid=\"#{resource.pid}\"data-content-type=\"#{content_type}\"
+                    data-datastream-name=\"#{datastream_name}\" rel=\"#{field_name}\" name=\"#{name}\" load-from-datastream=\"false\"  value=\"#{h(current_value)}\"/>"
+        body << "</#{container_tag_type}>"
+      end
+      result = field_selectors_for(datastream_name, datastream_name_key)
     end
     if opts.fetch(:multiple, true)
-      result << content_tag(:ol, body, :rel=>field_name, :title=>"description_title")
+      result << content_tag(:ol, body, :rel=>field_name, :title=>"field_name")
     else
       result << body
     end
@@ -290,12 +321,10 @@ logger.debug("Params in edit_and_browse_links: #{params.inspect}")
   end
 
   def load_description(description_obj)
-    #af_model = retrieve_af_model(content_type)
-    #logger.error("cm:#{content_type.inspect}, pid:#{pid.inspect}, ds:#{datastream_name.inspect}")
-    #raise "Content model #{content_type} is not of type ActiveFedora:Base" unless af_model
-    resource = description_obj.class.load_instance(description_obj.pid)
-    logger.error("Model: #{description_obj.class}, resource:#{resource.pid}")
-    content = resource.descriptiondatastream(resource.descriptiondatastream_ids.first).first.content
+    resource = description_obj.class.load_instance(description_obj.id)
+    logger.error("Model: #{description_obj.class}, resource:#{resource.id}")
+    #content = resource.descriptiondatastream(resource.descriptiondatastream_ids.first).first.content
+    content = resource.content
     return content
   end
 

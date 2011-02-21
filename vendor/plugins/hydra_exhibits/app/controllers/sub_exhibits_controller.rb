@@ -32,11 +32,13 @@ class SubExhibitsController < ApplicationController
 
   def new
     af_model = retrieve_af_model(params[:content_type])
+    logger.debug("Af Model from subexhibit: #{af_model.inspect}")
     if af_model
       @subexhibit = af_model.new(:namespace=>"RBSC-CURRENCY")
       apply_depositor_metadata(@subexhibit)
       set_collection_type(@subexhibit, params[:content_type])
-      @subexhibit.datastreams["rightsMetadata"].update_permissions({"group"=>{"public"=>"read"}})
+      rights_ds=@subexhibit.datastreams_in_memory["rightsMetadata"]
+      rights_ds.update_permissions({"group"=>{"public"=>"read"}})
       @subexhibit.save
     end
 
@@ -62,9 +64,10 @@ class SubExhibitsController < ApplicationController
     response = Hash["updated"=>[]]
 
     af_model = retrieve_af_model(params[:content_type])
-    if af_model
-      @asset = af_model.load_instance(params[:id])
+    unless af_model
+      af_model = SubExhibit
     end
+    @asset = af_model.load_instance(params[:id])
     if params[:featured_action].eql?("add")
       if !params[:featured_items].blank?
         items=params[:featured_items].split(',')
@@ -72,7 +75,7 @@ class SubExhibitsController < ApplicationController
         sub_exhibit_featured = Array.new
         items.each do |item|
           obj=ActiveFedora::Base.load_instance(item)
-          @asset.featured_append(obj)
+         @asset.featured_append(obj)
           obj.save
           @asset.save
           sub_exhibit_featured<<item
@@ -88,7 +91,7 @@ class SubExhibitsController < ApplicationController
       @asset.featured_remove(obj)
       obj.save
       @asset.save
-      render :text => "Successfully removed #{obj.pid}from featured list"
+      render :text => "Successfully removed #{obj.pid} from featured list"
     end
   end  
 

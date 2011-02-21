@@ -18,7 +18,7 @@ class Description < ActiveFedora::Base
    alias_method :id, :pid
 
   def content
-    descriptiondatastream.first.content unless descriptiondatastream.nil? || descriptiondatastream.empty?
+    descriptiondatastream.blank? ? "" : descriptiondatastream.first.content
   end
 
   def title
