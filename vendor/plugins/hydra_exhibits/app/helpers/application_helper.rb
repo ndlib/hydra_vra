@@ -53,6 +53,8 @@ module ApplicationHelper
   # Standard display of a SELECTED facet value, no link, special span
   # with class, and 'remove' button.
   def render_selected_browse_facet_value(facet_solr_field, item, browse_facets)
+    logger.debug("catalog params: #{params.inspect}")
+    logger.debug("render_selected_browse_facet_value: #{facet_solr_field.inspect}, #{item.inspect}, #{browse_facets.inspect}")
     remove_params = remove_browse_facet_params(facet_solr_field, item.value, params, browse_facets)
     remove_params.delete(:render_search) #need to remove if we are in search view and click takes back to browse
     remove_params.merge!(:id=>params[:exhibit_id]) if params[:exhibit_id]
@@ -66,6 +68,7 @@ module ApplicationHelper
 
   #Remove current selected facet plus any child facets selected
   def remove_browse_facet_params(solr_facet_field, value, params, browse_facets)
+    logger.debug("Solr facet field: #{solr_facet_field.inspect}")
     new_params = remove_facet_params(solr_facet_field, value, params)
     #iterate through browseable facets from current on down
     selected_browse_facets = get_selected_browse_facets(browse_facets)
@@ -73,6 +76,7 @@ module ApplicationHelper
     browse_facets.slice(index + 1, browse_facets.length - index + 1).each do |f|
       new_params = remove_facet_params(f, selected_browse_facets[f.to_sym], new_params) if selected_browse_facets[f.to_sym]
     end
+    logger.debug("new_params: #{new_params.inspect}")
     new_params
   end
 
@@ -322,7 +326,7 @@ logger.debug("Params in edit_and_browse_links: #{params.inspect}")
 
   def load_description(description_obj)
     resource = description_obj.class.load_instance(description_obj.id)
-    logger.error("Model: #{description_obj.class}, resource:#{resource.id}")
+    #logger.error("Model: #{description_obj.class}, resource:#{resource.id}")
     #content = resource.descriptiondatastream(resource.descriptiondatastream_ids.first).first.content
     content = resource.content
     return content
@@ -337,6 +341,7 @@ logger.debug("Params in edit_and_browse_links: #{params.inspect}")
   end
 
   def document_link_to_exhibit_sub_exhibit(label, document, counter)
+
     sub_exhibit = load_af_instance_from_solr(document)
     if !sub_exhibit.nil? && sub_exhibit.respond_to?(:selected_facets)
       p = params.dup
@@ -348,9 +353,10 @@ logger.debug("Params in edit_and_browse_links: #{params.inspect}")
       p.delete(:commit)
       p.delete(:search_field)
       p.delete(:q)
+      p.delete(:controller)
       link_to(label, exhibit_path(p.merge!({:id=>sub_exhibit.subset_of_ids.first, :class=>"facet_select", :action=>"show", :exhibit_id=>sub_exhibit.subset_of_ids.first})))
     else
-      link_to_document(document, :label => Blacklight.config[:show][:heading].to_sym, :counter => (counter + 1 + @response.params[:start].to_i))
+      link_to_document(document, :label => label.to_sym, :counter => (counter + 1 + @response.params[:start].to_i))
     end
   end
 

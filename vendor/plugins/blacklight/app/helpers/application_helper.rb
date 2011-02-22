@@ -295,6 +295,7 @@ module ApplicationHelper
     # if the values aren't dup'd, then the values
     # from the session will get remove in the show view...
     p[:f] = p[:f].dup.symbolize_keys!
+    puts "blacklight params : #{p[:f].inspect} "
     p.delete :page
     p.delete :id
     p.delete :counter

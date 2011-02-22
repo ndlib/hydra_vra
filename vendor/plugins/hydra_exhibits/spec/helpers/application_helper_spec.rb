@@ -1,3 +1,4 @@
+
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe ApplicationHelper do
@@ -8,7 +9,7 @@ describe ApplicationHelper do
   include HydraHelper
   include HydraFedoraMetadataHelper
   include WhiteListHelper
-  included ActionView
+  #included ActionView
 
   before(:all) do
     @resource = mock("fedora object")
@@ -18,7 +19,7 @@ describe ApplicationHelper do
   end
 
   describe "Overridden blacklight methods" do
-      #pending "need to write more test""    
+    #pending "need to write more test""
   end
 
 #  describe "application_name" do
@@ -29,35 +30,35 @@ describe ApplicationHelper do
 
   describe "collection_field_names" do
     it "should return list of collection field names" do
-      response = collection_field_names
+      response = helper.collection_field_names
       response.should_not be_nil
     end
   end
 
   describe "collection_field_labels" do
     it "should return list of collection field labels" do
-      response = collection_field_labels
+      response = helper.collection_field_labels
       response.should_not be_nil
     end
   end
 
   describe "item_field_names" do
     it "should return list of collection field names" do
-      response = item_field_names
+      response = helper.item_field_names
       response.should_not be_nil
     end
   end
 
   describe "item_field_labels" do
     it "should return list of collection field labels" do
-      response = item_field_labels
+      response = helper.item_field_labels
       response.should_not be_nil
     end
   end
 
   describe "description_text_area_insert_link" do
     it "should return link to add text area for description" do
-      response = description_text_area_insert_link("testdatastream", {:label=>"test label"})
+      response = helper.description_text_area_insert_link("testdatastream", {:label=>"test label"})
       response.should have_tag("input[data-datastream-name=testdatastream]")
     end
   end
@@ -69,7 +70,7 @@ describe ApplicationHelper do
       Description.expects(:load_instance).with("_PID_").returns(mock_description)
       mock_description.stubs(:id).returns("_PID_")
       mock_description.expects(:content).returns("content of the datastream")
-      response = load_description(mock_description)
+      response = helper.load_description(mock_description)
       response.should == "content of the datastream"
     end
   end
@@ -79,8 +80,8 @@ describe ApplicationHelper do
       ActiveFedora::ContentModel.expects(:known_models_for).with(@resource ).returns([Description])
       @resource.stubs(:pid).returns("_PID_")
     end
-    it "should generate a text field input with values from the given datastream" do      
-      generated_html = custom_text_field(@resource,"simple_ds",[:title],:datastream=>false)      
+    it "should generate a text field input with values from the given datastream" do
+      generated_html = custom_text_field(@resource,"simple_ds",[:title],:datastream=>false)
       generated_html.should have_tag "#title_0-container.custom-editable-container.field"do
         with_tag "span#title_0-text.editable-text.text", "title1"
         with_tag "#title_0.editable-edit.edit" do
@@ -123,7 +124,7 @@ describe ApplicationHelper do
     it "should render an empty control if the field has no values" do
       generated_html = custom_text_field(@resource,"empty_ds","something",:datastream=>false)
       #logger.debug("#{generated_html}")
-      generated_html.should have_tag "li#something_0-container.custom-editable-container" do        
+      generated_html.should have_tag "li#something_0-container.custom-editable-container" do
         with_tag "#something_0-text.editable-text.text", ""
       end
     end
@@ -153,7 +154,7 @@ describe ApplicationHelper do
           with_tag "[rel=?]", "simple_datastream"
         end
       end
-  end
+    end
     it "should generate an ordered list with content of the first datastream as input for text field" do
       generated_html = custom_text_field(@resource, "simple_datastream", "ds_id", :datastream=>true)
       generated_html.should have_tag "ol[rel=simple_datastream]" do
@@ -167,25 +168,25 @@ describe ApplicationHelper do
             with_tag "[load-from-datastream=?]", "true"
             with_tag "[rel=?]", "simple_datastream"
           end
-        end        
-      end      
+        end
+      end
     end
-    it "should render an empty control if the field has no values" do      
+    it "should render an empty control if the field has no values" do
       @resource.stubs(:content).returns( "" )
-      generated_html = custom_text_field(@resource,"empty_ds","something",:datastream=>true)      
+      generated_html = custom_text_field(@resource,"empty_ds","something",:datastream=>true)
       generated_html.should have_tag "li#empty_ds-container.custom-editable-container" do
         with_tag "#empty_ds-text.editable-text.text", ""
       end
-    end 
+    end
   end
-   describe "custom_rich_text_area" do
+  describe "custom_rich_text_area" do
     before(:each) do
       ActiveFedora::ContentModel.expects(:known_models_for).with(@resource ).returns([Description])
       @resource.stubs(:pid).returns("_PID_")
     end
 
     it "should generate a textile input with values from the given datastream, normally it is descMetadata" do
-      generated_html = custom_rich_text_area(@resource,"simple_ds",[:title],:datastream=>false)      
+      generated_html = custom_rich_text_area(@resource,"simple_ds",[:title],:datastream=>false)
       generated_html.should have_tag "#title_0-container.custom-textile-container.field"do
         with_tag "div#title_0-text.textile-text.text", "title1"
         with_tag "#title_0.textile-edit.edit" do
@@ -222,10 +223,10 @@ describe ApplicationHelper do
             with_tag "[rel=?]", "title"
           end
         end
-      end      
-    end   
+      end
+    end
     it "should render an empty control if the field has no values" do
-      generated_html = custom_rich_text_area(@resource,"empty_ds","something",:datastream=>false)      
+      generated_html = custom_rich_text_area(@resource,"empty_ds","something",:datastream=>false)
       generated_html.should have_tag "li#something_0-container.custom-textile-container" do
         with_tag "#something_0-text.textile-text.text", ""
       end
@@ -244,7 +245,7 @@ describe ApplicationHelper do
       end
     end
     it "should generate an ordered list with content of the first datastream as input for textile" do
-      generated_html = custom_rich_text_area(@resource, "simple_datastream", "ds_id", :datastream=>true)      
+      generated_html = custom_rich_text_area(@resource, "simple_datastream", "ds_id", :datastream=>true)
       generated_html.should have_tag "li#simple_datastream-container.custom-textile-container.field"do
         with_tag "div#simple_datastream-text.textile-text.text", "content of the datastream"
         with_tag "#simple_datastream.textile-edit.edit" do
@@ -277,13 +278,55 @@ describe ApplicationHelper do
       generated_html.should have_tag "input.fieldselector[name=?]", "asset[simple_ds][option_field][0][_PID_]" do
         with_tag "[rel=?]", "option_field"
         with_tag "[value=?]", "choices"
-        with_tag "[type=?]","radio"        
+        with_tag "[type=?]","radio"
       end
-    end    
+    end
+  end
+  describe "render_browse_facet_value" do
+    before do
+      catalog_facet_params = {:q => "query",
+                :search_field => "search_field",
+                :f => {"facet_field_1" => ["value1"], "facet_field_2" => ["value2", "value2a"]},
+                :exhibit_id => 'exhibit_PID',
+                :controller => "catalog"
+      }
+      helper.stubs(:params).returns(catalog_facet_params)
+    end
+    it "should redirect to exhibit action" do
+      item = {"item_field" => "item_value"}
+      item.stubs(:value).returns("item value")
+      response = helper.render_browse_facet_value("facet_solr_field", item)
+      response.should have_tag "a"
+    end
+  end
+
+  describe "render_selected_browse_facet_value" do
+    before do
+      @catalog_facet_params = {
+                "f" => {"facet_field_1" => ["value1"], "facet_field_2" => ["value2", "value2a"]},
+                "id" => 'exhibit_PID',
+                "controller" => "exhibits",
+                 "action"=>"show"
+      }
+      helper.stubs(:params).returns(@catalog_facet_params)
+    end
+    it "should redirect to exhibit action" do
+      helper.stubs(:params).returns(@catalog_facet_params)
+      item = {"facet_field" => ["facet_value"]}
+      item.stubs(:value).returns(["value1"])
+      helper.stubs(:remove_facet_params).returns({"f" => {"facet_field_1" => ["value1"], "facet_field_2" => ["value2", "value2a"]},
+                "id" => 'exhibit_PID',
+                "controller" => "exhibits"
+      })      
+      response = helper.render_selected_browse_facet_value("facet_field_1", item, ["facet_field_1", "browse_facet"])
+      response.should have_tag "a.remove"
+      response.should have_tag "a.browse_facet"
+    end
   end
 
   describe "get_collections" do    
     it "should return collection details" do
+      pending
       #pending "no way to access render partial in rspec so this method cannot be using rspec"
 #      stubs(:build_lucene_query).returns "some string"
 #      stubs(:get_search_results).returns "some search result"

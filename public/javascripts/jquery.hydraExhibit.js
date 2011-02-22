@@ -603,7 +603,7 @@
           $(essayNode).remove();
           $inserted = $(essayDiv).last();
           $("a.destructive", $inserted).descriptionDeleteButton();
-          $(".description-textarea-container").descriptionTextareaField();
+          $(".custom-textile-container").descriptionTextareaField();
           $(".custom-editable-container").exhibitTextField();
           $inserted.insertTextareaValue();
           //$.fn.hydraExhibit.resetSetting();

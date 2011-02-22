@@ -1,11 +1,33 @@
 <% javascript_includes << "/plugin_assets/fluid-infusion/infusion-1.2-src/lib/jquery/ui/js/jquery.ui.accordion.js" %>
 <% javascript_includes << 'custom' %>
 <% javascript_includes << "catalog/show" %>
+<% javascript_includes << "fancybox/jquery.fancybox-1.3.1.pack.js" %>
+<% javascript_includes << "generics_fancybox.js" %>
+<% stylesheet_links << "../javascripts/fancybox/jquery.fancybox-1.3.1.css" %>
+<% javascript_includes << "catalog/show" %>
+<% javascript_includes << "jquery.hydraExhibit.js" %>
 
 <style type="text/css" media="screen">
   input.editable-edit, input.textile-edit {display:none}
 </style>
+<%- sub_exhibit = load_af_instance_from_solr(document) -%>
+<h2><b>Exhibit Title:</b>&nbsp;&nbsp;<%=@exhibit.exhibit_title%></h2>
+<%- sub_exhibit.selected_facets.each_pair do |key, value| -%>
+  <h2><%="<b>#{facet_field_labels[key.to_s]}:</b>  #{value}"%></h2>
+<%- end -%>
+
+<%- if sub_exhibit.descriptions.any? -%>  
+  <%- description_document = sub_exhibit.descriptions(:response_format=>:solr).first -%>
+  <%- description = load_af_instance_from_solr(description_document) -%>
+  <h3> <em><%= description.title %></em> </h3>
+  <blockquote class="intro"><%= truncate( load_description(description), :length =>150, :ommision => "....")%></blockquote>  
+  <%- if load_description(description).length>150 -%>
+    <a class="heading" href="#">[Read the complete essay]</a>
+    <div class="content"><%= load_description(description) %></div>
+  <%- end -%>
+<%- end -%>
+
 
 <div class="document_viewer" id="cover_container">
-  <%= document_link_to_exhibit_sub_exhibit("View this Exhibit Sub Exhibit",document,0)%>
+  <%= document_link_to_exhibit_sub_exhibit("View this Exhibit Sub Exhibit",document,0)%>  
 </div>
