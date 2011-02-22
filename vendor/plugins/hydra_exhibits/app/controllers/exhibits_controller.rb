@@ -100,7 +100,7 @@ class ExhibitsController < CatalogController
     @asset = the_model.load_instance(params[:collections_id])
     @exhibit..update_indexed_attributes(:main_description=>{params[:index]=>params[:facet_value]})
     @exhibit.save
-    render :text => "Removed collections relation successfully."
+    render :text => "Removed facet from settings successfully."
   end
 
   def refresh_setting
