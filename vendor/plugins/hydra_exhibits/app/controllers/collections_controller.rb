@@ -11,6 +11,7 @@ class CollectionsController < CatalogController
   include WhiteListHelper
   include Blacklight::CatalogHelper
   include ApplicationHelper
+  include CollectionsControllerHelper
 
   helper :hydra, :metadata, :infusion_view
 
@@ -61,11 +62,7 @@ class CollectionsController < CatalogController
     content_type = params[:content_type]
     af_model = retrieve_af_model(content_type)
     if af_model
-      @asset = af_model.new(:namespace=>"RBSC-CURRENCY")
-      @asset.datastreams["descMetadata"].ng_xml = EadXml.collection_template
-      apply_depositor_metadata(@asset)
-      set_collection_type(@asset, params[:content_type])
-      @asset.save
+      @asset = create_and_save_collection(content_type)
     end
     redirect_to url_for(:action=>"edit", :controller=>"catalog", :label => params[:label], :id=>@asset.pid)
   end

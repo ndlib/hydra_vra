@@ -8,7 +8,7 @@ class ComponentsController < ApplicationController
     include WhiteListHelper
     include Blacklight::CatalogHelper
     include ApplicationHelper
-    include ComponentsHelper
+    include ComponentsControllerHelper
 
     helper :hydra, :metadata, :infusion_view
     
@@ -117,33 +117,20 @@ class ComponentsController < ApplicationController
       content_type = params[:content_type]
       af_model = retrieve_af_model(content_type)
       if af_model
-        if(params[:label].include? "item")
-          @asset = af_model.new(:namespace=>"RBSC-CURRENCY")
-          @asset.datastreams["descMetadata"].ng_xml = EadXml.item_template
-          apply_depositor_metadata(@asset)
-          set_collection_type(@asset, params[:content_type])
-          @asset.update_indexed_attributes({:component_type=>{0=>"item"}})
-	  @asset.member_of_append(params[:subcollection_id])
-          @asset.save
-        elsif(params[:label].include? "subcollection")
-          @asset = af_model.new(:namespace=>"RBSC-CURRENCY")
-          @asset.datastreams["descMetadata"].ng_xml = EadXml.subcollection_template
-          apply_depositor_metadata(@asset)
-          set_collection_type(@asset, params[:content_type])
-          @asset.update_indexed_attributes({:component_type=>{0=>"subcollection"}})
-	  @asset.member_of_append(params[:collection_id])
-          @asset.save
-        elsif(params[:label].include? "image")
+        if(params[:label].include? "image")
           @asset = af_model.load_instance(params[:id])
           inserted_node, new_node_index = @asset.insert_new_node('image', opts={})
           apply_depositor_metadata(@asset)
           set_collection_type(@asset, params[:content_type])
           @asset.save
+        else
+	  parent_id = (params.keys.include?("subcollection_id") ? params[:subcollection_id] : params[:collection_id])
+          create_and_save_component(params[:label], content_type, parent_id)
         end
       end
       redirect_to url_for(:action=>"edit", :controller=>"catalog", :label => params[:label], :id=>@asset.pid)
     end
-    
+        
 #    def select
 #      @document = Component.load_instance(params[:id])
 #      @document.update_indexed_attributes({:main_page=>{0=>params[:selected][:page_id]}})
