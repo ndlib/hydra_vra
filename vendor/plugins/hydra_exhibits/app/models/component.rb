@@ -4,7 +4,7 @@ require 'facets/dictionary'
 class Component < ActiveFedora::Base
 
   include Hydra::ModelMethods
-  include ComponentsHelper
+  include ComponentsControllerHelper
 
   has_bidirectional_relationship "member_of", :is_member_of, :has_member
   has_bidirectional_relationship "members", :has_member, :is_member_of

@@ -8,6 +8,7 @@ class PagesController < ApplicationController
     include WhiteListHelper
     include Blacklight::CatalogHelper
     include ApplicationHelper
+    include PagesControllerHelper
   
     helper :hydra, :metadata, :infusion_view
     
@@ -119,23 +120,13 @@ class PagesController < ApplicationController
       content_type = params[:content_type]
       af_model = retrieve_af_model(content_type)
       if af_model
-        @asset = af_model.new(:namespace=>"RBSC-CURRENCY")
-        apply_depositor_metadata(@asset)
-        set_collection_type(@asset, params[:content_type])
-	@asset.item_append(params[:item_id])
-        @asset.save
-	@parent = Component.load_instance(params[:item_id])
-	if(@parent.main_page.nil? || @parent.main_page.empty?)
-	  @parent.update_indexed_attributes({:main_page=>{0=>@asset.pid}})
-	  @parent.save
-	end
+        @asset = create_and_save_page(params[:item_id], content_type)
       end
       redirect_to url_for(:action=>"edit", :controller=>"catalog", :label => params[:label], :id=>@asset.pid)
     end
     
     def destroy
       ActiveFedora::Base.load_instance(params[:id]).delete
-
       flash[:notice]= "Deleted " + params[:id]
       redirect_to url_for(:action => 'index', :controller => "catalog", :label => params[:label], :q => nil , :f => nil)
     end
