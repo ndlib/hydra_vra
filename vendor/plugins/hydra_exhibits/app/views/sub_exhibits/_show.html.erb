@@ -20,8 +20,8 @@
   <%- description_document = sub_exhibit.descriptions(:response_format=>:solr).first -%>
   <%- description = load_af_instance_from_solr(description_document) -%>
   <h3> <em><%= description.title %></em> </h3>
-  <blockquote class="intro"><%= truncate( load_description(description), :length =>150, :ommision => "....")%></blockquote>  
-  <%- if load_description(description).length>150 -%>
+  <blockquote class="intro"><%= truncate( load_description(description), :length =>excerpt_size.to_i, :ommision => "....")%></blockquote>
+  <%- if load_description(description).length>excerpt_size.to_i -%>
     <a class="heading" href="#">[Read the complete essay]</a>
     <div class="content"><%= load_description(description) %></div>
   <%- end -%>

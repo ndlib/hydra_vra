@@ -32,6 +32,11 @@ module ApplicationHelper
     Blacklight.config[:items_index_fields][:labels]
   end
 
+
+  def excerpt_size
+    HydraExhibit.config[:excerpt_size]
+  end
+
   # Standard display of a facet value in a list. Used in both _facets sidebar
   # partial and catalog/facet expanded list. Will output facet value name as
   # a link to add that to your restrictions, with count in parens. 

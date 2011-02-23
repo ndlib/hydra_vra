@@ -8,9 +8,11 @@
     </blockquote>
     <%= link_to_document document, :label=>("[Read the complete essay]")%>
   <%- else -%>
-    <h3> <em><%= description.title %></em> </h3>
-     <blockquote class="intro"><%= truncate( load_description(description), :length =>150, :ommision => "....")%></blockquote>
-     <a class="heading" href="#">[Read the complete essay]</a>
-    <div class="content"><%= load_description(description) %></div>
+    <h3> <em><%= "Essay: #{description.title}"%></em> </h3>
+     <blockquote class="intro"><%= truncate( load_description(description), :length =>excerpt_size.to_i, :ommision => "....")%></blockquote>
+     <%- if load_description(description).length>excerpt_size.to_i -%>
+       <a class="heading" href="#">[Read the complete essay]</a>
+       <div class="content"><%= load_description(description) %></div>
+     <%- end -%>
    <%- end -%>
 </div>
