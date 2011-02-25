@@ -17,7 +17,7 @@ set :use_sudo, false
 #  Github
 #############################################################
 
-set :repository, "git@github.com:ndliblis/hydra_exhibit.git"  
+set :repository, "git://github.com/ndliblis/hydra_exhibit.git"  
     #"rails@ambrosiana.library.nd.edu:/home/rails/github/#{application}/.git"
 set :scm, :git
 set :branch, "master"
