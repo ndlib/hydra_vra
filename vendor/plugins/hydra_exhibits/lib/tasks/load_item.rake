@@ -34,7 +34,7 @@ namespace :batch do
 
   desc "process collection file from staging mount"
   task :collection do
-    ENV['FILE'] = '/mnt/inquisition/Currency\ ALL\ CSV\ files/Collection_Set_Formatted.csv'
+    ENV['FILE'] = '/mnt/inquisition/Currency_All_CSV_files/Collection_Set_Formatted.csv'
     puts "Processing  #{ENV['FILE']}"
     Rake::Task["batch:load_csv_data"].reenable
     Rake::Task["batch:load_csv_data"].invoke
@@ -42,7 +42,7 @@ namespace :batch do
 
   desc "process items file from staging mount"
   task :items do
-    ENV['FILE'] = '/mnt/inquisition/Currency\ ALL\ CSV\ files/Item_set_formatted.csv'
+    ENV['FILE'] = '/mnt/inquisition/Currency_All_CSV_files/Item_set_formatted.csv'
     puts "Processing  #{ENV['FILE']}"
     Rake::Task["batch:load_csv_data"].reenable
     Rake::Task["batch:load_csv_data"].invoke
@@ -50,7 +50,7 @@ namespace :batch do
 
   desc "process images file from staging mount"
   task :images do
-    ENV['FILE'] = '/mnt/inquisition/Currency\ ALL\ CSV\ files/Image_Set.csv'
+    ENV['FILE'] = '/mnt/inquisition/Currency_All_CSV_files/Image_Set.csv'
     puts "Processing  #{ENV['FILE']}"
     Rake::Task["batch:load_csv_data"].reenable
     Rake::Task["batch:load_csv_data"].invoke

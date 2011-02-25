@@ -15,7 +15,7 @@ module BatchIngester
 #    log.level = Logger::WARN
     def process_ingest_data(filename)
       cnter = 1
-      arr_of_data=load_file(filename)
+      arr_of_data=load_file(filename)     
       log.info("Processing Total Rows: #{arr_of_data.length()}")
       arr_of_data.each do |row|
         if(filename.include? "Collection")
