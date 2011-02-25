@@ -4,7 +4,7 @@
 #  Application
 #############################################################
 
-set :application, 'currency'
+set :application, 'application_name'
 
 #############################################################
 #  Settings
@@ -17,8 +17,7 @@ set :use_sudo, false
 #  Github
 #############################################################
 
-set :repository, "git://github.com/ndliblis/hydra_exhibit.git"  
-    #"rails@ambrosiana.library.nd.edu:/home/rails/github/#{application}/.git"
+set :repository, "git://github.com/url"
 set :scm, :git
 set :branch, "master"
 set :deploy_via, :remote_cache
@@ -32,10 +31,10 @@ task :staging do
   set :rails_env,     'staging'
   set :rake,          '/shared/ruby/bin/rake'
   set :bundler,       '/shared/ruby/bin/bundle'
-  set :deploy_to,     "/data/web_root/htdocs/rails_apps/#{application}"
+  set :deploy_to,     "/#{deploy_path}/#{application}"
   set :user,          'rails'
-  set :domain,        'ambrosiana.library.nd.edu'
-  set :site_url,      'currencytaging.library.nd.edu'
+  set :domain,        'domain name'
+  set :site_url,      'siteurl'
   set :app_server,    'passenger'
 
   server "#{user}@#{domain}", :app, :web, :db, :primary => true
@@ -49,10 +48,10 @@ task :pre_production do
   set :rake,           '/shared/ruby187/bin/rake'
   set :bundler,        '/shared/ruby187/bin/bundle'
   set :deploy_to,      "/shared/ruby_server_pprd/data/app_home/#{application}"
-  set :user,           'rubypprd'
-  set :domain,         'rbpprd.library.nd.edu'
-  set :site_url,       'currencypprd.library.nd.edu'
-  set :app_server,     'thin'
+  set :user,           'username'
+  set :domain,         'domain name'
+  set :site_url,       'site_url'
+  set :app_server,     'server_name'
 
   server "#{user}@#{domain}", :app, :web, :db, :primary => true
 end
@@ -66,9 +65,7 @@ namespace :deploy do
   task :start, :roles => :app do
     case app_server
     when "passenger"
-      run "touch #{current_path}/tmp/restart.txt"
-    when "thin"
-      run "/shared/ruby_server_pprd/admin/start_stop_hydrangea.sh start"
+      run "touch #{current_path}/tmp/restart.txt"    
     end
   end
 
@@ -76,9 +73,7 @@ namespace :deploy do
   task :restart, :roles => :app do
     case app_server
     when "passenger"
-      run "touch #{current_path}/tmp/restart.txt"
-    when "thin"
-      run "/shared/ruby_server_pprd/admin/start_stop_hydrangea.sh restart"
+      run "touch #{current_path}/tmp/restart.txt"    
     end
   end
 
