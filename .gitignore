@@ -27,7 +27,7 @@ db/schema.rb
 .rvmrc
 jcameron-key.asc
 
-/.bundle
+.bundle/*
 .idea/
 spec/fixtures/Seaside Architect.csv
 spec/fixtures/seaside.csv
