@@ -1,5 +1,6 @@
 .DS_Store
 nohup.out
+deploy.rb
 
 *.sqlite3
 *.log
