@@ -37,6 +37,10 @@ module ApplicationHelper
     HydraExhibit.config[:excerpt_size]
   end
 
+  def get_namespace
+    HydraExhibit.config[:namespace]
+  end
+
   # Standard display of a facet value in a list. Used in both _facets sidebar
   # partial and catalog/facet expanded list. Will output facet value name as
   # a link to add that to your restrictions, with count in parens. 

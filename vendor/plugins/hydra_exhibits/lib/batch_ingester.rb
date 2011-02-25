@@ -93,7 +93,7 @@ module BatchIngester
       result = Collection.find_by_fields_by_solr(map)
       log.info("Length of the search result: #{result.to_a.size}")
       if(result.to_a.size < 1)
-        collection= af_model.new(:namespace=>"RBSC-CURRENCY")#(:pid=>pid)
+        collection= af_model.new(:namespace=>get_namespace)#(:pid=>pid)
         collection.datastreams["descMetadata"].ng_xml = EadXml.collection_template
         collection.save
         collection.datastreams["rightsMetadata"].update_permissions({"group"=>{"archivist"=>"edit","public"=>"read"}})
@@ -123,7 +123,7 @@ module BatchIngester
         update_fields(collection, [:archive_desc, :prefercite], args[:prefercite_info])
         update_fields(collection, [:archive_desc, :prefercite, :head], args[:prefercite_head])
         collection.save
-        exhibit= Exhibit.new(:namespace=>"RBSC-CURRENCY")#(:pid=>pid)
+        exhibit= Exhibit.new(:namespace=>get_namespace)#(:pid=>pid)
         exhibit.update_indexed_attributes({:facets=>{0=>"dsc_0_collection_0_did_0_unittitle_0_imprint_0_publisher_facet",1=>"dsc_0_collection_0_did_0_unittitle_0_unittitle_content_facet"}})
         exhibit.update_indexed_attributes(:query=>{0=>"id_t:RBSC-CURRENCY"})
         exhibit.datastreams["rightsMetadata"].update_permissions({"group"=>{"archivist"=>"edit","public"=>"read"}})
@@ -168,7 +168,7 @@ module BatchIngester
             map[:mimeType] = "image/jpg"
             map[:file_name] = args[:image_name]
             map[:label] = "#{args[:image_title]}-#{args[:image_name]}"
-            page= af_model.new(:namespace=>"RBSC-CURRENCY")#(:pid=>pid)
+            page= af_model.new(:namespace=>get_namespace)#(:pid=>pid)
 	    page.update_indexed_attributes({:page_id=>{0=>args[:page_id]}})
 	    page.update_indexed_attributes({:title=>{0=>args[:image_title]}})
 	    page.update_indexed_attributes({:name=>{0=>args[:image_name]}})
@@ -233,7 +233,7 @@ module BatchIngester
         if(result.to_a.size > 0)
           col_map = Component.find_by_fields_by_solr({"dsc_collection_did_unitid_unitid_identifier_s"=>args[:subcollection_id]})
           if(col_map.to_a.size < 1)
-            subcollection= af_model.new(:namespace=>"RBSC-CURRENCY")#(:pid=>pid, :component_level => "c01")
+            subcollection= af_model.new(:namespace=>get_namespace)#(:pid=>pid, :component_level => "c01")
             subcollection.datastreams["descMetadata"].ng_xml = EadXml.subcollection_template
             subcollection.save
             subcollection.member_of_append(result.to_a[0]["id"])
@@ -322,7 +322,7 @@ module BatchIngester
         if(result.to_a.length > 0)
           item_check = Component.find_by_fields_by_solr({"item_did_unitid_s"=>args[:item_id]})
           if(item_check.to_a.length < 1)
-            item= af_model.new(:namespace=>"RBSC-CURRENCY")#(:pid=>pid, :component_level => "c02")
+            item= af_model.new(:namespace=>get_namespace)#(:pid=>pid, :component_level => "c02")
             item.datastreams["descMetadata"].ng_xml = EadXml.item_template
             item.save
 	    item.member_of_append(result.to_a[0]["id"])

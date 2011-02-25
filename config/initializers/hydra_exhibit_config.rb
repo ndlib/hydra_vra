@@ -4,6 +4,8 @@
 
 HydraExhibit.configure(:shared) do |config|
 
-config[:excerpt_size]=150
+  config[:excerpt_size]=150
+
+  config[:namespace]="RBSC-CURRENCY"
 
 end

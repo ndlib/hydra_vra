@@ -13,7 +13,7 @@ module DescriptionsHelper
   #
   # @return [FileAsset] the File Asset
   def create_description
-    description_asset = Description.new(:namespace=>"RBSC-CURRENCY")
+    description_asset = Description.new(:namespace=>get_namespace)
     logger.error("Description Create with pid #{description_asset.pid}")
     return description_asset
   end

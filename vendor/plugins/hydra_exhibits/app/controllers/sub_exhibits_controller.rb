@@ -34,7 +34,7 @@ class SubExhibitsController < ApplicationController
     af_model = retrieve_af_model(params[:content_type])
     logger.debug("Af Model from subexhibit: #{af_model.inspect}")
     if af_model
-      @subexhibit = af_model.new(:namespace=>"RBSC-CURRENCY")
+      @subexhibit = af_model.new(:namespace=>get_namespace)
       apply_depositor_metadata(@subexhibit)
       set_collection_type(@subexhibit, params[:content_type])
       rights_ds=@subexhibit.datastreams_in_memory["rightsMetadata"]

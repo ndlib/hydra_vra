@@ -4,7 +4,7 @@ module ComponentsControllerHelper
   
   def create_and_save_component(label, content_type, parent_id)
     if(label.include? "item")
-      @asset = Component.new(:namespace=>"RBSC-CURRENCY")
+      @asset = Component.new(:namespace=>get_namespace)
       @asset.datastreams["descMetadata"].ng_xml = EadXml.item_template
       apply_depositor_metadata(@asset)
       set_collection_type(@asset, content_type)
@@ -12,7 +12,7 @@ module ComponentsControllerHelper
       @asset.member_of_append(parent_id)
       @asset.save
     elsif(label.include? "subcollection")
-      @asset = Component.new(:namespace=>"RBSC-CURRENCY")
+      @asset = Component.new(:namespace=>get_namespace)
       @asset.datastreams["descMetadata"].ng_xml = EadXml.subcollection_template
       apply_depositor_metadata(@asset)
       set_collection_type(@asset, content_type)

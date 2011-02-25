@@ -18,7 +18,7 @@ class ExhibitsController < CatalogController
     af_model = retrieve_af_model(content_type)
     logger.debug("Afmodel: #{af_model}")
     if af_model
-      @exhibit = af_model.new(:namespace=>"RBSC-CURRENCY")
+      @exhibit = af_model.new(:namespace=>get_namespace)
       @exhibit.save      
       apply_depositor_metadata(@exhibit)
       set_collection_type(@exhibit, params[:content_type])
