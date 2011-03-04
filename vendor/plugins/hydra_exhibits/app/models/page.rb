@@ -55,6 +55,6 @@ class Page < ActiveFedora::Base
 #    end
 #  end
   def datastream_url ds_name="content"
-    "#{admin_site}fedora/objects/#{pid}/datastreams/#{ds_name}/content"
+    "#{admin_site}fedora/get/#{pid}/#{ds_name}"
   end
 end
