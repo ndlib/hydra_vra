@@ -28,7 +28,7 @@ module BatchIngester
           log.info("Ingesting Page Object")
           page_ingest_each_row( row, filename )
         elsif(filename.include? "Header")
-          if cnter >1
+          if cnter > 1
             log.info("Ingesting Ead Collection Object")
             collection_ingest_each_row( row )
           end
@@ -146,7 +146,7 @@ module BatchIngester
         key = "PAGE_#{image_id}"
 	src_filename = filename.split('/')
 	image_file = filename.sub("#{src_filename[src_filename.size-2]}/#{src_filename[src_filename.size-1]}", "Currency_Scans_2008 (B786)/#{image_name.to_s.strip}")
-        attributes= {:pid_key => key, :item_id => item_id, :page_id => page_id, :image_title => image_title, :image_name => image_name, :image_file => image_file}
+        attributes= {:pid_key => key, :item_id => item_id, :page_id => image_id, :image_title => image_title, :image_name => image_name, :image_file => image_file}
         ingest_page('page', attributes)
       end
     end
