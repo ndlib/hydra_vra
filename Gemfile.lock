@@ -99,7 +99,7 @@ GEM
       om
       solr-ruby
     solrizer-fedora (0.1.0)
-    sqlite3-ruby (1.3.2)
+    sqlite3-ruby (1.3.1)
     term-ansicolor (1.0.5)
     trollop (1.16.2)
     webrat (0.7.2)
@@ -143,16 +143,16 @@ DEPENDENCIES
   rails (>= 2.3.5, < 3.0.0)
   rake
   rcov
-  rsolr
-  rsolr-ext
+  rsolr (= 0.12.1)
+  rsolr-ext (= 0.12.1)
   rspec (< 2.0.0)
   rspec-rails (< 2.0.0)
   ruby-debug
   ruby-debug-base
-  solr-ruby
+  solr-ruby (= 0.0.8)
   solrizer (>= 0.3.1)
-  solrizer-fedora
-  sqlite3-ruby
+  solrizer-fedora (= 0.1.0)
+  sqlite3-ruby (= 1.3.1)
   term-ansicolor
   trollop
   webrat
