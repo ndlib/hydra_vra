@@ -1,5 +1,6 @@
 <FORM>
-  <INPUT type="image" src="<%=@document_fedora.datastream_url('thumbnail')%>" heigth="100px" onClick="window.open('<%=@document_fedora.datastream_url('screen')%>','_blank','width=960,height=960')">
+  <%= debug @document_fedora.inspect %>
+  <%= link_to image_tag(@document_fedora.datastream_url('thumbnail')), @document_fedora.datastream_url('screen'), :title => @document_fedora.name, :class => 'thumbnail' %>
 </FORM>
 
 

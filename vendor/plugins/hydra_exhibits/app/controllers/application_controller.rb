@@ -14,11 +14,12 @@ class ApplicationController
     #javascript_includes << ['jquery-1.4.2.min.js', 'jquery-ui-1.8.1.custom.min.js', { :plugin=>:blacklight } ]
   
     javascript_includes << ['http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.1/jquery-ui.min.js']
-    javascript_includes << ['application']
-    javascript_includes << ['blacklight', 'application', 'accordion', { :plugin=>:blacklight } ]
+    javascript_includes << ['lightbox/jquery.lightbox-0.5.min.js', { :plugin=>:hydra_exhibits } ]
+    javascript_includes << ['application', 'jquery.hydraExhibit']
+    javascript_includes << ['blacklight','application', 'accordion', { :plugin=>:blacklight } ]
     
-    stylesheet_links << ['yui', {:plugin => :hydra_exhibits, :media=>'all'}]
-    stylesheet_links << ['redmond/jquery-ui-1.8.5.custom', {:media=>'all'}]      
+    stylesheet_links << ['yui', 'jquery.lightbox-0.5.css', {:plugin => :hydra_exhibits, :media=>'all'}]
+    stylesheet_links << ['redmond/jquery-ui-1.8.5.custom', {:media=>'all'}]
     stylesheet_links << ['styles', 'hydrangea', 'hydrangea-split-button', {:media=>'all'}]
     stylesheet_links << ['application', 'hydra-exhibit', {:plugin => :hydra_exhibits, :media=>'all'}]
   end
