@@ -39,6 +39,7 @@ gem 'trollop'
 gem 'webrat'
 gem 'will_paginate'
 gem 'xml-simple'
+gem 'blacklight-sitemap'
 
 
 source 'http://gemcutter.org'
