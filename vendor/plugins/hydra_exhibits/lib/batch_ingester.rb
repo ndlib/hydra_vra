@@ -192,6 +192,9 @@ module BatchIngester
 	end
       else
 	log.error("Couldn't find Item: #{args[:item_id]} for the image: #{args[:image_name]}.... Cannot create the page object....")
+        f = File.open("/home/rbalekai/Desktop/missing_items.txt", "a")
+        f.puts args[:item_id]
+        f.close
       end
     end
     
@@ -318,6 +321,7 @@ module BatchIngester
 	desc = Iconv.conv('utf-8','ISO-8859-1',args[:description])
         c = Iconv.new('UTF-8','ISO-8859-1')
         utf_desc = c.iconv(desc)
+        log.info("Description: #{utf_desc}")
         result = Component.find_by_fields_by_solr({"subcollection_id_s"=>args[:subcollection_id]})
         if(result.to_a.length > 0)
           item_check = Component.find_by_fields_by_solr({"item_did_unitid_s"=>args[:item_id]})
@@ -348,7 +352,7 @@ module BatchIngester
               if(counter > 1)
                 inserted_node, new_node_index = item.insert_new_node('image', opts={})
               end
-              update_image_fields(item, [:item, :daogrp, :daoloc, :daoloc_href], "#{i.to_s}", (counter - 1).to_s)
+              update_image_fields(item, [:item, :daogrp, :daoloc, :daoloc_href], "#{i.to_s.sub(".jpg", "")}", (counter - 1).to_s)
               counter += 1
             end
             item.save
@@ -398,8 +402,8 @@ module BatchIngester
     end
         
     def delete_all_obj_from_fedora(namespace)
-      row =1
-      while row < 717  do
+      row = 1
+      while row < 1000  do
         remove_each_obj(namespace,row)
         row +=1;
       end

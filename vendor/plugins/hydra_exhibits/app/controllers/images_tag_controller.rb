@@ -8,7 +8,7 @@ class ImagesTagController < ApplicationController
   include WhiteListHelper
   include Blacklight::CatalogHelper
   include ApplicationHelper
-  include ComponentsHelper
+  include ComponentsControllerHelper
 
   helper :hydra, :metadata, :infusion_view
   before_filter :require_solr, :require_fedora
