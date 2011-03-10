@@ -9,7 +9,16 @@
      $(document).ajaxStart(function(){
         $('#ajaxBusy').show();
      }).ajaxStop(function(){
-     $('#ajaxBusy').hide();});       
+     $('#ajaxBusy').hide();});
+
+     $('a.thumbnail').lightBox({
+         // Configuration related to images
+			imageLoading:			'/plugin_assets/hydra_exhibits/images/lightbox-ico-loading.gif',		// (string) Path and the name of the loading icon
+			imageBtnPrev:			'/plugin_assets/hydra_exhibits/images/lightbox-btn-prev.gif',			// (string) Path and the name of the prev button image
+			imageBtnNext:			'/plugin_assets/hydra_exhibits/images/lightbox-btn-next.gif',			// (string) Path and the name of the next button image
+			imageBtnClose:			'/plugin_assets/hydra_exhibits/images/lightbox-btn-close.gif',		// (string) Path and the name of the close btn
+			imageBlank:				'/plugin_assets/hydra_exhibits/images/lightbox-blank.gif'			// (string) Path and the name of a blank image (one pixel)
+     });
 
      $.fn.initialize_setting();
 
@@ -88,7 +97,7 @@
        var selectedSubexhibitItems = new Array();
        $("input.featured:checked").each(function() {selectedSubexhibitItems.push($(this).val());});       
        var url = $("input#update_url").first().attr("value")       
-       var params =  "featured_items="+selectedSubexhibitItems+"&featured_action='add'"
+       var params =  "featured_items="+selectedSubexhibitItems+"&featured_action=add"
        var showDiv=$("div.show_featured_div")
        var perviousNode=$("div.show_featured_div").first();
 

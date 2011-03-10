@@ -617,7 +617,8 @@ logger.debug("Params in edit_and_browse_links: #{params.inspect}")
     end
 
     begin
-      @exhibit = Exhibit.load_instance_from_solr(exhibit_id) 
+      @exhibit = Exhibit.load_instance_from_solr(exhibit_id)
+      #@exhibit = Exhibit.load_instance(exhibit_id)
       @browse_facets = @exhibit.browse_facets
       @facet_subsets_map = @exhibit.facet_subsets_map
       @selected_browse_facets = get_selected_browse_facets(@browse_facets) 
