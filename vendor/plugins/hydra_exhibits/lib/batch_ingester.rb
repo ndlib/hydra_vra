@@ -136,7 +136,7 @@ module BatchIngester
     end
     def page_ingest_each_row(row, filename)
       log.info("Rows: #{row.inspect}")
-      if (row[0].blank? || row[1].blank?)
+      if (row[0].blank? && row[1].blank?)
         raise "This entry #{row.inspect} has empty collection information"
       else
         image_id = row[0]
@@ -192,15 +192,15 @@ module BatchIngester
 	end
       else
 	log.error("Couldn't find Item: #{args[:item_id]} for the image: #{args[:image_name]}.... Cannot create the page object....")
-        f = File.open("/home/rbalekai/Desktop/missing_items.txt", "a")
-        f.puts args[:item_id]
-        f.close
+#        f = File.open("/home/rbalekai/Desktop/missing_items.txt", "a")
+#        f.puts args[:item_id]
+#        f.close
       end
     end
     
     def subcollection_ingest_each_row(row)
       log.info("Rows: #{row.inspect}")
-      if (row[0].blank? || row[1].blank?)
+      if (row[0].blank? && row[1].blank?)
          log.info("This entry #{row.inspect} has empty collection information, skip to next row")
       else
         key=row[1]
@@ -273,7 +273,7 @@ module BatchIngester
 
     def item_ingest_each_row(row, filename)
       log.info("Rows: #{row.inspect}")
-      if (row[0].blank? || row[1].blank?)
+      if (row[0].blank? && row[1].blank?)
          log.info("This entry #{row.inspect} has empty item information, skip to next row")
       else
         key="ITEM_#{row[1]}"
