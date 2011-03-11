@@ -234,7 +234,8 @@ module BatchIngester
         result = Collection.find_by_fields_by_solr(map)
         log.info("Length of the search result: #{result.to_a.size}")
         if(result.to_a.size > 0)
-          col_map = Component.find_by_fields_by_solr({"dsc_collection_did_unitid_unitid_identifier_s"=>args[:subcollection_id]})
+#          col_map = Component.find_by_fields_by_solr({"dsc_collection_did_unitid_unitid_identifier_s"=>args[:subcollection_id]})
+          col_map = Component.find_by_fields_by_solr({"subcollection_id_s"=>args[:key]})
           if(col_map.to_a.size < 1)
             subcollection= af_model.new(:namespace=>get_namespace)#(:pid=>pid, :component_level => "c01")
             subcollection.datastreams["descMetadata"].ng_xml = EadXml.subcollection_template
