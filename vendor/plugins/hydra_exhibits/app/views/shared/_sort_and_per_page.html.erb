@@ -1,11 +1,7 @@
-<% response = @response if response.nil?%>
+<% response = @browse_response if response.nil?%>
 <div id="sortAndPerPage">
 	<div class="currently-showing">
-		<%- if params[:action] == 'index' -%>
-			<%= page_entries_info response.docs, :entry_name=>'item' %>
-		<%- else -%>
-			Showing <%=response.docs.length %> of <%= response.response['numFound'] %> items from your search.
-		<%- end -%>
+      <%= exhibit_page_entries_info response.docs, {:entry_name=>'item', :response=>response}%>
 	</div>
 	
 	<% form_tag exhibit_path, :method=>:get, :class=>'per_page' do %>

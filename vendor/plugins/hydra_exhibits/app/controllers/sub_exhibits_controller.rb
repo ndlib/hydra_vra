@@ -75,8 +75,15 @@ class SubExhibitsController < ApplicationController
         sub_exhibit_featured = Array.new
         items.each do |item|
           obj=ActiveFedora::Base.load_instance(item)
-         @asset.featured_append(obj)
-          obj.save
+          item_content_type = ActiveFedora::ContentModel.known_models_for( obj ).first
+          if item_content_type.nil?
+            raise "Unknown content type for the object with pid #{obj.pid}"
+          end
+          logger.debug("Item content type: #{item_content_type}")
+          @featured_item = item_content_type.load_instance(item)
+          #@asset.featured_append(obj)
+          @featured_item.featured_of_append(@asset)
+          @featured_item.save
           @asset.save
           sub_exhibit_featured<<item
         end
@@ -88,8 +95,15 @@ class SubExhibitsController < ApplicationController
       params[:item_id]? item = params[:item_id] : item =""
       logger.debug("Items to remove as Featured from sub_exhibit => #{item.inspect}")
       obj=ActiveFedora::Base.load_instance(item)
-      @asset.featured_remove(obj)
-      obj.save
+      item_content_type = ActiveFedora::ContentModel.known_models_for( obj ).first
+      if item_content_type.nil?
+        raise "Unknown content type for the object with pid #{obj.pid}"
+      end
+      logger.debug("Item content type: #{item_content_type}")
+      @featured_item = item_content_type.load_instance(obj.pid)
+      @featured_item.featured_of_remove(@asset)
+      #@asset.featured_remove(obj)
+      @featured_item.save
       @asset.save
       render :text => "Successfully removed #{obj.pid} from featured list"
     end
