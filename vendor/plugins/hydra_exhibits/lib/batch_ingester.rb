@@ -192,9 +192,9 @@ module BatchIngester
 	end
       else
 	log.error("Couldn't find Item: #{args[:item_id]} for the image: #{args[:image_name]}.... Cannot create the page object....")
-#        f = File.open("/home/rbalekai/Desktop/missing_items.txt", "a")
-#        f.puts args[:item_id]
-#        f.close
+        f = File.open("/home/rbalekai/Desktop/missing_items.txt", "a")
+        f.puts args[:item_id]
+        f.close
       end
     end
     
@@ -242,9 +242,12 @@ module BatchIngester
             subcollection.save
             subcollection.member_of_append(result.to_a[0]["id"])
             subcollection.save
-            desc = Iconv.conv('utf-8','ISO-8859-1',args[:description])
-            c = Iconv.new('UTF-8','ISO-8859-1')
-            utf_desc = c.iconv(desc)
+#	    while(args[:description].include?'ฃ') do
+#	      args[:description] = args[:description].sub('ฃ', "&#3586;")
+#	    end
+#            desc = Iconv.conv('utf-8','ISO-8859-1',args[:description])
+#            c = Iconv.new('UTF-8','ISO-8859-1')
+#            utf_desc = c.iconv(desc)
             subcollection.datastreams["rightsMetadata"].update_permissions({"group"=>{"archivist"=>"edit","public"=>"read"}})
             update_fields(subcollection, [:dsc, :collection, :did, :unitid], args[:abr_title])
             update_fields(subcollection, [:dsc, :collection, :did, :unitid, :unitid_identifier], args[:subcollection_id])
@@ -319,10 +322,7 @@ module BatchIngester
 	log.info("Description: #{args[:description]}")
 #      pid= generate_pid(args[:pid_key], nil)
 #      if(!asset_available(pid,content_type))
-	desc = Iconv.conv('utf-8','ISO-8859-1',args[:description])
-        c = Iconv.new('UTF-8','ISO-8859-1')
-        utf_desc = c.iconv(desc)
-        log.info("Description: #{utf_desc}")
+	
         result = Component.find_by_fields_by_solr({"subcollection_id_s"=>args[:subcollection_id]})
         if(result.to_a.length > 0)
           item_check = Component.find_by_fields_by_solr({"item_did_unitid_s"=>args[:item_id]})
@@ -343,7 +343,13 @@ module BatchIngester
             update_fields(item, [:item, :did, :unittitle, :unittitle_label], args[:display_title])
             update_fields(item, [:item, :did, :unittitle, :num], args[:serial_number])
             update_fields(item, [:item, :did, :physdesc, :dimensions], args[:physdesc])
-            update_fields(item, [:item, :scopecontent], args[:description])
+#	    desc = Iconv.conv('utf-8','ISO-8859-1',args[:description])
+#            c = Iconv.new('UTF-8','ISO-8859-1')
+#            utf_desc = c.iconv(desc)
+#	    while(utf_desc.include?'£') do
+#	      utf_desc = utf_desc.sub('Â£','&#163;')
+#	    end
+            update_fields(item, [:item, :scopecontent], args[:description])#utf_desc
             update_fields(item, [:item, :controlaccess, :genreform], args[:page_turn])
             update_fields(item, [:item, :odd], args[:plate_letter])
             update_fields(item, [:item, :acqinfo], args[:provenance])
