@@ -19,22 +19,21 @@
   <%- end -%>
 <%- end -%>
 
-
-<%- if @subset && @subset.featured.any? -%>
-  <h2>Featured sources</h2>
-  <dl class="item-list featured">
-    <%- @subset.featured(:response_format=>:solr).each_with_index do |document, counter| -%>
-      <%- item = load_af_instance_from_solr(document) -%>
-      <%-  item.item_title.blank? ? title = item.sub_collection_title : title = item.item_title -%>
-      <%= render_document_index_partial(SolrDocument.new(document), title, counter, :index) %>
-    <%- end -%>
-  </dl>
-<%- end -%>
+<%#- if @subset && @subset.featured.any? -%>
+  <!--<h2>Featured sources</h2>
+  <dl class="item-list featured">-->
+    <%#- @subset.featured(:response_format=>:solr).each_with_index do |document, counter| -%>
+      <%#- item = load_af_instance_from_solr(document) -%>
+      <%#-  item.item_title.blank? ? title = item.sub_collection_title : title = item.item_title -%>
+      <%#= render_document_index_partial(SolrDocument.new(document), title, counter, :index) %>
+    <%#- end -%>
+  <!--</dl>-->
+<%#- end -%>
 
 <hr />
 
 <h2>Complete Sources</h2>
 <a id="toggle_sources" href="#" title="Hide the complete listing of sources.">Hide Complete Sources</a>
 <div id="complete_sources">
-  <%= render :partial=>'shared/complete_sources'%>
+  <%= render :partial=>'shared/complete_sources', :locals => {:asset => @subset}%>
 </div>

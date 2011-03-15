@@ -6,7 +6,7 @@ class SubExhibit < ActiveFedora::Base
 
   has_bidirectional_relationship "subset_of", :is_subset_of, :has_subset  
   has_bidirectional_relationship "members", :has_member, :is_member_of
-  has_relationship "featured", :has_part
+  has_bidirectional_relationship "featured", :has_part, :is_part_of
   has_bidirectional_relationship  "descriptions",   :has_description, :is_description_of
 
   #override the members and featured relationship methods

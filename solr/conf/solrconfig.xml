@@ -374,17 +374,17 @@
     <lst name="defaults">
       <!-- Making defType lucene to exclude file assets -->
         <str name="defType">lucene</str>
-        <str name="df">has_model_s</str>
         <str name="q.op">AND</str>
       <str name="facet">on</str>
       <str name="facet.mincount">1</str>
 	    <str name="echoParams">explicit</str>
       <float name="tie">0.01</float>
-      <str name="qf_dismax">text^0.9</str>
-      <str name="pf_dismax">text^0.9</str>
+      <str name="qf_dismax">is_part_of_s^200 text^50</str>
+      <str name="pf_dismax">is_part_of_s^5000 text^500</str>
+      <str name="bf_dismax">is_part_of_s^2</str>
       <str name="fl">
-        id,title_t,has_model_s,has_collection_member_s,system_create_dt,
-        status_t,subject_t,depositor_t,description_t,rights_t,access_t,
+        id,id_t,title_t,has_model_s,has_collection_member_s,system_create_dt,
+        status_t,subject_t,depositor_t,description_t,rights_t,access_t,has_part_s,is_part_of_s,
 
         dsc_collection_did_unitid_t,
         dsc_collection_did_unitid_unitid_identifier_t,
@@ -418,6 +418,7 @@
       </str>
       <int name="ps">100</int>
       <str name="q.alt">*:*</str>
+      <str name="sort">is_part_of_s desc</str>
       <!-- example highlighter config, enable per-query with hl=true -->
       <str name="hl.fl">text features name</str>
       <!-- for this field, we want no fragmenting, just highlighting -->
