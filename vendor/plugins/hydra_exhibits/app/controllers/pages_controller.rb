@@ -103,6 +103,18 @@ class PagesController < ApplicationController
 #        af_model = retrieve_af_model(params[:content_type]) #retrieve_af_model( af_base.relationships[:self][:has_model].first.split(":")[-1] )
 #        logger.debug "#########: af_model = #{af_model.to_s}"
         generic_content_object = Page.load_instance(params[:container_id])
+        generic_content_object.update_indexed_attributes({[:name]=>{"0"=>params[:Filename].sub(".jpg", "")}})
+        item_pid = generic_content_object.item.first.pid
+        item_obj = Component.load_instance(item_pid)
+        inserted_node, new_node_index = item_obj.insert_new_node('image', opts={})
+	item_obj.save
+	no_of_images = 0
+        if(item_obj.methods.contains? "parts")
+	  no_of_images = item_obj.parts.size
+        end
+	puts "No of Images: #{no_of_images.to_s}............................."
+        item_obj.update_indexed_attributes ({[:item, :daogrp, :daoloc, :daoloc_href]=>{"#{(no_of_images-1).to_s}"=>params[:Filename].sub(".jpg", "")}} )
+        item_obj.save
         generic_content_object.content={:file => params[:Filedata], :file_name => params[:Filename]}
         logger.debug "#########: set the content"
         generic_content_object.save

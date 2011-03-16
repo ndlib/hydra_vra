@@ -383,7 +383,7 @@
       <str name="qf_dismax">text^0.9</str>
       <str name="pf_dismax">text^0.9</str>
       <str name="fl">
-        id,title_t,has_model_s,has_collection_member_s,system_create_dt,
+        id,id_t,title_t,has_model_s,has_collection_member_s,system_create_dt,
         status_t,subject_t,depositor_t,description_t,rights_t,access_t,
 
         dsc_collection_did_unitid_t,

@@ -28,7 +28,7 @@ module BatchIngester
           log.info("Ingesting Page Object")
           page_ingest_each_row( row, filename )
         elsif(filename.include? "Header")
-          if cnter >1
+          if cnter > 1
             log.info("Ingesting Ead Collection Object")
             collection_ingest_each_row( row )
           end
@@ -136,7 +136,7 @@ module BatchIngester
     end
     def page_ingest_each_row(row, filename)
       log.info("Rows: #{row.inspect}")
-      if (row[0].blank? || row[1].blank?)
+      if (row[0].blank? && row[1].blank?)
         raise "This entry #{row.inspect} has empty collection information"
       else
         image_id = row[0]
@@ -146,7 +146,7 @@ module BatchIngester
         key = "PAGE_#{image_id}"
 	src_filename = filename.split('/')
 	image_file = filename.sub("#{src_filename[src_filename.size-2]}/#{src_filename[src_filename.size-1]}", "Currency_Scans_2008 (B786)/#{image_name.to_s.strip}")
-        attributes= {:pid_key => key, :item_id => item_id, :page_id => page_id, :image_title => image_title, :image_name => image_name, :image_file => image_file}
+        attributes= {:pid_key => key, :item_id => item_id, :page_id => image_id, :image_title => image_title, :image_name => image_name, :image_file => image_file}
         ingest_page('page', attributes)
       end
     end
@@ -192,12 +192,15 @@ module BatchIngester
 	end
       else
 	log.error("Couldn't find Item: #{args[:item_id]} for the image: #{args[:image_name]}.... Cannot create the page object....")
+        f = File.open("/home/rbalekai/Desktop/missing_items.txt", "a")
+        f.puts args[:item_id]
+        f.close
       end
     end
     
     def subcollection_ingest_each_row(row)
       log.info("Rows: #{row.inspect}")
-      if (row[0].blank? || row[1].blank?)
+      if (row[0].blank? && row[1].blank?)
          log.info("This entry #{row.inspect} has empty collection information, skip to next row")
       else
         key=row[1]
@@ -231,16 +234,20 @@ module BatchIngester
         result = Collection.find_by_fields_by_solr(map)
         log.info("Length of the search result: #{result.to_a.size}")
         if(result.to_a.size > 0)
-          col_map = Component.find_by_fields_by_solr({"dsc_collection_did_unitid_unitid_identifier_s"=>args[:subcollection_id]})
+#          col_map = Component.find_by_fields_by_solr({"dsc_collection_did_unitid_unitid_identifier_s"=>args[:subcollection_id]})
+          col_map = Component.find_by_fields_by_solr({"subcollection_id_s"=>args[:key]})
           if(col_map.to_a.size < 1)
             subcollection= af_model.new(:namespace=>get_namespace)#(:pid=>pid, :component_level => "c01")
             subcollection.datastreams["descMetadata"].ng_xml = EadXml.subcollection_template
             subcollection.save
             subcollection.member_of_append(result.to_a[0]["id"])
             subcollection.save
-            desc = Iconv.conv('utf-8','ISO-8859-1',args[:description])
-            c = Iconv.new('UTF-8','ISO-8859-1')
-            utf_desc = c.iconv(desc)
+#	    while(args[:description].include?'ฃ') do
+#	      args[:description] = args[:description].sub('ฃ', "&#3586;")
+#	    end
+#            desc = Iconv.conv('utf-8','ISO-8859-1',args[:description])
+#            c = Iconv.new('UTF-8','ISO-8859-1')
+#            utf_desc = c.iconv(desc)
             subcollection.datastreams["rightsMetadata"].update_permissions({"group"=>{"archivist"=>"edit","public"=>"read"}})
             update_fields(subcollection, [:dsc, :collection, :did, :unitid], args[:abr_title])
             update_fields(subcollection, [:dsc, :collection, :did, :unitid, :unitid_identifier], args[:subcollection_id])
@@ -270,7 +277,7 @@ module BatchIngester
 
     def item_ingest_each_row(row, filename)
       log.info("Rows: #{row.inspect}")
-      if (row[0].blank? || row[1].blank?)
+      if (row[0].blank? && row[1].blank?)
          log.info("This entry #{row.inspect} has empty item information, skip to next row")
       else
         key="ITEM_#{row[1]}"
@@ -315,9 +322,7 @@ module BatchIngester
 	log.info("Description: #{args[:description]}")
 #      pid= generate_pid(args[:pid_key], nil)
 #      if(!asset_available(pid,content_type))
-	desc = Iconv.conv('utf-8','ISO-8859-1',args[:description])
-        c = Iconv.new('UTF-8','ISO-8859-1')
-        utf_desc = c.iconv(desc)
+	
         result = Component.find_by_fields_by_solr({"subcollection_id_s"=>args[:subcollection_id]})
         if(result.to_a.length > 0)
           item_check = Component.find_by_fields_by_solr({"item_did_unitid_s"=>args[:item_id]})
@@ -338,7 +343,13 @@ module BatchIngester
             update_fields(item, [:item, :did, :unittitle, :unittitle_label], args[:display_title])
             update_fields(item, [:item, :did, :unittitle, :num], args[:serial_number])
             update_fields(item, [:item, :did, :physdesc, :dimensions], args[:physdesc])
-            update_fields(item, [:item, :scopecontent], args[:description])
+#	    desc = Iconv.conv('utf-8','ISO-8859-1',args[:description])
+#            c = Iconv.new('UTF-8','ISO-8859-1')
+#            utf_desc = c.iconv(desc)
+#	    while(utf_desc.include?'£') do
+#	      utf_desc = utf_desc.sub('Â£','&#163;')
+#	    end
+            update_fields(item, [:item, :scopecontent], args[:description])#utf_desc
             update_fields(item, [:item, :controlaccess, :genreform], args[:page_turn])
             update_fields(item, [:item, :odd], args[:plate_letter])
             update_fields(item, [:item, :acqinfo], args[:provenance])
@@ -348,7 +359,7 @@ module BatchIngester
               if(counter > 1)
                 inserted_node, new_node_index = item.insert_new_node('image', opts={})
               end
-              update_image_fields(item, [:item, :daogrp, :daoloc, :daoloc_href], "#{i.to_s}", (counter - 1).to_s)
+              update_image_fields(item, [:item, :daogrp, :daoloc, :daoloc_href], "#{i.to_s.sub(".jpg", "")}", (counter - 1).to_s)
               counter += 1
             end
             item.save
@@ -398,8 +409,8 @@ module BatchIngester
     end
         
     def delete_all_obj_from_fedora(namespace)
-      row =1
-      while row < 717  do
+      row = 1
+      while row < 1000  do
         remove_each_obj(namespace,row)
         row +=1;
       end

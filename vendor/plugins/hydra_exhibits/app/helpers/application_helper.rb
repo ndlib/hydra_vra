@@ -567,7 +567,7 @@ logger.debug("Params in edit_and_browse_links: #{params.inspect}")
 
   def render_document_index_partial(doc, title, counter, action_name)
     format = document_partial_name(doc)
-    logger.debug("format: #{format}")
+    logger.debug("render_document_index_partial format: #{format}, Counter:#{counter}")
     begin
       locals = {:document=>doc, :counter=>counter, :title=>title}
       render :partial=>"catalog/_#{action_name}_partials/#{format}", :locals=>locals      
@@ -617,7 +617,8 @@ logger.debug("Params in edit_and_browse_links: #{params.inspect}")
     end
 
     begin
-      @exhibit = Exhibit.load_instance_from_solr(exhibit_id) 
+      @exhibit = Exhibit.load_instance_from_solr(exhibit_id)
+      #@exhibit = Exhibit.load_instance(exhibit_id)
       @browse_facets = @exhibit.browse_facets
       @facet_subsets_map = @exhibit.facet_subsets_map
       @selected_browse_facets = get_selected_browse_facets(@browse_facets) 
@@ -626,18 +627,36 @@ logger.debug("Params in edit_and_browse_links: #{params.inspect}")
       #call exhibit.discriptions once since querying solr everytime on inbound relationship
       if browse_facet_selected?(@browse_facets)
         @subset.nil? ? @descriptions = [] : @descriptions = @subset.descriptions
+        (@subset.blank? || @subset.featured.blank? ) ? featured_count = 0 : featured_count = @subset.featured.count
       else
         #use exhibit descriptions
         @descriptions = @exhibit.descriptions
+        @exhibit.featured.blank? ? featured_count=0  : featured_count=@exhibit.featured.count
+        #logger.debug("@exhibit.featured.count: #{featured_count}")
       end
       logger.debug("Description: #{@descriptions}, Subset:#{@subset.inspect}")
       @extra_controller_params ||= {}
       exhibit_members_query = @exhibit.build_members_query
       lucene_query = build_lucene_query(params[:q])
       lucene_query = "#{exhibit_members_query} AND #{lucene_query}" unless exhibit_members_query.empty?
+=begin
+      if !params.has_key?(:page)  &&  featured_count>0
+        params.has_key?(:per_page) ? result_count=params[:per_page] : result_count=Blacklight.config[:index][:num_per_page]
+        #logger.debug("if featured_count: #{featured_count}, params[per_page]: #{params[:per_page]}, result_count:#{result_count}")
+        per_page= result_count.to_i-featured_count.to_i
+        @extra_controller_params.merge!(:per_page=>per_page)
+      elsif params.has_key?(:page) && params[:page].to_i.eql?(1) &&  featured_count>0
+
+        params.has_key?(:per_page) ? result_count=params[:per_page] : result_count=Blacklight.config[:index][:num_per_page]
+        #logger.debug("else if featured_count: #{featured_count}, params[per_page]: #{params[:per_page]}, result_count:#{result_count}")
+        per_page= result_count.to_i-featured_count.to_i
+        @extra_controller_params.merge!(:per_page=>per_page)
+      end
+=end
       (@response, @document_list) = get_search_results( @extra_controller_params.merge!(:q=>lucene_query))
       @browse_response = @response
       @browse_document_list = @document_list
+      logger.debug("browse.response: #{@browse_response.inspect}")
     rescue Exception=>e
       logger.info("No exhibit was found for id #{exhibit_id}: #{e.to_s}")
     end
@@ -660,6 +679,29 @@ logger.debug("Params in edit_and_browse_links: #{params.inspect}")
 
   def get_exhibits_list
     Exhibit.find_by_solr(:all).hits.map{|result| Exhibit.load_instance_from_solr(result["id"])}
+  end
+
+
+  def exhibit_page_entries_info(collection, options = {})
+    logger.debug("Total collection: #{options.inspect}")
+    start = collection.next_page == 2 ? 1 : collection.previous_page * collection.per_page + 1
+    options[:response].blank? ? total_hits = @browse_response.total : total_hits = options[:response].total
+    start_num = format_num(start)
+    start + collection.per_page - 1>total_hits ? end_num=format_num(total_hits) : end_num = format_num(start + collection.per_page - 1)
+    total_num = format_num(total_hits)
+
+    entry_name = options[:entry_name] ||
+      (collection.empty?? 'entry' : collection.first.class.name.underscore.sub('_', ' '))
+
+    if collection.total_pages < 2
+      case collection.size
+      when 0; "No #{entry_name.pluralize} found"
+      when 1; "Displaying <b>1</b> #{entry_name}"
+      else;   "Displaying <b>all #{total_num}</b> #{entry_name.pluralize}"
+      end
+    else
+      "Displaying #{entry_name.pluralize} <b>#{start_num} - #{end_num}</b> of <b>#{total_num}</b>"
+    end
   end
 
 end

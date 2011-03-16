@@ -17,7 +17,7 @@
           </div>
         <% end %>
       <%- elsif params[:exhibit_id] || @document_fedora.class == Exhibit-%>
-        <%= debug " #{@document_fedora.pid}, #{@document_fedora.class}" %>
+        <%# debug " #{@document_fedora.pid}, #{@document_fedora.class}" %>
         <%- params[:exhibit_id] ? exhibit_id = params[:exhibit_id] : exhibit_id = @document_fedora.pid -%>
         <span class="back_to_cat"><h3><%= link_to_exhibit(:label=>"&laquo; Back to Browse Exhibit",:exhibit_id=>exhibit_id) %></h3></span>
       <%- end -%>      
