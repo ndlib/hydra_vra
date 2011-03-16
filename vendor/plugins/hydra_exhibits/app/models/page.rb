@@ -57,4 +57,30 @@ class Page < ActiveFedora::Base
   def datastream_url ds_name="content"
     "#{admin_site}fedora/get/#{pid}/#{ds_name}"
   end
+
+  #Calls to solr on the descMetadata datastream locally and any parents
+  #Used by child only when indexing its parents content
+  def to_solr_desc_metadata(solr_doc = Solr::Document.new)
+    solr_doc = datastreams["descMetadata"].to_solr(solr_doc)
+    solr_doc = to_solr_parent_desc_metadata(solr_doc)
+    return solr_doc
+  end
+
+  #Calls to_solr on the descMetadata datastream of parent
+  def to_solr_parent_desc_metadata(solr_doc = Solr::Document.new)
+    item.each do |parent|
+      if parent.respond_to? :to_solr_desc_metadata
+        solr_doc = parent.to_solr_desc_metadata(solr_doc) 
+        logger.debug("Solrized parent #{parent.pid} desc metadata in child #{pid}")
+      end
+    end
+    return solr_doc
+  end
+
+  #Index all of parent ead content in the child
+  def to_solr(solr_doc = Solr::Document.new, opts={})
+    doc = super(solr_doc, opts)
+    doc = to_solr_parent_desc_metadata(doc)
+    return doc
+  end
 end
