@@ -136,6 +136,7 @@ module BatchIngester
     end
     def page_ingest_each_row(row, filename)
       log.info("Rows: #{row.inspect}")
+      #row[0] - contains the image-id and row[1] contains the parent-id. So both columns cannot be empty
       if (row[0].blank? && row[1].blank?)
         raise "This entry #{row.inspect} has empty collection information"
       else
@@ -200,7 +201,8 @@ module BatchIngester
     
     def subcollection_ingest_each_row(row)
       log.info("Rows: #{row.inspect}")
-      if (row[0].blank? && row[1].blank?)
+      #row[13] contains the unique-id of this object. So it can not be empty
+      if (row[0].blank? || row[13].blank?)
          log.info("This entry #{row.inspect} has empty collection information, skip to next row")
       else
         key=row[1]
@@ -277,7 +279,8 @@ module BatchIngester
 
     def item_ingest_each_row(row, filename)
       log.info("Rows: #{row.inspect}")
-      if (row[0].blank? && row[1].blank?)
+      #row-1 contains the unique id for this object and row[16] contains parent-id. So both columns can not be empty
+      if (row[1].blank? || row[16].blank?)
          log.info("This entry #{row.inspect} has empty item information, skip to next row")
       else
         key="ITEM_#{row[1]}"

@@ -1,0 +1,18 @@
+<%- page = load_af_instance_from_solr(document) -%>
+<%- s = page.to_solr -%>
+<div class="thumbnail-container">
+    <%= link_to_document document, :label=>(
+      image_tag page.datastream_url('thumbnail')
+    ) %>
+</div>
+<dl class="defList">
+      <%= debug s.inspect %>
+      <%- page_field_names.each do |solr_fname| -%>
+        <%- if !s[solr_fname].empty? -%>
+          <dt><%= h page_field_labels[solr_fname]%></dt>
+          <dd><%= h s[solr_fname] %></dd>
+        <%- end -%>
+      <%- end -%>
+</dl>
+
+

@@ -99,7 +99,10 @@ Blacklight.configure(:shared) do |config|
       "dsc_collection_did_unittitle_unittitle_content_t",
       "dsc_collection_did_unittitle_imprint_publisher_t",
       "dsc_collection_controlaccess_genreform_t",
-       "ead_ead_header_filedesc_titlestmt_titleproper_t"
+      "ead_ead_header_filedesc_titlestmt_titleproper_t",
+      "title_t",
+      "name_t",
+      "page_id_t"
       ],
     :labels => {
       "date_t"=>"Date",
@@ -110,7 +113,10 @@ Blacklight.configure(:shared) do |config|
       "dsc_collection_did_unittitle_unittitle_content_t" => "Print Date",
       "dsc_collection_did_unittitle_imprint_publisher_t" => "Publisher",
       "dsc_collection_controlaccess_genreform_t"         => "Genre",
-      "ead_ead_header_filedesc_titlestmt_titleproper_t" => "Parent Collection"
+      "ead_ead_header_filedesc_titlestmt_titleproper_t" => "Parent Collection",
+      "title_t"    => "Title",
+      "name_t"     => "Name",
+      "page_id_t"       => "Unique ID"
     }
   }
 
@@ -158,6 +164,19 @@ Blacklight.configure(:shared) do |config|
     }
   }
 
+  config[:pages_index_fields] = {
+    :field_names => [
+      "title_t",
+      "name_t",
+      "page_id_t"
+      ],
+    :labels => {
+      "title_t"    => "Title",
+      "name_t"     => "Name",
+      "page_id_t"       => "Unique ID"
+    }
+  }
+
   # solr fields to be displayed in the show (single result) view
   #   The ordering of the field names is the order of the display 
   config[:show_fields] = {
@@ -170,6 +189,7 @@ Blacklight.configure(:shared) do |config|
       "dsc_collection_did_unitid_unitid_identifier_t",
       "dsc_collection_did_unittitle_unittitle_content_t",
       "dsc_collection_did_unittitle_imprint_publisher_t",
+      "dsc_collection_controlaccess_genreform_t",
       "dsc_collection_scopecontent_t",
       "item_did_unittitle_unittitle_content_t",
       "item_did_unittitle_t",
@@ -183,7 +203,10 @@ Blacklight.configure(:shared) do |config|
       "item_odd_t",
       "item_daogrp_daoloc_daoloc_href_t",
       "rights_t",
-      "access_t"
+      "access_t",
+      "title_t",
+      "name_t",
+      "page_id_t"
     ],
     :labels => {
       "text" => "Text:",
@@ -209,7 +232,10 @@ Blacklight.configure(:shared) do |config|
       "item_odd_t"                                       => "Plate Letter",
       "item_daogrp_daoloc_daoloc_href_t"                 => "Images",
       "rights_t"  => "Copyright:",
-      "access_t" => "Access:"
+      "access_t" => "Access:",
+      "title_t" => "Title:",
+      "name_t" => "Name:",
+      "page_id_t" => "Unique ID:"
     }
   }
 
