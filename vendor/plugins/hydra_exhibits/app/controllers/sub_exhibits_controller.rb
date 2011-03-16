@@ -100,7 +100,9 @@ class SubExhibitsController < ApplicationController
         raise "Unknown content type for the object with pid #{obj.pid}"
       end
       logger.debug("Item content type: #{item_content_type}")
-      @featured_item = item_content_type.load_instance(obj.pid)
+      @featured_item = item_content_type.load_instance(item)
+      logger.debug("featured_item: #{@featured_item.inspect}")
+      logger.debug("@asset: #{@asset.inspect}")
       @featured_item.featured_of_remove(@asset)
       #@asset.featured_remove(obj)
       @featured_item.save

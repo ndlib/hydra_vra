@@ -121,6 +121,10 @@ class Component < ActiveFedora::Base
     @sub_collection_title = values.any? ? values.first : ""
   end
 
+    def formatted_title
+    self.item_id.blank? ? title = sub_collection_title : title = item_title
+  end
+
   # Used this method to display parent's title as the link in the catalog view of C02 level
   def title
     return @title if (defined? @title)

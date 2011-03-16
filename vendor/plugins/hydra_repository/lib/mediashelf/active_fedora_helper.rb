@@ -79,7 +79,7 @@ module MediaShelf
 #    end
 #  end
 
-  def remove_named_relationship(asset, relationship_name, target_pid)
+  def af_remove_named_relationship(asset, relationship_name, target_pid)
     if asset.nil?
       raise "asset missing"
     else

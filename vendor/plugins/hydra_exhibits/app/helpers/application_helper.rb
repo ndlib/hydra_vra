@@ -425,27 +425,27 @@ logger.debug("Params in edit_and_browse_links: #{params.inspect}")
     models_for_url= []
     values_for_url= []
     
-    #['collection', 'component', 'page'].each do |model|
-    #  constantized_model = model.classify.constantize
-    #  key = "#{model}_id".to_sym
-    #  if params[key]
-    #    if params[:controller] == 'catalog' && model == 'item' 
-    #      target = constantized_model.load_instance_from_solr(params[key])
-    #      name   = target.respond_to?(:formatted_name) ? " &gt; #{target.formatted_name}" : " &gt; #{target.name}"
-    #      params[:render_search].blank? ? catalog_path(params[key]) : path = catalog_path(params[key], :render_search => 'false')
-    #      breadcrumb_html << link_to(name, path) 
-    #    else
-    #      models_for_url.push(model)
-    #      values_for_url.push(params[key])
-    #      target = constantized_model.load_instance_from_solr(params[key])
-    #      name   = target.respond_to?(:formatted_name) ? " &gt; #{target.formatted_name}" : " &gt; #{target.name}"
-    #      path   = "#{models_for_url.join('_')}_path(\"#{values_for_url.join('", "')}\")"
-    #      breadcrumb_html << "#{link_to name, eval(path) } "
-    #    end
-    #  elsif params[:id] && (params[:controller] == 'catalog' && model == params[:document_format] || params[:controller] == model.pluralize)
-    #    breadcrumb_html << " &gt; #{constantized_model.load_instance_from_solr(params[:id]).name}"
-    #  end 
-    #end 
+    ['collection', 'component', 'page', 'description', 'exhibit', 'sub_exhibit'].each do |model|
+      constantized_model = model.classify.constantize
+      key = "#{model}_id".to_sym
+      if params[key]
+        if params[:controller] == 'catalog' && model == 'component'
+          target = constantized_model.load_instance_from_solr(params[key])
+          name   = target.respond_to?(:formatted_title) ? " &gt; #{target.formatted_title}" : " &gt; #{target.title}"
+          params[:render_search].blank? ? catalog_path(params[key]) : path = catalog_path(params[key], :render_search => 'false')
+          breadcrumb_html << link_to(name, path)
+        else
+          models_for_url.push(model)
+          values_for_url.push(params[key])
+          target = constantized_model.load_instance_from_solr(params[key])
+          name   = target.respond_to?(:formatted_title) ? " &gt; #{target.formatted_title}" : " &gt; #{target.title}"
+          path   = "#{models_for_url.join('_')}_path(\"#{values_for_url.join('", "')}\")"
+          breadcrumb_html << "#{link_to name, eval(path) } "
+        end
+      elsif params[:id] && (params[:controller] == 'catalog' && model == params[:document_format] || params[:controller] == model.pluralize)
+        breadcrumb_html << " &gt; #{constantized_model.load_instance_from_solr(params[:id]).title}"
+      end
+    end
     return breadcrumb_html
   end
 

@@ -115,7 +115,7 @@ PLATFORMS
 
 DEPENDENCIES
   RedCloth
-  active-fedora (= 1.2.8)
+  active-fedora (~> 1.2.8)
   authlogic (>= 0.1.0)
   blacklight-sitemap
   block_helpers
