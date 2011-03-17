@@ -6,10 +6,12 @@
   <dl class="image_tag" id="<%= base_id %>">
   <dd>
     <ul>
-        <li class="image">
-          <%= fedora_field_label("descMetadata", [:item, :daogrp, {:daoloc => image_counter}, :daoloc_href], "Image:") %>
-          <%= fedora_text_field(@document_fedora,"descMetadata", [:item, :daogrp, {:daoloc => image_counter}, :daoloc_href], :multiple=>false) %>
-        </li>
+          <dt class="images">
+            <%= fedora_field_label("descMetadata", [:item, :daogrp, {:daoloc => image_counter}, :daoloc_href], "Image:") %>
+          </dt>
+	  <dd>
+	    <%= get_values_from_datastream(@document_fedora,"descMetadata", [:item, :daogrp, {:daoloc => image_counter}, :daoloc_href]) %>
+	  </dd>
     </ul>
     <% if ( (params[:action] == "edit" || params[:action] == "create")) %>
         <%= field_selectors_for("descMetadata", [{:image=>image_counter}]) %>  

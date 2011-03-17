@@ -159,7 +159,7 @@ module BatchIngester
       end
       item_check = Component.find_by_fields_by_solr({"item_did_unitid_s"=>args[:item_id]})
       if(item_check.to_a.length > 0)
-	page_check = Page.find_by_fields_by_solr({"name_s"=>args[:image_name]})
+	page_check = Page.find_by_fields_by_solr({"name_s"=>args[:image_name].sub(".jpg","")})
 	if(page_check.to_a.length < 1)
           map = Hash.new
           image_path = args[:image_file]
@@ -184,6 +184,17 @@ module BatchIngester
 	      parent = Component.load_instance(item_check.to_a[0]["id"])
 	      parent.update_indexed_attributes({:main_page=>{0=>page.pid}})
 	      parent.save
+	    end
+	    map = {"EAD_HEADER_0_EADID_T".downcase=>"american_colonial_currency"}
+	    coll = Collection.find_by_fields_by_solr(map)
+	    if(coll.to_a.size > 0)
+	      if(!args[:page_id].nil?)
+	        col = Collection.load_instance(coll.to_a[0]["id"])
+                if((col.last_image_number.nil?)  || (col.last_image_number.to_i < args[:page_id].to_i))
+  	          col.update_indexed_attributes({:last_image_number=>{"0"=>args[:page_id]}})
+		  col.save
+	        end
+	      end
 	    end
 	  else
 	    log.info("Image not found: #{args[:image_name]}")
@@ -266,6 +277,13 @@ module BatchIngester
             subcollection.update_indexed_attributes({:subcollection_id=>{0=>args[:key]}})
             subcollection.update_indexed_attributes({:component_type=>{0=>"subcollection"}})
             subcollection.save
+	    coll = Collection.load_instance(result.to_a[0]["id"])
+	    if(!args[:key].nil?)
+              if((coll.last_sc_number.nil?)  || (coll.last_sc_number.to_i < args[:key].to_i))
+    	        coll.update_indexed_attributes({:last_sc_number=>{"0"=>args[:key]}})
+	      end
+	    end
+	    coll.save
             log.info("\r\n#{subcollection.datastreams["descMetadata"].to_xml}\r\n")
           else
             objmap = col_map.to_a[0]
@@ -310,7 +328,6 @@ module BatchIngester
           count += 1
         end
 	log.info("Signers: #{display_signer}")
-#        log.info("Converted to: key ->#{key}, item_id ->#{serial_number}, collection_id -> #{collection_id}")
         attributes= {:pid_key => key, :subcollection_id => collection_id, :display_title => display_title, :title => title, :item_id => item_id, :serial_number => serial_number, :display_signer => display_signer, :signer => signer, :physdesc => physdesc, :description => description, :plate_letter => plate_letter, :page_turn => page_turn, :provenance => provenance}
         ingest_item('component', attributes, images)
         log.info("Attributes: #{attributes.inspect}")
@@ -323,14 +340,11 @@ module BatchIngester
         af_model = Component
       end
 	log.info("Description: #{args[:description]}")
-#      pid= generate_pid(args[:pid_key], nil)
-#      if(!asset_available(pid,content_type))
-	
         result = Component.find_by_fields_by_solr({"subcollection_id_s"=>args[:subcollection_id]})
         if(result.to_a.length > 0)
           item_check = Component.find_by_fields_by_solr({"item_did_unitid_s"=>args[:item_id]})
           if(item_check.to_a.length < 1)
-            item= af_model.new(:namespace=>get_namespace)#(:pid=>pid, :component_level => "c02")
+            item= af_model.new(:namespace=>get_namespace)
             item.datastreams["descMetadata"].ng_xml = EadXml.item_template
             item.save
 	    item.member_of_append(result.to_a[0]["id"])
@@ -346,17 +360,20 @@ module BatchIngester
             update_fields(item, [:item, :did, :unittitle, :unittitle_label], args[:display_title])
             update_fields(item, [:item, :did, :unittitle, :num], args[:serial_number])
             update_fields(item, [:item, :did, :physdesc, :dimensions], args[:physdesc])
-#	    desc = Iconv.conv('utf-8','ISO-8859-1',args[:description])
-#            c = Iconv.new('UTF-8','ISO-8859-1')
-#            utf_desc = c.iconv(desc)
-#	    while(utf_desc.include?'£') do
-#	      utf_desc = utf_desc.sub('Â£','&#163;')
-#	    end
-            update_fields(item, [:item, :scopecontent], args[:description])#utf_desc
+            update_fields(item, [:item, :scopecontent], args[:description])
             update_fields(item, [:item, :controlaccess, :genreform], args[:page_turn])
             update_fields(item, [:item, :odd], args[:plate_letter])
             update_fields(item, [:item, :acqinfo], args[:provenance])
             item.save
+	    map = {"EAD_HEADER_0_EADID_T".downcase=>"american_colonial_currency"}
+	    coll = Collection.find_by_fields_by_solr(map)
+	    if((coll.to_a.size > 0)  && (!args[:item_id].nil?))
+	      col = Collection.load_instance(coll.to_a[0]["id"])
+              if((col.last_item_number.nil?)  || (col.last_item_number.to_i < args[:item_id].to_i))
+  	        col.update_indexed_attributes({:last_item_number=>{"0"=>args[:item_id]}})
+	      end
+	    end
+	    col.save
             counter = 1
             for i in images
               if(counter > 1)

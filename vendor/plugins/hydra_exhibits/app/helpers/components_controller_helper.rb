@@ -11,6 +11,16 @@ module ComponentsControllerHelper
       @asset.update_indexed_attributes({:component_type=>{0=>"item"}})
       @asset.member_of_append(parent_id)
       @asset.save
+      sc = Component.load_instance(parent_id)
+      col = Collection.load_instance(sc.member_of.first.pid)
+      if(!col.last_item_number.nil?)
+	id_num = col.last_item_number.to_i + 1
+	col.update_indexed_attributes({:last_item_number=>{0=>id_num.to_s}})
+	col.save
+	@asset.update_indexed_attributes({:item_id=>{0=>id_num.to_s}})
+	@asset.update_indexed_attributes({[:item, :did, :unitid]=>{0=>id_num.to_s}})
+        @asset.save
+      end
     elsif(label.include? "subcollection")
       @asset = Component.new(:namespace=>get_namespace)
       @asset.datastreams["descMetadata"].ng_xml = EadXml.subcollection_template
@@ -19,6 +29,14 @@ module ComponentsControllerHelper
       @asset.update_indexed_attributes({:component_type=>{0=>"subcollection"}})
       @asset.member_of_append(parent_id)
       @asset.save
+      col = Collection.load_instance(parent_id)
+      if(!col.last_sc_number.nil?)
+	id_num = col.last_sc_number.to_i + 1
+	col.update_indexed_attributes({:last_sc_number=>{0=>id_num.to_s}})
+	col.save
+	@asset.update_indexed_attributes({:subcollection_id=>{0=>id_num.to_s}})
+        @asset.save
+      end
     end
     return @asset
   end

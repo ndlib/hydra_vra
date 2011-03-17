@@ -32,12 +32,6 @@
         <%= fedora_text_field(document_fedora,"descMetadata", [:dsc, :collection, :did, :unitid, :unitid_identifier])%>
       </dd>
       <dt>
-        <%= fedora_field_label("properties", [:subcollection_id], "Relationship ID:") %>
-      </dt>
-      <dd class="relationship_id">
-        <%= fedora_text_field(document_fedora,"properties", [:subcollection_id])%>
-      </dd>
-      <dt>
         <%= fedora_field_label("descMetadata", [:dsc, :collection, :did, :origination, :printer], "Printer:") %>
       </dt>
       <dd class="printer">
