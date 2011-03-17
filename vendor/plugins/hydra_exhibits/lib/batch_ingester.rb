@@ -172,7 +172,7 @@ module BatchIngester
             page= af_model.new(:namespace=>get_namespace)#(:pid=>pid)
 	    page.update_indexed_attributes({:page_id=>{0=>args[:page_id]}})
 	    page.update_indexed_attributes({:title=>{0=>args[:image_title]}})
-	    page.update_indexed_attributes({:name=>{0=>args[:image_name]}})
+	    page.update_indexed_attributes({:name=>{0=>args[:image_name].sub(".jpg", "")}})
             page.content = map
     	    page.item_append(item_check.to_a[0]["id"])
             page.save

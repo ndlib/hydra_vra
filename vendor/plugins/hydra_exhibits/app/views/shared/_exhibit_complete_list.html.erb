@@ -15,6 +15,8 @@
             <%- title = asset.title -%>
           <%- elsif asset.class == Component-%>
             <%- asset.item_id.blank? ? title = asset.sub_collection_title : title = asset.item_title -%>
+	  <%- elsif asset.class == Page-%>
+            <%- title = asset.name -%>
           <%- else-%>
             <%- title = document[:id] %>
           <%- end %>
