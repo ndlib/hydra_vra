@@ -6,6 +6,10 @@
      $('body').append('<div id="ajaxBusy">Your request is being processed.</div>');
 
      /*shows the loading div every time we have an Ajax call*/
+     /*$(document).ajaxSetup({
+        timeout: 3000
+     });*/
+
      $(document).ajaxStart(function(){
         $('#ajaxBusy').show();
      }).ajaxStop(function(){
@@ -93,7 +97,7 @@
       return false;
     });*/
      
-     $('input.addfeatured').bind('click',function(){
+     $('input.addfeatured').unbind('click').bind('click',function(){
        var selectedSubexhibitItems = new Array();
        $("input.featured:checked").each(function() {selectedSubexhibitItems.push($(this).val());});       
        var url = $("input#update_url").first().attr("value")       
@@ -139,6 +143,7 @@
            });
          }
       });
+      return false;
     });
 
 
@@ -305,9 +310,11 @@
             });
          }
        });
+        return false;
     });
 
-    $("dd.display input").live('click',function(){
+    //$('input:radio[rel=page_display]').live('click',function()
+    $('dd.display input:radio').die('click').live('click',function(){
       var $closestdd = $(this).closest('dd.display')
       var $closestForm=$closestdd.siblings('input.update_description_display');
       var url = $closestForm.attr("action");
@@ -315,6 +322,7 @@
       var data_pid = $(this).attr("data_pid")
       var params =  name + "="+$(this).attr("value")+"&_method=put";
       //alert("Radio update: "+url)
+      //console.log($(this))
        $.ajax({
          type: "PUT",
          url: url,
@@ -343,7 +351,6 @@
             });
          }
        });
-
     });
 
    });

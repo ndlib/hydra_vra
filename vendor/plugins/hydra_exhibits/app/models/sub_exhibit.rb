@@ -23,6 +23,15 @@ class SubExhibit < ActiveFedora::Base
     datastreams["selected_facets"].values
   end
 
+  def title
+    @title=""
+    return @title if (defined? @title)
+    datastreams["selected_facets"].values.each_pair do |key, value|
+      @title << value
+    end
+    return @title
+  end
+
   #returns hash of facet to array of values for adding to params
   def selected_facets_for_params
     h = {}

@@ -26,7 +26,13 @@ class Exhibit < ActiveFedora::Base
     m.field "facets", :string
     m.field "query", :string
     m.field "tags", :string
-  end 
+  end
+
+  def title
+   return @exhibit_title if (defined? @exhibit_title)
+    values = self.fields[:exhibit_title][:values]
+    @exhibit_title = values.any? ? values.first : "unnamed exhibit"
+  end
 
   def exhibit_title
    return @exhibit_title if (defined? @exhibit_title)

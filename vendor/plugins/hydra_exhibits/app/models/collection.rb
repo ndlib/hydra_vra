@@ -30,6 +30,13 @@ class Collection < ActiveFedora::Base
     descriptions.any? ? descriptions : nil
   end
 
+  def formatted_title
+   return @exhibit_title if (defined? @exhibit_title)
+    values = self.fields[:exhibit_title][:values]
+    @exhibit_title = values.any? ? values.first : "unnamed exhibit"
+  end
+
+
   def title
     return @collection_title if (defined? @collection_title)    
     values = self.datastreams["descMetadata"].term_values(:ead_header, :filedesc, :titlestmt, :titleproper)
