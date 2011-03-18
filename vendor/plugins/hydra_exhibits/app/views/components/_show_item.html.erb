@@ -23,14 +23,6 @@
             <%= get_values_from_datastream(@document_fedora,"descMetadata", [:item, :did, :unittitle, :unittitle_content])%>
           </dd>
       <%end%>
-      <% unless get_values_from_datastream(@document_fedora,"descMetadata",  [:item, :did, :unitid]).first.empty?%>
-          <dt class="item_id">
-            <%= fedora_field_label("descMetadata", [:item, :did, :unitid], "ID:") %>
-          </dt>
-          <dd>
-            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:item, :did, :unitid])%>
-          </dd>
-      <%end%>
       <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:item, :did, :unittitle, :num]).first.empty?%>
          <dt class="serial_num">
            <%= fedora_field_label("descMetadata", [:item, :did, :unittitle, :num], "Serial Number:")%>
