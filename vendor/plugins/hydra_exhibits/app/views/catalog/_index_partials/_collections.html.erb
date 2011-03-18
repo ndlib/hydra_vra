@@ -1,9 +1,4 @@
-<%- thumbnail = nil unless thumbnail -%>
-<div class="with-thumbnail">
-  <div class="thumbnail-container">
-    <%= link_to_document document, :label=>(image_tag( thumbnail.nil? ? '/images/no_thumbnail.png' : thumbnail))%>
-  </div>
-  <dl class="defList">
+  <dl class="defList" style="position:relative;left:-60px;">
     <%- collection_field_names.each do |solr_fname| -%>
       <%- if document.get solr_fname %>
         <dt><%= h collection_field_labels[solr_fname]%></dt>
@@ -11,7 +6,6 @@
       <%- end -%>
     <%- end -%>
   </dl>
-</div>
 
 <p class="description">
   <%= document.get("ead_archive_desc_t") %>
