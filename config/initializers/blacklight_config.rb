@@ -99,7 +99,7 @@ Blacklight.configure(:shared) do |config|
       "dsc_collection_did_unittitle_unittitle_content_t",
       "dsc_collection_did_unittitle_imprint_publisher_t",
       "dsc_collection_controlaccess_genreform_t",
-       "ead_ead_header_filedesc_titlestmt_titleproper_t"
+      "ead_ead_header_filedesc_titlestmt_titleproper_t"
       ],
     :labels => {
       "date_t"=>"Date",
@@ -158,6 +158,25 @@ Blacklight.configure(:shared) do |config|
     }
   }
 
+  config[:pages_index_fields] = {
+    :field_names => [
+      "title_t",
+      "name_t",
+      "page_id_t",
+      "dsc_collection_did_unittitle_unittitle_content_t",
+      "dsc_collection_did_unittitle_imprint_publisher_t",
+      "ead_ead_header_filedesc_titlestmt_titleproper_t"
+      ],
+    :labels => {
+      "title_t"    						=> "Title",
+      "name_t"     						=> "Name",
+      "page_id_t"       					=> "ID",
+      "dsc_collection_did_unittitle_unittitle_content_t"	=> "Date",
+      "dsc_collection_did_unittitle_imprint_publisher_t"	=> "Publisher",
+      "ead_ead_header_filedesc_titlestmt_titleproper_t"		=> "Parent Collection"
+    }
+  }
+
   # solr fields to be displayed in the show (single result) view
   #   The ordering of the field names is the order of the display 
   config[:show_fields] = {
@@ -170,6 +189,7 @@ Blacklight.configure(:shared) do |config|
       "dsc_collection_did_unitid_unitid_identifier_t",
       "dsc_collection_did_unittitle_unittitle_content_t",
       "dsc_collection_did_unittitle_imprint_publisher_t",
+      "dsc_collection_controlaccess_genreform_t",
       "dsc_collection_scopecontent_t",
       "item_did_unittitle_unittitle_content_t",
       "item_did_unittitle_t",

@@ -1,10 +1,10 @@
 <%- component = load_af_instance_from_solr(document) -%>
 <div class="with-thumbnail">
-  <div class="thumbnail-container">
-    <%= link_to_document document, :label=>(
-      image_tag(component.main_page.to_s.blank? ? '/images/no_thumbnail.png' : Page.load_instance(component.main_page.to_s).datastream_url('thumbnail'))
-    ) %>
-  </div>
+  <%- if !component.item_id.blank? -%>
+    <div class="thumbnail-container">
+      <%= link_to_document document, :label=>(image_tag(component.main_page.to_s.blank? ? '/images/no_thumbnail.png' : Page.load_instance(component.main_page.to_s).datastream_url('thumbnail'))) %>
+    </div>
+  <%- end -%>
   <dl class="defList">
     <%- if component.item_id.blank? -%>
       <%- index_field_names.each do |solr_fname| -%>

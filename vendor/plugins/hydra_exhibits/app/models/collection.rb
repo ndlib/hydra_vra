@@ -14,6 +14,30 @@ class Collection < ActiveFedora::Base
   # Uses the Hydra MODS Article profile for tracking most of the descriptive metadata
   has_metadata :name => "descMetadata", :type => EadXml
 
+  has_metadata :name => "properties", :type => ActiveFedora::MetadataDatastream do |m|
+    m.field 'last_sc_number', :string
+    m.field 'last_item_number', :string
+    m.field 'last_image_number', :string
+  end
+
+  def last_sc_number
+    return @last_sc_number if (defined? @last_sc_number)
+    values = self.fields[:last_sc_number][:values]
+    @last_sc_number = values.any? ? values.first : ""
+  end
+
+  def last_item_number
+    return @last_item_number if (defined? @last_item_number)
+    values = self.fields[:last_item_number][:values]
+    @last_item_number = values.any? ? values.first : ""
+  end
+
+  def last_image_number
+    return @last_image_number if (defined? @last_image_number)
+    values = self.fields[:last_image_number][:values]
+    @last_image_number = values.any? ? values.first : ""
+  end
+
 #  def insert_new_node(type, opts)
 #    ds = self.datastreams_in_memory["descMetadata"]
 #    node, index = ds.insert_node(type, opts)

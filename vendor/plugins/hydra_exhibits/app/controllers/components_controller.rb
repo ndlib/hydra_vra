@@ -56,7 +56,7 @@ class ComponentsController < ApplicationController
     def update
       af_model = retrieve_af_model(params[:content_type])
       unless af_model 
-        af_model = HydrangeaArticle
+        af_model = Component
       end
       @document = af_model.find(params[:id])
       if(params.has_keys?"description_id")

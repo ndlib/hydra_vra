@@ -32,6 +32,14 @@ module ApplicationHelper
     Blacklight.config[:items_index_fields][:labels]
   end
 
+  def page_field_names
+    Blacklight.config[:pages_index_fields][:field_names]
+  end
+
+  # used in the _index_partials/_collection view
+  def page_field_labels
+    Blacklight.config[:pages_index_fields][:labels]
+  end
 
   def excerpt_size
     HydraExhibit.config[:excerpt_size]

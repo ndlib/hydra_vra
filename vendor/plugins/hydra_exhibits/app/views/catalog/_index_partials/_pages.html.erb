@@ -1,0 +1,23 @@
+<%- page = load_af_instance_from_solr(document) -%>
+<div class="thumbnail-container">
+    <%= link_to_document document, :label=>(
+      image_tag page.datastream_url('thumbnail')
+    ) %>
+</div>
+<dl class="defList">
+      <%- page_field_names.each do |solr_fname| -%>
+        <% # - if(!s[solr_fname].nil? || !s[solr_fname].empty?) -%>
+        <% if document.get solr_fname -%>
+          <dt><%= h page_field_labels[solr_fname]%></dt>
+	  <%- if(!document[solr_fname].is_a?(Array)) -%>
+            <dd><%= h document[solr_fname] %></dd>
+	  <%- else -%>
+            <dd><%= h document[solr_fname].first %></dd>
+          <%- end -%>
+        <% elsif(solr_fname.split("_").first == "name") -%>
+          <dt><%= h page_field_labels[solr_fname]%></dt>
+	  <dd><%= h page.name %></dd>
+        <%- end -%>
+      <%- end -%>
+</dl>
+

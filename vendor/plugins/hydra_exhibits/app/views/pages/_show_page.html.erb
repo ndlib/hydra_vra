@@ -7,14 +7,6 @@
       <dd class="parent">
 	<%= link_to "#{@document_fedora.item.first.title}", catalog_path(@document_fedora.item.first.pid) %>        
       </dd>
-      <% unless get_values_from_datastream(@document_fedora,"properties", [:page_id]).first.empty?%>
-          <dt class="page_id">
-            <%= fedora_field_label("properties", [:page_id], "ID:") %>
-          </dt>
-          <dd>
-            <%= @document_fedora.page_id %>
-          </dd>
-      <%end%>
       <% unless get_values_from_datastream(@document_fedora,"properties", [:name]).first.empty?%>
           <dt class="name">
             <%= fedora_field_label("properties", [:name], "Name:") %>
