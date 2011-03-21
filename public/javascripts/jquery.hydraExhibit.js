@@ -97,7 +97,8 @@
       return false;
     });*/
      
-     $('input.addfeatured').unbind('click').bind('click',function(){
+     //$('input.addfeatured').unbind('click').bind('click',function(){
+       $('input.addfeatured').bind('click',function(){
        var selectedSubexhibitItems = new Array();
        $("input.featured:checked").each(function() {selectedSubexhibitItems.push($(this).val());});       
        var url = $("input#update_url").first().attr("value")       
@@ -143,7 +144,7 @@
            });
          }
       });
-      return false;
+      //return false;
     });
 
 
@@ -313,8 +314,8 @@
         return false;
     });
 
-    //$('input:radio[rel=page_display]').live('click',function()
-    $('dd.display input:radio').die('click').live('click',function(){
+    $('dd.display input:radio').live('click',function(){
+    //$('dd.display input:radio').die('click').live('click',function(){
       var $closestdd = $(this).closest('dd.display')
       var $closestForm=$closestdd.siblings('input.update_description_display');
       var url = $closestForm.attr("action");
