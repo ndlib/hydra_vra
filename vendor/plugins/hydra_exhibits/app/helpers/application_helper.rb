@@ -433,6 +433,7 @@ logger.debug("Params in edit_and_browse_links: #{params.inspect}")
     models_for_url= []
     values_for_url= []
     
+=begin
     ['collection', 'component', 'page', 'description', 'exhibit', 'sub_exhibit'].each do |model|
       constantized_model = model.classify.constantize
       key = "#{model}_id".to_sym
@@ -454,6 +455,7 @@ logger.debug("Params in edit_and_browse_links: #{params.inspect}")
         breadcrumb_html << " &gt; #{constantized_model.load_instance_from_solr(params[:id]).title}"
       end
     end
+=end
     return breadcrumb_html
   end
 

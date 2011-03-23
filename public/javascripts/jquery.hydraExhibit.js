@@ -28,6 +28,7 @@
 
      $(".content").hide();
      //toggle the componenet with class msg_body
+     //$(".heading").unbind('click').bind('click',function(){
      $(".heading").click(function(){
         $(this).siblings(".intro").toggle()
         $(this).next(".content").slideToggle(300);
@@ -363,7 +364,8 @@
           text: false,
           icons: { primary: "ui-icon-triangle-1-s" }
         })
-        .click(function() {
+        //$("div.split-button input.button").next().unbind('click').bind('click',function() {
+       .click(function() {
           var ulelement= $(this).siblings('ul')
           ulelement.is(":hidden") ?
             ulelement.show() : ulelement.hide();
@@ -377,7 +379,8 @@
      $('dd.browse_facets ol li').each(function(){
        index = $(this).attr("index")
        $(this).attr('style', 'text-indent:'+index+'em');;
-     });     
+     });
+     return false;
    }
 
    $.fn.exhibitTextField = function(settings) {
@@ -418,8 +421,9 @@
        height    : "100",
        ckeditor  : { toolbar:
                         [
-                            ['Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink'],
-                            ['UIColor'], ['Source']
+                            ['Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink', '-', 'linkItem'],
+                            ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print', 'SpellChecker', 'Scayt'],
+                            ['UIColor', 'PageBreak'], ['Source'], ['Maximize', 'ShowBlocks','-','About']
                         ]
                      }
      };     
@@ -443,7 +447,8 @@
                     "&description_id="+pid
 
       var assetUrl = $("input#show_description_url").first().attr("value")+params;
-      var submitUrl = $.fn.hydraMetadata.appendFormat(assetUrl, {format: "textile"});
+      //var submitUrl = $.fn.hydraMetadata.appendFormat(assetUrl, {format: "textile"});
+      var submitUrl = $.fn.hydraMetadata.appendFormat(assetUrl, {format: "html"});
 
       // These params are all you need to load the value from AssetsController.show
       // Note: the field value must match the field name in solr (minus the solr suffix)
@@ -641,9 +646,10 @@
           id        : "field_id",
           height    : "100",          
           ckeditor  : { toolbar:
-                        [
-                            ['Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink'],
-                            ['UIColor'], ['Source']
+                        [   ['linkItem'],
+                            ['Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink', '-', 'linkItem'],
+                            ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print', 'SpellChecker', 'Scayt'],
+                            ['UIColor', 'PageBreak'], ['Source'], ['Maximize', 'ShowBlocks','-','About']
                         ]
                       }
        });
