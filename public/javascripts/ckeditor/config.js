@@ -10,6 +10,7 @@ CKEDITOR.editorConfig = function( config )
 	// config.uiColor = '#AADC6E';
 
     config.extraPlugins = 'linkItem';
+    config.removePlugins = 'scayt,menubutton,contextmenu';
 };
 
     CKEDITOR.on( 'instanceReady', function( ev )

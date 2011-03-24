@@ -99,6 +99,7 @@ CKEDITOR.dialog.add( 'linkItem', function( editor )
 			emailMatch,
 			anchorMatch,
 			urlMatch,
+            display_text = ( element  && ( element.getAttribute( '_cke_saved_display' ) || element.getAttribute( 'display' ) ) ) || '',
 			retval = {};
 
 		if ( ( javascriptMatch = href.match( javascriptProtocolRegex ) ) )
@@ -165,10 +166,11 @@ CKEDITOR.dialog.add( 'linkItem', function( editor )
 			// urlRegex matches empty strings, so need to check for href as well.
 			else if (  href && ( urlMatch = href.match( urlRegex ) ) )
 			{
-				retval.type = 'url';
+                retval.type = 'url';
 				retval.url = {};
 				retval.url.protocol = urlMatch[1];
 				retval.url.url = urlMatch[2];
+                retval.disp = display_text;
 			}
 			else
 				retval.type = 'url';
@@ -442,6 +444,7 @@ CKEDITOR.dialog.add( 'linkItem', function( editor )
 										onLoad : function ()
 										{
 											this.allowOnChange = true;
+                                            //this.setAttribute('readonly','true');
 										},
 										onKeyUp : function()
 										{
@@ -1215,7 +1218,7 @@ CKEDITOR.dialog.add( 'linkItem', function( editor )
 					attributes._cke_saved_href = ( url.indexOf( '/' ) === 0 ) ? url : protocol + url;
                     var display = ( data.disp && data.disp!= undefined) ? data.disp : attributes._cke_saved_href;
                     attributes._cke_saved_display=display
-                    //console.log("_cke_saved_display is-> "+attributes._cke_saved_display)
+                    //console.log("disp is-> "+data.disp + "_cke_saved_display is-> "+attributes._cke_saved_display)
 					break;
 				case 'anchor':
 					var name = ( data.anchor && data.anchor.name ),
@@ -1349,7 +1352,7 @@ CKEDITOR.dialog.add( 'linkItem', function( editor )
 							data.email.address : attributes._cke_saved_href, editor.document );*/
                     var text = new CKEDITOR.dom.text( data.type == 'email' ?
 							data.email.address : attributes._cke_saved_display, editor.document );
-                    console.log(text)
+                    //console.log(text)
 					ranges[0].insertNode( text );
 					ranges[0].selectNodeContents( text );
 					selection.selectRanges( ranges );
@@ -1379,9 +1382,8 @@ CKEDITOR.dialog.add( 'linkItem', function( editor )
 				// We're only editing an existing link, so just overwrite the attributes.
 				var element = this._.selectedElement,
 					href = element.getAttribute( '_cke_saved_href' ),
-                    displayText=element.getAttribute( '_cke_saved_display' ),
 					textView = element.getHtml();
-                    //console.log(displayText + "and" +textView)
+                    //console.log(attributes._cke_saved_display  + " and " +textView)
 				// IE BUG: Setting the name attribute to an existing link doesn't work.
 				// Must re-create the link from weired syntax to workaround.
 				if ( CKEDITOR.env.ie && attributes.name != element.getAttribute( 'name' ) )
@@ -1408,7 +1410,7 @@ CKEDITOR.dialog.add( 'linkItem', function( editor )
 					element.setHtml( data.type == 'email' ?
 						data.email.address : attributes._cke_saved_href );
 				}
-                if ( displayText != textView )
+                if ( attributes._cke_saved_display != textView )
 				{
 					// Change display text if changed
 					element.setHtml(attributes._cke_saved_display );
@@ -1448,37 +1450,3 @@ CKEDITOR.dialog.add( 'linkItem', function( editor )
 	};
 });
 
-/*CKEDITOR.dialog.add('linkItem',function(editor){
-    alert( "Executing a command for the editor name - " + editor.checkDirty() );
-
-
-     $.ajax({
-         type: "PUT",
-         url: "http://localhost:3000/catalog/RBSC-CURRENCY:398",
-         dataType : "json",
-         data: "data=1",
-         success: function(msg){
-     			$.noticeAdd({
-             inEffect:               {opacity: 'show'},      // in effect
-             inEffectDuration:       600,                    // in effect duration in miliseconds
-             stayTime:               6000,                   // time in miliseconds before the item has to disappear
-             text:                   "success",
-             stay:                   false,                  // should the notice item stay or not?
-             type:                   'notice'                // could also be error, succes
-            });
-            $.fn.hydraExhibit.resetSetting();
-         },
-         error: function(xhr, textStatus, errorThrown){
-     			$.noticeAdd({
-             inEffect:               {opacity: 'show'},      // in effect
-             inEffectDuration:       600,                    // in effect duration in miliseconds
-             stayTime:               6000,                   // time in miliseconds before the item has to disappear
-             text:                   'update failed',
-             stay:                   true,                  // should the notice item stay or not?
-             type:                   'error'                // could also be error, succes
-            });
-         }
-       });
-
-    alert('after ajax post');
-});*/
