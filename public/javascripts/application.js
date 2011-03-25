@@ -44,17 +44,6 @@ $(function() {
     $('#add-contributor-menu').hide();
   });
 
-  $("div.document div.documentHeader div h2.index_title a").bind("click", function(){
-    var href = $(this).attr('href');
-    //alert($(this).html())
-    var dialog = window.opener.CKEDITOR.dialog.getCurrent();
-    dialog.setValueOf('info','url',href);  // Populates the URL field in the Links dialogue.
-    dialog.setValueOf('info','protocol','');  // This sets the Link's Protocol to Other which loads the file from the same folder the link is on
-    dialog.setValueOf('info','displayField',$(this).html());  // Populates the display field in the Links dialogue
-    window.close(); // closes the popup window
-    return false;
-  });
-
 });
 
 function createAssetNavigateTo(elem, link) {

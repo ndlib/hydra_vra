@@ -538,7 +538,7 @@ CKEDITOR.dialog.add( 'linkItem', function( editor )
                                          filebrowser :
                                          {
                                              action : 'Browse',
-                                             url : '/exhibits'
+                                             url : '/catalog'
                                          }
                                      }
                                 ]

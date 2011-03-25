@@ -41,6 +41,29 @@ module ApplicationHelper
     Blacklight.config[:pages_index_fields][:labels]
   end
 
+  # used in the catalog/_facets partial
+  def ckeditor_facet_field_names
+    HydraExhibit.config[:ckeditor_facet][:field_names]
+  end
+
+  def description_field_names
+    HydraExhibit.config[:descriptions_index_fields][:field_names]
+  end
+
+  def description_field_labels
+    HydraExhibit.config[:descriptions_index_fields][:labels]
+  end
+
+  # used in the catalog/_facets partial
+  def facet_field_names
+    facets = Blacklight.config[:facet][:field_names]
+    facet_names=facets.dup
+    expectional_facet = ["active_fedora_model_s"]
+    expectional_facet.each {|x| facet_names.delete(x) }
+    logger.error("Modified Facet: #{facet_names.inspect}")
+    return facet_names
+  end
+
   def excerpt_size
     HydraExhibit.config[:excerpt_size]
   end
@@ -598,6 +621,20 @@ logger.debug("Params in edit_and_browse_links: #{params.inspect}")
       end
     end
     q = "#{q} AND NOT _query_:\"info\\\\:fedora/afmodel\\\\:Exhibit\" AND NOT _query_:\"info\\\\:fedora/afmodel\\\\:SubExhibit\" AND NOT _query_:\"info\\\\:fedora/afmodel\\\\:Description\" "
+  end
+
+
+  def build_lucene_query_with_desc(user_query)
+    logger.debug("Return Desc as well")
+    q = access_controls_build_lucene_query(user_query)
+    if params[:exhibit_id]
+      ex = Exhibit.load_instance_from_solr(params[:exhibit_id])
+      unless ex.nil?
+        exhibit_members_query = ex.build_members_query
+        q = "#{exhibit_members_query} AND #{q}" unless exhibit_members_query.empty?
+      end
+    end
+    q = "#{q} AND NOT _query_:\"info\\\\:fedora/afmodel\\\\:Exhibit\" AND NOT _query_:\"info\\\\:fedora/afmodel\\\\:SubExhibit\""
   end
 
   def get_collections(content, user_query_to_append)
