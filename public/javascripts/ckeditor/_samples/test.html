@@ -1,0 +1,40 @@
+<html>
+<head>
+<title>Link to CMS Page</title>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+<script  language="JavaScript">
+    function AddLink(txtLink)
+    {
+        var dialog = window.opener.CKEDITOR.dialog.getCurrent();
+            dialog.setValueOf('info','url',txtLink);  // Populates the URL field in the Links dialogue.
+            dialog.setValueOf('info','protocol','');  // This sets the Link's Protocol to Other which loads the file from the same folder the link is on
+            window.close(); // closes the popup window
+    }
+    $(document).ready(function(){
+           $("a").live("click", function(){
+               var href = $(this).attr('action');
+               var dialog = window.opener.CKEDITOR.dialog.getCurrent();
+               dialog.setValueOf('info','url',href);  // Populates the URL field in the Links dialogue.
+               dialog.setValueOf('info','protocol','');  // This sets the Link's Protocol to Other which loads the file from the same folder the link is on
+               window.close(); // closes the popup window
+               return false;
+           });
+    });
+</script>
+</head>
+
+<body>
+<h3>Internal Links</h3>
+<p>
+<a href="JavaScript:AddLink('default.asp?pid=1')">HOME</a><br>
+<a href="JavaScript:AddLink('default.asp?pid=2')">ABOUT US</a><br>
+<a href="JavaScript:AddLink('default.asp?pid=3')">PRODUCTS</a><br>
+<a href="JavaScript:AddLink('default.asp?pid=4')">SERVICES</a><br>
+
+<a href=# action="default.asp?pid=1">Jquery HOME</a><br>
+<a href=# action="default.asp?pid=2">Jquery ABOUT US</a><br>
+<a href=# action="default.asp?pid=3">Jquery PRODUCTS</a><br>
+<a href=# action="default.asp?pid=4">Jquery SERVICES</a>
+</p>
+</body>
+</html>

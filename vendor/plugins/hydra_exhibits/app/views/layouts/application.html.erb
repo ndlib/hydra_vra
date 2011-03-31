@@ -21,7 +21,7 @@
                     <h3><a style="text-decoration:none;border-bottom:medium none" href="http://www.library.nd.edu/" rel="external">Hesburgh Libraries of Notre Dame</a></h3>
                     <%- params[:exhibit_id] ? exhibit_id = params[:exhibit_id] : exhibit_id = params[:id] -%> 
                     <%- @exhibit.nil? ? exhibit = Exhibit.load_instance_from_solr(exhibit_id) : exhibit = @exhibit -%>
-                    <h3><%= link_to_exhibit :exhibit_id=>exhibit_id, :label=>"#{exhibit.exhibit_title}", :style=>"text-decoration:none;border-bottom:medium none" %></h1>
+                    <h3><%= link_to_exhibit :exhibit_id=>exhibit_id, :label=>"#{exhibit.exhibit_title}", :style=>"text-decoration:none;border-bottom:medium none" %></h3>
                   </td>
                 </tr>
               </table>
@@ -33,7 +33,7 @@
             <%= render :partial=>'/user_util_links' %>
           </div>
         </div>
-        <div id="breadcrumb">
+        <!--<div id="breadcrumb">
           <p>
             <span class="trail">
               <a href="http://www.library.nd.edu/rarebooks/" class="rbsc-root">Rare Books &amp; Special Collections</a>&nbsp;&gt;&nbsp;
@@ -41,7 +41,7 @@
               <%# breadcrumb_builder %>
             </span>
           </p>
-        </div>
+        </div>-->
       </div>
 
 	    

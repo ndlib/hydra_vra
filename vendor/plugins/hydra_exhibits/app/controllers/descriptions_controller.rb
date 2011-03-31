@@ -95,6 +95,12 @@ class DescriptionsController < ApplicationController
         logger.debug("render js response-> #{response.inspect}")
         render :json=> response
       }
+      want.html{
+        if content.kind_of?(Hash)
+          content = content.values.first
+        end
+        render :text=>content
+      }
       want.textile {
         if content.kind_of?(Hash)
           content = content.values.first

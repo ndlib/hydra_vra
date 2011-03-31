@@ -1,0 +1,8 @@
+  <dl class="defList" style="position:relative;left:-60px;">
+    <%- description_field_names.each do |solr_fname| -%>
+      <%- if document.get solr_fname %>
+        <dt><% h description_field_labels[solr_fname]%></dt>
+        <dd><%= h document.get(description_field_names) %></dd>
+      <%- end -%>
+    <%- end -%>
+  </dl>

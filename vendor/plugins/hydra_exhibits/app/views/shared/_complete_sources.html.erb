@@ -19,16 +19,17 @@
 </div>
 <%= render :partial=>'shared/sort_and_per_page', :locals => {:response=>@browse_response} if @browse_response.response['numFound'] > 10 %>
 
+<div id="documents" class="exhibit-listing">
   <%-unless featured_list.blank? -%>
     <%- if @browse_response.docs.current_page.eql?(1) %>
         <h2>Featured Sources</h2>
         <%- featured_list.each_with_index do |document, counter| -%>
-          <%- item = load_af_instance_from_solr(document) -%>
           <div class="document<%= thumbnail_class( document ) %>">
               <% # header bar for doc items in index view -%>
               <div class="documentHeader yui-g">
                 <% # main title container for doc partial view -%>
                 <div class="yui-u">
+                  <%- item = load_af_instance_from_solr(document) -%>
                   <%# document_show_link_field debug item.inspect %>
                   <%- if item.class == Collection -%>
                     <%- title = item.title -%>
@@ -37,19 +38,21 @@
                   <%- else-%>
                     <%- title = document[:id] %>
                   <%- end %>
-                </div>
+                  <%-  item.item_title.blank? ? title = item.sub_collection_title : title = item.item_title -%>
+                  <h2 class="index_title">
+                    <%- doc_id= document[:id] ? document[:id] : document[:id.to_s] -%>
+                    <%- label= title.blank? ? doc_id : title -%>
+                    <%= link_to_with_data(label, catalog_path(doc_id), {:method => :put, :data => {:counter => counter},:title=>nil}) %>
+                    <%# link_to_document document, :label=>label , :counter => (counter + 1) %>
+                  </h2>
               </div>
-              <%-  item.item_title.blank? ? title = item.sub_collection_title : title = item.item_title -%>
-              <h2 class="index_title">
-                <%- doc_id= document[:id] ? document[:id] : document[:id.to_s] -%>
-                <%- label= title.blank? ? doc_id : title -%>
-                <%= link_to_with_data(label, catalog_path(doc_id), {:method => :put, :data => {:counter => counter},:title=>nil}) %>
-              </h2>
-              <%= render_document_index_partial(SolrDocument.new(document), title, counter, :index) %>
+            </div>
+            <%= render_document_index_partial(SolrDocument.new(document), title, counter, :index) %>
           </div>
         <%- end -%>
     <%- end -%>
   <%- end -%>
+</div>
 
 
 <%= render :partial=>'shared/exhibit_complete_list', :locals => {:document_list=>@browse_document_list, :response=>@browse_response} %>
