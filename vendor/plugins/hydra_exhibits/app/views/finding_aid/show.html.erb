@@ -1,0 +1,45 @@
+<% javascript_includes << "/plugin_assets/fluid-infusion/infusion-1.2-src/lib/jquery/ui/js/jquery.ui.accordion.js" %>
+<% javascript_includes << 'custom' %>
+<% javascript_includes << "catalog/show" %>
+<% javascript_includes << "fancybox/jquery.fancybox-1.3.1.pack.js" %>
+<% javascript_includes << "generics_fancybox.js" %>
+<% stylesheet_links << "../javascripts/fancybox/jquery.fancybox-1.3.1.css" %>
+
+<style type="text/css" media="screen">
+  input.editable-edit, input.textile-edit {display:none}
+</style>
+
+
+  
+<table>
+<div id="showHead">
+  <tr><td>
+  <div id="showUtils">
+  <div class="tools"></div>
+    <span class="back_to_cat"><%= link_back_to_catalog :label=>'&laquo; Back to Search' %></span>
+    <% if @previous_document || @next_document %>
+      <div id="previousNextDocument">
+	    <span class="previous"><%= link_to_previous_document(@previous_document) %></span>
+    <% end %>
+    <%- if session[:search][:counter].to_i > 0 -%>
+      #<%= session[:search][:counter].to_i %> of <%= format_num(session[:search][:total]) %>
+    <%- end -%>
+    <% if @previous_document || @next_document %>
+	    <span class="next"><%= link_to_next_document(@next_document)%></span>	
+      </div>
+    <% end %>
+    <span class="edit-browse">
+      <% if editor? %>
+        <%= edit_and_browse_links %>
+      <% end -%>
+    </span>
+  </div>
+  </td></tr>
+  <tr><td>
+  <div class="document_viewer" id="cover_container">
+    <%= render :partial => 'finding_aid/collection.html' %>
+  </div>
+  </td></tr>
+</div>
+</table>
+
