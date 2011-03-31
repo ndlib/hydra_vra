@@ -17,6 +17,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :sub_exhibits
   map.resources :exhibits, {:member => {:update_embedded_search=> :post, :add_main_description=> :put, :add_collection=> :put, :remove_collection=> :post, :refresh_setting=> :get}}
   map.resources :pages
+#  map.static 'static/:permalink', :controller => 'finding_aid', :action => 'show'
+  map.resources :finding_aid, :controller => 'finding_aid' , :action => 'show', :finding_aid => /show|collection/
 
   map.login "login", :controller => "webauth_sessions", :action => "new"
   map.logout "logout", :controller => "webauth_sessions", :action => "destroy"

@@ -4,12 +4,11 @@
     <%- item = load_af_instance_from_solr(document) -%>
     <%- item.respond_to?(:title) ? title = item.title : title = document[:id] -%>
     <div class="document">
-          
       <%# # header bar for doc items in index view -%>
       <div class="documentHeader yui-g">
         <%# # main title container for doc partial view -%>
         <div class="yui-u">
-          <h2 class="index_title"><%= counter + 1 + response.params[:start].to_i %>. <%= link_to item.item_title.empty? ? item.pid : item.item_title, catalog_path(item.pid), :label=>document_show_link_field, :counter => (counter + 1 + response.params[:start].to_i) %></h2>
+          <h2 class="index_title"><%= counter + 1 + response.params[:start].to_i %>. <%= link_to item.item_title.empty? ? item.pid : item.item_title, catalog_path(item.pid, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context]), :label=>document_show_link_field, :counter => (counter + 1 + response.params[:start].to_i) %></h2>
         </div>
       </div>
       

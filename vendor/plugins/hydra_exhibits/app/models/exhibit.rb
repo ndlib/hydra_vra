@@ -53,7 +53,7 @@ class Exhibit < ActiveFedora::Base
 
   def query_values
     #["id_t:RBSC-CURRENCY"]
-    #["id_t:RBSC-CURRENCY","dsc_0_collection_0_did_0_unittitle_0_imprint_0_publisher_facet:Connecticut"]
+    #["id_t:RBSC-CURRENCY","collection_0_did_0_unittitle_0_imprint_0_publisher_facet:Connecticut"]
     datastreams["filters"].query_values
   end
 

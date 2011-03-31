@@ -20,7 +20,6 @@ class ComponentsController < ApplicationController
         
         @response, @document = get_solr_response_for_doc_id
         pid = @document[:id] ? @document[:id] : @document[:id.to_s]
-        logger.debug("PID: #{pid}")
         pid ? @component = Component.load_instance_from_solr(pid,@document) : @component = nil
 #	childern = @component.inbound_relationships[:is_part_of]
         #@sub_collection.nil? @members = [] : @members = @sub_collection.members
@@ -40,19 +39,14 @@ class ComponentsController < ApplicationController
           format.textile  { render :text=> white_list( RedCloth.new(result, [:sanitize_html]).to_html ) }
         end
       else
-        redirect_to :controller=>"catalog", :action=>"show", :label=>params[:label]
+        redirect_to :controller=>"catalog", :action=>"show", :label=>params[:label], :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context]
       end
     end
     
     # Uses the update_indexed_attributes method provided by ActiveFedora::Base
     # This should behave pretty much like the ActiveRecord update_indexed_attributes method
     # For more information, see the ActiveFedora docs.
-    # 
-    # Examples
-    # put :update, :id=>"_PID_", "document"=>{"subject"=>{"-1"=>"My Topic"}}
-    # Appends a new "subject" value of "My Topic" to any appropriate datasreams in the _PID_ document.
-    # put :update, :id=>"_PID_", "document"=>{"medium"=>{"1"=>"Paper Document", "2"=>"Image"}}
-    # Sets the 1st and 2nd "medium" values on any appropriate datasreams in the _PID_ document, overwriting any existing values.
+
     def update
       af_model = retrieve_af_model(params[:content_type])
       unless af_model 
@@ -64,12 +58,12 @@ class ComponentsController < ApplicationController
         @asset = af_model.load_instance(params[:id])
         @asset.update_indexed_attributes({:main_page=>{0=>params[:description_id]}})
         @asset.save
-	redirect_to url_for(:action=>"edit", :controller=>"catalog", :id=>@asset.pid)
+	redirect_to url_for(:action=>"edit", :controller=>"catalog", :id=>@asset.pid, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context])
       elsif((params[:field_selectors].has_keys?"properties") && (params[:field_selectors][:properties].has_keys?"subcollection_id"))
         @asset = af_model.load_instance(params[:id])
         @asset.update_indexed_attributes({:subcollection_id=>{"0"=>params[:asset][:properties][:subcollection_id].first.second}})
         @asset.save
-	redirect_to url_for(:action=>"edit", :controller=>"catalog", :id=>@asset.pid)
+	redirect_to url_for(:action=>"edit", :controller=>"catalog", :id=>@asset.pid, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context])
       else
 	if(params[:field_selectors][:descMetadata].keys.include?"item_did_unitid")
           @document.update_indexed_attributes({:item_id=>{"0"=>params[:asset][:descMetadata][:item_did_unitid].first.second}})
@@ -128,7 +122,7 @@ class ComponentsController < ApplicationController
           create_and_save_component(params[:label], content_type, parent_id)
         end
       end
-      redirect_to url_for(:action=>"edit", :controller=>"catalog", :label => params[:label], :id=>@asset.pid)
+      redirect_to url_for(:action=>"edit", :controller=>"catalog", :label => params[:label], :id=>@asset.pid, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context])
     end
         
 #    def select

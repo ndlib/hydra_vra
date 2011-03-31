@@ -5,7 +5,7 @@
         <p> Parent: </p>
       </dt>
       <dd class="parent">
-        <%= link_to "#{@document_fedora.member_of.first.title}", catalog_path(@document_fedora.member_of.first.pid) %>
+        <%= link_to "#{@document_fedora.member_of.first.title}", catalog_path(@document_fedora.member_of.first.pid, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context]) %>
       </dd>
       <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:item, :did, :unittitle, :unittitle_label]).first.empty?%>
           <dt class="display_title">

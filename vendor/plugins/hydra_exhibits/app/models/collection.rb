@@ -6,6 +6,7 @@ class Collection < ActiveFedora::Base
   include Hydra::ModelMethods
 
   has_bidirectional_relationship "members", :has_member, :is_member_of
+  has_bidirectional_relationship "parts", :has_part, :is_part_of
   has_bidirectional_relationship  "descriptions",   :has_description, :is_description_of
     
   # Uses the Hydra Rights Metadata Schema for tracking access permissions & copyright
@@ -15,6 +16,8 @@ class Collection < ActiveFedora::Base
   has_metadata :name => "descMetadata", :type => EadXml
 
   has_metadata :name => "properties", :type => ActiveFedora::MetadataDatastream do |m|
+    m.field 'collection', :string
+    m.field 'depositor', :string
     m.field 'last_sc_number', :string
     m.field 'last_item_number', :string
     m.field 'last_image_number', :string
@@ -38,11 +41,11 @@ class Collection < ActiveFedora::Base
     @last_image_number = values.any? ? values.first : ""
   end
 
-#  def insert_new_node(type, opts)
-#    ds = self.datastreams_in_memory["descMetadata"]
-#    node, index = ds.insert_node(type, opts)
-#    return node, index
-#  end
+  def insert_new_node(type, opts)
+    ds = self.datastreams_in_memory["descMetadata"]
+    node, index = ds.insert_node(type, opts)
+    return node, index
+  end
 
 #  def remove_image(type, index)
 #    ds = self.datastreams_in_memory["descMetadata"]

@@ -98,7 +98,7 @@ class Component < ActiveFedora::Base
   def get_type_from_datastream
     if self.has_value_for("descMetadata", [:item])
       :item
-    elsif self.has_value_for("descMetadata", [:dsc, :collection])
+    elsif self.has_value_for("descMetadata", [:collection])
       :collection
     else
       :unknown
@@ -117,7 +117,7 @@ class Component < ActiveFedora::Base
 
   def sub_collection_title
     return @sub_collection_title if (defined? @sub_collection_title)
-    values = self.datastreams["descMetadata"].term_values(:dsc, :collection, :did, :unittitle, :unittitle_content)
+    values = self.datastreams["descMetadata"].term_values(:collection, :did, :unittitle, :unittitle_content)
     @sub_collection_title = values.any? ? values.first : ""
   end
 
@@ -128,8 +128,8 @@ class Component < ActiveFedora::Base
   # Used this method to display parent's title as the link in the catalog view of C02 level
   def title
     return @title if (defined? @title)
-    if((self.type.to_s.eql? "collection") && !(self.datastreams["descMetadata"].term_values(:dsc, :collection, :did, :unittitle, :unittitle_content).empty?))  
-      values = self.datastreams["descMetadata"].term_values(:dsc, :collection, :did, :unittitle, :unittitle_content)
+    if((self.type.to_s.eql? "collection") && !(self.datastreams["descMetadata"].term_values(:collection, :did, :unittitle, :unittitle_content).empty?))  
+      values = self.datastreams["descMetadata"].term_values(:collection, :did, :unittitle, :unittitle_content)
     else
       values = self.datastreams["descMetadata"].term_values(:item, :did, :unittitle, :unittitle_content)
     end
@@ -177,11 +177,11 @@ class Component < ActiveFedora::Base
           "Acquisition Head",          [:archive_desc, :acqinfo, :head],
           "Prefercite Info",           [:archive_desc, :prefercite],
           "Prefercite Head",           [:archive_desc, :prefercite, :head],
-          "Unique ID",                 [:dsc, :collection, :did, :unitid],
-          "ID",                        [:dsc, :collection, :did, :unitid, :unitid, :identifier],
-          "Emission Date",             [:dsc, :collection, :did, :unittitle, :unittitle, :content],
-          "Publisher",                 [:dsc, :collection, :did, :unittitle, :imprint, :publisher],
-          "Genre",                     [:dsc, :collection, :controlaccess, :genreform]
+          "Unique ID",                 [:collection, :did, :unitid],
+          "ID",                        [:collection, :did, :unitid, :unitid, :identifier],
+          "Emission Date",             [:collection, :did, :unittitle, :unittitle, :content],
+          "Publisher",                 [:collection, :did, :unittitle, :imprint, :publisher],
+          "Genre",                     [:collection, :controlaccess, :genreform]
         ]
       }
     }

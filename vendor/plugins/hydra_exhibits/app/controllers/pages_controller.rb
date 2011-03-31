@@ -16,30 +16,26 @@ class PagesController < ApplicationController
     before_filter :require_fedora, :require_solr
     
     def show
-      if params.has_key?("field")
-        
-        @response, @document = get_solr_response_for_doc_id
-        pid = @document[:id] ? @document[:id] : @document[:id.to_s]
-        pid ? @page = Page.load_instance_from_solr(pid,@document) : @page = nil
-        #@sub_collection.nil? @members = [] : @members = @sub_collection.members
-        # @document = SolrDocument.new(@response.docs.first)
-        result = @document["#{params["field"]}_t"]
-        # document_fedora = SaltDocument.load_instance(params[:id])
-        # result = document_fedora.datastreams_in_memory[params["datastream"]].send("#{params[:field]}_values")
-        unless result.nil?
-          if params.has_key?("field_index")
-            result = result[params["field_index"].to_i-1]
-          elsif result.kind_of?(Array)
-            result = result.first
-          end
-        end
-        respond_to do |format|
-          format.html     { render :text=>result }
-          format.textile  { render :text=> white_list( RedCloth.new(result, [:sanitize_html]).to_html ) }
-        end
-      else
-        redirect_to :controller=>"catalog", :action=>"show"
-      end
+      puts "Page Params: #{params.inspect}"
+#      if params.has_key?("field")
+#        @response, @document = get_solr_response_for_doc_id
+#        pid = @document[:id] ? @document[:id] : @document[:id.to_s]
+#        pid ? @page = Page.load_instance_from_solr(pid,@document) : @page = nil
+#        result = @document["#{params["field"]}_t"]
+#        unless result.nil?
+#          if params.has_key?("field_index")
+#            result = result[params["field_index"].to_i-1]
+#          elsif result.kind_of?(Array)
+#            result = result.first
+#          end
+#        end
+#        respond_to do |format|
+#          format.html     { render :text=>result }
+#          format.textile  { render :text=> white_list( RedCloth.new(result, [:sanitize_html]).to_html ) }
+#        end
+#      else
+        redirect_to :controller=>"catalog", :action=>"show", :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context]
+#      end
     end
     
     # Uses the update_indexed_attributes method provided by ActiveFedora::Base
@@ -106,14 +102,23 @@ class PagesController < ApplicationController
         generic_content_object.update_indexed_attributes({[:name]=>{"0"=>params[:Filename].sub(".jpg", "")}})
         item_pid = generic_content_object.item.first.pid
         item_obj = Component.load_instance(item_pid)
-        inserted_node, new_node_index = item_obj.insert_new_node('image', opts={})
+	image = ''
+	img_term = []
+        if(item_obj.member_of.first.instance_of? Component)
+          image = 'image'
+          img_term = [:item, :daogrp, :daoloc, :daoloc_href]
+        else
+          image = 'subcol_image'
+          img_term = [:collection, :daogrp, :daoloc, :daoloc_href]
+        end
+        inserted_node, new_node_index = item_obj.insert_new_node(image, opts={})
 	item_obj.save
 	no_of_images = 0
         if(item_obj.methods.contains? "parts")
 	  no_of_images = item_obj.parts.size
         end
 	puts "No of Images: #{no_of_images.to_s}............................."
-        item_obj.update_indexed_attributes ({[:item, :daogrp, :daoloc, :daoloc_href]=>{"#{(no_of_images-1).to_s}"=>params[:Filename].sub(".jpg", "")}} )
+        item_obj.update_indexed_attributes ({img_term=>{"#{(no_of_images-1).to_s}"=>params[:Filename].sub(".jpg", "")}} )
         item_obj.save
         generic_content_object.content={:file => params[:Filedata], :file_name => params[:Filename]}
         logger.debug "#########: set the content"
@@ -132,9 +137,13 @@ class PagesController < ApplicationController
       content_type = params[:content_type]
       af_model = retrieve_af_model(content_type)
       if af_model
-        @asset = create_and_save_page(params[:item_id], content_type)
+        if(!params[:item_id].nil?)
+          @asset = create_and_save_page(params[:item_id], content_type)
+        elsif(!params[:subcollection_id].nil?)
+          @asset = create_and_save_page(params[:subcollection_id], content_type)
+	end
       end
-      redirect_to url_for(:action=>"edit", :controller=>"catalog", :label => params[:label], :id=>@asset.pid)
+      redirect_to url_for(:action=>"edit", :controller=>"catalog", :label => params[:label], :id=>@asset.pid, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context])
     end
     
     def destroy

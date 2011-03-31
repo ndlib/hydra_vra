@@ -62,14 +62,14 @@ class CollectionsController < CatalogController
     content_type = params[:content_type]
     af_model = retrieve_af_model(content_type)
     if af_model
-      @asset = create_and_save_collection(content_type)
+      @asset = create_and_save_collection(af_model)
     end
-    redirect_to url_for(:action=>"edit", :controller=>"catalog", :label => params[:label], :id=>@asset.pid)
+    redirect_to url_for(:action=>"edit", :controller=>"catalog", :label => params[:label], :id=>@asset.pid, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context])
   end
 
 
   def show  
-    show_without_customizations
+    show_without_customizations[:exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context]]
   end
 
 end

@@ -124,7 +124,7 @@ module BatchIngester
         update_fields(collection, [:archive_desc, :prefercite, :head], args[:prefercite_head])
         collection.save
         exhibit= Exhibit.new(:namespace=>get_namespace)#(:pid=>pid)
-        exhibit.update_indexed_attributes({:facets=>{0=>"dsc_0_collection_0_did_0_unittitle_0_imprint_0_publisher_facet",1=>"dsc_0_collection_0_did_0_unittitle_0_unittitle_content_facet"}})
+        exhibit.update_indexed_attributes({:facets=>{0=>"collection_0_did_0_unittitle_0_imprint_0_publisher_facet",1=>"collection_0_did_0_unittitle_0_unittitle_content_facet"}})
         exhibit.update_indexed_attributes(:query=>{0=>"id_t:RBSC-CURRENCY"})
         exhibit.datastreams["rightsMetadata"].update_permissions({"group"=>{"archivist"=>"edit","public"=>"read"}})
         exhibit.collections_append(collection)
@@ -247,7 +247,6 @@ module BatchIngester
         result = Collection.find_by_fields_by_solr(map)
         log.info("Length of the search result: #{result.to_a.size}")
         if(result.to_a.size > 0)
-#          col_map = Component.find_by_fields_by_solr({"dsc_collection_did_unitid_unitid_identifier_s"=>args[:subcollection_id]})
           col_map = Component.find_by_fields_by_solr({"subcollection_id_s"=>args[:key]})
           if(col_map.to_a.size < 1)
             subcollection= af_model.new(:namespace=>get_namespace)#(:pid=>pid, :component_level => "c01")
@@ -262,18 +261,18 @@ module BatchIngester
 #            c = Iconv.new('UTF-8','ISO-8859-1')
 #            utf_desc = c.iconv(desc)
             subcollection.datastreams["rightsMetadata"].update_permissions({"group"=>{"archivist"=>"edit","public"=>"read"}})
-            update_fields(subcollection, [:dsc, :collection, :did, :unitid], args[:abr_title])
-            update_fields(subcollection, [:dsc, :collection, :did, :unitid, :unitid_identifier], args[:subcollection_id])
-            update_fields(subcollection, [:dsc, :collection, :did, :origination, :printer], args[:printer])
-            update_fields(subcollection, [:dsc, :collection, :did, :origination, :engraver], args[:engraver])
+            update_fields(subcollection, [:collection, :did, :unitid], args[:abr_title])
+            update_fields(subcollection, [:collection, :did, :unitid, :unitid_identifier], args[:subcollection_id])
+            update_fields(subcollection, [:collection, :did, :origination, :printer], args[:printer])
+            update_fields(subcollection, [:collection, :did, :origination, :engraver], args[:engraver])
             #subcollection.update_indexed_attributes ({term=>{"0"=>value}} )
-            update_fields(subcollection, [:dsc, :collection, :did, :unittitle, :unitdate], args[:title]) #new stuff
-            update_fields(subcollection, [:dsc, :collection, :did, :unittitle, :imprint, :geogname], args[:geography])
-            update_fields(subcollection, [:dsc, :collection, :did, :unittitle, :imprint, :publisher], args[:publisher])
-            update_fields(subcollection, [:dsc, :collection, :did, :unittitle, :unittitle_content], args[:date]) #new stuff
-            update_fields(subcollection, [:dsc, :collection, :scopecontent], args[:description])#utf_desc
-            update_fields(subcollection, [:dsc, :collection, :odd], args[:display])
-            update_fields(subcollection, [:dsc, :collection, :controlaccess, :genreform], args[:genreform])
+            update_fields(subcollection, [:collection, :did, :unittitle, :unitdate], args[:title]) #new stuff
+            update_fields(subcollection, [:collection, :did, :unittitle, :imprint, :geogname], args[:geography])
+            update_fields(subcollection, [:collection, :did, :unittitle, :imprint, :publisher], args[:publisher])
+            update_fields(subcollection, [:collection, :did, :unittitle, :unittitle_content], args[:date]) #new stuff
+            update_fields(subcollection, [:collection, :scopecontent], args[:description])#utf_desc
+            update_fields(subcollection, [:collection, :odd], args[:display])
+            update_fields(subcollection, [:collection, :controlaccess, :genreform], args[:genreform])
             subcollection.update_indexed_attributes({:subcollection_id=>{0=>args[:key]}})
             subcollection.update_indexed_attributes({:component_type=>{0=>"subcollection"}})
             subcollection.save

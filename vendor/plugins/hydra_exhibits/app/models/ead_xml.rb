@@ -1,6 +1,6 @@
 class EadXml < ActiveFedora::NokogiriDatastream
   set_terminology do |t|
-    t.root(:path=>'ead', :xmlns=>"urn:isbn:1-931666-00-8", :schema=>"urn:isbn:1-931666-00-8 http://www.loc.gov/ead/ead.xsd")
+    t.root(:path=>'ead', :xmlns=>"currency-collection", :schema=>"currency-collection http://www.loc.gov/ead/ead.xsd")
     
     t.did_ref(:path=>'did'){
       t.head(:path=>'head')
@@ -65,6 +65,7 @@ class EadXml < ActiveFedora::NokogiriDatastream
       t.odd
       t.controlaccess(:ref=>[:controlaccess_ref])
       t.item(:ref=>[:item_ref])
+      t.daogrp(:ref=>[:daogrp_ref])
     }
     t.controlaccess_ref(:path=>'controlaccess'){
       t.genreform
@@ -158,8 +159,8 @@ class EadXml < ActiveFedora::NokogiriDatastream
       builder = Nokogiri::XML::Builder.new do |t|
         t.ead(:version=>"1.0", "xmlns:xlink"=>"http://www.w3.org/1999/xlink",
               "xmlns:xsi"=>"http://www.w3.org/2001/XMLSchema-instance",
-              "xmlns"=>"urn:isbn:1-931666-00-8",
-              "xsi:schemaLocation"=>"urn:isbn:1-931666-00-8 http://www.loc.gov/ead/ead.xsd"){
+              "xmlns"=>"currency-collection",
+              "xsi:schemaLocation"=>"currency-collection http://www.loc.gov/ead/ead.xsd"){
               
           t.eadheader(:findaidstatus=>"edited-full-draft", :langencoding=>"iso639-2b", :audience=>"internal", :id=>"a0", :repositoryencoding=>"iso15511", :scriptencoding=>"iso15924", :dateencoding=>"iso8601", :relatedencoding=>"MARC21", :countryencoding=>"iso3166-1"){
             t.eadid(:encodinganalog=>"856", :publicid=>"???", :countrycode=>"US", :mainagencycode=>"inndhl")
@@ -286,7 +287,7 @@ class EadXml < ActiveFedora::NokogiriDatastream
   def self.collection_template
     builder = Nokogiri::XML::Builder.new do |t|
       t.ead("xmlns:xlink"=>"http://www.w3.org/1999/xlink", "xmlns:xsi"=>"http://www.w3.org/2001/XMLSchema-instance",
-              "xmlns"=>"urn:isbn:1-931666-00-8"){
+              "xmlns"=>"currency-collection"){
         
         t.eadheader(:findaidstatus=>"edited-full-draft", :langencoding=>"iso639-2b", :audience=>"internal", :id=>"a0", :repositoryencoding=>"iso15511", :scriptencoding=>"iso15924", :dateencoding=>"iso8601", :relatedencoding=>"MARC21", :countryencoding=>"iso3166-1"){
             t.eadid(:encodinganalog=>"856", :publicid=>"???", :countrycode=>"US", :mainagencycode=>"inndhl")
@@ -347,6 +348,10 @@ class EadXml < ActiveFedora::NokogiriDatastream
               t.head
               t.p
             }
+	    t.dsc{
+	      t.head
+	      t.c01(:level=>"item")
+	    }
         }
       }
     end
@@ -354,10 +359,8 @@ class EadXml < ActiveFedora::NokogiriDatastream
   end
   def self.subcollection_template
     builder = Nokogiri::XML::Builder.new do |t|
-      t.dsc("xmlns:xlink"=>"http://www.w3.org/1999/xlink", "xmlns:xsi"=>"http://www.w3.org/2001/XMLSchema-instance",
-              "xmlns"=>"urn:isbn:1-931666-00-8"){
-        t.head
-        t.c01(:level=>"item"){
+        t.c01(:level=>"item", "xmlns:xlink"=>"http://www.w3.org/1999/xlink", "xmlns:xsi"=>"http://www.w3.org/2001/XMLSchema-instance",
+              "xmlns"=>"currency-collection"){
           t.did{
             t.unitid(:identifier=>"")
             t.origination{
@@ -382,8 +385,11 @@ class EadXml < ActiveFedora::NokogiriDatastream
           t.controlaccess{
             t.genreform
           }
+	  t.c02
+          t.daogrp{
+            t.daoloc(:href=>"")
+          }
         }
-      }
     end
     return builder.doc.root
   end
@@ -396,7 +402,7 @@ class EadXml < ActiveFedora::NokogiriDatastream
   def self.item_template
     builder = Nokogiri::XML::Builder.new do |t|
       t.c02("xmlns:xlink"=>"http://www.w3.org/1999/xlink", "xmlns:xsi"=>"http://www.w3.org/2001/XMLSchema-instance",
-              "xmlns"=>"urn:isbn:1-931666-00-8"){
+              "xmlns"=>"currency-collection"){
         t.did{
           t.unitid
           t.origination{
@@ -436,13 +442,19 @@ class EadXml < ActiveFedora::NokogiriDatastream
         nodeset = self.find_by_terms(:eadheader)
       when :subcollection
         node = EadXml.subcollection_template
-        nodeset = self.find_by_terms(:collection)
+        nodeset = self.find_by_terms(:ead, :archive_desc, :dsc, :collection)
       when :item
         node = EadXml.item_template
         nodeset = self.find_by_terms(:archive_desc, :dsc, :collection, :item)
+      when :subcol_image
+        node = EadXml.image_template
+        nodeset = self.find_by_terms(:collection, :daogrp, :daoloc)
       when :image
         node = EadXml.image_template
         nodeset = self.find_by_terms(:item, :daogrp, :daoloc)
+      when :col_image
+        node = EadXml.image_template
+        nodeset = self.find_by_terms(:archive_desc, :dsc, :collection, :item, :daogrp, :daoloc)
       else
         ActiveFedora.logger.warn("#{type} is not a valid argument for EadXml.insert_node")
         node = nil

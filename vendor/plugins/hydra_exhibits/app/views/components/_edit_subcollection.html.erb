@@ -1,7 +1,7 @@
 <form id="document_metadata" action="<%= url_for(:action=>"update", :controller=>"components", :content_type=>content)%>" method="post" data-resourceType="<%= content %>" accept-charset="utf-8">
   <%- if current_user -%>
-      <input id="re-run-action" class="nobutton" type="button" onclick=" location.href='<%=url_for(:action => "new", :controller => "components", :content_type => "component", :label => "item", :subcollection_id => params[:id])%>' " value="Add Component"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <input id="re-run-action" class="nobutton" type="button" onclick=" location.href='<%=url_for(:action => "new", :controller => "pages", :content_type => "page", :label => "page", :item_id => params[:id])%>' " value="Add Image"/>
+      <input id="re-run-action" class="nobutton" type="button" onclick=" location.href='<%=url_for(:action => "new", :controller => "components", :content_type => "component", :label => "item", :subcollection_id => params[:id], :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context])%>' " value="Add Component"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <input id="re-run-action" class="nobutton" type="button" onclick=" location.href='<%=url_for(:action => "new", :controller => "pages", :content_type => "page", :label => "page", :subcollection_id => params[:id], :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context])%>' " value="Add Image"/>
   <%- end -%>
   <fieldset id="work_fields">
     <legend> Subcollection </legend>
@@ -11,73 +11,73 @@
         <p> Parent: </p>
       </dt>
       <dd class="parent">
-        <%= link_to "#{@document_fedora.member_of.first.title}", catalog_path(@document_fedora.member_of.first.pid) %>
+        <%= link_to "#{@document_fedora.member_of.first.title}", catalog_path(@document_fedora.member_of.first.pid, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context]) %>
       </dd>
       <dt>
-        <%= fedora_field_label("descMetadata", [:dsc, :collection, :did, :unittitle, :unittitle_content], "Title:") %>
+        <%= fedora_field_label("descMetadata", [:collection, :did, :unittitle, :unittitle_content], "Title:") %>
       </dt>
       <dd class="title">
-        <%= fedora_text_field(document_fedora,"descMetadata", [:dsc, :collection, :did, :unittitle, :unittitle_content], :multiple=>false) %>
+        <%= fedora_text_field(document_fedora,"descMetadata", [:collection, :did, :unittitle, :unittitle_content], :multiple=>false) %>
       </dd>
       <dt>
-        <%= fedora_field_label("descMetadata", [:dsc, :collection, :did, :unitid], "Abbreviated Title:") %>
+        <%= fedora_field_label("descMetadata", [:collection, :did, :unitid], "Abbreviated Title:") %>
       </dt>
       <dd class="abbreviated_title">
-        <%= fedora_text_field(document_fedora,"descMetadata", [:dsc, :collection, :did, :unitid], :multiple=>false) %>
+        <%= fedora_text_field(document_fedora,"descMetadata", [:collection, :did, :unitid], :multiple=>false) %>
       </dd>
       <dt>
-        <%= fedora_field_label("descMetadata", [:dsc, :collection, :did, :unitid, :unitid_identifier], "ID:") %>
+        <%= fedora_field_label("descMetadata", [:collection, :did, :unitid, :unitid_identifier], "ID:") %>
       </dt>
       <dd class="subcollection_id">
-        <%= fedora_text_field(document_fedora,"descMetadata", [:dsc, :collection, :did, :unitid, :unitid_identifier])%>
+        <%= fedora_text_field(document_fedora,"descMetadata", [:collection, :did, :unitid, :unitid_identifier])%>
       </dd>
       <dt>
-        <%= fedora_field_label("descMetadata", [:dsc, :collection, :did, :origination, :printer], "Printer:") %>
+        <%= fedora_field_label("descMetadata", [:collection, :did, :origination, :printer], "Printer:") %>
       </dt>
       <dd class="printer">
-        <%= fedora_text_field(document_fedora,"descMetadata", [:dsc, :collection, :did, :origination, :printer]) %>
+        <%= fedora_text_field(document_fedora,"descMetadata", [:collection, :did, :origination, :printer]) %>
       </dd>
       <dt>
-        <%= fedora_field_label("descMetadata", [:dsc, :collection, :did, :origination, :engraver], "Engraver:") %>
+        <%= fedora_field_label("descMetadata", [:collection, :did, :origination, :engraver], "Engraver:") %>
       </dt>
       <dd class="engraver">
-        <%= fedora_text_field(document_fedora,"descMetadata", [:dsc, :collection, :did, :origination, :engraver], :multiple=>true) %>
+        <%= fedora_text_field(document_fedora,"descMetadata", [:collection, :did, :origination, :engraver], :multiple=>true) %>
       </dd>
       <dt>
-        <%= fedora_field_label("descMetadata", [:dsc, :collection, :did, :unittitle, :imprint, :geogname], "Printing Location:") %>
+        <%= fedora_field_label("descMetadata", [:collection, :did, :unittitle, :imprint, :geogname], "Printing Location:") %>
       </dt>
       <dd class="printing_location">
-        <%= fedora_text_field(document_fedora,"descMetadata", [:dsc, :collection, :did, :unittitle, :imprint, :geogname], :multiple=>true) %>
+        <%= fedora_text_field(document_fedora,"descMetadata", [:collection, :did, :unittitle, :imprint, :geogname], :multiple=>true) %>
       </dd>
       <dt>
-        <%= fedora_field_label("descMetadata", [:dsc, :collection, :did, :unittitle, :imprint, :publisher], "Publisher:") %>
+        <%= fedora_field_label("descMetadata", [:collection, :did, :unittitle, :imprint, :publisher], "Publisher:") %>
       </dt>
       <dd class="publisher">
-        <%= fedora_text_field(document_fedora,"descMetadata", [:dsc, :collection, :did, :unittitle, :imprint, :publisher], :multiple=>true) %>
+        <%= fedora_text_field(document_fedora,"descMetadata", [:collection, :did, :unittitle, :imprint, :publisher], :multiple=>true) %>
       </dd>
       <dt>
-        <%= fedora_field_label("descMetadata", [:dsc, :collection, :did, :unittitle, :unitdate], "Date:") %>
+        <%= fedora_field_label("descMetadata", [:collection, :did, :unittitle, :unitdate], "Date:") %>
       </dt>
       <dd class="date">
-        <%= fedora_text_field(document_fedora,"descMetadata", [:dsc, :collection, :did, :unittitle, :unitdate], :multiple=>true) %>
+        <%= fedora_text_field(document_fedora,"descMetadata", [:collection, :did, :unittitle, :unitdate], :multiple=>true) %>
       </dd>
       <dt>
-        <%= fedora_field_label("descMetadata", [:dsc, :collection, :scopecontent], "Description:") %>
+        <%= fedora_field_label("descMetadata", [:collection, :scopecontent], "Description:") %>
       </dt>
       <dd class="description">
-        <%= fedora_text_area(document_fedora,"descMetadata", [:dsc, :collection, :scopecontent]) %>
+        <%= fedora_text_area(document_fedora,"descMetadata", [:collection, :scopecontent]) %>
       </dd>
       <dt>
-        <%= fedora_field_label("descMetadata", [:dsc, :collection, :odd], "Data Display:") %>
+        <%= fedora_field_label("descMetadata", [:collection, :odd], "Data Display:") %>
       </dt>
       <dd id="data_display">
-        <%=fedora_text_area(document_fedora,"descMetadata", [:dsc, :collection, :odd], :multiple=>true) %>
+        <%=fedora_text_area(document_fedora,"descMetadata", [:collection, :odd], :multiple=>true) %>
       </dd>
       <dt>
-        <%= fedora_field_label("descMetadata", [:dsc, :collection, :controlaccess, :genreform], "Cultural Context:")%>
+        <%= fedora_field_label("descMetadata", [:collection, :controlaccess, :genreform], "Cultural Context:")%>
       </dt>
       <dd id="cultural_context">
-        <%= fedora_text_area(document_fedora,"descMetadata", [:dsc, :collection, :controlaccess, :genreform])%>
+        <%= fedora_text_area(document_fedora,"descMetadata", [:collection, :controlaccess, :genreform])%>
       </dd>
     </dl>
   </fieldset>

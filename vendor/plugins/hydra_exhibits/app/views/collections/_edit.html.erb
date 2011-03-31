@@ -45,10 +45,10 @@
         <%= flash[:notice] %>
       </div>
     <% end %>
-
+    <h3> <%= link_to 'View complete finding aid', finding_aid_path('show', :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context]) %></h3>
     <div id="accordion">
       <h2 class="section-title"><a href="#">Description</a></h2>
-      <%= render :partial => "collections/edit_collection", :locals => { :content => "collection", :label => "collection", :document_fedora => @document_fedora} %>      
+      <%= render :partial => "collections/edit_collection", :locals => { :content => "collection", :label => "collection", :document_fedora => @document_fedora, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context]} %>      
       <h2 class="section-title"><a href="#">Set permissions</a></h2>
       <div id="permissions">
         <%= render :partial => "permissions/index", :locals => {:document => document, :asset_id=>params[:id]} %>

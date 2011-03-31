@@ -26,9 +26,9 @@
       </div>
       <div id="documents" class="exhibit-listing">
         <%- if(@document_fedora.type.to_s.eql? "Collection") -%>
-          <%= render :partial => 'catalog/_index_partials/subcollections', :locals => {:content => "component", :document_list => document_list, :asset_id=>params[:id], :response=>response} %>
+          <%= render :partial => 'catalog/_index_partials/subcollections', :locals => {:content => "component", :document_list => document_list, :asset_id=>params[:id], :response=>response, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context]} %>
         <%- else -%>
-          <%= render :partial => 'catalog/_index_partials/items', :locals => {:content => "component", :document_list => document_list, :asset_id=>params[:id], :response=>response} %>
+          <%= render :partial => 'catalog/_index_partials/items', :locals => {:content => "component", :document_list => document_list, :asset_id=>params[:id], :response=>response, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context]} %>
         <%- end -%>
       </div>
       <div class="pagination">

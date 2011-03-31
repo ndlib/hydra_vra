@@ -386,12 +386,12 @@
         id,id_t,title_t,has_model_s,has_collection_member_s,system_create_dt,
         status_t,subject_t,depositor_t,description_t,rights_t,access_t,
 
-        dsc_collection_did_unitid_t,
-        dsc_collection_did_unitid_unitid_identifier_t,
-        dsc_collection_did_unittitle_unittitle_content_t,
-        dsc_collection_did_unittitle_imprint_publisher_t,
-        dsc_collection_controlaccess_genreform_t,
-        dsc_collection_scopecontent_t,
+        collection_did_unitid_t,
+        collection_did_unitid_unitid_identifier_t,
+        collection_did_unittitle_unittitle_content_t,
+        collection_did_unittitle_imprint_publisher_t,
+        collection_controlaccess_genreform_t,
+        collection_scopecontent_t,
         ead_ead_header_filedesc_titlestmt_titleproper_t,
 
         item_did_unittitle_unittitle_content_t,
@@ -411,7 +411,11 @@
         ead_archive_desc_did_unitdate_t,
         ead_header_filedesc_titlestmt_author_t,
         did_ref_0_head_t,
-        did_ref_unittitle_t
+        did_ref_unittitle_t,
+
+	page_id_t,
+	name_t,
+	title_t
       </str>
       <str name="mm">
         2&lt;-1 5&lt;-2 6&lt;90%
@@ -444,12 +448,12 @@
         id,title_t,has_model_s,has_collection_member_s,system_create_dt,
         status_t,subject_t,depositor_t,description_t,rights_t,access_t,
 
-        dsc_collection_did_unitid_t,
-        dsc_collection_did_unitid_unitid_identifier_t,
-        dsc_collection_did_unittitle_unittitle_content_t,
-        dsc_collection_did_unittitle_imprint_publisher_t,
-        dsc_collection_controlaccess_genreform_t,
-        dsc_collection_scopecontent_t,
+        collection_did_unitid_t,
+        collection_did_unitid_unitid_identifier_t,
+        collection_did_unittitle_unittitle_content_t,
+        collection_did_unittitle_imprint_publisher_t,
+        collection_controlaccess_genreform_t,
+        collection_scopecontent_t,
         ead_ead_header_filedesc_titlestmt_titleproper_t,
 
         item_did_unittitle_unittitle_content_t,
@@ -469,7 +473,11 @@
         ead_archive_desc_did_unitdate_t,
         ead_header_filedesc_titlestmt_author_t,
         did_ref_0_head_t,
-        did_ref_unittitle_t
+        did_ref_unittitle_t,
+
+	page_id_t,
+	name_t,
+	title_t
       </str>
       <str name="mm">
         2&lt;-1 5&lt;-2 6&lt;90%
@@ -499,12 +507,12 @@
         id,title_t,has_model_s,has_collection_member_s,system_create_dt,
         status_t,subject_t,depositor_t,description_t,rights_t,access_t,
 
-        dsc_collection_did_unitid_t,
-        dsc_collection_did_unitid_unitid_identifier_t,
-        dsc_collection_did_unittitle_unittitle_content_t,
-        dsc_collection_did_unittitle_imprint_publisher_t,
-        dsc_collection_controlaccess_genreform_t,
-        dsc_collection_scopecontent_t,
+        collection_did_unitid_t,
+        collection_did_unitid_unitid_identifier_t,
+        collection_did_unittitle_unittitle_content_t,
+        collection_did_unittitle_imprint_publisher_t,
+        collection_controlaccess_genreform_t,
+        collection_scopecontent_t,
         ead_ead_header_filedesc_titlestmt_titleproper_t,
 
         item_did_unittitle_unittitle_content_t,
@@ -524,7 +532,11 @@
         ead_archive_desc_did_unitdate_t,
         ead_header_filedesc_titlestmt_author_t,
         did_ref_0_head_t,
-        did_ref_unittitle_t
+        did_ref_unittitle_t,
+
+	page_id_t,
+	name_t,
+	title_t
      </str>
      <str name="mm">
         2&lt;-1 5&lt;-2 6&lt;90%

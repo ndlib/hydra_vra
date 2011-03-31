@@ -6,7 +6,6 @@
       <%= text_field_tag :q, params[:q], :class => "search-box" %>
       <%= hidden_field_tag :exhibit_id, exhibit_id%>
       <%= search_as_hidden_fields(:omit_keys => [:q, :f, :search_field, :qt, :action, :id, :controller, :class]) %>        
-      
       <%= submit_tag 'Search', :class=>'button' %>
     </fieldset>
   <% end %>

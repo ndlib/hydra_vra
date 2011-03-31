@@ -47,9 +47,9 @@
     <div id="accordion">
       <h2 class="section-title"><a href="#">Description</a></h2>
       <% if (!get_values_from_datastream(@document_fedora,"descMetadata", [:item]).first.empty?) %>
-        <%= render :partial => "components/edit_item", :locals => { :content => "component", :label => "item", :document_fedora => @document_fedora} %>
+        <%= render :partial => "components/edit_item", :locals => { :content => "component", :label => "item", :document_fedora => @document_fedora, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context]} %>
       <% else %>
-        <%= render :partial => "components/edit_subcollection", :locals => { :content => "component", :label => "subcollection", :document_fedora => @document_fedora} %>
+        <%= render :partial => "components/edit_subcollection", :locals => { :content => "component", :label => "subcollection", :document_fedora => @document_fedora, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context]} %>
       <% end %>
       <h2 class="section-title"><a href="#">Set permissions</a></h2>
       <div id="permissions">
@@ -57,7 +57,7 @@
       </div>
 	<h2 class="section-title"><a href="#">Images</a></h2>
         <div id="childern">
-          <%= render :partial => "components/pages", :locals => {:content => "component", :document_fedora => @document_fedora, :asset_id=>params[:id]} %>
+          <%= render :partial => "components/pages", :locals => {:content => "component", :document_fedora => @document_fedora, :asset_id=>params[:id], :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context]} %>
         </div>
 
     </div>

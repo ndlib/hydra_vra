@@ -2,4 +2,6 @@
 <div class="facet-list">	
   <!--currently just accounting for one level but might want to be more sophisticated and have something like expandable/collaspable tree-->
   <%=render_browse_facet_div%>
+  <% exhibt_id = ((params.keys.include?"exhibit_id") ? params[:exhibit_id] : params[:id]) %>
+  <h3> <%= link_to 'View Complete Finding Aid', finding_aid_path('show', :exhibit_id => exhibt_id, :render_search => params[:render_search], :viewing_context => "browse") %></h3>
 </div>

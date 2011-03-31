@@ -13,7 +13,11 @@ module PagesControllerHelper
       @parent.update_indexed_attributes({:main_page=>{0=>@asset.pid}})
       @parent.save
     end
-    sc = Component.load_instance(@parent.member_of.first.pid)
+    if(@parent.member_of.first.instance_of? Component)
+      sc = Component.load_instance(@parent.member_of.first.pid)
+    else
+      sc = @parent
+    end
     col = Collection.load_instance(sc.member_of.first.pid)
     if(!col.last_image_number.nil?)
       id_num = col.last_image_number.to_i + 1

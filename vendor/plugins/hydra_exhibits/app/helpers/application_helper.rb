@@ -575,7 +575,6 @@ logger.debug("Params in edit_and_browse_links: #{params.inspect}")
 
   def render_document_index_partial(doc, title, counter, action_name)
     format = document_partial_name(doc)
-    logger.debug("render_document_index_partial format: #{format}, Counter:#{counter}")
     begin
       locals = {:document=>doc, :counter=>counter, :title=>title}
       render :partial=>"catalog/_#{action_name}_partials/#{format}", :locals=>locals      

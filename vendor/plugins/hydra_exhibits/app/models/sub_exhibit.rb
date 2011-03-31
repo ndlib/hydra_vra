@@ -47,7 +47,7 @@ class SubExhibit < ActiveFedora::Base
   end
 
   #def facets
-  #  {"dsc_0_collection_0_did_0_unittitle_0_imprint_0_publisher_facet"=>"Connecticut"}
+  #  {"collection_0_did_0_unittitle_0_imprint_0_publisher_facet"=>"Connecticut"}
   #end
 
   def description_list

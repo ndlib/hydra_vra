@@ -1,5 +1,5 @@
 namespace :batch do
-  desc "Load the building from csv file"
+  desc "Load the currency data from csv file"
 
   task :load_csv_data  => :environment do
     puts "Inside load_csv_data"
