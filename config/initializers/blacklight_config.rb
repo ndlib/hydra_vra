@@ -83,7 +83,7 @@ Blacklight.configure(:shared) do |config|
       "collection_0_did_0_unittitle_0_imprint_0_geogname_facet"=>"Printing Location",
       "collection_0_did_0_origination_0_printer_facet"=>"Printer",
       "collection_0_did_0_origination_0_engraver_facet"=>"Engraver",
-      "item_0_did_0_origination_0_persname_0_persname_normal_facet"=>"Signers"
+      "item_0_did_0_origination_0_persname_0_persname_normal_facet"=>"Signers",
       "active_fedora_model_s" => "Description"
     },
     :limits=> {nil=>10}
