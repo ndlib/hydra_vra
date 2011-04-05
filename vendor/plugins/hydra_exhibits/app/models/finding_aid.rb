@@ -1,6 +1,7 @@
 require 'hydra'
 
 class FindingAid < ActiveFedora::Base
+  include Hydra::GenericImage
   include Hydra::ModelMethods
   
   has_bidirectional_relationship  "part_of",   :is_part_of, :has_part

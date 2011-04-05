@@ -155,6 +155,7 @@ class FullFindingAid < ActiveFedora::Base
       xml_file.close
       xsl_transform(xml_string)
       finding_aid.add_file_datastream(File.open(fname,"r"), {:label => "EAD", :dsid => "EAD"})
+      finding_aid.datastreams["rightsMetadata"].update_permissions({"group"=>{"archivist"=>"edit","public"=>"read"}})
       finding_aid.save
     end
   end

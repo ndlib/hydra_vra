@@ -36,6 +36,10 @@
   </div>
   </td></tr>
   <tr><td>
+    <% f = FindingAid.load_instance(params[:finding_id]) %>
+    <%= link_to "Download Finding Aid", f.datastream_url("EAD") %>
+  </td></tr>
+  <tr><td>
   <div class="document_viewer" id="cover_container">
     <%= render :partial => 'finding_aid/collection.html' %>
   </div>

@@ -8,7 +8,7 @@ class FindingAidController < CatalogController
   include Hydra::AssetsControllerHelper
   include ApplicationHelper
   def show
-    show_without_customizations[:locals => {:exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context]}]
-#    render :action => params[:finding_aid], :locals => {:exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context]}
+#    show_without_customizations[:finding_id => params[:finding_id], :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context]]
+    render :action => params[:finding_aid], :finding_id => params[:finding_id], :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context], :layout => "application"
   end    
 end
