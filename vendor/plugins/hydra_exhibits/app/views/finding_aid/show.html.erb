@@ -36,8 +36,7 @@
   </div>
   </td></tr>
   <tr><td>
-    <% f = FindingAid.load_instance(params[:finding_id]) %>
-    <%= link_to "Download Finding Aid", f.datastream_url("EAD") %>
+    <%= link_to "Download Finding Aid", finding_aid_path('show', :download => true, :finding_id => params[:finding_id], :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context], :layout => "application")%>
   </td></tr>
   <tr><td>
   <div class="document_viewer" id="cover_container">

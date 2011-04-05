@@ -1,7 +1,7 @@
 require 'hydra'
 
 class FindingAid < ActiveFedora::Base
-  include Hydra::GenericImage
+
   include Hydra::ModelMethods
   
   has_bidirectional_relationship  "part_of",   :is_part_of, :has_part
@@ -30,4 +30,5 @@ class FindingAid < ActiveFedora::Base
     values = self.fields[:finding_aid_for][:values]
     @finding_aid_for = values.any? ? values.first : ""
   end
+
 end
