@@ -26,6 +26,7 @@ gem 'rack-test'
 gem 'rake'
 gem 'rcov'
 gem 'RedCloth'
+gem 'ruby-xslt'
 
 gem 'rsolr', '0.12.1'
 gem 'rsolr-ext', '0.12.1'
