@@ -19,6 +19,7 @@ class Page < ActiveFedora::Base
     m.field 'title', :string
     m.field 'name', :string
     m.field 'page_id', :string
+    m.field 'review', :string
   end
 
   def page_id

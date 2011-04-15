@@ -29,8 +29,8 @@
   <script type="text/javascript">
     $(document).ready(function() {
       $(document).catalogEdit();      
-
-    });    
+	
+    });  
   </script>
 <% end %>
 <div class="document_viewer" id="cover_container">
@@ -47,18 +47,14 @@
     <div id="accordion">
       <h2 class="section-title"><a href="#">Description</a></h2>
       <% if (!get_values_from_datastream(@document_fedora,"descMetadata", [:item]).first.empty?) %>
-        <%= render :partial => "components/edit_item", :locals => { :content => "component", :label => "item", :document_fedora => @document_fedora, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context]} %>
+        <%= render :partial => "components/edit_item", :locals => { :content => "component", :label => "item", :document_fedora => @document_fedora, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :f => params[:f], :viewing_context => params[:viewing_context]} %>
       <% else %>
-        <%= render :partial => "components/edit_subcollection", :locals => { :content => "component", :label => "subcollection", :document_fedora => @document_fedora, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context]} %>
+        <%= render :partial => "components/edit_subcollection", :locals => { :content => "component", :label => "subcollection", :document_fedora => @document_fedora, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :f => params[:f], :viewing_context => params[:viewing_context]} %>
       <% end %>
       <h2 class="section-title"><a href="#">Set permissions</a></h2>
       <div id="permissions">
         <%= render :partial => "permissions/index", :locals => {:document => document, :asset_id=>params[:id]} %>
       </div>
-	<h2 class="section-title"><a href="#">Images</a></h2>
-        <div id="childern">
-          <%= render :partial => "components/pages", :locals => {:content => "component", :document_fedora => @document_fedora, :asset_id=>params[:id], :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context]} %>
-        </div>
 
     </div>
     <form id="new_image_tag" action="<%=url_for(:action=>"create", :controller=>"images_tag", :asset_id=>params[:id]) %>" method="post" style="display:none;">

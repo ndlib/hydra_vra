@@ -9,5 +9,6 @@
     <% col = Collection.load_instance(col_pid) %>
     <% fd_pid = col.parts.first.pid %>
     <h3> <%= link_to 'View Complete Finding Aid', finding_aid_path('show', :finding_id => fd_pid, :exhibit_id => exhibt_id, :render_search => params[:render_search], :viewing_context => "browse") %></h3>
+    <h3> <%= link_to 'View Items in Review', catalog_index_path(:exhibit_id => exhibt_id, :review=>"true", :render_search => params[:render_search], :viewing_context => "browse") %></h3>
   <%- end -%>
 </div>

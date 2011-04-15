@@ -1,6 +1,6 @@
 <form id="document_metadata" action="<%= url_for(:action=>"update", :controller=>"components", :content_type=>content)%>" method="post" data-resourceType="<%= content %>" accept-charset="utf-8">
   <%- if current_user -%>
-    <input id="re-run-action" class="nobutton" type="button" onclick=" location.href='<%=url_for(:action => "new", :controller => "pages", :content_type => "page", :label => "page", :item_id => params[:id], :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context])%>' " value="Add Image"/>
+    <input id="re-run-action" class="nobutton" type="button" onclick=" location.href='<%=url_for(:action => "new", :controller => "pages", :content_type => "page", :label => "page", :item_id => params[:id], :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :f => params[:f], :viewing_context => params[:viewing_context])%>' " value="Add Image"/>
   <%- end -%>
   <fieldset id="work_fields">
     <legend> Item </legend>
@@ -10,7 +10,7 @@
         <p> Parent: </p>
       </dt>
       <dd class="parent">
-        <%= link_to "#{@document_fedora.member_of.first.title}", catalog_path(@document_fedora.member_of.first.pid, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context]) %>
+        <%= link_to "#{@document_fedora.member_of.first.title}", catalog_path(@document_fedora.member_of.first.pid, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :f => params[:f], :viewing_context => params[:viewing_context]) %>
       </dd>
       <dt>
         <%= fedora_field_label("descMetadata", [:item, :did, :unittitle, :unittitle_label], "Display Title:") %>
@@ -72,8 +72,9 @@
        <dd id="description">
         <%= fedora_text_area(document_fedora,"descMetadata", [:item, :scopecontent])%>
       </dd>
+      <%= render :partial => "shared/review", :locals => {:content_type=>"component", :document_fedora=>@document_fedora} %>
     </dl>
-    <table><tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td>Main Page:</td><td>
+    <table><tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td>Display Image:</td><td>
         <% childern = document_fedora.list_childern(params[:id],"item") %>
         <input id="exhibit_add_main_description_url" type="hidden" name="url" value="<%= url_for(:action=>"update", :controller=>"components", :content_type=>content)%>" />
         <div id="add-main-description-box" class="split-button">
@@ -88,19 +89,9 @@
           </ul>
         </div></td></tr></table>
   </fieldset>
-  <fieldset id="image_fields">
-    <legend>Images</legend>
-      <ol>
-        <%= render :partial=>"images_tag/edit_images_tag", :collection=>document_fedora.datastreams_in_memory["descMetadata"].find_by_terms(:item, :daogrp, :daoloc, :daoloc_href) %>
-      </ol>
-      <% if params[:action] == "edit" %>
-        <% format = document_partial_name(@document) %>
-      <% end %>
+  <fieldset id="work_fields">
+    <legend> Images </legend>
+       <%= render :partial => "components/pages", :locals => {:content => "component", :document_fedora => @document_fedora, :asset_id=>params[:id], :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :f => params[:f], :viewing_context => params[:viewing_context]} %>
   </fieldset>
 </form>
 
-<!--	<div id="add-image-box"> -->
-<!--          <input id="re-run-action" class="nobutton" type="button" value="Add Image Tag" onclick=" location.href='<%=url_for(:action => "new", :controller => "images_tag", :content_type => "component", :label => "item", :item_id => params[:id], :method=>"delete") %>' " /> -->
-<!--
-        </div>
--->

@@ -6,7 +6,7 @@
         <p>Parent: </p>
       </dt>
       <dd class="parent">
-	<%= link_to "#{@document_fedora.item.first.title}", catalog_path(@document_fedora.item.first.pid, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search]) %>        
+	<%= link_to "#{@document_fedora.item.first.title}", catalog_path(@document_fedora.item.first.pid, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :f => params[:f], :viewing_context => params[:viewing_context]) %>        
       </dd>
       <dt>
         <%= fedora_field_label("properties", [:name], "Name:") %>

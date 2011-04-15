@@ -1,7 +1,7 @@
 <form id="document_metadata" action="<%= url_for(:action=>"update", :controller=>"components", :content_type=>content)%>" method="post" data-resourceType="<%= content %>" accept-charset="utf-8">
   <%- if current_user -%>
-      <input id="re-run-action" class="nobutton" type="button" onclick=" location.href='<%=url_for(:action => "new", :controller => "components", :content_type => "component", :label => "item", :subcollection_id => params[:id], :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context])%>' " value="Add Component"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <input id="re-run-action" class="nobutton" type="button" onclick=" location.href='<%=url_for(:action => "new", :controller => "pages", :content_type => "page", :label => "page", :subcollection_id => params[:id], :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context])%>' " value="Add Image"/>
+      <input id="re-run-action" class="nobutton" type="button" onclick=" location.href='<%=url_for(:action => "new", :controller => "components", :content_type => "component", :label => "item", :subcollection_id => params[:id], :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :f => params[:f], :viewing_context => params[:viewing_context])%>' " value="Add Component"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <input id="re-run-action" class="nobutton" type="button" onclick=" location.href='<%=url_for(:action => "new", :controller => "pages", :content_type => "page", :label => "page", :subcollection_id => params[:id], :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :f => params[:f], :viewing_context => params[:viewing_context])%>' " value="Add Image"/>
   <%- end -%>
   <fieldset id="work_fields">
     <legend> Subcollection </legend>
@@ -11,7 +11,7 @@
         <p> Parent: </p>
       </dt>
       <dd class="parent">
-        <%= link_to "#{@document_fedora.member_of.first.title}", catalog_path(@document_fedora.member_of.first.pid, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context]) %>
+        <%= link_to "#{@document_fedora.member_of.first.title}", catalog_path(@document_fedora.member_of.first.pid, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :f => params[:f], :viewing_context => params[:viewing_context]) %>
       </dd>
       <dt>
         <%= fedora_field_label("descMetadata", [:collection, :did, :unittitle, :unittitle_content], "Title:") %>
@@ -79,6 +79,7 @@
       <dd id="cultural_context">
         <%= fedora_text_area(document_fedora,"descMetadata", [:collection, :controlaccess, :genreform])%>
       </dd>
+      <%= render :partial => "shared/review", :locals => {:content_type=>"component", :document_fedora=>@document_fedora} %>
     </dl>
   </fieldset>
 </form>

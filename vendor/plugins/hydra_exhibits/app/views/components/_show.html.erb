@@ -15,13 +15,13 @@
   <div id="accordion">
     <h2 class="section-title"><a href="#">Description</a></h2>
     <% if (!get_values_from_datastream(@document_fedora,"descMetadata", [:item]).first.empty?) %>
-      <%= render :partial => "components/show_item", :locals => {:content_type => "component", :label => "item", :document_fedora => @document_fedora, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context]} %>
+      <%= render :partial => "components/show_item", :locals => {:content_type => "component", :label => "item", :document_fedora => @document_fedora, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context], :f => params[:f]} %>
     <% else %>
-      <%= render :partial => "components/show_subcollection", :locals => {:content_type => "component", :label => "subcollection", :document_fedora => @document_fedora, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context]} %>
+      <%= render :partial => "components/show_subcollection", :locals => {:content_type => "component", :label => "subcollection", :document_fedora => @document_fedora, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context], :f => params[:f]} %>
     <% end %>
       <h2 class="section-title"><a href="#">Images</a></h2>
       <div id="childern">
-        <%= render :partial => "components/pages", :locals => {:content => "component", :document_fedora => @document_fedora, :asset_id=>params[:id], :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context]} %>
+        <%= render :partial => "components/pages", :locals => {:content => "component", :document_fedora => @document_fedora, :asset_id=>params[:id], :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context], :f => params[:f]} %>
       </div>
 
 <!--      <h2 class="section-title"><a href="#">Items</a></h2>

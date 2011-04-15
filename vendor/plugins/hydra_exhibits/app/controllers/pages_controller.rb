@@ -16,7 +16,7 @@ class PagesController < ApplicationController
     before_filter :require_fedora, :require_solr
     
     def show
-      puts "Page Params: #{params.inspect}"
+      logger.debug("Page Params: #{params.inspect}")
 #      if params.has_key?("field")
 #        @response, @document = get_solr_response_for_doc_id
 #        pid = @document[:id] ? @document[:id] : @document[:id.to_s]
@@ -34,7 +34,7 @@ class PagesController < ApplicationController
 #          format.textile  { render :text=> white_list( RedCloth.new(result, [:sanitize_html]).to_html ) }
 #        end
 #      else
-        redirect_to :controller=>"catalog", :action=>"show", :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context]
+        redirect_to :controller=>"catalog", :action=>"show", :exhibit_id => params[:exhibit_id], :f => params[:f], :render_search => params[:render_search], :viewing_context => params[:viewing_context]
 #      end
     end
     
@@ -117,7 +117,6 @@ class PagesController < ApplicationController
         if(item_obj.methods.contains? "parts")
 	  no_of_images = item_obj.parts.size
         end
-	puts "No of Images: #{no_of_images.to_s}............................."
         item_obj.update_indexed_attributes ({img_term=>{"#{(no_of_images-1).to_s}"=>params[:Filename].sub(".jpg", "")}} )
         item_obj.save
         generic_content_object.content={:file => params[:Filedata], :file_name => params[:Filename]}
@@ -143,7 +142,7 @@ class PagesController < ApplicationController
           @asset = create_and_save_page(params[:subcollection_id], content_type)
 	end
       end
-      redirect_to url_for(:action=>"edit", :controller=>"catalog", :label => params[:label], :id=>@asset.pid, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context])
+      redirect_to url_for(:action=>"edit", :controller=>"catalog", :label => params[:label], :id=>@asset.pid, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :f => params[:f], :viewing_context => params[:viewing_context])
     end
     
     def destroy

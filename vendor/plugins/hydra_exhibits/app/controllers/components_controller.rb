@@ -15,33 +15,28 @@ class ComponentsController < ApplicationController
     before_filter :search_session, :history_session
     before_filter :require_fedora, :require_solr
     
-    def show
-      if params.has_key?("field")
-        
-        @response, @document = get_solr_response_for_doc_id
-        pid = @document[:id] ? @document[:id] : @document[:id.to_s]
-        pid ? @component = Component.load_instance_from_solr(pid,@document) : @component = nil
-#	childern = @component.inbound_relationships[:is_part_of]
-        #@sub_collection.nil? @members = [] : @members = @sub_collection.members
-        # @document = SolrDocument.new(@response.docs.first)
-        result = @document["#{params["field"]}_t"]
-        # document_fedora = SaltDocument.load_instance(params[:id])
-        # result = document_fedora.datastreams_in_memory[params["datastream"]].send("#{params[:field]}_values")
-        unless result.nil?
-          if params.has_key?("field_index")
-            result = result[params["field_index"].to_i-1]
-          elsif result.kind_of?(Array)
-            result = result.first
-          end
-        end
-        respond_to do |format|
-          format.html     { render :text=>result }
-          format.textile  { render :text=> white_list( RedCloth.new(result, [:sanitize_html]).to_html ) }
-        end
-      else
-        redirect_to :controller=>"catalog", :action=>"show", :label=>params[:label], :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context]
-      end
-    end
+#    def show
+#      if params.has_key?("field")
+#        
+#        @response, @document = get_solr_response_for_doc_id
+#        pid = @document[:id] ? @document[:id] : @document[:id.to_s]
+#        pid ? @component = Component.load_instance_from_solr(pid,@document) : @component = nil
+#        result = @document["#{params["field"]}_t"]
+#        unless result.nil?
+#          if params.has_key?("field_index")
+#            result = result[params["field_index"].to_i-1]
+#          elsif result.kind_of?(Array)
+#            result = result.first
+#          end
+#        end
+#        respond_to do |format|
+#          format.html     { render :text=>result }
+#          format.textile  { render :text=> white_list( RedCloth.new(result, [:sanitize_html]).to_html ) }
+#        end
+#      else
+#        redirect_to :controller=>"catalog", :action=>"show", :label=>params[:label], :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :f => params[:f], :viewing_context => params[:viewing_context]
+#      end
+#    end
     
     # Uses the update_indexed_attributes method provided by ActiveFedora::Base
     # This should behave pretty much like the ActiveRecord update_indexed_attributes method
@@ -54,20 +49,21 @@ class ComponentsController < ApplicationController
       end
       @document = af_model.find(params[:id])
       if(params.has_keys?"description_id")
-	logger.debug "In the select method with value #{params[:description_id]}"
         @asset = af_model.load_instance(params[:id])
         @asset.update_indexed_attributes({:main_page=>{0=>params[:description_id]}})
         @asset.save
-	redirect_to url_for(:action=>"edit", :controller=>"catalog", :id=>@asset.pid, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context])
-      elsif((params[:field_selectors].has_keys?"properties") && (params[:field_selectors][:properties].has_keys?"subcollection_id"))
+	redirect_to url_for(:action=>"edit", :controller=>"catalog", :id=>@asset.pid, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :f => params[:f], :viewing_context => params[:viewing_context])
+      elsif((params.has_keys?"field_selectors") && (params[:field_selectors].has_keys?"properties") && (params[:field_selectors][:properties].has_keys?"subcollection_id"))
         @asset = af_model.load_instance(params[:id])
         @asset.update_indexed_attributes({:subcollection_id=>{"0"=>params[:asset][:properties][:subcollection_id].first.second}})
         @asset.save
-	redirect_to url_for(:action=>"edit", :controller=>"catalog", :id=>@asset.pid, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context])
+	redirect_to url_for(:action=>"edit", :controller=>"catalog", :id=>@asset.pid, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :f => params[:f], :viewing_context => params[:viewing_context])
       else
-	if(params[:field_selectors][:descMetadata].keys.include?"item_did_unitid")
-          @document.update_indexed_attributes({:item_id=>{"0"=>params[:asset][:descMetadata][:item_did_unitid].first.second}})
-	  @document.save
+	if((params.has_keys?"field_selectors") && ((params[:field_selectors]).has_keys?"descMetadata"))
+	  if(params[:field_selectors][:descMetadata].has_keys?"item_did_unitid")
+            @document.update_indexed_attributes({:item_id=>{"0"=>params[:asset][:descMetadata][:item_did_unitid].first.second}})
+	    @document.save
+	  end
         end
         updater_method_args = prep_updater_method_args(params)
    
@@ -122,15 +118,8 @@ class ComponentsController < ApplicationController
           create_and_save_component(params[:label], content_type, parent_id)
         end
       end
-      redirect_to url_for(:action=>"edit", :controller=>"catalog", :label => params[:label], :id=>@asset.pid, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context])
+      redirect_to url_for(:action=>"edit", :controller=>"catalog", :label => params[:label], :id=>@asset.pid, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :f => params[:f], :viewing_context => params[:viewing_context])
     end
-        
-#    def select
-#      @document = Component.load_instance(params[:id])
-#      @document.update_indexed_attributes({:main_page=>{0=>params[:selected][:page_id]}})
-#      @document.save
-#      redirect_to url_for(:action=>"edit", :controller=>"catalog", :id=>@asset.pid)
-#    end
 
     def destroy
       ActiveFedora::Base.load_instance(params[:id]).delete

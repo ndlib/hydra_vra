@@ -150,6 +150,7 @@
       <dd id="prefercite_info">
         <%= fedora_text_area(document_fedora,"descMetadata", [:archive_desc, :prefercite])%>
       </dd>
+      <%= render :partial => "shared/review", :locals => {:content_type=>"collection", :document_fedora=>@document_fedora} %>
     </dl>
   </fieldset>
 </form>

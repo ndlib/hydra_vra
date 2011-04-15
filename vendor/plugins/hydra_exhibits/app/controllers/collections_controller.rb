@@ -40,11 +40,9 @@ class CollectionsController < CatalogController
     end
     logger.debug("returning #{response.inspect}")
 
-  # If handling submission from jeditable (which will only submit one value at a time), return the value it submitted
     if params.has_key?(:field_id)
       response = last_result_value
     end
-
     respond_to do |want| 
       want.js {
         render :json=> response
@@ -64,12 +62,12 @@ class CollectionsController < CatalogController
     if af_model
       @asset = create_and_save_collection(af_model)
     end
-    redirect_to url_for(:action=>"edit", :controller=>"catalog", :label => params[:label], :id=>@asset.pid, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context])
+    redirect_to url_for(:action=>"edit", :controller=>"catalog", :label => params[:label], :id=>@asset.pid, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :f => params[:f], :viewing_context => params[:viewing_context])
   end
 
 
   def show  
-    show_without_customizations[:exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context]]
+    show_without_customizations[:exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :f => params[:f], :viewing_context => params[:viewing_context]]
   end
 
 end

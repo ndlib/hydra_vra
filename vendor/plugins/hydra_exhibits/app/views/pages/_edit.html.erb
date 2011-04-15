@@ -37,7 +37,7 @@
     
     <div id="accordion">
       <h2 class="section-title"><a href="#">Description</a></h2>
-        <%= render :partial => "pages/edit_page", :locals => { :content => "page", :label => "page", :document_fedora => @document_fedora, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context]} %>
+        <%= render :partial => "pages/edit_page", :locals => { :content => "page", :label => "page", :document_fedora => @document_fedora, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :f => params[:f], :viewing_context => params[:viewing_context]} %>
       <h2 class="section-title"><a href="#">Image</a></h2>
         <%= render :partial => "pages/image_page", :locals => { :content => "page", :label => "page", :document_fedora => @document_fedora} %>
       <h2 class="section-title"><a href="#">Upload Content</a></h2>

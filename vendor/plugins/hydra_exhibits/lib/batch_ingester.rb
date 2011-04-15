@@ -122,6 +122,7 @@ module BatchIngester
         update_fields(collection, [:archive_desc, :acqinfo, :head], args[:acquisition_head])
         update_fields(collection, [:archive_desc, :prefercite], args[:prefercite_info])
         update_fields(collection, [:archive_desc, :prefercite, :head], args[:prefercite_head])
+	collection.update_indexed_attributes({:review=>{0=>"false"}})
         collection.save
         exhibit= Exhibit.new(:namespace=>get_namespace)#(:pid=>pid)
         exhibit.update_indexed_attributes({:facets=>{0=>"collection_0_did_0_unittitle_0_imprint_0_publisher_facet",1=>"collection_0_did_0_unittitle_0_unittitle_content_facet"}})
@@ -275,6 +276,7 @@ module BatchIngester
             update_fields(subcollection, [:collection, :controlaccess, :genreform], args[:genreform])
             subcollection.update_indexed_attributes({:subcollection_id=>{0=>args[:key]}})
             subcollection.update_indexed_attributes({:component_type=>{0=>"subcollection"}})
+	    subcollection.update_indexed_attributes({:review=>{0=>"false"}})
             subcollection.save
 	    coll = Collection.load_instance(result.to_a[0]["id"])
 	    if(!args[:key].nil?)
@@ -363,6 +365,7 @@ module BatchIngester
             update_fields(item, [:item, :controlaccess, :genreform], args[:page_turn])
             update_fields(item, [:item, :odd], args[:plate_letter])
             update_fields(item, [:item, :acqinfo], args[:provenance])
+	    item.update_indexed_attributes({:review=>{0=>"false"}})
             item.save
 	    map = {"EAD_HEADER_0_EADID_T".downcase=>"american_colonial_currency"}
 	    coll = Collection.find_by_fields_by_solr(map)
