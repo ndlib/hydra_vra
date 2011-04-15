@@ -750,5 +750,11 @@ logger.debug("Params in edit_and_browse_links: #{params.inspect}")
     end
   end
 
+  def initialize_review_list
+    @extra_controller_params ||= {}
+    lucene_query = build_lucene_query_for_review(params[:q])
+     (@review_response, @review_document_list) = get_search_results( @extra_controller_params.merge!(:q=>lucene_query))
+  end
+
 end
 
