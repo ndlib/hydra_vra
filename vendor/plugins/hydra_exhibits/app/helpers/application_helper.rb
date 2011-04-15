@@ -223,7 +223,8 @@ logger.debug("Params in edit_and_browse_links: #{params.inspect}")
    def custom_radio_button(resource, datastream_name, field_key, opts={})
     field_name = field_name_for(field_key)
     field_values = get_values_from_datastream(resource, datastream_name, field_key, opts)
-    #logger.debug("Field values: #{field_values.inspect}")
+    logger.debug("Field key: #{field_key}")
+    logger.debug("Field values: #{field_values.inspect}")
     base_id = generate_base_id(field_name, field_values.first, field_values, opts.merge({:multiple=>false}))
     result = ""
     h_name = OM::XML::Terminology.term_hierarchical_name(*field_key)
@@ -236,6 +237,7 @@ logger.debug("Params in edit_and_browse_links: #{params.inspect}")
     end
     return result
   end
+
 
   def custom_text_field(resource, datastream_name, field_key, opts={})
     content_type = ActiveFedora::ContentModel.known_models_for( resource ).first
@@ -499,7 +501,7 @@ logger.debug("Params in edit_and_browse_links: #{params.inspect}")
     return_str = ''
     browse_facet = browse_facets.first
     solr_fname = browse_facet.to_s
-    if params.has_key?(:f) && params[:f][browse_facet]
+    if params.has_key?(:f) && !params[:f].nil? && params[:f][browse_facet]
       temp = params[:f].dup
       logger.debug("Removing F params: #{params.inspect}, Removed F params: #{temp.inspect}")
       browse_facets.each do |facet|
@@ -636,6 +638,18 @@ logger.debug("Params in edit_and_browse_links: #{params.inspect}")
     q = "#{q} AND NOT _query_:\"info\\\\:fedora/afmodel\\\\:Exhibit\" AND NOT _query_:\"info\\\\:fedora/afmodel\\\\:SubExhibit\""
   end
 
+  def build_lucene_query_for_review(user_query)
+    q = access_controls_build_lucene_query(user_query)
+    if params[:exhibit_id]
+      ex = Exhibit.load_instance_from_solr(params[:exhibit_id])
+      unless ex.nil?
+        exhibit_members_query = ex.build_members_query
+        q = "#{exhibit_members_query} AND #{q}" unless exhibit_members_query.empty?
+      end
+    end
+    q = "#{q} AND NOT _query_:\"info\\\\:fedora/afmodel\\\\:Exhibit\" AND NOT _query_:\"info\\\\:fedora/afmodel\\\\:Description\" AND _query_:\"review_t\"\\:\"true\""
+  end
+
   def get_collections(content, user_query_to_append)
     q = build_lucene_query(params[:q])
     collection_query = [user_query_to_append]
@@ -711,10 +725,14 @@ logger.debug("Params in edit_and_browse_links: #{params.inspect}")
   #  Expects Array of PIDs and returns array of Response and DocumentList
   def get_pids_search_results(pid_array)
     fq = ActiveFedora::SolrService.construct_query_for_pids(pid_array)
-    extra_controller_params ||= {}
+    extra_controller_params = {}
     extra_controller_params.merge!(:q=>build_lucene_query(params[:q]))
     extra_controller_params.merge!(:fq=>fq)
-    get_search_results(extra_controller_params)
+    p = params.dup
+    params.delete(:f) 
+    results = get_search_results(extra_controller_params)
+    params[:f] = p[:f]
+    return results
   end
 
   # Apply a class to the body element if the browse conditions are met.
