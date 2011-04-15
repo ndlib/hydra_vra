@@ -1,0 +1,20 @@
+<%- initialize_review_list -%>
+<dl class="item-list"></dl>
+<%- if @review_response.nil? -%>
+  <h3><em>0 items found</em></h3>
+<%- else -%>
+<h3><em><%= grouped_result_count(@review_response, nil, nil) %> found</em></h3>
+
+<div class="pagination">
+  <%= will_paginate @review_response.docs, :page_links => false, :class => 'prev_next_links' %>
+  <%= will_paginate @review_response.docs, :container => false %>
+</div>
+<%= render :partial=>'shared/sort_and_per_page', :locals => {:response=>@review_response} if @review_response.response['numFound'] > 10 %>
+
+<%= render :partial=>'shared/exhibit_complete_list', :locals => {:document_list=>@review_document_list, :response=>@review_response} %>
+
+<div class="pagination">
+  <%= will_paginate @review_response.docs, :page_links => false, :class => 'prev_next_links' %>
+  <%= will_paginate @review_response.docs, :container => false%>
+</div>
+<%- end -%>

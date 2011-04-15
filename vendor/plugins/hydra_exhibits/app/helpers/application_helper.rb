@@ -647,7 +647,7 @@ logger.debug("Params in edit_and_browse_links: #{params.inspect}")
         q = "#{exhibit_members_query} AND #{q}" unless exhibit_members_query.empty?
       end
     end
-    q = "#{q} AND NOT _query_:\"info\\\\:fedora/afmodel\\\\:Exhibit\" AND NOT _query_:\"info\\\\:fedora/afmodel\\\\:Description\" AND _query_:\"review_t\"\\:\"true\""
+    q = "#{q} AND _query_:review_t\\:true"
   end
 
   def get_collections(content, user_query_to_append)
@@ -766,6 +766,14 @@ logger.debug("Params in edit_and_browse_links: #{params.inspect}")
     else
       "Displaying #{entry_name.pluralize} <b>#{start_num} - #{end_num}</b> of <b>#{total_num}</b>"
     end
+  end
+
+  def initialize_review_list
+    logger.debug("In the review list with Params: #{params.keys}")
+    @extra_controller_params ||= {}
+    lucene_query = build_lucene_query_for_review(params[:q])
+    logger.debug("Lucene query: #{lucene_query}")
+     (@review_response, @review_document_list) = get_search_results( @extra_controller_params.merge!(:q=>lucene_query))
   end
 
 end

@@ -1,0 +1,8 @@
+<input class="update_description_display" type="hidden" name="description display" action="<%= asset_path(params[:id],:content_type=>content_type)%>"/>
+<dt>
+  <%= fedora_field_label("properties", [:review], "Need to Review:") %>
+</dt>
+<dd class="display">
+  <%= custom_radio_button(document_fedora,"properties", [:review], :true=>"Yes")%>
+  <%= custom_radio_button(document_fedora,"properties", [:review], :false=>"No")%>
+</dd>
