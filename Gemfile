@@ -14,7 +14,7 @@ gem 'database_cleaner', '0.6.5'
 gem 'diff-lcs', '1.1.2'
 gem 'facets', '2.8.4'
 gem 'fastercsv', '1.5.4'
-gem 'haml', 3.0.25
+gem 'haml', '3.0.25'
 gem 'httparty', '0.7.4'
 gem 'json_pure', '1.4.6'
 gem 'linecache', '0.43'
