@@ -20,7 +20,7 @@ gem 'json_pure', '1.4.6'
 gem 'linecache', '0.43'
 gem 'marc', '0.4.1'
 gem 'mime-types', ''
-gem 'multipart-post, '1.16'
+gem 'multipart-post', '1.16'
 gem 'mysql', '2.8.1'
 gem 'nokogiri', '1.4.3.1'
 gem 'om', :git => "git://github.com/rickjohnson/om.git"  
