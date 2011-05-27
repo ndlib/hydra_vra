@@ -19,6 +19,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :pages
 #  map.static 'static/:permalink', :controller => 'finding_aid', :action => 'show'
   map.resources :finding_aid, :controller => 'finding_aid' , :action => 'show', :finding_aid => /show|collection/
+  map.resources :reviews
 
   map.login "login", :controller => "webauth_sessions", :action => "new"
   map.logout "logout", :controller => "webauth_sessions", :action => "destroy"
