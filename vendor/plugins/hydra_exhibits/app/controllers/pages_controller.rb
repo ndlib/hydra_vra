@@ -145,6 +145,11 @@ class PagesController < ApplicationController
       redirect_to url_for(:action=>"edit", :controller=>"catalog", :label => params[:label], :id=>@asset.pid, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :f => params[:f], :viewing_context => params[:viewing_context])
     end
     
+    def review_comments
+      @document_fedora = Page.find(params[:id])
+      render :partial => "shared/review_comments", :locals=>{:rev=>params[:rev]}
+    end
+
     def destroy
       ActiveFedora::Base.load_instance(params[:id]).delete
       flash[:notice]= "Deleted " + params[:id]

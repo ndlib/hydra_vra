@@ -15,28 +15,28 @@ class ComponentsController < ApplicationController
     before_filter :search_session, :history_session
     before_filter :require_fedora, :require_solr
     
-#    def show
-#      if params.has_key?("field")
-#        
-#        @response, @document = get_solr_response_for_doc_id
-#        pid = @document[:id] ? @document[:id] : @document[:id.to_s]
-#        pid ? @component = Component.load_instance_from_solr(pid,@document) : @component = nil
-#        result = @document["#{params["field"]}_t"]
-#        unless result.nil?
-#          if params.has_key?("field_index")
-#            result = result[params["field_index"].to_i-1]
-#          elsif result.kind_of?(Array)
-#            result = result.first
-#          end
-#        end
-#        respond_to do |format|
-#          format.html     { render :text=>result }
-#          format.textile  { render :text=> white_list( RedCloth.new(result, [:sanitize_html]).to_html ) }
-#        end
-#      else
-#        redirect_to :controller=>"catalog", :action=>"show", :label=>params[:label], :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :f => params[:f], :viewing_context => params[:viewing_context]
-#      end
-#    end
+    def show
+      if params.has_key?("field")
+        
+        @response, @document = get_solr_response_for_doc_id
+        pid = @document[:id] ? @document[:id] : @document[:id.to_s]
+        pid ? @component = Component.load_instance_from_solr(pid,@document) : @component = nil
+        result = @document["#{params["field"]}_t"]
+        unless result.nil?
+          if params.has_key?("field_index")
+            result = result[params["field_index"].to_i-1]
+          elsif result.kind_of?(Array)
+            result = result.first
+          end
+        end
+        respond_to do |format|
+          format.html     { render :text=>result }
+          format.textile  { render :text=> white_list( RedCloth.new(result, [:sanitize_html]).to_html ) }
+        end
+      else
+        redirect_to :controller=>"catalog", :action=>"show", :label=>params[:label], :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :f => params[:f], :viewing_context => params[:viewing_context]
+      end
+    end
     
     # Uses the update_indexed_attributes method provided by ActiveFedora::Base
     # This should behave pretty much like the ActiveRecord update_indexed_attributes method
@@ -119,6 +119,11 @@ class ComponentsController < ApplicationController
         end
       end
       redirect_to url_for(:action=>"edit", :controller=>"catalog", :label => params[:label], :id=>@asset.pid, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :f => params[:f], :viewing_context => params[:viewing_context])
+    end
+
+    def review_comments
+      @document_fedora = Component.find(params[:id])
+      render :partial => "shared/review_comments", :locals=>{:rev=>params[:rev]}
     end
 
     def destroy

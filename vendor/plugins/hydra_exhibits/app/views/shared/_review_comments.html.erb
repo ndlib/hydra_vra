@@ -1,0 +1,9 @@
+<% rev = params[:rev] if rev.nil? %>
+<%- if(!rev.nil? && rev.eql?("true")) -%>
+  <dt>
+    <%= fedora_field_label("properties", [:review_comments], "Comments for Reviewer:") %>
+  </dt>
+  <dd>
+    <%= fedora_text_field(@document_fedora,"properties", [:review_comments])%>
+  </dd>
+<%- end -%>

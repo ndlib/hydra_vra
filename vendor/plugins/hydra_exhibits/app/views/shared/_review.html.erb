@@ -6,3 +6,8 @@
   <%= custom_radio_button(document_fedora,"properties", [:review], :true=>"Yes")%>
   <%= custom_radio_button(document_fedora,"properties", [:review], :false=>"No")%>
 </dd>
+<input id="rev" type="hidden" name="display_review_comments" value="<%= url_for(:action=>"review_comments", :controller=>"#{document_fedora.class.to_s.downcase}s")%>" />
+<div class="review_comment" data-pid=<%= params[:id] %>>
+   <%= render :partial => "shared/review_comments", :locals => {:rev=>get_values_from_datastream(document_fedora, "properties", [:review]).first} %>
+</div>
+

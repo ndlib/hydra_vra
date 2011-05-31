@@ -22,6 +22,7 @@ class Collection < ActiveFedora::Base
     m.field 'last_item_number', :string
     m.field 'last_image_number', :string
     m.field 'review', :string
+    m.field 'review_comments', :string
   end
 
   def last_sc_number

@@ -26,6 +26,7 @@ class Component < ActiveFedora::Base
     m.field "main_page", :string
     m.field "component_type", :string
     m.field 'review', :string
+    m.field 'review_comments', :string
   end
 
   alias_method :id, :pid

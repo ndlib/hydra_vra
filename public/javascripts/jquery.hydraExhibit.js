@@ -33,7 +33,33 @@
         $(this).siblings(".intro").toggle()
         $(this).next(".content").slideToggle(300);
         $(this).text($(this).text() == '[Read the complete essay]' ? '[Hide essay]' : '[Read the complete essay]');
-     });     
+     });
+      
+      $('input:radio[rel*="review"]').change(function(){
+       var url = $("input#rev").first().attr("value");
+       var params = "rev="+$(this).val();
+       var showDiv=$("div.review_comment");
+       var perviousNode=$("div.review_comment").first();
+      $.ajax({
+         type: "POST",
+         url: url,
+         dataType: "html",
+         data: params,
+         success: function(data){
+           $(showDiv).html(data);
+         },
+         error: function(xhr, textStatus, errorThrown){
+     		$.noticeAdd({
+             inEffect:               {opacity: 'show'},      // in effect
+             inEffectDuration:       600,                    // in effect duration in milliseconds
+             stayTime:               6000,                   // time in milliseconds before the item has to disappear
+             text:                   'Your changes failed'+ xhr.statusText + ': '+ xhr.responseText,
+             stay:                   true,                  // should the notice item stay or not?
+             type:                   'error'                // could also be error, success
+            });
+         }
+       });
+     });
 
      $('input.update_embedded_search').bind('click',function(){
        var url = $("input#update_embedded_search").first().attr("value")       

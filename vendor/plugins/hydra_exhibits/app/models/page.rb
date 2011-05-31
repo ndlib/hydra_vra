@@ -20,6 +20,7 @@ class Page < ActiveFedora::Base
     m.field 'name', :string
     m.field 'page_id', :string
     m.field 'review', :string
+    m.field 'review_comments', :string
   end
 
   def page_id
