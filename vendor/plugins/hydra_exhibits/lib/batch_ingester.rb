@@ -205,9 +205,6 @@ module BatchIngester
 	end
       else
 	log.error("Couldn't find Item: #{args[:item_id]} for the image: #{args[:image_name]}.... Cannot create the page object....")
-        f = File.open("/home/rbalekai/Desktop/missing_items.txt", "a")
-        f.puts args[:item_id]
-        f.close
       end
     end
     
