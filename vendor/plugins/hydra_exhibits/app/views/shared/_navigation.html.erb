@@ -16,5 +16,5 @@
       <%- end -%>
     <%- end -%>
   <%- end -%>
-  <h3> <%= link_to 'View Items in Review', review_path('show', :exhibit_id => exhibt_id, :review=>"true", :render_search => params[:render_search], :viewing_context => "browse") %></h3>
+  <h3> <%= link_to 'View Items in Review', review_path(:exhibit_id => exhibt_id, :review=>"true", :render_search => params[:render_search], :viewing_context => "browse") %></h3>
 </div>
