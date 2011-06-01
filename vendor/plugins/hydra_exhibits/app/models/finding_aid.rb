@@ -12,7 +12,7 @@ class FindingAid < ActiveFedora::Base
 #  has_metadata :name => "descMetadata", :type => EadXml
   
   def datastream_url ds_name="content"
-    "#{admin_site}fedora/get/#{pid}/#{ds_name}"
+    "#{Fedora::Repository.instance.base_url}/get/#{pid}/#{ds_name}"
   end
 
   has_metadata :name => "properties", :type => ActiveFedora::MetadataDatastream do |m|
