@@ -48,12 +48,12 @@ class ComponentsController < ApplicationController
         af_model = Component
       end
       @document = af_model.find(params[:id])
-      if(params.has_keys?"description_id")
-        @asset = af_model.load_instance(params[:id])
-        @asset.update_indexed_attributes({:main_page=>{0=>params[:description_id]}})
-        @asset.save
-	redirect_to url_for(:action=>"edit", :controller=>"catalog", :id=>@asset.pid, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :f => params[:f], :viewing_context => params[:viewing_context])
-      elsif((params.has_keys?"field_selectors") && (params[:field_selectors].has_keys?"properties") && (params[:field_selectors][:properties].has_keys?"subcollection_id"))
+#      if(params.has_keys?"description_id")
+#        @asset = af_model.load_instance(params[:id])
+#        @asset.update_indexed_attributes({:main_page=>{0=>params[:description_id]}})
+#        @asset.save
+#	redirect_to url_for(:action=>"edit", :controller=>"catalog", :id=>@asset.pid, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :f => params[:f], :viewing_context => params[:viewing_context])
+      if((params.has_keys?"field_selectors") && (params[:field_selectors].has_keys?"properties") && (params[:field_selectors][:properties].has_keys?"subcollection_id"))
         @asset = af_model.load_instance(params[:id])
         @asset.update_indexed_attributes({:subcollection_id=>{"0"=>params[:asset][:properties][:subcollection_id].first.second}})
         @asset.save

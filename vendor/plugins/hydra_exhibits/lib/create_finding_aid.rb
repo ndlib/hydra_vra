@@ -151,6 +151,7 @@ class FullFindingAid < ActiveFedora::Base
       xml_string = xml_string.sub("xmlns=\"currency-collection\"","")
       fname = "#{RAILS_ROOT}/vendor/plugins/hydra_exhibits/app/views/finding_aid/finding_aid.xml"
       xml_file = File.open(fname,"w")
+      xml_string = xml_string.sub("<?xml version=\"1.0\"?>", "")
       xml_file.puts xml_string
       xml_file.close
       xsl_transform(xml_string)
