@@ -13,7 +13,7 @@ $(function() {
     }
     else
     {
-      console.log($('form#document_metadata', window.opener.document).attr('data-pid'));
+      //console.log($('form#document_metadata', window.opener.document).attr('data-pid'));
       var exhibit_id=$('form#document_metadata', window.opener.document).attr('data-pid')
       params="exhibit_id="+exhibit_id+"&render_search=false&viewing_context=browse"
     }
@@ -21,7 +21,7 @@ $(function() {
       {var new_url=href+"&"+params}
     else
       {var new_url=href+"?"+params}
-    console.log("url-> "+new_url)
+    //console.log("url-> "+new_url)
     dialog.setValueOf('info','url',new_url);  // Populates the URL field in the Links dialogue.
     dialog.setValueOf('info','protocol','');  // This sets the Link's Protocol to Other which loads the file from the same folder the link is on
     dialog.setValueOf('info','displayField',$(this).html());  // Populates the display field in the Links dialogue
