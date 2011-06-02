@@ -4,6 +4,11 @@
     <div class="thumbnail-container">
       <%= link_to_document document, :label=>(image_tag(component.main_page.to_s.blank? ? '/images/no_thumbnail.png' : Page.load_instance(component.main_page.to_s).datastream_url('thumbnail'))) %>
     </div>
+  <%- elsif !component.subcollection_id.blank? -%>
+    <% mainItem = Component.load_instance(component.main_item.to_s) unless (component.main_item.to_s.nil? || component.main_item.to_s.empty?) %>
+    <div class="thumbnail-container">
+      <%= link_to_document document, :label=>(image_tag(mainItem.main_page.to_s.blank? ? '/images/no_thumbnail.png' : Page.load_instance(mainItem.main_page.to_s).datastream_url('thumbnail'))) unless mainItem.nil? %>
+    </div>
   <%- end -%>
   <dl class="defList">
     <%- if component.item_id.blank? -%>

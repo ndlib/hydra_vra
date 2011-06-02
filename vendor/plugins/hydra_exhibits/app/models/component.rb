@@ -24,6 +24,7 @@ class Component < ActiveFedora::Base
     m.field "subcollection_id", :string
     m.field "item_id", :string
     m.field "main_page", :string
+    m.field "main_item", :string
     m.field "component_type", :string
     m.field 'review', :string
     m.field 'review_comments', :string
@@ -53,6 +54,12 @@ class Component < ActiveFedora::Base
     return @main_page if (defined? @main_page)
     values = self.fields[:main_page][:values]
     @main_page = values.any? ? values.first : ""
+  end
+
+  def main_item
+    return @main_item if (defined? @main_item)
+    values = self.fields[:main_item][:values]
+    @main_item = values.any? ? values.first : ""
   end
 
   def insert_new_node(type, opts)

@@ -80,6 +80,18 @@
         <%= fedora_text_area(document_fedora,"descMetadata", [:collection, :controlaccess, :genreform])%>
       </dd>
       <%= render :partial => "shared/review", :locals => {:content_type=>"component", :document_fedora=>@document_fedora} %>
+      <dt>
+        <%= fedora_field_label("properties", [:main_item], "Display Item:")%>
+      </dt>
+      <dd>
+	<% childern = document_fedora.list_childern(params[:id],"subcollection") %>
+	<% item_titles = Hash.new %>
+	<% item_titles[""] = "" %>
+        <%- childern.each do |child| -%>          
+          <% item_titles[child.item_title] = child.pid %>
+        <%- end -%>
+        <%= fedora_select(@document_fedora,"properties", [:main_item], :choices=> item_titles)%>
+      </dd>
     </dl>
   </fieldset>
 </form>

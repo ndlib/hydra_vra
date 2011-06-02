@@ -73,21 +73,19 @@
         <%= fedora_text_area(document_fedora,"descMetadata", [:item, :scopecontent])%>
       </dd>
       <%= render :partial => "shared/review", :locals => {:content_type=>"component", :document_fedora=>@document_fedora} %>
+      <dt>
+        <%= fedora_field_label("properties", [:main_page], "Display Image:")%>
+      </dt>
+      <dd>
+	<% childern = document_fedora.list_childern(params[:id],"item") %>
+	<% image_names = Hash.new %>
+	<% image_names[""] = "" %>
+        <%- childern.each do |child| -%>          
+          <% image_names[child.name] = child.pid %>
+        <%- end -%>
+        <%= fedora_select(@document_fedora,"properties", [:main_page], :choices=> image_names)%>
+      </dd>
     </dl>
-    <table><tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td>Display Image:</td><td>
-        <% childern = document_fedora.list_childern(params[:id],"item") %>
-        <input id="exhibit_add_main_description_url" type="hidden" name="url" value="<%= url_for(:action=>"update", :controller=>"components", :content_type=>content)%>" />
-        <div id="add-main-description-box" class="split-button">
-          <input id="re-run-add-main-description-action" type="button" class="button" value="Select Image" />
-          <button id="select-main-description-type" type="button">Select main Image</button>
-          <ul id="add-main-description-menu">
-            <%- childern.each do |child| -%>          
-              <li class="description" pid="<%= child.pid%>">
-                <%= child.name%>
-              </li>
-            <%- end -%>
-          </ul>
-        </div></td></tr></table>
   </fieldset>
   <fieldset id="work_fields">
     <legend> Images </legend>
