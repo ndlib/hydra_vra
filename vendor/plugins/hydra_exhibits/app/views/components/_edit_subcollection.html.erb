@@ -84,11 +84,12 @@
         <%= fedora_field_label("properties", [:main_item], "Display Item:")%>
       </dt>
       <dd>
-	<% childern = document_fedora.list_childern(params[:id],"subcollection") %>
+        <% (response,document_list) = get_pids_search_results(document_fedora.members_ids) %>
 	<% item_titles = Hash.new %>
 	<% item_titles[""] = "" %>
-        <%- childern.each do |child| -%>          
-          <% item_titles[child.item_title] = child.pid %>
+        <% title_solr_field = Component.title_solr_field_name("item")%>
+        <%- document_list.each do |document| -%>
+          <% item_titles[document[title_solr_field]] = document[SOLR_DOCUMENT_ID] %>
         <%- end -%>
         <%= fedora_select(@document_fedora,"properties", [:main_item], :choices=> item_titles)%>
       </dd>

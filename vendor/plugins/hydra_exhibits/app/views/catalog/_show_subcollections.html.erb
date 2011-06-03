@@ -11,14 +11,8 @@
     <h2 class="section-title">Child Components</h2>
     <%- response = @response if response.nil? -%>
     <%- collection_obj = load_af_instance_from_solr(@document) -%>
-    <%- arr = Array.new -%>
-    <%- pid_arr = Array.new -%>
-    <%- if(collection_obj.members.size > 0 ) -%>
-      <%- collection_obj.members(:rows=> "1024", :response_format=>:solr).each_with_index do |doc, counter| -%>
-        <%- item = load_af_instance_from_solr(doc) -%>
-        <%- pid_arr << item.pid -%>
-        <%- arr.push(doc) -%>
-      <%- end -%>
+    <%- pid_arr = collection_obj.members(:rows=> "1024", :response_format=>:id_array) -%>
+    <%- if(pid_arr.size > 0 ) -%>
       <%- (response,document_list) = get_pids_search_results(pid_arr) -%>
       <div class="pagination">
         <%= will_paginate response.docs, :page_links => false, :class => 'prev_next_links' %>

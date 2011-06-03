@@ -83,21 +83,19 @@ class Component < ActiveFedora::Base
   end
 
   def list_childern(item_id, type)
-    @asset = Component.load_instance_from_solr(item_id)
+    #@asset = Component.load_instance_from_solr(item_id)
     arr = Array.new
     if(type.eql?"item")
-      childern = @asset.page #inbound_relationships[:is_part_of]
+      childern = page #inbound_relationships[:is_part_of]
       if(!(childern.nil?) && childern.size > 0)
         childern.each { |child|
-          child_obj = Page.load_instance_from_solr(child.pid)
-          arr.push(child_obj)
+          arr.push(child)
         }
       end
     else #if(type.eql?"subcollection")
-      childern = @asset.members
-      childern.each { |child|
-        child_id = child.pid #child.split('/')
-	child_obj = Component.load_instance_from_solr(child_id)
+      ids = members_ids
+      ids.each { |id|
+	child_obj = Component.load_instance_from_solr(id)
         arr.push(child_obj)
       }
     end
@@ -116,6 +114,12 @@ class Component < ActiveFedora::Base
 
   def metadata_fields
     field_keys[:descMetadata][type] rescue nil
+  end
+
+  def self.title_solr_field_name(co_type=type)
+    (!co_type.nil? && co_type.eql?("item")) ? term_pointer = [:item, :did, :unittitle, :unittitle_content] : term_pointer = [:collection, :did, :unittitle, :unittitle_content] 
+    field_name_base = OM::XML::Terminology.term_generic_name(*term_pointer)
+    ActiveFedora::SolrService.solr_name(field_name_base,:string)
   end
 
   def item_title

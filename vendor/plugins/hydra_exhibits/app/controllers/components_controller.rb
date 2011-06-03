@@ -20,7 +20,6 @@ class ComponentsController < ApplicationController
         
         @response, @document = get_solr_response_for_doc_id
         pid = @document[:id] ? @document[:id] : @document[:id.to_s]
-        pid ? @component = Component.load_instance_from_solr(pid,@document) : @component = nil
         result = @document["#{params["field"]}_t"]
         unless result.nil?
           if params.has_key?("field_index")
