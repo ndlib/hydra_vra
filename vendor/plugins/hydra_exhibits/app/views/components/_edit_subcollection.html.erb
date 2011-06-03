@@ -11,7 +11,9 @@
         <p> Parent: </p>
       </dt>
       <dd class="parent">
-        <%= link_to "#{@document_fedora.member_of.first.title}", catalog_path(@document_fedora.member_of.first.pid, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :f => params[:f], :viewing_context => params[:viewing_context]) %>
+        <%- parent_id = @document_fedora.member_of_ids.first -%>
+        <%- parent = Collection.load_instance_from_solr(parent_id)-%>
+        <%= link_to "#{parent.title}", catalog_path(parent_id, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context], :f => params[:f]) %>
       </dd>
       <dt>
         <%= fedora_field_label("descMetadata", [:collection, :did, :unittitle, :unittitle_content], "Title:") %>
