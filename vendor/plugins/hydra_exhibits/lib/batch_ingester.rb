@@ -450,5 +450,31 @@ module BatchIngester
       end
     end
 
+  def update_date_field(filename)
+    arr_of_data=load_file(filename)
+    arr_of_data.each do |row|
+      if (row[0].blank? || row[1].blank?)
+        raise "This entry #{row.inspect} has empty collection information"
+      else
+	result = Component.find_by_fields_by_solr({"subcollection_id_s"=>row[13].to_s.strip})
+        if(result.to_a.length > 0)
+	  subcol = Component.load_instance(result.to_a[0]["id"].to_s.strip)
+	  if(!row[7].nil? && !row[7].empty?)
+            date = row[7].split("/")
+	    if(date.size == 3)
+	      dte = "#{date[2]}/#{date[0]}/#{date[1]}"
+	    elsif(date.size == 2)
+	      dte = "#{date[1]}/#{date[0]}/01"
+	    elsif(date.size == 1)
+	      dte = "#{date[0]}/01/01"
+	    end
+            update_fields(subcol, [:collection, :did, :unittitle, :unittitle_content], dte)
+            subcol.save
+	  end
+	end
+      end
+    end
+  end
+
   end
 end

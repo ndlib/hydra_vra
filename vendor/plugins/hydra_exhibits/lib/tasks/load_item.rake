@@ -11,6 +11,14 @@ namespace :batch do
     end
   end
 
+  task :update_date_field  => :environment do
+    puts "Inside update_date_field"
+    ingester = BatchIngester::CurrencyIngester.new
+    if ENV['FILE']
+      ingester.update_date_field(ENV['FILE'])
+    end
+  end
+
   desc "Remove building from csv file"
   task :remove_all_objects  => :environment do
     ingester = BatchIngester::CurrencyIngester.new
