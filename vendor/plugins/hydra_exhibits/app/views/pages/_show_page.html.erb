@@ -5,7 +5,9 @@
         <p>Parent: </p>
       </dt>
       <dd class="parent">
-	<%= link_to "#{@document_fedora.item.first.title}", catalog_path(@document_fedora.item.first.pid, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context], :f => params[:f]) %>        
+        <%- parent_id = @document_fedora.item_ids.first -%>
+        <%- parent = Component.load_instance_from_solr(parent_id)-%>
+        <%= link_to "#{parent.title}", catalog_path(parent_id, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context], :f => params[:f]) %>
       </dd>
       <% unless get_values_from_datastream(@document_fedora,"properties", [:name]).first.empty?%>
           <dt class="name">

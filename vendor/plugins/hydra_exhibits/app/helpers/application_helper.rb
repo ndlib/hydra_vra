@@ -735,6 +735,18 @@ logger.debug("Params in edit_and_browse_links: #{params.inspect}")
     return results
   end
 
+  def get_search_results_inbound_relationship(document_fedora,predicate)
+    fq = "#{predicate}_s:#{@document_fedora.internal_uri.gsub(/(:)/, '\\:')}"
+    extra_controller_params = {}
+    extra_controller_params.merge!(:q=>build_lucene_query(params[:q]))
+    extra_controller_params.merge!(:fq=>fq)
+    p = params.dup
+    params.delete(:f) 
+    results = get_search_results(extra_controller_params)
+    params[:f] = p[:f]
+    return results
+  end
+
   # Apply a class to the body element if the browse conditions are met.
   # TODO: Extend this method to support exhibit-specific themes
   def set_page_style

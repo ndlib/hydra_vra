@@ -86,7 +86,7 @@
         <%= fedora_field_label("properties", [:main_item], "Display Item:")%>
       </dt>
       <dd>
-        <% (response,document_list) = get_pids_search_results(document_fedora.members_ids) %>
+        <% (response,document_list) = get_search_results_inbound_relationship(@document_fedora,"is_member_of") %>
 	<% item_titles = Hash.new %>
 	<% item_titles[""] = "" %>
         <% title_solr_field = Component.title_solr_field_name("item")%>
