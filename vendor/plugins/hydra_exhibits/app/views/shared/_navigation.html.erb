@@ -3,14 +3,15 @@
   <!--currently just accounting for one level but might want to be more sophisticated and have something like expandable/collaspable tree-->
   <%- unless @browse_response.nil? -%>
     <%=render_browse_facet_div%>
-    <% exhibt_id = ((params.keys.include?"exhibit_id") ? params[:exhibit_id] : params[:id]) %>
-    <%- if(!exhibt_id.empty?) -%>
-      <% ex = Exhibit.load_instance(exhibt_id) %>
-      <%- unless ex.collections.empty? -%>
-        <% col_pid = ex.collections.first.pid %>
-        <% col = Collection.load_instance(col_pid) %>
-        <%- unless col.parts.empty? -%>
-          <% fd_pid = col.parts.first.pid %>
+    <%- exhibt_id = ((params.keys.include?"exhibit_id") ? params[:exhibit_id] : params[:id]) -%>
+    <%- if(!exhibt_id.empty? && !@exhibit.nil?) -%>
+      <%- collection_ids = @exhibit.collections_ids -%>
+      <%- unless collection_ids.empty? -%>
+        <%- col_pid = collection_ids.first -%>
+        <%- col = Collection.load_instance_from_solr(col_pid) -%>
+        <%- parts_ids = col.parts_ids -%>
+        <%- unless parts_ids.empty? -%>
+          <%- fd_pid = parts_ids.first -%>
           <h3> <%= link_to 'View Complete Finding Aid', finding_aid_path('show', :finding_id => fd_pid, :exhibit_id => exhibt_id, :render_search => params[:render_search], :viewing_context => "browse") %></h3>
         <%- end -%>
       <%- end -%>
