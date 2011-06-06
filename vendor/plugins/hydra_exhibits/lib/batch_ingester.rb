@@ -464,6 +464,7 @@ module BatchIngester
 	      dte = date.strip.split("/")
               subcol.update_indexed_attributes({[:date] => {"0" => dte.last}})
 	    end
+            update_fields(subcol, [:collection, :did, :unittitle, :unittitle_content], row[8])
             update_fields(subcol, [:collection, :did, :unittitle, :unitdate], row[7])
             subcol.save
 	  end
