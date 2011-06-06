@@ -34,16 +34,16 @@
          </dd>
      <%end%>
       <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:item, :did, :origination, :persname, :persname_normal]).first.empty?%>
-         <dt class="display_signers">
-           <%= fedora_field_label("descMetadata", [:item, :did, :origination, :persname, :persname_normal], "Display Signers:")%>
+         <dt class="signers">
+           <%= fedora_field_label("descMetadata", [:item, :did, :origination, :persname, :persname_normal], "Signers:")%>
 	 </dt>
          <dd>
            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:item, :did, :origination, :persname, :persname_normal])%>
          </dd>
      <%end%>
       <% unless get_values_from_datastream(@document_fedora,"descMetadata", [:item, :did, :origination, :persname]).first.empty?%>
-         <dt class="signers">
-           <%= fedora_field_label("descMetadata", [:item, :did, :origination, :persname], "Signers:")%>
+         <dt class="display_signers">
+           <%= fedora_field_label("descMetadata", [:item, :did, :origination, :persname], "Display Signers:")%>
 	 </dt>
          <dd>
            <%= get_values_from_datastream(@document_fedora,"descMetadata", [:item, :did, :origination, :persname])%>

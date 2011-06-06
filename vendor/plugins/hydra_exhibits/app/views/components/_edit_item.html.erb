@@ -33,15 +33,15 @@
         <%= fedora_text_field(document_fedora,"descMetadata", [:item, :did, :unittitle, :num]) %>
       </dd>
       <dt>
-        <%= fedora_field_label("descMetadata", [:item, :did, :origination, :persname, :persname_normal], "Display Signers:") %>
+        <%= fedora_field_label("descMetadata", [:item, :did, :origination, :persname, :persname_normal], "Signers:") %>
       </dt>
-      <dd class="display_signers">
+      <dd class="signers">
         <%= fedora_text_field(document_fedora,"descMetadata", [:item, :did, :origination, :persname, :persname_normal], :multiple=>true) %>
       </dd>
       <dt>
-        <%= fedora_field_label("descMetadata", [:item, :did, :origination, :persname], "Signers:") %>
+        <%= fedora_field_label("descMetadata", [:item, :did, :origination, :persname], "Display Signers:") %>
       </dt>
-      <dd class="signers">
+      <dd class="display_signers">
         <%= fedora_text_field(document_fedora,"descMetadata", [:item, :did, :origination, :persname], :multiple=>false) %>
       </dd>
       <dt>

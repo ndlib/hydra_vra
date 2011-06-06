@@ -219,10 +219,10 @@ module BatchIngester
         id = key
         printer=row[9]
         engraver=row[5]
-        title=row[11] #row[8]
+        title=row[8] #row[8]
         geog=row[10]
         publisher=row[6]
-        date=row[8] #row[11]
+        date=row[7] #row[11]
         description=row[4]
         display=row[3]
         genreform=row[2]
@@ -264,10 +264,10 @@ module BatchIngester
             update_fields(subcollection, [:collection, :did, :origination, :printer], args[:printer])
             update_fields(subcollection, [:collection, :did, :origination, :engraver], args[:engraver])
             #subcollection.update_indexed_attributes ({term=>{"0"=>value}} )
-            update_fields(subcollection, [:collection, :did, :unittitle, :unitdate], args[:title]) #new stuff
+            update_fields(subcollection, [:collection, :did, :unittitle, :unitdate], args[:date]) #new stuff
             update_fields(subcollection, [:collection, :did, :unittitle, :imprint, :geogname], args[:geography])
             update_fields(subcollection, [:collection, :did, :unittitle, :imprint, :publisher], args[:publisher])
-            update_fields(subcollection, [:collection, :did, :unittitle, :unittitle_content], args[:date]) #new stuff
+            update_fields(subcollection, [:collection, :did, :unittitle, :unittitle_content], args[:title]) #new stuff
             update_fields(subcollection, [:collection, :scopecontent], args[:description])#utf_desc
             update_fields(subcollection, [:collection, :odd], args[:display])
             update_fields(subcollection, [:collection, :controlaccess, :genreform], args[:genreform])
@@ -450,31 +450,25 @@ module BatchIngester
       end
     end
 
-  def update_date_field(filename)
-    arr_of_data=load_file(filename)
-    arr_of_data.each do |row|
-      if (row[0].blank? || row[1].blank?)
-        raise "This entry #{row.inspect} has empty collection information"
-      else
-	result = Component.find_by_fields_by_solr({"subcollection_id_s"=>row[13].to_s.strip})
-        if(result.to_a.length > 0)
-	  subcol = Component.load_instance(result.to_a[0]["id"].to_s.strip)
-	  if(!row[7].nil? && !row[7].empty?)
-            date = row[7].split("/")
-	    if(date.size == 3)
-	      dte = "#{date[2]}/#{date[0]}/#{date[1]}"
-	    elsif(date.size == 2)
-	      dte = "#{date[1]}/#{date[0]}/01"
-	    elsif(date.size == 1)
-	      dte = "#{date[0]}/01/01"
+    def update_date_field(filename)
+      arr_of_data=load_file(filename)
+      arr_of_data.each do |row|
+        if (row[0].blank? || row[13].blank?)
+          raise "This entry #{row.inspect} has empty collection information"
+        else
+	  result = Component.find_by_fields_by_solr({"subcollection_id_s"=>row[13].to_s.strip})
+          if(result.to_a.length > 0)
+	    subcol = Component.load_instance(result.to_a[0]["id"].to_s.strip)
+	    date = row[7]
+	    if(!date.nil? && !date.empty?)
+	      dte = date.strip.split("/")
+              subcol.update_indexed_attributes({[:date] => {"0" => dte.last}})
 	    end
-            update_fields(subcol, [:collection, :did, :unittitle, :unittitle_content], dte)
+            update_fields(subcol, [:collection, :did, :unittitle, :unitdate], row[7])
             subcol.save
 	  end
-	end
+        end
       end
     end
-  end
-
   end
 end

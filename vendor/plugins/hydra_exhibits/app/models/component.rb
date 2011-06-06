@@ -28,6 +28,7 @@ class Component < ActiveFedora::Base
     m.field "component_type", :string
     m.field 'review', :string
     m.field 'review_comments', :string
+    m.field 'date', :string
   end
 
   alias_method :id, :pid
@@ -134,7 +135,7 @@ class Component < ActiveFedora::Base
     @sub_collection_title = values.any? ? values.first : ""
   end
 
-    def formatted_title
+  def formatted_title
     self.item_id.blank? ? title = sub_collection_title : title = item_title
   end
 
