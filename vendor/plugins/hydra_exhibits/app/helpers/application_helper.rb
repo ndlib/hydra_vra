@@ -788,5 +788,9 @@ logger.debug("Params in edit_and_browse_links: #{params.inspect}")
      (@review_response, @review_document_list) = get_search_results( @extra_controller_params.merge!(:q=>lucene_query))
   end
 
+  def image_url(pid,ds_name=content)
+    "#{Fedora::Repository.instance.base_url}/get/#{pid}/#{ds_name}"
+  end
+
 end
 
