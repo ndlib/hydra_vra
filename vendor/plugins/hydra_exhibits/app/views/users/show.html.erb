@@ -1,0 +1,30 @@
+<h3>Your Account</h3>
+
+<dl id="userInfo" class="defList">
+  <dt>Login ID</dt>
+  <dd><%= current_user.login %></dd>
+
+  <dt>Name:</dt>
+  <dd><%=h current_user.name %></dd>
+
+  <dt>Groups:</dt>
+  <dd>
+    <ul>
+      <%- current_user.groups.each do |group| -%>
+        <li><%= group.pretty_name %></li>
+      <%- end -%>
+    </ul>
+  </dd>
+
+  <dt>Last Login</dt>
+  <dd><%= current_user.last_login_at %></dd>
+
+<% if current_user.last_search_url %>
+    <dt>Last Search</dt>
+    <dd><%= link_to 'view', catalog_index_path(current_user.last_search_url) %></dd>
+<% end %>
+
+  <dt>Bookmarks</dt>
+  <dd><%= link_to 'view', bookmarks_path %></dd>
+
+</dl>
