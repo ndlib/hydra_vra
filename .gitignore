@@ -1,6 +1,7 @@
 .DS_Store
 nohup.out
 deploy.rb
+ldap_config.rb
 
 *.sqlite3
 *.log
