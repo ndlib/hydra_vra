@@ -40,6 +40,10 @@ class Page < ActiveFedora::Base
     values = self.fields[:title][:values]
     @title = values.any? ? values.first : ""
   end
+ 
+  def self.title_solr_field_name
+    ActiveFedora::SolrService.solr_name("title",:string)
+  end
 
 #  def create_or_update_datastream ds_name, file
 #    case file

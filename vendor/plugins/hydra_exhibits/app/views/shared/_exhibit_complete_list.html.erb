@@ -9,13 +9,13 @@
       <div class="documentHeader yui-g">
         <% # main title container for doc partial view -%>
         <div class="yui-u">
-         <%- asset = load_af_instance_from_solr(document) -%>
-          <%# document_show_link_field debug item.inspect %>
-          <%- if asset.class == Collection -%>
-            <%- title = asset.title -%>
-          <%- elsif asset.class == Component-%>
-            <%- asset.item_id.blank? ? title = asset.sub_collection_title : title = asset.item_title -%>
-	  <%- elsif asset.class == Page-%>
+          <%- af_model = get_af_model(document) -%>
+          <%- if af_model == "Collection" -%>
+            <%- title = document[Collection.title_solr_field_name].first -%>
+          <%- elsif af_model == "Component"-%>
+            <%- title = document[Component.title_solr_field_name(document["component_type_t"].first)].first -%>
+	  <%- elsif af_model == "Page"-%>
+            <%- asset = Page.load_instance_from_solr(document[:id]) -%>
             <%- title = asset.name -%>
           <%- else-%>
             <%- title = document[:id] %>

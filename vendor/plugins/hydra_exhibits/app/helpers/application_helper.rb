@@ -792,5 +792,13 @@ logger.debug("Params in edit_and_browse_links: #{params.inspect}")
     "#{Fedora::Repository.instance.base_url}/get/#{pid}/#{ds_name}"
   end
 
+  def get_af_model(document)
+    if document[:has_model_s] || document[:has_model_s.to_s]
+      has_model_s = document[:has_model_s] ? document[:has_model_s] : document[:has_model_s.to_s]
+      model = has_model_s.first.gsub("info:fedora/afmodel:","")
+    else
+      ""
+    end 
+  end
 end
 

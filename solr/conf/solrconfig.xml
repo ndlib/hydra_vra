@@ -412,7 +412,9 @@
         ead_header_filedesc_titlestmt_author_t,
         did_ref_0_head_t,
         did_ref_unittitle_t,
-
+        component_type_t,
+        main_page_t,
+        main_item_t,
 	page_id_t,
 	name_t,
 	title_t
@@ -474,7 +476,9 @@
         ead_header_filedesc_titlestmt_author_t,
         did_ref_0_head_t,
         did_ref_unittitle_t,
-
+        component_type_t,
+        main_page_t,
+        main_item_t,
 	page_id_t,
 	name_t,
 	title_t
@@ -533,7 +537,9 @@
         ead_header_filedesc_titlestmt_author_t,
         did_ref_0_head_t,
         did_ref_unittitle_t,
-
+        component_type_t,
+        main_page_t,
+        main_item_t,
 	page_id_t,
 	name_t,
 	title_t

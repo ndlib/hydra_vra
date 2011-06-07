@@ -72,6 +72,12 @@ class Collection < ActiveFedora::Base
     @collection_title = values.any? ? values.first : ""
   end
 
+  def self.title_solr_field_name
+    term_pointer = [:ead_header, :filedesc, :titlestmt, :titleproper] 
+    field_name_base = OM::XML::Terminology.term_generic_name(*term_pointer)
+    ActiveFedora::SolrService.solr_name(field_name_base,:string)
+  end
+
   def list_childern(item_id, type)
     @asset = Collection.load_instance_from_solr(item_id)
     arr = Array.new
