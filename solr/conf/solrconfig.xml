@@ -384,7 +384,7 @@
       <str name="pf_dismax">text^0.9</str>
       <str name="fl">
         id,id_t,title_t,has_model_s,has_collection_member_s,system_create_dt,
-        status_t,subject_t,depositor_t,description_t,rights_t,access_t,
+        status_t,subject_t,depositor_t,description_t,rights_t,access_t,page_id_t,name_t,
 
         collection_did_unitid_t,
         collection_did_unitid_unitid_identifier_t,
@@ -414,10 +414,7 @@
         did_ref_unittitle_t,
         component_type_t,
         main_page_t,
-        main_item_t,
-	page_id_t,
-	name_t,
-	title_t
+        main_item_t
       </str>
       <str name="mm">
         2&lt;-1 5&lt;-2 6&lt;90%
@@ -448,7 +445,7 @@
       <str name="pf_dismax">id^0.9  id_t^0.9 text^0.5</str>
       <str name="fl">
         id,title_t,has_model_s,has_collection_member_s,system_create_dt,
-        status_t,subject_t,depositor_t,description_t,rights_t,access_t,
+        status_t,subject_t,depositor_t,description_t,rights_t,access_t,page_id_t,name_t,
 
         collection_did_unitid_t,
         collection_did_unitid_unitid_identifier_t,
@@ -478,10 +475,7 @@
         did_ref_unittitle_t,
         component_type_t,
         main_page_t,
-        main_item_t,
-	page_id_t,
-	name_t,
-	title_t
+        main_item_t
       </str>
       <str name="mm">
         2&lt;-1 5&lt;-2 6&lt;90%
@@ -509,7 +503,7 @@
        <str name="pf">id^0.9  id_t^0.9 text^0.5</str>
      <str name="fl">
         id,title_t,has_model_s,has_collection_member_s,system_create_dt,
-        status_t,subject_t,depositor_t,description_t,rights_t,access_t,
+        status_t,subject_t,depositor_t,description_t,rights_t,access_t,page_id_t,name_t,
 
         collection_did_unitid_t,
         collection_did_unitid_unitid_identifier_t,
@@ -539,10 +533,7 @@
         did_ref_unittitle_t,
         component_type_t,
         main_page_t,
-        main_item_t,
-	page_id_t,
-	name_t,
-	title_t
+        main_item_t
      </str>
      <str name="mm">
         2&lt;-1 5&lt;-2 6&lt;90%

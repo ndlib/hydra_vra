@@ -1,7 +1,6 @@
-<%- page = load_af_instance_from_solr(document) -%>
 <div class="thumbnail-container">
     <%= link_to_document document, :label=>(
-      image_tag page.datastream_url('thumbnail')
+      image_tag image_url(document[:id],'thumbnail')
     ) %>
 </div>
 <dl class="defList">
@@ -14,9 +13,6 @@
 	  <%- else -%>
             <dd><%= h document[solr_fname].first %></dd>
           <%- end -%>
-        <% elsif(solr_fname.split("_").first == "name") -%>
-          <dt><%= h page_field_labels[solr_fname]%></dt>
-	  <dd><%= h page.name %></dd>
         <%- end -%>
       <%- end -%>
 </dl>

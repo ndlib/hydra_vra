@@ -14,9 +14,8 @@
             <%- title = document[Collection.title_solr_field_name].first -%>
           <%- elsif af_model == "Component" && document["component_type_t"] && !document["component_type_t"].empty? && document[Component.title_solr_field_name(document["component_type_t"].first)] && !document[Component.title_solr_field_name(document["component_type_t"].first)].empty?-%>
             <%- title = document[Component.title_solr_field_name(document["component_type_t"].first)].first -%>
-	  <%- elsif af_model == "Page"-%>
-            <%- asset = Page.load_instance_from_solr(document[:id]) -%>
-            <%- title = asset.name -%>
+	  <%- elsif af_model == "Page" && document["name_t"] && !document["name_t"].empty? -%>
+            <%- title =  document["name_t"].first -%>
           <%- else-%>
             <%- title = document[:id] %>
           <%- end %>
