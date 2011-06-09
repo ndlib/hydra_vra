@@ -125,6 +125,12 @@ class ComponentsController < ApplicationController
       render :partial => "shared/review_comments", :locals=>{:rev=>params[:rev]}
     end
 
+    def delete_image
+      img = Page.find(params[:page_id])
+      img.delete
+      redirect_to url_for(:action=>"edit", :controller=>"catalog", :label => params[:label], :id=>params[:id], :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :f => params[:f], :viewing_context => params[:viewing_context])
+    end
+
     def destroy
       ActiveFedora::Base.load_instance(params[:id]).delete
 
