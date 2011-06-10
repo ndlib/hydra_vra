@@ -1,0 +1,70 @@
+# The default namespace maps to the default namespace for generating rels_ext from solr
+:default_namespace: info:fedora/fedora-system:def/relations-external#
+
+# namespace mappings--- 
+# you can add specific mappings for your institution by providing the following:
+#   namespace_uri:
+#     :relationship_symbol: relationship_identifier
+# 
+# For example, if you have the following element in your rels_ext:
+#  
+#  <oai:itemID>oai:example.edu:changeme:500</oai:itemID>
+# 
+# With the last two lines of this file uncommented, the relationships hash of your object will include:
+#   :oai_item_id => ["info:fedora/oai:example.edu:changeme:500"]
+#
+# With the last two lines of this file commented out, the relationships hash of your object will include:
+#   "oai_itemID" => ["info:fedora/oai:example.edu:changeme:500"]
+#   
+:predicate_mapping:
+  info:fedora/fedora-system:def/relations-external#: 
+    :is_derivation_of: isDerivationOf
+    :is_metadata_for: isMetadataFor
+    :is_member_of_collection: isMemberOfCollection
+    :has_derivation: hasDerivation
+    :is_annotation_of: isAnnotationOf
+    :is_constituent_of: isConstituentOf
+    :is_dependent_of: isDependentOf
+    :has_collection_member: hasCollectionMember
+    :has_annotation: hasAnnotation
+    :has_constituent: hasConstituent
+    :has_dependent: hasDependent
+    :is_part_of: isPartOf
+    :has_equivalent: hasEquivalent
+    :is_subset_of: isSubsetOf
+    :is_description_of: isDescriptionOf
+    :is_member_of: isMemberOf
+    :has_model: hasModel
+    :conforms_to: conformsTo
+    :has_metadata: hasMetadata
+    :has_subset: hasSubset
+    :has_description: hasDescription
+    :has_part: hasPart
+    :has_member: hasMember
+#ead predicates
+    :has_component_collection_member: hasComponentCollectionMember
+    :has_series_member: hasSeriesMember
+    :has_class_member: hasClassMember
+    :has_file_member: hasFileMember
+    :has_fonds_member: hasFondsMember
+    :has_item_member: hasItemMember
+    :has_otherlevel_member: hasOtherlevelMember
+    :has_recordgrp_member: hasRecordgrpMember
+    :has_subfonds_member: hasSubfondsMember
+    :has_subgrp_member: hasSubgrpMember
+    :has_subseries_member: hasSubseriesMember
+    :is_member_of_component_collection: isMemberOfComponentCollection
+    :is_member_of_series: isMemberOfSeries
+    :is_member_of_class: isMemberOfClass
+    :is_member_of_file: isMemberOfFile
+    :is_member_of_fonds: isMemberOfFonds
+    :is_member_of_item: isMemberOfItem
+    :is_member_of_otherlevel: isMemberOfOtherlevel
+    :is_member_of_recordgrp: isMemberOfRecordgrp
+    :is_member_of_subfonds: isMemberOfSubfonds
+    :is_member_of_subgrp: isMemberOfSubgrp
+    :is_member_of_subseries: isMemberOfSubseries
+  info:fedora/fedora-system:def/model#:
+    :has_model: hasModel
+#  http://www.openarchives.org/OAI/2.0/: 
+#    :oai_item_id: itemID

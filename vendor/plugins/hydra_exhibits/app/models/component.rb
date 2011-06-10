@@ -6,8 +6,28 @@ class Component < ActiveFedora::Base
   include Hydra::ModelMethods
   include ComponentsControllerHelper
 
-  has_bidirectional_relationship "member_of", :is_member_of, :has_member
-  has_bidirectional_relationship "members", :has_member, :is_member_of
+  has_bidirectional_relationship "is_member_of_component_collection", :is_member_of_component_collection, :has_component_collection_member
+  has_bidirectional_relationship "component_collection_members", :has_component_collection_member, :is_member_of_component_collection
+  has_bidirectional_relationship "is_member_of_series", :is_member_of_series, :has_series_member
+  has_bidirectional_relationship "series_members", :has_series_member, :is_member_of_series
+  has_bidirectional_relationship "is_member_of_class", :is_member_of_class, :has_class_member
+  has_bidirectional_relationship "class_members", :has_class_member, :is_member_of_class
+  has_bidirectional_relationship "is_member_of_file", :is_member_of_file, :has_file_member
+  has_bidirectional_relationship "file_members", :has_file_member, :is_member_of_file
+  has_bidirectional_relationship "is_member_of_fonds", :is_member_of_fonds, :has_fonds_member
+  has_bidirectional_relationship "fonds_members", :has_fonds_member, :is_member_of_fonds
+  has_bidirectional_relationship "is_member_of_item", :is_member_of_item, :has_item_member
+  has_bidirectional_relationship "item_members", :has_item_member, :is_member_of_item
+  has_bidirectional_relationship "is_member_of_otherlevel", :is_member_of_otherlevel, :has_otherlevel_member
+  has_bidirectional_relationship "otherlevel_members", :has_otherlevel_member, :is_member_of_otherlevel
+  has_bidirectional_relationship "is_member_of_recordgrp", :is_member_of_recordgrp, :has_recordgrp_member
+  has_bidirectional_relationship "recordgrp_members", :has_recordgrp_member, :is_member_of_recordgrp
+  has_bidirectional_relationship "is_member_of_subfonds", :is_member_of_subfonds, :has_subfonds_member
+  has_bidirectional_relationship "subfonds_members", :has_subfonds_member, :is_member_of_subfonds
+  has_bidirectional_relationship "is_member_of_subgrp", :is_member_of_subgrp, :has_subgrp_member
+  has_bidirectional_relationship "subgrp_members", :has_subgrp_member, :is_member_of_subgrp
+  has_bidirectional_relationship "is_member_of_subseries", :is_member_of_subseries, :has_subseries_member
+  has_bidirectional_relationship "subseries_members", :has_subseries_member, :is_member_of_subseries 
   has_bidirectional_relationship "page", :has_part_of, :is_part_of
   has_bidirectional_relationship "featured_of", :is_part_of, :has_part
 
@@ -21,35 +41,14 @@ class Component < ActiveFedora::Base
   has_metadata :name => "properties", :type => ActiveFedora::MetadataDatastream do |m|
     m.field 'collection', :string
     m.field 'depositor', :string
-    m.field "subcollection_id", :string
-    m.field "item_id", :string
     m.field "main_page", :string
     m.field "main_item", :string
-    m.field "component_type", :string
     m.field 'review', :string
     m.field 'review_comments', :string
     m.field 'date', :string
   end
 
   alias_method :id, :pid
-
-  def component_type
-    return @component_type if (defined? @component_type)
-    values = self.fields[:component_type][:values]
-    @component_type = values.any? ? values.first : ""
-  end
-
-  def subcollection_id
-    return @subcollection_id if (defined? @subcollection_id)
-    values = self.fields[:subcollection_id][:values]
-    @subcollection_id = values.any? ? values.first : ""
-  end
-
-  def item_id
-    return @item_id if (defined? @item_id)
-    values = self.fields[:item_id][:values]
-    @item_id = values.any? ? values.first : ""
-  end
 
   def main_page
     return @main_page if (defined? @main_page)
@@ -75,32 +74,8 @@ class Component < ActiveFedora::Base
     return result
   end
 
-#  def get_component_level
-#    return @component_level
-#  end
-
   def type
     @type ||= get_type_from_datastream
-  end
-
-  def list_childern(item_id, type)
-    #@asset = Component.load_instance_from_solr(item_id)
-    arr = Array.new
-    if(type.eql?"item")
-      childern = page #inbound_relationships[:is_part_of]
-      if(!(childern.nil?) && childern.size > 0)
-        childern.each { |child|
-          arr.push(child)
-        }
-      end
-    else #if(type.eql?"subcollection")
-      ids = members_ids
-      ids.each { |id|
-	child_obj = Component.load_instance_from_solr(id)
-        arr.push(child_obj)
-      }
-    end
-    return arr
   end
 
   def get_type_from_datastream
@@ -231,7 +206,7 @@ class Component < ActiveFedora::Base
   #Index all of parent ead content in the child
   def to_solr(solr_doc = Solr::Document.new, opts={})
     doc = super(solr_doc, opts)
-    doc = to_solr_parent_desc_metadata(doc)
+    #doc = to_solr_parent_desc_metadata(doc)
     return doc
   end
 end
