@@ -70,6 +70,26 @@ class EadXml < ActiveFedora::NokogiriDatastream
     t.controlaccess_ref(:path=>'controlaccess'){
       t.genreform
     }
+
+    t.component_ref(:path=>'c'){
+      t.did(:ref=>[:did_ref]){
+        t.origination(:ref=>[:origination_ref]){
+          t.persname(:path=>'persname'){
+            t.persname_role(:path=>{:attribute=>"role"})
+	    t.persname_normal(:path=>{:attribute=>"normal"})
+	  }
+        }
+        t.unittitle(:ref=>[:title_ref]){
+          t.unittitle_label(:path=>{:attribute=>"label"})
+          t.num(:path=>'num')
+        }
+      }
+      t.scopecontent
+      t.odd
+      t.controlaccess(:ref=>[:controlaccess_ref])
+      t.acqinfo
+      t.daogrp(:ref=>[:daogrp_ref])
+    }
     
     t.item_ref(:path=>'c02'){
       t.did(:ref=>[:did_ref]){
@@ -140,7 +160,7 @@ class EadXml < ActiveFedora::NokogiriDatastream
         t.creation(:path=>'creation'){
           t.date
         }
-        t.langusage(:path=>'langusage'){
+        t.language(:path=>'language'){
           t.language
         }
       }
@@ -181,7 +201,7 @@ class EadXml < ActiveFedora::NokogiriDatastream
               t.creation{
                 t.date
               }
-              t.langusage{
+              t.language{
                 t.language(:langcode=>"eng", :encodinganalog=>"546")
               }
             }
@@ -393,6 +413,46 @@ class EadXml < ActiveFedora::NokogiriDatastream
     end
     return builder.doc.root
   end
+
+  def self.component_template
+    builder = Nokogiri::XML::Builder.new do |t|
+        t.c01(:level=>"", "xmlns:xlink"=>"http://www.w3.org/1999/xlink", "xmlns:xsi"=>"http://www.w3.org/2001/XMLSchema-instance",
+              "xmlns"=>"currency-collection"){
+          t.did{
+            t.unitid(:identifier=>"")
+            t.origination{
+              t.persname(:role=>"", :normal=>"")
+            }
+            t.unittitle(:label=>""){
+              t.unitdate(:era=>"ce", :calendar=>"gregorian")
+              t.imprint{
+                t.geogname
+                t.publisher
+              }
+              t.num(:type=>"")
+            }
+            t.physdesc{
+              t.dimensions
+            }
+          }
+          t.scopecontent{
+            t.p
+          }
+          t.odd{
+            t.p
+          }
+          t.controlaccess{
+            t.genreform
+          }
+	  t.c
+          t.daogrp{
+            t.daoloc(:href=>"")
+          }
+        }
+    end
+    return builder.doc.root
+  end
+
   def self.image_template
     builder = Nokogiri::XML::Builder.new do |t|
       t.daoloc(:href=>"")
@@ -437,6 +497,9 @@ class EadXml < ActiveFedora::NokogiriDatastream
   
   def insert_node(type, opts={})
     case type.to_sym
+      when :component
+        node = EadXml.component_template
+        nodeset = self.find_by_terms(:archive_desc, :dsc, :component)
       when :collection
         node = EadXml.collection_template
         nodeset = self.find_by_terms(:eadheader)
@@ -483,6 +546,8 @@ class EadXml < ActiveFedora::NokogiriDatastream
         remove_node = self.find_by_terms(:archive_desc, :dsc, :collection, :item)[index.to_i]
       when :image
         remove_node = self.find_by_terms(:item, :daogrp, :daoloc)[index.to_i]
+      when :component
+        remove_node = self.find_by_terms(:archive_desc, :dsc, :component)[index.to_i]
     end
     unless remove_node.nil?
       puts "Term to delete: #{remove_node.inspect}"

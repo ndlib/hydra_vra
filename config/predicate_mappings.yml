@@ -64,6 +64,10 @@
     :is_member_of_subfonds: isMemberOfSubfonds
     :is_member_of_subgrp: isMemberOfSubgrp
     :is_member_of_subseries: isMemberOfSubseries
+    :has_image_part: hasImagePart
+    :is_image_part_of: isImagePartOf
+    :has_featured_member: hasFeaturedMember
+    :is_featured_member_of: isFeaturedMemberOf
   info:fedora/fedora-system:def/model#:
     :has_model: hasModel
 #  http://www.openarchives.org/OAI/2.0/: 
