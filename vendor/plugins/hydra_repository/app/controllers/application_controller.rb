@@ -36,12 +36,24 @@ class ApplicationController
     stylesheet_links << ['styles', 'hydrangea', 'hydrangea-split-button','hydraExhibit', {:media=>'all'}]
   end 
       
-  def current_user
+=begin
+def current_user
     return @current_user if defined?(@current_user)
     @current_user = current_user_session && current_user_session.user
     @current_user.extend(Hydra::SuperuserAttributes)
   end
-      
+=end
+  def current_user
+    return @current_user if defined?(@current_user)
+    if session[:cas_user]
+      logger.debug("User from cas")
+      @current_user = User.find_or_create_user_by_login(session[:cas_user])
+      logger.debug("End of User from cas")
+    else
+      @current_user = current_user_session && current_user_session.user
+    end
+    @current_user.extend(Hydra::SuperuserAttributes)
+  end
   protected
   def store_bounce 
     session[:bounce]=params[:bounce]
