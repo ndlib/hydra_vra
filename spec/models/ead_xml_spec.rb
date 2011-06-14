@@ -12,6 +12,8 @@ describe EadXml do
     @subcollection.datastreams["descMetadata"].ng_xml = EadXml.subcollection_template
     @item = Component.new
     @item.datastreams["descMetadata"].ng_xml = EadXml.item_template
+    @component = Component.new
+    @component.datastreams["descMetadata"].ng_xml = EadXml.component_template
   end
   
   describe "#item" do
@@ -118,102 +120,100 @@ describe EadXml do
 
   describe "#subcomponent" do
     it "should return empty string if no unitid" do
-      @subcollection.datastreams["descMetadata"].get_values([:dsc, :collection, :did, :unitid]).should == [""]
+      @subcollection.datastreams["descMetadata"].get_values([:collection, :did, :unitid]).should == [""]
     end
 
     it "should return string present in unitid element" do
-      @subcollection.update_indexed_attributes({[:dsc, :collection, :did, :unitid]=>{0=>"8/7/78"}})
-      @subcollection.datastreams["descMetadata"].get_values([:dsc, :collection, :did, :unitid]).should == ["8/7/78"]
+      @subcollection.update_indexed_attributes({[:collection, :did, :unitid]=>{0=>"8/7/78"}})
+      @subcollection.datastreams["descMetadata"].get_values([:collection, :did, :unitid]).should == ["8/7/78"]
     end
 
     it "should return empty string if no attribute value of unitid element" do
-      @subcollection.datastreams["descMetadata"].get_values([:dsc, :collection, :did, :unitid, :unitid_identifier]).should == [""]
+      @subcollection.datastreams["descMetadata"].get_values([:collection, :did, :unitid, :unitid_identifier]).should == [""]
     end
-
     it "should return attribute value of unitid element" do
-      @subcollection.update_indexed_attributes({[:dsc, :collection, :did, :unitid, :unitid_identifier]=>{0=>"8.7.74"}})
-      @subcollection.datastreams["descMetadata"].get_values([:dsc, :collection, :did, :unitid, :unitid_identifier]).should == ["8.7.74"]
+      @subcollection.update_indexed_attributes({[:collection, :did, :unitid, :unitid_identifier]=>{0=>"8.7.74"}})
+      @subcollection.datastreams["descMetadata"].get_values([:collection, :did, :unitid, :unitid_identifier]).should == ["8.7.74"]
     end
-
     it "should return empty string if no printer" do
-      @subcollection.datastreams["descMetadata"].get_values([:dsc, :collection, :did, :origination, :printer]).should == [""]
+      @subcollection.datastreams["descMetadata"].get_values([:collection, :did, :origination, :printer]).should == [""]
     end
 
     it "should return string pesent in printer element" do
-      @subcollection.update_indexed_attributes({[:dsc, :collection, :did, :origination, :printer]=>{0=>"XYZ Company"}})
-      @subcollection.datastreams["descMetadata"].get_values([:dsc, :collection, :did, :origination, :printer]).should == ["XYZ Company"]
+      @subcollection.update_indexed_attributes({[:collection, :did, :origination, :printer]=>{0=>"XYZ Company"}})
+      @subcollection.datastreams["descMetadata"].get_values([:collection, :did, :origination, :printer]).should == ["XYZ Company"]
     end
 
     it "should return empty string if no engraver" do
-      @subcollection.datastreams["descMetadata"].get_values([:dsc, :collection, :did, :origination, :engraver]).should == [""]
+      @subcollection.datastreams["descMetadata"].get_values([:collection, :did, :origination, :engraver]).should == [""]
     end
 
     it "should return string present in engraver element" do
-      @subcollection.update_indexed_attributes({[:dsc, :collection, :did, :origination, :engraver]=>{0=>"xyz name"}})
-      @subcollection.datastreams["descMetadata"].get_values([:dsc, :collection, :did, :origination, :engraver]).should == ["xyz name"]
+      @subcollection.update_indexed_attributes({[:collection, :did, :origination, :engraver]=>{0=>"xyz name"}})
+      @subcollection.datastreams["descMetadata"].get_values([:collection, :did, :origination, :engraver]).should == ["xyz name"]
     end
 
     it "should return empty string if no value for unitdate" do
-      @subcollection.datastreams["descMetadata"].get_values([:dsc, :collection, :did, :unittitle, :unitdate]).should == [""]
+      @subcollection.datastreams["descMetadata"].get_values([:collection, :did, :unittitle, :unitdate]).should == [""]
     end
 
     it "should return string containing value for unitdate" do
-      @subcollection.update_indexed_attributes({[:dsc, :collection, :did, :unittitle, :unitdate] =>{0=>"Jan 1, 1800"}})
-      @subcollection.datastreams["descMetadata"].get_values([:dsc, :collection, :did, :unittitle, :unitdate]).should == ["Jan 1, 1800"]
+      @subcollection.update_indexed_attributes({[:collection, :did, :unittitle, :unitdate] =>{0=>"Jan 1, 1800"}})
+      @subcollection.datastreams["descMetadata"].get_values([:collection, :did, :unittitle, :unitdate]).should == ["Jan 1, 1800"]
     end
 
     it "should return empty string if no geog" do
-      @subcollection.datastreams["descMetadata"].get_values([:dsc, :collection, :did, :unittitle, :imprint, :geogname]).should == [""]
+      @subcollection.datastreams["descMetadata"].get_values([:collection, :did, :unittitle, :imprint, :geogname]).should == [""]
     end
 
     it "should return string present in geog element" do
-      @subcollection.update_indexed_attributes({[:dsc, :collection, :did, :unittitle, :imprint, :geogname]=>{0=>"INDIA"}})
-      @subcollection.datastreams["descMetadata"].get_values([:dsc, :collection, :did, :unittitle, :imprint, :geogname]).should == ["INDIA"]
+      @subcollection.update_indexed_attributes({[:collection, :did, :unittitle, :imprint, :geogname]=>{0=>"INDIA"}})
+      @subcollection.datastreams["descMetadata"].get_values([:collection, :did, :unittitle, :imprint, :geogname]).should == ["INDIA"]
     end
 
     it "should return empty string if no publisher" do
-      @subcollection.datastreams["descMetadata"].get_values([:dsc, :collection, :did, :unittitle, :imprint, :publisher]).should == [""]
+      @subcollection.datastreams["descMetadata"].get_values([:collection, :did, :unittitle, :imprint, :publisher]).should == [""]
     end
 
     it "should return string present in publisher element" do
-      @subcollection.update_indexed_attributes({[:dsc, :collection, :did, :unittitle, :imprint, :publisher]=>{0=>"South Bend"}})
-      @subcollection.datastreams["descMetadata"].get_values([:dsc, :collection, :did, :unittitle, :imprint, :publisher]).should == ["South Bend"]
+      @subcollection.update_indexed_attributes({[:collection, :did, :unittitle, :imprint, :publisher]=>{0=>"South Bend"}})
+      @subcollection.datastreams["descMetadata"].get_values([:collection, :did, :unittitle, :imprint, :publisher]).should == ["South Bend"]
     end
 
     it "should return empty array if no unittitle" do
-      @subcollection.datastreams["descMetadata"].get_values([:dsc, :collection, :did, :unittitle, :unittitle_content]).should == []
+      @subcollection.datastreams["descMetadata"].get_values([:collection, :did, :unittitle, :unittitle_content]).should == []
     end
 
     it "should return string present in unittitle element" do
-      @subcollection.update_indexed_attributes({[:dsc, :collection, :did, :unittitle, :unittitle_content]=>{0=>"March 1, 1908"}})
-      @subcollection.datastreams["descMetadata"].get_values([:dsc, :collection, :did, :unittitle, :unittitle_content]).should == ["March 1, 1908"]
+      @subcollection.update_indexed_attributes({[:collection, :did, :unittitle, :unittitle_content]=>{0=>"March 1, 1908"}})
+      @subcollection.datastreams["descMetadata"].get_values([:collection, :did, :unittitle, :unittitle_content]).should == ["March 1, 1908"]
     end
 
     it "should return empty string if no genreform" do
-      @subcollection.datastreams["descMetadata"].get_values([:dsc, :collection, :controlaccess, :genreform]).should == [""]
+      @subcollection.datastreams["descMetadata"].get_values([:collection, :controlaccess, :genreform]).should == [""]
     end
 
     it "should return string present in genreform element" do
-      @subcollection.update_indexed_attributes({[:dsc, :collection, :controlaccess, :genreform]=>{0=>"genreform"}})
-      @subcollection.datastreams["descMetadata"].get_values([:dsc, :collection, :controlaccess, :genreform]).should == ["genreform"]
+      @subcollection.update_indexed_attributes({[:collection, :controlaccess, :genreform]=>{0=>"genreform"}})
+      @subcollection.datastreams["descMetadata"].get_values([:collection, :controlaccess, :genreform]).should == ["genreform"]
     end
 
     it "should return empty string if no odd" do
-      @subcollection.datastreams["descMetadata"].get_values([:dsc, :collection, :odd]).should == [""]
+      @subcollection.datastreams["descMetadata"].get_values([:collection, :odd]).should == [""]
     end
 
     it "should return string present in odd element" do
-      @subcollection.update_indexed_attributes({[:dsc, :collection, :odd]=>{0=>"the string of odd goes here"}})
-      @subcollection.datastreams["descMetadata"].get_values([:dsc, :collection, :odd]).should == ["the string of odd goes here"]
+      @subcollection.update_indexed_attributes({[:collection, :odd]=>{0=>"the string of odd goes here"}})
+      @subcollection.datastreams["descMetadata"].get_values([:collection, :odd]).should == ["the string of odd goes here"]
     end
 
     it "should return empty string if no scopecontent" do
-      @subcollection.datastreams["descMetadata"].get_values([:dsc, :collection, :scopecontent]).should == [""]
+      @subcollection.datastreams["descMetadata"].get_values([:collection, :scopecontent]).should == [""]
     end
 
     it "should return string present in scopecontent element" do
-      @subcollection.update_indexed_attributes({[:dsc, :collection, :scopecontent]=>{0=>"Scope Content"}})
-      @subcollection.datastreams["descMetadata"].get_values([:dsc, :collection, :scopecontent]).should == ["Scope Content"]
+      @subcollection.update_indexed_attributes({[:collection, :scopecontent]=>{0=>"Scope Content"}})
+      @subcollection.datastreams["descMetadata"].get_values([:collection, :scopecontent]).should == ["Scope Content"]
     end
   end
 
@@ -426,6 +426,107 @@ describe EadXml do
     end
   end
 
+  describe "#component" do
+    it "should return empty string if no unitid" do
+      @component.datastreams["descMetadata"].get_values([:component, :did, :unitid]).should == [""]
+    end
+
+    it "should return string present in unitid element" do
+      @component.update_indexed_attributes({[:component, :did, :unitid]=>{0=>"87478"}})
+      @component.datastreams["descMetadata"].get_values([:component, :did, :unitid]).should == ["87478"]
+    end
+
+    it "should return empty string if no attribute value of person element" do
+      @component.datastreams["descMetadata"].get_values([:component, :did, :origination, :persname, :persname_normal]).should == [""]
+    end
+
+    it "should return attribute value of person element" do
+      @component.update_indexed_attributes({[:component, :did, :origination, :persname, :persname_normal]=>{0=>"John Smith"}})
+      @component.datastreams["descMetadata"].get_values([:component, :did, :origination, :persname, :persname_normal]).should == ["John Smith"]
+    end
+#here
+    it "should return empty string if no value person element" do
+      @component.datastreams["descMetadata"].get_values([:component, :did, :origination, :persname]).should == [""]
+    end
+
+    it "should return string in person element" do
+      @component.update_indexed_attributes({[:component, :did, :origination, :persname]=>{0=>"Smith, John"}})
+      @component.datastreams["descMetadata"].get_values([:component, :did, :origination, :persname]).should == ["Smith, John"]
+    end
+
+    it "should return empty string if no unittitle" do
+      @component.datastreams["descMetadata"].get_values([:component, :did, :unittitle]).should == [""]
+    end
+
+    it "should return string present in unittitle element" do
+      @component.update_indexed_attributes({[:component, :did, :unittitle]=>{0=>"One Dollar"}})
+      @component.datastreams["descMetadata"].get_values([:component, :did, :unittitle]).should == ["One Dollar"]
+    end
+
+    it "should return empty string if no attribute value for unittitle" do
+      @component.datastreams["descMetadata"].get_values([:component, :did, :unittitle, :unittitle_label]).should == [""]
+    end
+
+    it "should return string containing attribute value for unittile" do
+      @component.update_indexed_attributes({[:component, :did, :unittitle, :unittitle_label] =>{0=>"One Dollar"}})
+      @component.datastreams["descMetadata"].get_values([:component, :did, :unittitle, :unittitle_label]).should == ["One Dollar"]
+    end
+
+    it "should return empty string if no num" do
+      @component.datastreams["descMetadata"].get_values([:component, :did, :unittitle, :num]).should == [""]
+    end
+
+    it "should return string present in num element" do
+      @component.update_indexed_attributes({[:component, :did, :unittitle, :num]=>{0=>"99987478"}})
+      @component.datastreams["descMetadata"].get_values([:component, :did, :unittitle, :num]).should == ["99987478"]
+    end
+
+    it "should return empty string if no dimensions" do
+      @component.datastreams["descMetadata"].get_values([:component, :did, :physdesc, :dimensions]).should == [""]
+    end
+
+    it "should return string present in dimensions element" do
+      @component.update_indexed_attributes({[:component, :did, :physdesc, :dimensions]=>{0=>"4x6"}})
+      @component.datastreams["descMetadata"].get_values([:component, :did, :physdesc, :dimensions]).should == ["4x6"]
+    end
+
+    it "should return empty string if no scopecontent" do
+      @component.datastreams["descMetadata"].get_values([:component, :scopecontent]).should == [""]
+    end
+
+    it "should return string present in scopecontent element" do
+      @component.update_indexed_attributes({[:component, :scopecontent]=>{0=>"Description of the object always goes here.........."}})
+      @component.datastreams["descMetadata"].get_values([:component, :scopecontent]).should == ["Description of the object always goes here.........."]
+    end
+
+    it "should return empty string if no genreform" do
+      @component.datastreams["descMetadata"].get_values([:component, :controlaccess, :genreform]).should == [""]
+    end
+
+    it "should return string present in genreform element" do
+      @component.update_indexed_attributes({[:component, :controlaccess, :genreform]=>{0=>"genreform"}})
+      @component.datastreams["descMetadata"].get_values([:component, :controlaccess, :genreform]).should == ["genreform"]
+    end
+
+    it "should return empty string if no odd" do
+      @component.datastreams["descMetadata"].get_values([:component, :odd]).should == [""]
+    end
+
+    it "should return string present in odd element" do
+      @component.update_indexed_attributes({[:component, :odd]=>{0=>"the string of odd goes here"}})
+      @component.datastreams["descMetadata"].get_values([:component, :odd]).should == ["the string of odd goes here"]
+    end
+
+    it "should return empty string if no acqinfo" do
+      @component.datastreams["descMetadata"].get_values([:component, :acqinfo]).should == [""]
+    end
+
+    it "should return string present in acqinfo element" do
+      @component.update_indexed_attributes({[:component, :acqinfo]=>{0=>"Acquisition Info"}})
+      @component.datastreams["descMetadata"].get_values([:component, :acqinfo]).should == ["Acquisition Info"]
+    end
+  end
+
   describe "#item_template" do
     it "should return an empty xml document for item" do
       EadXml.image_template.to_xml.should == "<daoloc href=\"\"/>"
@@ -434,7 +535,7 @@ describe EadXml do
 
   describe "#item_template" do
     it "should return an empty xml document for item" do
-      expected_result = XmlSimple.xml_in("<c02 xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:isbn:1-931666-00-8\">\n  <did>\n    <unitid/>\n    <origination>\n      <persname role=\"signer\" normal=\"\"/>\n    </origination>\n    <unittitle label=\"\">\n      <num type=\"serial\"/>\n    </unittitle>\n    <physdesc>\n      <dimensions/>\n    </physdesc>\n  </did>\n  <scopecontent/>\n  <odd/>\n  <controlaccess>\n    <genreform/>\n  </controlaccess>\n  <acqinfo/>\n  <daogrp>\n    <daoloc href=\"\"/>\n  </daogrp>\n</c02>")
+      expected_result = XmlSimple.xml_in("<c02 xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:isbn:1-931666-22-9\">\n  <did>\n    <unitid/>\n    <origination>\n      <persname role=\"signer\" normal=\"\"/>\n    </origination>\n    <unittitle label=\"\">\n      <num type=\"serial\"/>\n    </unittitle>\n    <physdesc>\n      <dimensions/>\n    </physdesc>\n  </did>\n  <scopecontent/>\n  <odd/>\n  <controlaccess>\n    <genreform/>\n  </controlaccess>\n  <acqinfo/>\n  <daogrp>\n    <daoloc href=\"\"/>\n  </daogrp>\n</c02>")
       result = EadXml.item_template.to_xml
       XmlSimple.xml_in(result).should == expected_result
     end
@@ -442,18 +543,25 @@ describe EadXml do
 
   describe "#subcollection_template" do
     it "should return an empty xml document for subcollection" do
-      expected_result = XmlSimple.xml_in("<dsc xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:isbn:1-931666-00-8\">\n  <head/>\n  <c01 level=\"item\">\n    <did>\n      <unitid identifier=\"\"/>\n      <origination>\n        <persname role=\"printer\"/>\n        <persname role=\"engraver\"/>\n      </origination>\n      <unittitle>\n        <unitdate era=\"ce\" calendar=\"gregorian\"/>\n        <imprint>\n          <geogname/>\n          <publisher/>\n        </imprint>\n      </unittitle>\n      <physdesc/>\n    </did>\n    <scopecontent/>\n    <odd/>\n    <controlaccess>\n      <genreform/>\n    </controlaccess>\n  </c01>\n</dsc>")
+      expected_result = XmlSimple.xml_in("<c01 xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:isbn:1-931666-22-9\" level=\"item\">\n    <did>\n      <unitid identifier=\"\"/>\n      <origination>\n        <persname role=\"printer\"/>\n        <persname role=\"engraver\"/>\n      </origination>\n      <unittitle>\n        <unitdate era=\"ce\" calendar=\"gregorian\"/>\n        <imprint>\n          <geogname/>\n          <publisher/>\n        </imprint>\n      </unittitle>\n      <physdesc/>\n    </did>\n    <scopecontent/>\n    <odd/>\n    <controlaccess>\n      <genreform/>\n    </controlaccess>\n  <c02/>\n <daogrp><daoloc href=\"\"/></daogrp>\n  </c01>")
       result = EadXml.subcollection_template.to_xml
+      XmlSimple.xml_in(result).should == expected_result
+    end
+  end
+
+   describe "#component_template" do
+    it "should return an empty xml document for subcollection" do
+      expected_result = XmlSimple.xml_in("<c xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:isbn:1-931666-22-9\" level=\"\">\n    <did>\n      <unitid identifier=\"\"/>\n      <origination>\n      <persname normal=\"\" role=\"\"/>\n      </origination>\n      <unittitle label=\"\">\n        <unitdate era=\"ce\" calendar=\"gregorian\"/>\n        <imprint>\n          <geogname/>\n          <publisher/>\n        </imprint>\n   <num type=\"\"/>\n   </unittitle>\n       <physdesc>\n      <dimensions/>\n    </physdesc>\n    </did>\n    <scopecontent/>\n    <odd/>\n    <controlaccess>\n      <genreform/>\n    </controlaccess>\n  <c/>\n <acqinfo/>\n <daogrp><daoloc href=\"\"/></daogrp>\n  </c>")
+      result = EadXml.component_template.to_xml
       XmlSimple.xml_in(result).should == expected_result
     end
   end
 
   describe "#collection_template" do
     it "should return an empty xml document for collection" do
-      expected_result = XmlSimple.xml_in("<?xml version=\"1.0\"?>\n<ead xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:isbn:1-931666-00-8\">\n  <eadheader repositoryencoding=\"iso15511\" scriptencoding=\"iso15924\" audience=\"internal\" dateencoding=\"iso8601\" relatedencoding=\"MARC21\" findaidstatus=\"edited-full-draft\" countryencoding=\"iso3166-1\" id=\"a0\" langencoding=\"iso639-2b\">\n    <eadid encodinganalog=\"856\" publicid=\"???\" countrycode=\"US\" mainagencycode=\"inndhl\"/>\n    <filedesc>\n      <titlestmt>\n        <titleproper type=\"filing\"/>\n        <author/>\n      </titlestmt>\n      <publicationstmt>\n        <publisher/>\n        <address>\n          <addressline/>\n        </address>\n        <date era=\"ce\" calendar=\"gregorian\"/>\n      </publicationstmt>\n    </filedesc>\n    <profiledesc>\n      <creation>\n        <date/>\n      </creation>\n      <languages>\n        <language encodinganalog=\"546\" langcode=\"eng\"/>\n      </languages>\n    </profiledesc>\n  </eadheader>\n  <frontmatter>\n    <titlepage>\n      <titleproper/>\n    </titlepage>\n  </frontmatter>\n  <archdesc type=\"register\" level=\"collection\" relatedencoding=\"MARC21\">\n    <did>\n      <head/>\n      <unittitle encodinganalog=\"245$a\" label=\"Title:\"/>\n      <unitid encodinganalog=\"590\" repositorycode=\"inndhl\" countrycode=\"US\"/>\n      <unitdate type=\"bulk\" normal=\"1700/1800\"/>\n      <langmaterial label=\"Language:\">\n        <language/>\n      </langmaterial>\n      <repository encodinganalog=\"852\" label=\"Repository:\">\n        <corpname>\n          <subarea/>\n        </corpname>\n        <address>\n          <addressline/>\n        </address>\n      </repository>\n    </did>\n    <accessrestrict encodinganalog=\"506\">\n      <head/>\n    </accessrestrict>\n    <acqinfo encodinganalog=\"583\">\n      <head/>\n    </acqinfo>\n    <prefercite encodinganalog=\"524\">\n      <head/>\n    </prefercite>\n  </archdesc>\n</ead>\n")
+      expected_result = XmlSimple.xml_in("<?xml version=\"1.0\"?>\n<ead xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"urn:isbn:1-931666-22-9\">\n  <eadheader repositoryencoding=\"iso15511\" scriptencoding=\"iso15924\" audience=\"internal\" dateencoding=\"iso8601\" relatedencoding=\"MARC21\" findaidstatus=\"edited-full-draft\" countryencoding=\"iso3166-1\" id=\"a0\" langencoding=\"iso639-2b\">\n    <eadid encodinganalog=\"856\" publicid=\"???\" countrycode=\"US\" mainagencycode=\"inndhl\"/>\n    <filedesc>\n      <titlestmt>\n        <titleproper type=\"filing\"/>\n        <author/>\n      </titlestmt>\n      <publicationstmt>\n        <publisher/>\n        <address>\n          <addressline/>\n        </address>\n        <date era=\"ce\" calendar=\"gregorian\"/>\n      </publicationstmt>\n    </filedesc>\n    <profiledesc>\n      <creation>\n        <date/>\n      </creation>\n      <languages>\n        <language encodinganalog=\"546\" langcode=\"eng\"/>\n      </languages>\n    </profiledesc>\n  </eadheader>\n  <frontmatter>\n    <titlepage>\n      <titleproper/>\n    </titlepage>\n  </frontmatter>\n  <archdesc type=\"register\" level=\"collection\" relatedencoding=\"MARC21\">\n    <did>\n      <head/>\n      <unittitle encodinganalog=\"245$a\" label=\"Title:\"/>\n      <unitid encodinganalog=\"590\" repositorycode=\"inndhl\" countrycode=\"US\"/>\n      <unitdate type=\"bulk\" normal=\"1700/1800\"/>\n      <langmaterial label=\"Language:\">\n        <language/>\n      </langmaterial>\n      <repository encodinganalog=\"852\" label=\"Repository:\">\n        <corpname>\n          <subarea/>\n        </corpname>\n        <address>\n          <addressline/>\n        </address>\n      </repository>\n    </did>\n    <accessrestrict encodinganalog=\"506\">\n      <head/>\n    </accessrestrict>\n    <acqinfo encodinganalog=\"583\">\n      <head/>\n    </acqinfo>\n    <prefercite encodinganalog=\"524\">\n      <head/>\n    </prefercite>\n  <dsc>\n <c01 level=\"item\"/>\n <head/>\n </dsc> \n </archdesc>\n</ead>\n")
       result = EadXml.collection_template.to_xml
       XmlSimple.xml_in(result).should == expected_result
     end
   end
-  
 end

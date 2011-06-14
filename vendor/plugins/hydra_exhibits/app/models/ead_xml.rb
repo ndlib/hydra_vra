@@ -1,6 +1,6 @@
 class EadXml < ActiveFedora::NokogiriDatastream
   set_terminology do |t|
-    t.root(:path=>'ead', :xmlns=>"currency-collection", :schema=>"currency-collection http://www.loc.gov/ead/ead.xsd")
+    t.root(:path=>'ead', :xmlns=>"urn:isbn:1-931666-22-9", :schema=>"urn:isbn:1-931666-22-9 http://www.loc.gov/ead/ead.xsd")
     
     t.did_ref(:path=>'did'){
       t.head(:path=>'head')
@@ -160,7 +160,7 @@ class EadXml < ActiveFedora::NokogiriDatastream
         t.creation(:path=>'creation'){
           t.date
         }
-        t.language(:path=>'language'){
+        t.langusage(:path=>'langusage'){
           t.language
         }
       }
@@ -173,14 +173,15 @@ class EadXml < ActiveFedora::NokogiriDatastream
     t.collection(:ref=>[:collection_ref])
     t.item(:ref=>[:item_ref])
     t.dsc(:ref=>[:dsc_ref])
+    t.component(:ref=>[:component_ref])
     
   end
   def self.xml_template
       builder = Nokogiri::XML::Builder.new do |t|
         t.ead(:version=>"1.0", "xmlns:xlink"=>"http://www.w3.org/1999/xlink",
               "xmlns:xsi"=>"http://www.w3.org/2001/XMLSchema-instance",
-              "xmlns"=>"currency-collection",
-              "xsi:schemaLocation"=>"currency-collection http://www.loc.gov/ead/ead.xsd"){
+              "xmlns"=>"urn:isbn:1-931666-22-9",
+              "xsi:schemaLocation"=>"urn:isbn:1-931666-22-9 http://www.loc.gov/ead/ead.xsd"){
               
           t.eadheader(:findaidstatus=>"edited-full-draft", :langencoding=>"iso639-2b", :audience=>"internal", :id=>"a0", :repositoryencoding=>"iso15511", :scriptencoding=>"iso15924", :dateencoding=>"iso8601", :relatedencoding=>"MARC21", :countryencoding=>"iso3166-1"){
             t.eadid(:encodinganalog=>"856", :publicid=>"???", :countrycode=>"US", :mainagencycode=>"inndhl")
@@ -201,8 +202,8 @@ class EadXml < ActiveFedora::NokogiriDatastream
               t.creation{
                 t.date
               }
-              t.language{
-                t.language(:langcode=>"eng", :encodinganalog=>"546")
+              t.langusage{
+                t.langusage(:langcode=>"eng", :encodinganalog=>"546")
               }
             }
           }
@@ -307,7 +308,7 @@ class EadXml < ActiveFedora::NokogiriDatastream
   def self.collection_template
     builder = Nokogiri::XML::Builder.new do |t|
       t.ead("xmlns:xlink"=>"http://www.w3.org/1999/xlink", "xmlns:xsi"=>"http://www.w3.org/2001/XMLSchema-instance",
-              "xmlns"=>"currency-collection"){
+              "xmlns"=>"urn:isbn:1-931666-22-9"){
         
         t.eadheader(:findaidstatus=>"edited-full-draft", :langencoding=>"iso639-2b", :audience=>"internal", :id=>"a0", :repositoryencoding=>"iso15511", :scriptencoding=>"iso15924", :dateencoding=>"iso8601", :relatedencoding=>"MARC21", :countryencoding=>"iso3166-1"){
             t.eadid(:encodinganalog=>"856", :publicid=>"???", :countrycode=>"US", :mainagencycode=>"inndhl")
@@ -380,7 +381,7 @@ class EadXml < ActiveFedora::NokogiriDatastream
   def self.subcollection_template
     builder = Nokogiri::XML::Builder.new do |t|
         t.c01(:level=>"item", "xmlns:xlink"=>"http://www.w3.org/1999/xlink", "xmlns:xsi"=>"http://www.w3.org/2001/XMLSchema-instance",
-              "xmlns"=>"currency-collection"){
+              "xmlns"=>"urn:isbn:1-931666-22-9"){
           t.did{
             t.unitid(:identifier=>"")
             t.origination{
@@ -416,8 +417,8 @@ class EadXml < ActiveFedora::NokogiriDatastream
 
   def self.component_template
     builder = Nokogiri::XML::Builder.new do |t|
-        t.c01(:level=>"", "xmlns:xlink"=>"http://www.w3.org/1999/xlink", "xmlns:xsi"=>"http://www.w3.org/2001/XMLSchema-instance",
-              "xmlns"=>"currency-collection"){
+        t.c(:level=>"", "xmlns:xlink"=>"http://www.w3.org/1999/xlink", "xmlns:xsi"=>"http://www.w3.org/2001/XMLSchema-instance",
+              "xmlns"=>"urn:isbn:1-931666-22-9"){
           t.did{
             t.unitid(:identifier=>"")
             t.origination{
@@ -448,6 +449,9 @@ class EadXml < ActiveFedora::NokogiriDatastream
           t.daogrp{
             t.daoloc(:href=>"")
           }
+          t.acqinfo{
+            t.p
+          }
         }
     end
     return builder.doc.root
@@ -462,7 +466,7 @@ class EadXml < ActiveFedora::NokogiriDatastream
   def self.item_template
     builder = Nokogiri::XML::Builder.new do |t|
       t.c02("xmlns:xlink"=>"http://www.w3.org/1999/xlink", "xmlns:xsi"=>"http://www.w3.org/2001/XMLSchema-instance",
-              "xmlns"=>"currency-collection"){
+              "xmlns"=>"urn:isbn:1-931666-22-9"){
         t.did{
           t.unitid
           t.origination{
