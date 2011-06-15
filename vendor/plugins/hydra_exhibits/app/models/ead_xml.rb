@@ -297,6 +297,7 @@ class EadXml < ActiveFedora::NokogiriDatastream
     t.item(:ref=>[:item_ref])
     t.dsc(:ref=>[:dsc_ref])
     t.component(:ref=>[:component_ref])
+    t.series(:ref=>[:component_ref], :attributes=>{:level=>"series"})
     
   end
   def self.xml_template
@@ -618,9 +619,13 @@ class EadXml < ActiveFedora::NokogiriDatastream
     return builder.doc.root
   end
 
-  def self.component_template
+  def self.series_template
+    component_template("series")
+  end
+
+  def self.component_template(level="series")
     builder = Nokogiri::XML::Builder.new do |t|
-        t.c(:level=>"", "xmlns:xlink"=>"http://www.w3.org/1999/xlink", "xmlns:xsi"=>"http://www.w3.org/2001/XMLSchema-instance",
+        t.c(:level=>level, "xmlns:xlink"=>"http://www.w3.org/1999/xlink", "xmlns:xsi"=>"http://www.w3.org/2001/XMLSchema-instance",
               "xmlns"=>"urn:isbn:1-931666-22-9"){
           t.did{
             t.unitid(:identifier=>"")
@@ -666,6 +671,7 @@ class EadXml < ActiveFedora::NokogiriDatastream
     end
     return builder.doc.root
   end
+
   def self.item_template
     builder = Nokogiri::XML::Builder.new do |t|
       t.c02("xmlns:xlink"=>"http://www.w3.org/1999/xlink", "xmlns:xsi"=>"http://www.w3.org/2001/XMLSchema-instance",
@@ -704,6 +710,9 @@ class EadXml < ActiveFedora::NokogiriDatastream
   
   def insert_node(type, opts={})
     case type.to_sym
+      when :series
+        node = EadXml.series_template
+        nodeset = self.find_by_terms(:archive_desc, :dsc, :series)
       when :component
         node = EadXml.component_template
         nodeset = self.find_by_terms(:archive_desc, :dsc, :component)

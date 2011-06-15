@@ -735,8 +735,15 @@ logger.debug("Params in edit_and_browse_links: #{params.inspect}")
     return results
   end
 
-  def get_search_results_inbound_relationship(document_fedora,predicate)
-    fq = "#{predicate}_s:#{@document_fedora.internal_uri.gsub(/(:)/, '\\:')}"
+  def get_search_results_inbound_relationship(document_fedora,predicates)
+    escaped_uri = document_fedora.internal_uri.gsub(/(:)/, '\\:')
+    if predicates.is_a?(String) || predicates.is_a?(Symbol)
+      fq = "#{predicates.to_s}_s:#{escaped_uri}"
+    else
+      fq = predicates.join("_s:#{escaped_uri} OR ")
+      #need to add text to last one as well
+      fq += "_s:#{escaped_uri}"
+    end
     extra_controller_params = {}
     extra_controller_params.merge!(:q=>build_lucene_query(params[:q]))
     extra_controller_params.merge!(:fq=>fq)

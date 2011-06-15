@@ -6,30 +6,33 @@ class Component < ActiveFedora::Base
   include Hydra::ModelMethods
   include ComponentsControllerHelper
 
-  has_bidirectional_relationship "is_member_of_component_collection", :is_member_of_component_collection, :has_component_collection_member
+  #this is for part of a top level EAD collection
+  has_bidirectional_relationship "member_of", :is_member_of, :has_member
+  # this is for part of a component with level set to 'collection' 
+  has_bidirectional_relationship "member_of_component_collection", :is_member_of_component_collection, :has_component_collection_member
   has_bidirectional_relationship "component_collection_members", :has_component_collection_member, :is_member_of_component_collection
-  has_bidirectional_relationship "is_member_of_series", :is_member_of_series, :has_series_member
+  has_bidirectional_relationship "member_of_series", :is_member_of_series, :has_series_member
   has_bidirectional_relationship "series_members", :has_series_member, :is_member_of_series
-  has_bidirectional_relationship "is_member_of_class", :is_member_of_class, :has_class_member
+  has_bidirectional_relationship "member_of_class", :is_member_of_class, :has_class_member
   has_bidirectional_relationship "class_members", :has_class_member, :is_member_of_class
-  has_bidirectional_relationship "is_member_of_file", :is_member_of_file, :has_file_member
+  has_bidirectional_relationship "member_of_file", :is_member_of_file, :has_file_member
   has_bidirectional_relationship "file_members", :has_file_member, :is_member_of_file
-  has_bidirectional_relationship "is_member_of_fonds", :is_member_of_fonds, :has_fonds_member
+  has_bidirectional_relationship "member_of_fonds", :is_member_of_fonds, :has_fonds_member
   has_bidirectional_relationship "fonds_members", :has_fonds_member, :is_member_of_fonds
-  has_bidirectional_relationship "is_member_of_item", :is_member_of_item, :has_item_member
+  has_bidirectional_relationship "member_of_item", :is_member_of_item, :has_item_member
   has_bidirectional_relationship "item_members", :has_item_member, :is_member_of_item
-  has_bidirectional_relationship "is_member_of_otherlevel", :is_member_of_otherlevel, :has_otherlevel_member
+  has_bidirectional_relationship "member_of_otherlevel", :is_member_of_otherlevel, :has_otherlevel_member
   has_bidirectional_relationship "otherlevel_members", :has_otherlevel_member, :is_member_of_otherlevel
-  has_bidirectional_relationship "is_member_of_recordgrp", :is_member_of_recordgrp, :has_recordgrp_member
+  has_bidirectional_relationship "member_of_recordgrp", :is_member_of_recordgrp, :has_recordgrp_member
   has_bidirectional_relationship "recordgrp_members", :has_recordgrp_member, :is_member_of_recordgrp
-  has_bidirectional_relationship "is_member_of_subfonds", :is_member_of_subfonds, :has_subfonds_member
+  has_bidirectional_relationship "member_of_subfonds", :is_member_of_subfonds, :has_subfonds_member
   has_bidirectional_relationship "subfonds_members", :has_subfonds_member, :is_member_of_subfonds
-  has_bidirectional_relationship "is_member_of_subgrp", :is_member_of_subgrp, :has_subgrp_member
+  has_bidirectional_relationship "member_of_subgrp", :is_member_of_subgrp, :has_subgrp_member
   has_bidirectional_relationship "subgrp_members", :has_subgrp_member, :is_member_of_subgrp
-  has_bidirectional_relationship "is_member_of_subseries", :is_member_of_subseries, :has_subseries_member
+  has_bidirectional_relationship "member_of_subseries", :is_member_of_subseries, :has_subseries_member
   has_bidirectional_relationship "subseries_members", :has_subseries_member, :is_member_of_subseries 
-  has_bidirectional_relationship "page", :has_part_of, :is_part_of
-  has_bidirectional_relationship "featured_of", :is_part_of, :has_part
+  has_bidirectional_relationship "image_parts", :has_image_part, :is_image_part_of
+  has_bidirectional_relationship "featured_member_of", :is_featured_member_of, :has_featured_member
 
   # Uses the Hydra Rights Metadata Schema for tracking access permissions & copyright
   has_metadata :name => "rightsMetadata", :type => Hydra::RightsMetadata 
@@ -41,6 +44,9 @@ class Component < ActiveFedora::Base
   has_metadata :name => "properties", :type => ActiveFedora::MetadataDatastream do |m|
     m.field 'collection', :string
     m.field 'depositor', :string
+    m.field 'component_type', :string
+    m.field 'subcollection_id' ,:string
+    m.field 'item_id', :string
     m.field "main_page", :string
     m.field "main_item", :string
     m.field 'review', :string
@@ -49,6 +55,24 @@ class Component < ActiveFedora::Base
   end
 
   alias_method :id, :pid
+
+  def component_type
+    return @component_type if (defined? @component_type)
+    values = self.fields[:component_type][:values]
+    @component_type = values.any? ? values.first : ""
+  end
+
+  def subcollection_id
+    return @subcollection_id if (defined? @subcollection_id)
+    values = self.fields[:subcollection_id][:values]
+    @subcollection_id = values.any? ? values.first : ""
+  end
+
+  def item_id
+    return @item_id if (defined? @item_id)
+    values = self.fields[:item_id][:values]
+    @item_id = values.any? ? values.first : ""
+  end
 
   def main_page
     return @main_page if (defined? @main_page)
@@ -83,6 +107,8 @@ class Component < ActiveFedora::Base
       :item
     elsif self.has_value_for("descMetadata", [:collection])
       :collection
+    elsif self.has_value_for("descMetadata", [:series])
+      :series
     else
       :unknown
     end
@@ -124,6 +150,32 @@ class Component < ActiveFedora::Base
     end
     logger.debug(@title)
     @title = values.any? ? values.first : ""
+  end
+
+  def list_childern(item_id, type)
+    #@asset = Component.load_instance_from_solr(item_id)
+    arr = Array.new
+    if(type.eql?"item")
+      childern = image_parts #inbound_relationships[:is_part_of]
+      if(!(childern.nil?) && childern.size > 0)
+        childern.each { |child|
+          arr.push(child)
+        }
+      end
+    elsif(type.eql?"series")
+      ids = series_members_ids
+      ids.each do |id|
+child_obj = Component.load_instance_from_solr(id)
+        arr.push(child_obj)
+      end
+    else #if(type.eql?"subcollection")
+      ids = series_members_ids
+      ids.each { |id|
+child_obj = Component.load_instance_from_solr(id)
+        arr.push(child_obj)
+      }
+    end
+    return arr
   end
 
   def field_keys
@@ -182,6 +234,11 @@ class Component < ActiveFedora::Base
     rescue OM::XML::Terminology::BadPointerError
       false
     end
+  end
+
+  #Returns hash of all parent predicates 
+  def self.inbound_parent_predicates
+    [:has_component_collection_member, :has_series_member, :has_class_member, :has_file_member, :has_fonds_member, :has_item_member, :has_otherlevel_member, :has_recordgrp_member, :has_subfonds_member, :has_subseries_member, :has_member]
   end
 
   #Calls to solr on the descMetadata datastream locally and any parents
