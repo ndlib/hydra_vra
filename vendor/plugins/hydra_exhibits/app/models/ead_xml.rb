@@ -1,20 +1,31 @@
 class EadXml < ActiveFedora::NokogiriDatastream
   set_terminology do |t|
     t.root(:path=>'ead', :xmlns=>"urn:isbn:1-931666-22-9", :schema=>"urn:isbn:1-931666-22-9 http://www.loc.gov/ead/ead.xsd")
-    
     t.did_ref(:path=>'did'){
       t.head(:path=>'head')
-      t.unittitle(:ref=>[:title_ref])
+      t.unittitle(:path=>'unittitle'){
+        t.unittitle_content(:path=>'text()')
+        t.unittitle_label(:path=>{:attribute=>"label"})
+        t.unittitle_encodinganalog(:path=>{:attribute=>"encodinganalog"})
+        t.num(:path=>'num')
+        t.imprint(:ref=>[:imprint_ref])
+	t.unitdate(:path=>'unitdate')
+      }
       t.unitid(:ref=>[:unitid_ref])
-      t.unitdate
+      t.unitdate(:path=>"unitdate"){
+	t.unitdate_normal(:path=>{:attribute=>"normal"})
+	t.unitdate_type(:path=>{:attribute=>"type"})
+      }
       t.lang(:ref=>[:lang_ref])
       t.repo(:ref=>[:repo_ref])
       t.origination(:ref=>[:origination_ref])
       t.physdesc(:ref=>[:physdesc_ref])
+      t.abstract(:ref=>[:abstract_ref])
     }
     t.title_ref(:path=>'unittitle'){
       t.unittitle_content(:path=>'text()')
       t.unittitle_label(:path=>{:attribute=>"label"})
+      t.unittitle_encodinganalog(:path=>{:attribute=>"encodinganalog"})
       t.num(:path=>'num')
       t.imprint(:ref=>[:imprint_ref]) #(:path=>'imprint')
 #      {
@@ -27,15 +38,29 @@ class EadXml < ActiveFedora::NokogiriDatastream
       t.geogname
       t.publisher
     }
+    t.abstract_ref(:path=>'abstract'){
+      t.abstract_content(:path=>'text()')
+      t.abstract_label(:path=>{:attribute=>"label"})
+      t.abstract_encodinganalog(:path=>{:attribute=>"encodinganalog"})
+    }
     t.unitid_ref(:path=>'unitid'){
       t.unitid_identifier(:path=>{:attribute=>"identifier"})
+      t.unitid_encodinganalog(:path=>{:attribute=>"encodinganalog"})
+      t.unitid_countrycode(:path=>{:attribute=>"countrycode"})
+      t.unitid_repositorycode(:path=>{:attribute=>"repositorycode"})
     }
     t.lang_ref(:path=>'langmaterial'){
       t.language
     }
     t.repo_ref(:path=>'repository'){
-      t.corpname(:ref=>[:corpname_ref])
-      t.address(:ref=>[:address_ref])
+      t.repository_encodinganalog(:path=>{:attribute=>"encodinganalog"})
+      t.corpname{
+	t.corpname_content(:path=>'text()')
+	t.subarea
+      }
+      t.address{
+	t.addressline
+      }
     }
     t.corpname_ref(:path=>'corpname'){
       t.subarea
@@ -44,14 +69,20 @@ class EadXml < ActiveFedora::NokogiriDatastream
       t.addressline
     }
     t.origination_ref(:path=>'origination'){
+      t.origination_label(:path=>{:attribute=>"label"})
       t.persname(:path=>'persname'){
         t.persname_normal(:path=>{:attribute=>"normal"})
+        t.persname_encodinganalog(:path=>{:attribute=>"encodinganalog"})
+        t.persname_rules(:path=>{:attribute=>"rules"})
       }
       t.printer(:path=>'persname', :attributes=>{:role=>"printer"})
       t.engraver(:path=>'persname', :attributes=>{:role=>"engraver"})
     }
     t.physdesc_ref(:path=>'physdesc'){
       t.dimensions
+      t.extent{
+	t.extent_encodinganalog(:path=>{:attribute=>"encodinganalog"})
+      }
     }
     
     t.collection_ref(:path=>'c01'){
@@ -69,6 +100,18 @@ class EadXml < ActiveFedora::NokogiriDatastream
     }
     t.controlaccess_ref(:path=>'controlaccess'){
       t.genreform
+      t.head
+      t.subject{
+	t.subject_content(:path=>'text()')
+      }
+      t.persname{
+	t.persname_encodinganalog(:path=>{:attribute=>"encodinganalog"})
+	t.persname_role(:path=>{:attribute=>"role"})
+	t.persname_source(:path=>{:attribute=>"source"})
+      }
+      t.corpname{
+	t.corpname_source(:path=>{:attribute=>"source"})
+      }
     }
 
     t.component_ref(:path=>'c'){
@@ -118,37 +161,110 @@ class EadXml < ActiveFedora::NokogiriDatastream
       }
     }
     t.acqinfo_ref(:path=>'acqinfo'){
+      t.acqinfo_encodinganalog(:path=>{:attribute=>"encodinganalog"})
       t.head
       t.p
     }
     t.accessrestrict_ref(:path=>'accessrestrict'){
+      t.accessrestrict_encodinganalog(:path=>{:attribute=>"encodinganalog"})
       t.head
       t.p
     }
     t.prefercite_ref(:path=>'prefercite'){
+      t.prefercite_encodinganalog(:path=>{:attribute=>"encodinganalog"})
       t.head
       t.p
+    }
+    t.separatedmaterial_ref(:path=>'separatedmaterial'){
+      t.separatedmaterial_encodinganalog(:path=>{:attribute=>"encodinganalog"})
+      t.separatedmaterial_content(:path=>'text()')
+      t.head
+      t.p
+    }
+    t.relatedmaterial_ref(:path=>'relatedmaterial'){
+      t.relatedmaterial_encodinganalog(:path=>{:attribute=>"encodinganalog"})
+      t.relatedmaterial_content(:path=>'text()')
+      t.head
+      t.p
+    }
+    t.bibliography_ref(:path=>'bibliography'){
+      t.bibliography_encodinganalog(:path=>{:attribute=>"encodinganalog"})
+      t.bibliography_content(:path=>'text()')
+      t.head
+      t.bibref{
+	t.bibref_content(:path=>'text()')
+	t.persname
+	t.title{
+	  t.emph{
+	    t.emph_render(:path=>{:attribute=>"render"})
+	  }
+	}
+      }
     }
     t.dsc_ref(:path=>'dsc'){
       t.head
       t.collection(:ref=>[:collection_ref])
     }
-    
-    t.archive_desc(:path=>'archdesc', :attributes=>{:level=>"collection"}){
+    t.dao_ref(:path=>"dao"){
+      t.dao_href(:path=>{:attribute=>"href"})
+      t.daodesc(:path=>"daodesc")
+    }
+    t.archive_desc(:path=>'archdesc'){
+      t.archive_desc_type(:path=>{:attribute=>"type"})
+      t.archive_desc_level(:path=>{:attribute=>"level"})
+      t.archive_desc_relatedencoding(:path=>{:attribute=>"relatedencoding"})
+
       t.did(:ref=>[:did_ref])
+      t.dao(:ref=>[:dao_ref])
+      t.bioghist{
+	t.bioghist_content(:path=>'text()')
+	t.head
+      }
+      t.arrangement{
+	t.arrangement_content(:path=>'text()')
+	t.head
+      }
+      t.scopecontent{
+	t.scopecontent_content(:path=>'text()')
+	t.head
+      }
+      t.controlaccess(:ref=>[:controlaccess_ref])
       t.accessrestrict(:ref=>[:accessrestrict_ref])
       t.acqinfo(:ref=>[:acqinfo_ref])
       t.prefercite(:ref=>[:prefercite_ref])
+      t.separatedmaterial(:ref=>[:separatedmaterial_ref])
+      t.relatedmaterial(:ref=>[:relatedmaterial_ref])
+      t.bibliography(:ref=>[:bibliography_ref])
       t.dsc(:ref=>[:dsc_ref])
     }
     t.ead_header(:path=>'eadheader'){
-      t.eadid(:path=>'eadid')
+      t.eadheader_findaidstatus(:path=>{:attribute=>"findaidstatus"})
+      t.eadheader_langencoding(:path=>{:attribute=>"langencoding"})
+      t.eadheader_audience(:path=>{:attribute=>"audience"})
+      t.eadheader_repositoryencoding(:path=>{:attribute=>"repositoryencoding"})
+      t.eadheader_scriptencoding(:path=>{:attribute=>"scriptencoding"})
+      t.eadheader_id(:path=>{:attribute=>"id"})
+      t.eadheader_dateencoding(:path=>{:attribute=>"dateencoding"})
+      t.eadheader_relatedencoding(:path=>{:attribute=>"relatedencoding"})
+      t.eadheader_countryencoding(:path=>{:attribute=>"countryencoding"})
+
+      t.eadid(:path=>'eadid'){
+	t.eadid_encodinganalog(:path=>{:attribute=>"encodinganalog"})
+	t.eadid_publicid(:path=>{:attribute=>"publicid"})
+	t.eadid_countrycode(:path=>{:attribute=>"countrycode"})
+	t.eadid_mainagencycode(:path=>{:attribute=>"mainagencycode"})
+      }
       t.filedesc(:path=>'filedesc'){
         t.titlestmt(:path=>'titlestmt'){
-          t.titleproper(:path=>'titleproper')
+          t.titleproper(:path=>'titleproper'){
+	    t.titleproper_type(:path=>{:attribute=>"type"})
+	  }
           t.author(:path=>'author')
         }
         t.publicationstmt(:path=>'publicationstmt'){
+	  t.num(:path=>"num"){
+	    t.num_type(:path=>{:attribute=>"type"})
+	  }
           t.publisher(:path=>'publisher')
           t.address(:path=>'address'){
             t.addressline
@@ -160,6 +276,12 @@ class EadXml < ActiveFedora::NokogiriDatastream
         t.creation(:path=>'creation'){
           t.date
         }
+        t.languages(:path=>'languages'){
+          t.language{
+	    t.language_langcode(:path=>{:attribute=>"langcode"})
+	    t.language_encodinganalog(:path=>{:attribute=>"encodinganalog"})
+	  }
+        }
         t.langusage(:path=>'langusage'){
           t.language
         }
@@ -168,6 +290,7 @@ class EadXml < ActiveFedora::NokogiriDatastream
     t.frontmatter(:path=>'frontmatter'){
       t.titlepage(:path=>'titlepage'){
         t.titleproper
+	t.num
       }
     }
     t.collection(:ref=>[:collection_ref])
@@ -182,7 +305,7 @@ class EadXml < ActiveFedora::NokogiriDatastream
               "xmlns:xsi"=>"http://www.w3.org/2001/XMLSchema-instance",
               "xmlns"=>"urn:isbn:1-931666-22-9",
               "xsi:schemaLocation"=>"urn:isbn:1-931666-22-9 http://www.loc.gov/ead/ead.xsd"){
-              
+             
           t.eadheader(:findaidstatus=>"edited-full-draft", :langencoding=>"iso639-2b", :audience=>"internal", :id=>"a0", :repositoryencoding=>"iso15511", :scriptencoding=>"iso15924", :dateencoding=>"iso8601", :relatedencoding=>"MARC21", :countryencoding=>"iso3166-1"){
             t.eadid(:encodinganalog=>"856", :publicid=>"???", :countrycode=>"US", :mainagencycode=>"inndhl")
             t.filedesc{
@@ -332,6 +455,9 @@ class EadXml < ActiveFedora::NokogiriDatastream
               t.languages{
                 t.language(:langcode=>"eng", :encodinganalog=>"546")
               }
+	      t.langusage{
+                t.language
+	      }
             }
           }
           t.frontmatter{
@@ -374,6 +500,83 @@ class EadXml < ActiveFedora::NokogiriDatastream
 	      t.c01(:level=>"item")
 	    }
         }
+      }
+    end
+    return builder.doc
+  end
+  def self.fa_collection_template
+    builder = Nokogiri::XML::Builder.new do |t|
+      t.ead("xmlns:xlink"=>"http://www.w3.org/1999/xlink", "xmlns:xsi"=>"http://www.w3.org/2001/XMLSchema-instance",
+              "xmlns"=>"urn:isbn:1-931666-22-9"){
+        
+        t.eadheader(:findaidstatus=>"", :langencoding=>"", :audience=>"", :id=>"", :repositoryencoding=>"", :scriptencoding=>"", :dateencoding=>"", :relatedencoding=>"", :countryencoding=>""){
+            t.eadid(:encodinganalog=>"", :publicid=>"", :countrycode=>"", :mainagencycode=>"")
+            t.filedesc{
+              t.titlestmt{
+                t.titleproper(:type=>"")
+                t.author
+              }
+              t.publicationstmt{
+		t.num(:type=>"")
+                t.publisher
+                t.address{
+                  t.addressline
+                }
+                t.date(:era=>"ce", :calendar=>"gregorian")
+              }
+            }
+            t.profiledesc{
+              t.creation{
+                t.date
+              }
+              t.languages{
+                t.language(:langcode=>"", :encodinganalog=>"")
+              }
+	      t.langusage{
+                t.language
+	      }
+            }
+          }
+          t.frontmatter{
+            t.titlepage{
+              t.titleproper
+            }
+          }
+          t.archdesc(:type=>"", :level=>"", :relatedencoding=>""){
+            t.did{
+              t.head
+              t.unittitle(:label=>"", :encodinganalog=>"")
+              t.unitid(:encodinganalog=>"", :countrycode=>"", :repositorycode=>"")
+              t.unitdate(:type=>"", :normal=>"")
+              t.langmaterial(:label=>"Language:"){
+                t.language
+              }
+              t.repository(:label=>"Repository:", :encodinganalog=>""){
+                t.corpname{
+                  t.subarea
+                }
+                t.address{
+                  t.addressline
+                }
+              }
+            }
+            t.accessrestrict(:encodinganalog=>""){
+              t.head
+              t.p
+            }
+            t.acqinfo(:encodinganalog=>""){
+              t.head
+              t.p
+            }
+            t.prefercite(:encodinganalog=>""){
+              t.head
+              t.p
+            }
+	    t.dsc{
+	      t.head
+	      t.c
+	    }
+	  }
       }
     end
     return builder.doc
