@@ -75,7 +75,8 @@ Blacklight.configure(:shared) do |config|
       "item_0_did_0_physdesc_0_dimensions_facet",
       "item_0_acqinfo_facet",
       "item_0_did_0_origination_0_persname_0_persname_normal_facet",
-      "active_fedora_model_s"
+      "active_fedora_model_s",
+      "date_s"
       ],
     :labels => {
       "collection_0_did_0_unittitle_0_imprint_0_publisher_facet"=>"Publisher",
@@ -84,7 +85,8 @@ Blacklight.configure(:shared) do |config|
       "collection_0_did_0_origination_0_printer_facet"=>"Printer",
       "collection_0_did_0_origination_0_engraver_facet"=>"Engraver",
       "item_0_did_0_origination_0_persname_0_persname_normal_facet"=>"Signers",
-      "active_fedora_model_s" => "Description"
+      "active_fedora_model_s" => "Description",
+      "date_s"=>"Print Year"
     },
     :limits=> {nil=>10}
   }

@@ -2,6 +2,11 @@
 nohup.out
 deploy.rb
 ldap_config.rb
+config/fedora.yml
+config/solr.yml
+
+solr.yml
+fedora.yml
 
 *.sqlite3
 *.log

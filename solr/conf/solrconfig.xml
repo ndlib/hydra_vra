@@ -378,6 +378,7 @@
         <str name="q.op">AND</str>
       <str name="facet">on</str>
       <str name="facet.mincount">1</str>
+      <str name="facet.sort">index</str>
 	    <str name="echoParams">explicit</str>
       <float name="tie">0.01</float>
       <str name="qf_dismax">text^0.9</str>
