@@ -1,7 +1,6 @@
 <form id="document_metadata" action="<%= url_for(:action=>"update", :controller=>"components", :content_type=>content)%>" method="post" data-resourceType="<%= content %>" accept-charset="utf-8">
   <%- if current_user -%>
-      <input id="re-run-action" class="nobutton" type="button" onclick=" location.href='<%=url_for(:action => "new", :controller => "components", :content_type => "component", :label => "item", :subcollection_id => params[:id], :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :f => params[:f], :viewing_context => params[:viewing_context])%>' " value="Add Component"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <input id="re-run-action" class="nobutton" type="button" onclick=" location.href='<%=url_for(:action => "new", :controller => "pages", :content_type => "page", :label => "page", :subcollection_id => params[:id], :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :f => params[:f], :viewing_context => params[:viewing_context])%>' " value="Add Image"/>
+      <input id="re-run-action" class="nobutton" type="button" onclick=" location.href='<%=url_for(:action => "new", :controller => "components", :content_type => "component", :label => "item", :subcollection_id => params[:id], :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :f => params[:f], :viewing_context => params[:viewing_context])%>' " value="Add Component"/>
   <%- end -%>
   <fieldset id="work_fields">
     <legend> Subcollection </legend>

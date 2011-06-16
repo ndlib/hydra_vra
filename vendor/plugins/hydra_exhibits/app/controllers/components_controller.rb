@@ -127,7 +127,13 @@ class ComponentsController < ApplicationController
 
     def delete_image
       img = Page.find(params[:page_id])
+      image_name = img.name
+      parent_id = img.item[0].pid
+      logger.debug("PageIndex: #{params[:page_index]}, ComponentId: #{parent_id}")
       img.delete
+      @asset = Component.find(parent_id)
+      @asset.remove_image('image', params[:page_index])
+      @asset.save
       redirect_to url_for(:action=>"edit", :controller=>"catalog", :label => params[:label], :id=>params[:id], :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :f => params[:f], :viewing_context => params[:viewing_context])
     end
 

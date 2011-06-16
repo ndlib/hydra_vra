@@ -483,6 +483,9 @@ class EadXml < ActiveFedora::NokogiriDatastream
         remove_node = self.find_by_terms(:archive_desc, :dsc, :collection, :item)[index.to_i]
       when :image
         remove_node = self.find_by_terms(:item, :daogrp, :daoloc)[index.to_i]
+      when :subcol_image
+        node = EadXml.image_template
+        nodeset = self.find_by_terms(:collection, :daogrp, :daoloc)[index.to_i]
     end
     unless remove_node.nil?
       puts "Term to delete: #{remove_node.inspect}"
