@@ -50,6 +50,7 @@ class EadXml < ActiveFedora::NokogiriDatastream
       t.unitid_repositorycode(:path=>{:attribute=>"repositorycode"})
     }
     t.lang_ref(:path=>'langmaterial'){
+      t.lang_content(:path=>'text()')
       t.language
     }
     t.repo_ref(:path=>'repository'){
@@ -79,6 +80,7 @@ class EadXml < ActiveFedora::NokogiriDatastream
       t.engraver(:path=>'persname', :attributes=>{:role=>"engraver"})
     }
     t.physdesc_ref(:path=>'physdesc'){
+      t.physdesc_content(:path=>'text()')
       t.dimensions
       t.extent{
 	t.extent_encodinganalog(:path=>{:attribute=>"encodinganalog"})
@@ -544,23 +546,24 @@ class EadXml < ActiveFedora::NokogiriDatastream
             }
           }
           t.archdesc(:type=>"", :level=>"", :relatedencoding=>""){
-            t.did{
-              t.head
-              t.unittitle(:label=>"", :encodinganalog=>"")
-              t.unitid(:encodinganalog=>"", :countrycode=>"", :repositorycode=>"")
-              t.unitdate(:type=>"", :normal=>"")
-              t.langmaterial(:label=>"Language:"){
-                t.language
-              }
-              t.repository(:label=>"Repository:", :encodinganalog=>""){
-                t.corpname{
-                  t.subarea
-                }
-                t.address{
-                  t.addressline
-                }
-              }
-            }
+            t.did #{
+#              t.head
+#              t.unittitle(:label=>"", :encodinganalog=>"")
+#              t.unitid(:encodinganalog=>"", :countrycode=>"", :repositorycode=>"")
+#              t.unitdate(:type=>"", :normal=>"")
+#              t.langmaterial(:label=>"Language:"){
+#                t.language
+#              }
+#              t.repository(:label=>"Repository:", :encodinganalog=>""){
+#                t.corpname{
+#                  t.subarea
+#                }
+#                t.address{
+#                  t.addressline
+#                }
+#              }
+#            }
+	    t.controlaccess
             t.accessrestrict(:encodinganalog=>""){
               t.head
               t.p
@@ -771,7 +774,11 @@ class EadXml < ActiveFedora::NokogiriDatastream
       self.dirty = true
     end
   end
-  
+
+  define_template :simple_node do |xml, nodename, text, attrb|
+    xml.send("#{nodename}".to_sym, attrb){xml.text(text)}
+  end
+
   def initialize(attrs={})
     super
     @fields={}

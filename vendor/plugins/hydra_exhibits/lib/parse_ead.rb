@@ -1,22 +1,7 @@
 require 'nokogiri'
 class ParseEad
   def self.eadparser(filename)
-    elements_with_val = Hash.new
     xml_doc = Nokogiri::XML(File.open(filename))
-    reader = Nokogiri::XML::Reader(xml_doc.xpath('//ead/eadheader').to_s)
-    node_name = ""
-    reader.each do |node|
-      if(!node.name.to_s.eql?"#text")
-        node_name = node.name
-      end
-      if(!node.value.nil? && (!node.value.to_s.gsub(/\s+/,"").eql?""))
-        elements_with_val[node_name] = node.value
-      end
-    end
-    
-    elements_with_val.keys.each do |key|
-#      puts "#{key} -------------------> #{elements_with_val[key]}"
-    end
     collection = Collection.new
     collection.datastreams["descMetadata"].ng_xml = EadXml.fa_collection_template
     xml_doc.search('//ead/eadheader').each do |element|
@@ -25,39 +10,39 @@ class ParseEad
 	  collection.update_indexed_attributes({CollectionBean.col_ele["#{element.name}_#{attrb}"]=>{"0"=>element.attributes[attrb]}})
 	end
       end
-      element.children.each do |child|
-        if(child.name.to_s.eql?"eadid")
-          collection.update_indexed_attributes({CollectionBean.col_ele[child.name.to_s]=>{"0"=>child.text}})
-	  child.keys.each do |attrb|
-	    if(CollectionBean.col_ele.include?"#{child.name}_#{attrb}")
-	      collection.update_indexed_attributes({CollectionBean.col_ele["#{child.name}_#{attrb}"]=>{"0"=>child.attributes[attrb]}})
+      element.children.each do |l2_element|
+        if(l2_element.name.to_s.eql?"eadid")
+          collection.update_indexed_attributes({CollectionBean.col_ele[l2_element.name.to_s]=>{"0"=>l2_element.text}})
+	  l2_element.keys.each do |attrb|
+	    if(CollectionBean.col_ele.include?"#{l2_element.name}_#{attrb}")
+	      collection.update_indexed_attributes({CollectionBean.col_ele["#{l2_element.name}_#{attrb}"]=>{"0"=>l2_element.attributes[attrb]}})
 	    end
           end
         else
-	  parent = child.name.to_s
-	  child.children.each do |gchild|
-	    term_ele = "#{parent}_#{gchild.name.to_s}"
+	  parent = l2_element.name.to_s
+	  l2_element.children.each do |l3_element|
+	    term_ele = "#{parent}_#{l3_element.name.to_s}"
 	    if(CollectionBean.col_ele.keys.include?(term_ele))
 	      if(CollectionBean.col_ele.keys.include?("#{parent}"))
-	        collection.update_indexed_attributes({CollectionBean.col_ele["#{parent}"]=>{"0"=>child.text.sub(gchild.text,"")}})
+	        collection.update_indexed_attributes({CollectionBean.col_ele["#{parent}"]=>{"0"=>l2_element.text.sub(l3_element.text,"")}})
 	      end
-	      collection.update_indexed_attributes({CollectionBean.col_ele["#{term_ele}"]=>{"0"=>gchild.text}})
+	      collection.update_indexed_attributes({CollectionBean.col_ele["#{term_ele}"]=>{"0"=>l3_element.text}})
 	    end
-	    gchild.keys.each do |attrb|
-	      if(CollectionBean.col_ele.include?"#{child.name}_#{gchild.name}_#{attrb}")
-	  	collection.update_indexed_attributes({CollectionBean.col_ele["#{child.name}_#{gchild.name}_#{attrb}"]=>{"0"=>gchild.attributes[attrb]}})
+	    l3_element.keys.each do |attrb|
+	      if(CollectionBean.col_ele.include?"#{l2_element.name}_#{l3_element.name}_#{attrb}")
+	  	collection.update_indexed_attributes({CollectionBean.col_ele["#{l2_element.name}_#{l3_element.name}_#{attrb}"]=>{"0"=>l3_element.attributes[attrb]}})
 	      end
 	    end
-	    gchild.children.each do |ggchild|
-	      if(CollectionBean.col_ele.keys.include?("#{term_ele}_#{ggchild.name}"))
+	    l3_element.children.each do |l4_element|
+	      if(CollectionBean.col_ele.keys.include?("#{term_ele}_#{l4_element.name}"))
 		if(CollectionBean.col_ele.keys.include?("#{term_ele}"))
-	          collection.update_indexed_attributes({CollectionBean.col_ele["#{term_ele}"]=>{"0"=>gchild.text.sub(ggchild.text,"")}})
+	          collection.update_indexed_attributes({CollectionBean.col_ele["#{term_ele}"]=>{"0"=>l3_element.text.sub(l4_element.text,"")}})
 	        end
-		collection.update_indexed_attributes({CollectionBean.col_ele["#{term_ele}_#{ggchild.name}"]=>{"0"=>ggchild.text}})
+		collection.update_indexed_attributes({CollectionBean.col_ele["#{term_ele}_#{l4_element.name}"]=>{"0"=>l4_element.text}})
 	      end
-	      ggchild.keys.each do |attrb|
-		if(CollectionBean.col_ele.include?"#{term_ele}_#{ggchild.name}_#{attrb}")
-	  	  collection.update_indexed_attributes({CollectionBean.col_ele["#{term_ele}_#{ggchild.name}_#{attrb}"]=>{"0"=>ggchild.attributes[attrb]}}) ######
+	      l4_element.keys.each do |attrb|
+		if(CollectionBean.col_ele.include?"#{term_ele}_#{l4_element.name}_#{attrb}")
+	  	  collection.update_indexed_attributes({CollectionBean.col_ele["#{term_ele}_#{l4_element.name}_#{attrb}"]=>{"0"=>l4_element.attributes[attrb]}}) ######
 	        end
 	      end
 	    end
@@ -67,94 +52,181 @@ class ParseEad
     end
     xml_doc.search('//ead/frontmatter').each do |element|
       parent = element.name
-      element.children.each do |child|
-	term_ele = "#{parent}_#{child.name}"
-	child.children.each do |gchild|
-	  if(CollectionBean.col_ele.keys.include?("#{term_ele}_#{gchild.name}"))
-	    collection.update_indexed_attributes({CollectionBean.col_ele["#{term_ele}_#{gchild.name}"]=>{"0"=>gchild.text}})
+      element.children.each do |l2_element|
+	term_ele = "#{parent}_#{l2_element.name}"
+	l2_element.children.each do |l3_element|
+	  if(CollectionBean.col_ele.keys.include?("#{term_ele}_#{l3_element.name}"))
+	    collection.update_indexed_attributes({CollectionBean.col_ele["#{term_ele}_#{l3_element.name}"]=>{"0"=>l3_element.text}})
 	  end
 	end
       end
     end
     xml_doc.search('//ead/archdesc').each do |element|
       parent = element.name
+      puts "Element: #{parent}"
       element.keys.each do |attrb|
 	if(CollectionBean.col_ele.include?"#{element.name}_#{attrb}")
 	  collection.update_indexed_attributes({CollectionBean.col_ele["#{element.name}_#{attrb}"]=>{"0"=>element.attributes[attrb]}})
 	end
       end
-      element.children.each do |child|
-	if(!child.name.eql?"dsc")
-	  term_ele = "#{parent}_#{child.name}"
+      element.children.each do |l2_element|
+	if(!l2_element.name.eql?"dsc")
+	  term_ele = "#{parent}_#{l2_element.name}"
 	  if(CollectionBean.col_ele.keys.include?("#{term_ele}"))
-	    collection.update_indexed_attributes({CollectionBean.col_ele["#{term_ele}"]=>{"0"=>child.text}})
+            if(!l2_element.name.eql?"text")      
+              tv = [:archive_desc, l2_element.name.to_sym]
+              pnode = collection.datastreams["descMetadata"].find_by_terms(*tv)[0]
+              if(pnode.nil?)
+                tv.delete_at(tv.size - 1)
+                pnode = collection.datastreams["descMetadata"].find_by_terms(:archive_desc)[0]
+                collection.datastreams["descMetadata"].add_child_node(pnode, :simple_node, l2_element.name.to_sym, l2_element.text, l2_element.attributes)
+              end
+            end
 	  end
-	  child.keys.each do |attrb|
+	  l2_element.keys.each do |attrb|
 	    if(CollectionBean.col_ele.include?"#{term_ele}_#{attrb}")
-	      collection.update_indexed_attributes({CollectionBean.col_ele["#{term_ele}_#{attrb}"]=>{"0"=>child.attributes[attrb]}})
+	      collection.update_indexed_attributes({CollectionBean.col_ele["#{term_ele}_#{attrb}"]=>{"0"=>l2_element.attributes[attrb]}})
 	    end
 	  end
-	  first_child = nil
-	  index = 0
-	  if(child.children.size > 1)
-	    first_child = child.children[0]
-	  end
-	  counter = 0
-	  child.children.each do |gchild|
-	    if(counter > 0)
-	      if(first_child.name.eql?(gchild.name))
-	        index = index + 1
-	      else
-		first_child = gchild
-	      end
-	    end
-	    if(CollectionBean.col_ele.keys.include?("#{term_ele}_#{gchild.name}"))
+	  parent_node = nil
+	  sibling_node = nil
+	  l2_element.children.each_with_index do |l3_element, index|
+	    if(CollectionBean.col_ele.keys.include?("#{term_ele}_#{l3_element.name}"))
 	      if(CollectionBean.col_ele.keys.include?("#{term_ele}"))
-	        collection.update_indexed_attributes({CollectionBean.col_ele["#{term_ele}"]=>{"0"=>child.text.sub(gchild.text,"")}})
+	        collection.update_indexed_attributes({CollectionBean.col_ele["#{term_ele}"]=>{"0"=>l2_element.text.sub(l3_element.text,"")}})
 	      end
-	      puts CollectionBean.col_ele["#{term_ele}_#{gchild.name}"].inspect
-	      collection.update_indexed_attributes({CollectionBean.col_ele(index)["#{term_ele}_#{gchild.name}"]=>{"0"=>gchild.text}})
-	    end
-	    gchild.keys.each do |attrb|
-	      if(CollectionBean.col_ele.include?"#{term_ele}_#{gchild.name}_#{attrb}")
-	        collection.update_indexed_attributes({CollectionBean.col_ele["#{term_ele}_#{gchild.name}_#{attrb}"]=>{"0"=>gchild.attributes[attrb]}})
-	      end
-	    end
-	    gchild.children.each do |ggchild|
-	      if(CollectionBean.col_ele.keys.include?("#{term_ele}_#{gchild.name}_#{ggchild.name}"))
-		if(CollectionBean.col_ele.keys.include?("#{term_ele}_#{gchild.name}"))
-		  collection.update_indexed_attributes({CollectionBean.col_ele["#{term_ele}_#{gchild.name}"]=>{"0"=>gchild.text.sub(ggchild.text,"")}})
+	      arg = CollectionBean.col_ele["#{term_ele}_#{l3_element.name}"]
+	      arg.delete_at(arg.size - 1)
+	      if(!(parent_node.nil?))
+		if sibling_node
+		  collection.datastreams["descMetadata"].add_previous_sibling_node(sibling_node, :simple_node, l3_element.name.to_sym, l3_element.text, l3_element.attributes)
+		else
+		  collection.datastreams["descMetadata"].add_child_node(parent_node, :simple_node, l3_element.name.to_sym, l3_element.text, l3_element.attributes)
 		end
-	        puts CollectionBean.col_ele["#{term_ele}_#{gchild.name}_#{ggchild.name}"].inspect
-	        collection.update_indexed_attributes({CollectionBean.col_ele["#{term_ele}_#{gchild.name}_#{ggchild.name}"]=>{"0"=>ggchild.text}})
+		arg = CollectionBean.col_ele["#{term_ele}_#{l3_element.name}"]
+		arg.delete_at(arg.size - 1)
+		parent_node = collection.datastreams["descMetadata"].find_by_terms(*arg)[0]
+	      else
+		parent_node = collection.datastreams["descMetadata"].find_by_terms(*arg)[0]
+		if(parent_node.nil?)
+		  arg.delete_at(arg.size - 1)
+		  parent_node = collection.datastreams["descMetadata"].find_by_terms(*arg)[0]
+		  collection.datastreams["descMetadata"].add_child_node(parent_node, :simple_node, l3_element.parent.name.to_sym, l3_element.parent.text, l3_element.parent.attributes)
+		  arg = CollectionBean.col_ele["#{term_ele}_#{l3_element.name}"]
+		  arg.delete_at(arg.size - 1)
+		  parent_node = collection.datastreams["descMetadata"].find_by_terms(*arg)[0]
+		end
+		puts "l3_element: #{l3_element.name}"
+		collection.datastreams["descMetadata"].add_child_node(parent_node, :simple_node, l3_element.name.to_sym, l3_element.text, l3_element.attributes)
+		arg = CollectionBean.col_ele["#{term_ele}_#{l3_element.name}"]
+		sibling_node = collection.datastreams["descMetadata"].find_by_terms(*arg)[0]
+		arg.delete_at(arg.size - 1)
+		parent_node = collection.datastreams["descMetadata"].find_by_terms(*arg)[0]
 	      end
-	      ggchild.keys.each do |attrb|
-		if(CollectionBean.col_ele.include?"#{term_ele}_#{gchild.name}_#{ggchild.name}_#{attrb}")
-	  	  collection.update_indexed_attributes({CollectionBean.col_ele["#{term_ele}_#{gchild.name}_#{ggchild.name}_#{attrb}"]=>{"0"=>ggchild.attributes[attrb]}})
-	        end
+	    end
+	    l3_element.keys.each do |attrb|
+	      if(CollectionBean.col_ele.include?"#{term_ele}_#{l3_element.name}_#{attrb}")
+	        collection.update_indexed_attributes({CollectionBean.col_ele["#{term_ele}_#{l3_element.name}_#{attrb}"]=>{"0"=>l3_element.attributes[attrb]}})
 	      end
-	      ggchild.children.each do |gggchild|
-	        if(CollectionBean.col_ele.keys.include?("#{term_ele}_#{gchild.name}_#{ggchild.name}_#{gggchild.name}"))
-		  if(CollectionBean.col_ele.keys.include?("#{term_ele}_#{gchild.name}_#{ggchild.name}"))
-	            collection.update_indexed_attributes({CollectionBean.col_ele["#{term_ele}_#{gchild.name}_#{ggchild.name}"]=>{"0"=>ggchild.text.sub(gggchild.text,"")}})
+	    end
+	    gparent = nil
+	    gsibling = nil
+	    l3_element.children.each do |l4_element|
+	      if(CollectionBean.col_ele.keys.include?("#{term_ele}_#{l3_element.name}_#{l4_element.name}"))
+		tv_l4_element = CollectionBean.col_ele["#{term_ele}_#{l3_element.name}_#{l4_element.name}"]
+	        tv_l4_element.delete_at(tv_l4_element.size - 1)
+	        if(!(gparent.nil?))
+		  if(!gsibling.nil?)
+		    collection.datastreams["descMetadata"].add_previous_sibling_node(gsibling, :simple_node, l4_element.name.to_sym, l4_element.text, l4_element.attributes)
+		  else
+		    collection.datastreams["descMetadata"].add_child_node(gparent, :simple_node, l4_element.name.to_sym, l4_element.text, l4_element.attributes)
 		  end
-	          collection.update_indexed_attributes({CollectionBean.col_ele["#{term_ele}_#{gchild.name}_#{ggchild.name}_#{gggchild.name}"]=>{"0"=>gggchild.text}})
+		  tv_l4_element = CollectionBean.col_ele["#{term_ele}_#{l3_element.name}_#{l4_element.name}"]
+		  tv_l4_element.delete_at(tv_l4_element.size - 1)
+		  gparent = collection.datastreams["descMetadata"].find_by_terms(*tv_l4_element)[0]
+	        else
+		  gparent = collection.datastreams["descMetadata"].find_by_terms(*tv_l4_element)[0]
+		  if(gparent.nil?)
+		    tv_l4_element.delete_at(tv_l4_element.size - 1)
+		    gparent = collection.datastreams["descMetadata"].find_by_terms(*tv_l4_element)[0]
+		    collection.datastreams["descMetadata"].add_child_node(gparent, :simple_node, l3_element.name.to_sym, l3_element.text, l3_element.attributes)
+		    tv_l4_element = CollectionBean.col_ele["#{term_ele}_#{l3_element.name}_#{l4_element.name}"]
+		    tv_l4_element.delete_at(tv_l4_element.size - 1)
+		    gparent = collection.datastreams["descMetadata"].find_by_terms(*tv_l4_element)[0]
+		  end
+		  collection.datastreams["descMetadata"].add_child_node(gparent, :simple_node, l4_element.name.to_sym, l4_element.text, l4_element.attributes)
+		  tv_l4_element = CollectionBean.col_ele["#{term_ele}_#{l3_element.name}_#{l4_element.name}"]
+		  gsibling = collection.datastreams["descMetadata"].find_by_terms(*tv_l4_element)[0]
+		  tv_l4_element.delete_at(tv_l4_element.size - 1)
+		  gparent = collection.datastreams["descMetadata"].find_by_terms(*tv_l4_element)[0]
 	        end
-		gggchild.keys.each do |attrb|
-		  if(CollectionBean.col_ele.include?"#{term_ele}_#{gchild.name}_#{ggchild.name}_#{gggchild.name}_#{attrb}")
-	  	    collection.update_indexed_attributes({CollectionBean.col_ele["#{term_ele}_#{gchild.name}_#{ggchild.name}_#{gggchild.name}_#{attrb}"]=>{"0"=>gggchild.attributes[attrb]}})
+		tmp = tv_l4_element|["#{tv_l4_element.last}_content".to_sym]
+                collection.update_indexed_attributes({tmp=>{"0"=>l3_element.text.sub(l4_element.text,"")}})
+	      end
+	      l4_element.keys.each do |attrb|
+		if(CollectionBean.col_ele.include?"#{term_ele}_#{l3_element.name}_#{l4_element.name}_#{attrb}")
+	  	  collection.update_indexed_attributes({CollectionBean.col_ele["#{term_ele}_#{l3_element.name}_#{l4_element.name}_#{attrb}"]=>{"0"=>l4_element.attributes[attrb]}})
+	        end
+	      end
+	      l4_element.children.each do |l5_element|
+	        if(CollectionBean.col_ele.keys.include?("#{term_ele}_#{l3_element.name}_#{l4_element.name}_#{l5_element.name}"))
+		  if(CollectionBean.col_ele.keys.include?("#{term_ele}_#{l3_element.name}_#{l4_element.name}"))
+	            collection.update_indexed_attributes({CollectionBean.col_ele["#{term_ele}_#{l3_element.name}_#{l4_element.name}"]=>{"0"=>l4_element.text.sub(l5_element.text,"")}})
+		  end
+		  if(!l5_element.name.eql?"text")
+                    l5tv = CollectionBean.col_ele["#{term_ele}_#{l3_element.name}_#{l4_element.name}_#{l5_element.name}"]
+		    puts l5tv.inspect
+              	    l5node = collection.datastreams["descMetadata"].find_by_terms(*l5tv)[0]
+		    tv_arr = Array.new
+              	    if(l5node.nil?)
+                      tv_arr << l5tv.delete_at(l5tv.size - 1)
+		      puts l5tv.inspect
+                      l5node = collection.datastreams["descMetadata"].find_by_terms(*l5tv)[0]
+		      if(l5node.nil?)
+                        tv_arr << l5tv.delete_at(l5tv.size - 1)
+		        puts l5tv.inspect
+                        l5node = collection.datastreams["descMetadata"].find_by_terms(*l5tv)[0]
+			if(l5node.nil?)
+                          tv_arr << l5tv.delete_at(l5tv.size - 1)
+		          puts l5tv.inspect
+                          l5node = collection.datastreams["descMetadata"].find_by_terms(*l5tv)[0]
+                          collection.datastreams["descMetadata"].add_child_node(l5node, :simple_node, l3_element.name.to_sym, "", l3_element.attributes)
+			  l5tv = l5tv|[tv_arr.last]
+                          l5node = collection.datastreams["descMetadata"].find_by_terms(*l5tv)[0]
+              	        end
+                        collection.datastreams["descMetadata"].add_child_node(l5node, :simple_node, l4_element.name.to_sym, l4_element.text, l4_element.attributes)
+			l5tv = l5tv|[tv_arr.last]
+                        l5node = collection.datastreams["descMetadata"].find_by_terms(*l5tv)[0]
+              	      end
+                      collection.datastreams["descMetadata"].add_child_node(l5node, :simple_node, l5_element.name.to_sym, l5_element.text, l5_element.attributes)
+              	    end
+            	  end
+	        end
+		l5_element.keys.each do |attrb|
+		  if(CollectionBean.col_ele.include?"#{term_ele}_#{l3_element.name}_#{l4_element.name}_#{l5_element.name}_#{attrb}")
+	  	    collection.update_indexed_attributes({CollectionBean.col_ele["#{term_ele}_#{l3_element.name}_#{l4_element.name}_#{l5_element.name}_#{attrb}"]=>{"0"=>l5_element.attributes[attrb]}})
 	          end
 	        end
 	      end
 	    end
-	    counter = counter + 1
+	    if(index == (l3_element.parent.children.size-1))
+	      parent_node = nil
+	      sibling_node = nil
+	    else
+	      if(!l3_element.name.eql?"text")
+	        parent_node = l3_element.parent
+	      end
+	    end
 	  end
 	else
-	# The elements under dsc goes here
+	  l2_element.children.each do |l3_element|
+	    if(CollectionBean.col_ele.keys.include?("#{l3_element.name}"))
+	      collection.update_indexed_attributes({CollectionBean.col_ele["#{term_ele}_#{l3_element.name}"]=>{"0"=>l3_element.text}})
+	    end
+	  end
 	end
       end
     end
-#    puts collection.datastreams["descMetadata"].to_xml
     collection.save
   end
 end

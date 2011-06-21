@@ -252,12 +252,6 @@ module BatchIngester
             subcollection.save
             subcollection.member_of_append(result.to_a[0]["id"])
             subcollection.save
-#	    while(args[:description].include?'ฃ') do
-#	      args[:description] = args[:description].sub('ฃ', "&#3586;")
-#	    end
-#            desc = Iconv.conv('utf-8','ISO-8859-1',args[:description])
-#            c = Iconv.new('UTF-8','ISO-8859-1')
-#            utf_desc = c.iconv(desc)
             subcollection.datastreams["rightsMetadata"].update_permissions({"group"=>{"archivist"=>"edit","public"=>"read"}})
             update_fields(subcollection, [:collection, :did, :unitid], args[:abr_title])
             update_fields(subcollection, [:collection, :did, :unitid, :unitid_identifier], args[:subcollection_id])
