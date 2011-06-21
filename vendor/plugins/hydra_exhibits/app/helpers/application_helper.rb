@@ -32,6 +32,23 @@ module ApplicationHelper
     Blacklight.config[:items_index_fields][:labels]
   end
 
+  def component_field_names(component_level="")
+    if !component_level.nil? && !component_level.empty? && Blacklight.config["#{component_level}_index_fields".to_sym]
+      Blacklight.config["#{component_level}_index_fields".to_sym][:field_names]
+    else
+      Blacklight.config[:components_index_fields][:field_names]
+    end
+  end
+
+  # used in the _index_partials/_collection view
+  def component_field_labels(component_level="")
+    if !component_level.nil? && !component_level.empty? && Blacklight.config["#{component_level}_index_fields".to_sym]
+      Blacklight.config["#{component_level}_index_fields".to_sym][:labels]
+    else
+      Blacklight.config[:components_index_fields][:labels]
+    end
+  end
+
   def page_field_names
     Blacklight.config[:pages_index_fields][:field_names]
   end
@@ -725,6 +742,26 @@ logger.debug("Params in edit_and_browse_links: #{params.inspect}")
   #  Expects Array of PIDs and returns array of Response and DocumentList
   def get_pids_search_results(pid_array)
     fq = ActiveFedora::SolrService.construct_query_for_pids(pid_array)
+    extra_controller_params = {}
+    extra_controller_params.merge!(:q=>build_lucene_query(params[:q]))
+    extra_controller_params.merge!(:fq=>fq)
+    p = params.dup
+    params.delete(:f) 
+    results = get_search_results(extra_controller_params)
+    params[:f] = p[:f]
+    return results
+  end
+
+  def get_search_results_outbound_relationship(document_fedora,predicates)
+    id_array = []
+    if predicates.is_a?(String) || predicates.is_a?(Symbol)
+      id_array = document_fedora.send("#{predicates.to_s}_ids".to_sym)
+    else
+      predicates.each do |predicate|
+        id_array.concat(document_fedora.send("#{predicate.to_s}_ids".to_sym))
+      end
+    end
+    fq = ActiveFedora::SolrService.construct_query_for_pids(id_array)
     extra_controller_params = {}
     extra_controller_params.merge!(:q=>build_lucene_query(params[:q]))
     extra_controller_params.merge!(:fq=>fq)

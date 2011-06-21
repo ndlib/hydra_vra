@@ -48,13 +48,10 @@
         <%= flash[:notice] %>
       </div>
     <% end %>
+    
     <div id="accordion">
       <h2 class="section-title"><a href="#">Description</a></h2>
-      <% if (!get_values_from_datastream(@document_fedora,"descMetadata", [:item]).first.empty?) %>
-        <%= render :partial => "components/edit_item", :locals => { :content => "component", :label => "item", :document_fedora => @document_fedora, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :f => params[:f], :viewing_context => params[:viewing_context]} %>
-      <% else %>
-        <%= render :partial => "components/edit_subcollection", :locals => { :content => "component", :label => "subcollection", :document_fedora => @document_fedora, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :f => params[:f], :viewing_context => params[:viewing_context]} %>
-      <% end %>
+      <%= render :partial => "components/edit_component", :locals => { :content => "component", :document_fedora => @document_fedora, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :f => params[:f], :viewing_context => params[:viewing_context]} %>
       <h2 class="section-title"><a href="#">Set permissions</a></h2>
       <div id="permissions">
         <%= render :partial => "permissions/index", :locals => {:document => document, :asset_id=>params[:id]} %>
@@ -65,6 +62,9 @@
       <input id="content_type" type="hidden" name="content_type" value="component" />
       <input type="submit" value="Add Image Tag" />
     </form>
+    <%- if current_user -%>
+      <%=render :partial=>'components/add_component_form', :locals=>{:parent_id=>params[:id], :parent_content_type=>"component"} %>
+    <%- end -%>
   </div>
 </div>
 

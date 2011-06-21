@@ -4,7 +4,7 @@ class Page < ActiveFedora::Base
   include Hydra::GenericImage
   include Hydra::ModelMethods
   
-  has_bidirectional_relationship  "item",   :is_part_of, :has_part
+  has_bidirectional_relationship  "image_part_of",   :is_image_part_of, :has_image_part
   has_bidirectional_relationship  "descriptions", :is_description_of, :has_description
   
   # Uses the Hydra Rights Metadata Schema for tracking access permissions & copyright
@@ -74,7 +74,7 @@ class Page < ActiveFedora::Base
 
   #Calls to_solr on the descMetadata datastream of parent
   def to_solr_parent_desc_metadata(solr_doc = Solr::Document.new)
-    item.each do |parent|
+    image_part_of.each do |parent|
       if parent.respond_to? :to_solr_desc_metadata
         solr_doc = parent.to_solr_desc_metadata(solr_doc) 
         logger.debug("Solrized parent #{parent.pid} desc metadata in child #{pid}")

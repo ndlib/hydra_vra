@@ -1,12 +1,11 @@
 <div class="with-thumbnail">
-  <%- if document["component_type_t"] && !document["component_type_t"].empty? && document["component_type_t"].first == "item" -%>
-    <div class="thumbnail-container">
-      <%- if document["main_page_t"] && !document["main_page_t"].empty? -%>
-        <%= link_to_document document, :label=>(image_tag(image_url(document["main_page_t"],'thumbnail'))) %>
-      <%- end -%>
+  <%- level_solr_field_name = Component.level_solr_field_name -%>
+   <%- if document["main_page_t"] && !document["main_page_t"].empty? -%>
+    <div class="thumbnail-container">     
+      <%= link_to_document document, :label=>(image_tag(image_url(document["main_page_t"],'thumbnail'))) %>
     </div>
-  <%- elsif document["component_type_t"] && !document["component_type_t"].empty? && document["component_type_t"].first == "subcollection" -%>
-    <%- mainItem = Component.load_instance_from_solr(document["main_item_t"].first) if document["main_item_t"] && !document["main_item_t"].empty?-%>
+  <%- elsif document["main_item_t"] && !document["main_item_t"].empty?-%>
+    <%- mainItem = Component.load_instance_from_solr(document["main_item_t"].first)-%>
     <div class="thumbnail-container">
       <%- unless mainItem.nil? || mainItem.main_page.to_s.blank? -%>
         <%= link_to_document document, :label=>(image_tag(image_url(mainItem.main_page.to_s,'thumbnail'))) %>
@@ -14,20 +13,11 @@
     </div>
   <%- end -%>
   <dl class="defList">
-    <%- if document["component_type_t"] && !document["component_type_t"].empty? && document["component_type_t"].first == "subcollection" -%>
-      <%- index_field_names.each do |solr_fname| -%>
-        <%- if document.get solr_fname %>
-          <dt><%= h index_field_labels[solr_fname]%></dt>
-          <dd><%= h document.get(solr_fname) %></dd>
-        <%- end -%>
+    <%- component_field_names(document[level_solr_field_name]).each do |solr_fname| -%>
+      <%- if document.get solr_fname %>
+        <dt><%= h component_field_labels(document[level_solr_field_name])[solr_fname]%></dt>
+        <dd><%= h document.get(solr_fname) %></dd>
       <%- end -%>
-    <% else %>
-      <%- item_field_names.each do |solr_fname| -%>
-        <%- if document.get solr_fname -%>
-          <dt><%= h item_field_labels[solr_fname]%></dt>
-          <dd><%= h document.get(solr_fname) %></dd>
-        <%- end -%>
-      <%- end -%>
-    <% end %>
+    <%- end -%>
   </dl>
 </div>

@@ -41,7 +41,7 @@
     :has_description: hasDescription
     :has_part: hasPart
     :has_member: hasMember
-#ead predicates
+  info:fedora/ead/2002:
     :has_component_collection_member: hasComponentCollectionMember
     :has_series_member: hasSeriesMember
     :has_class_member: hasClassMember

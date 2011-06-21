@@ -1,4 +1,4 @@
-<% @page_title = "#{document_show_html_title} - #{application_name}" %>
+<%# @page_title = "#{document_show_html_title} - #{application_name}" %>
 <div id="showHead">
   <div id="showUtils">
     <div class="tools"><%= render :partial => 'show_tools' %></div>
@@ -41,10 +41,7 @@
       <%= render_document_partial @document, params["action"] %>
     </div>
 
-    <% if((@document_fedora.methods.include? "list_childern") && !(@document_fedora.type.to_s.eql?"item")) %>
-    <% #if(@document_feodra.respond_to?(:list_childern)) #Ideal but not working %>
-      <%= render :partial => "catalog/show_subcollections" %>
-    <% end %>
+    <%= render :partial => "catalog/show_subcollections" %>
 
   </div>
 </div>

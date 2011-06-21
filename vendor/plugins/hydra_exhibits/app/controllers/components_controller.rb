@@ -101,6 +101,10 @@ class ComponentsController < ApplicationController
         end
       end
     end
+
+    def create
+      new
+    end
     
     def new
       content_type = params[:content_type]
@@ -113,8 +117,10 @@ class ComponentsController < ApplicationController
           set_collection_type(@asset, params[:content_type])
           @asset.save
         else
-	  parent_id = (params.keys.include?("subcollection_id") ? params[:subcollection_id] : params[:collection_id])
-          create_and_save_component(params[:label], content_type, parent_id)
+          parent_id = params[:parent_id]
+	  parent_id = (params.keys.include?("subcollection_id") ? params[:subcollection_id] : params[:collection_id]) unless parent_id
+          parent_content_type = (params[:parent_content_type] ? params[:parent_content_type] : "collection")
+          @asset = create_and_save_component(params[:label], content_type, parent_id, parent_content_type)
         end
       end
       redirect_to url_for(:action=>"edit", :controller=>"catalog", :label => params[:label], :id=>@asset.pid, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :f => params[:f], :viewing_context => params[:viewing_context])

@@ -8,27 +8,29 @@
 
 <div class="document_viewer" id="cover_container">
   <div id="accordion">
-    <h2 class="section-title">Child Components</h2>
-    <%- response = @response if response.nil? -%>
-    <%- (response,document_list) = get_search_results_inbound_relationship(@document_fedora,"is_member_of") -%>
-    <% if(document_list.size > 0 ) -%>
-      <div class="pagination">
-        <%= will_paginate response.docs, :page_links => false, :class => 'prev_next_links' %>
-        <%= will_paginate response.docs, :container => false %>
-      </div>
-      <div id="documents" class="exhibit-listing">
-        <%- if(@document_fedora.type.to_s.eql? "Collection") -%>
-          <%= render :partial => 'catalog/_index_partials/subcollections', :locals => {:content => "component", :document_list => document_list, :asset_id=>params[:id], :response=>response, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context], :f => params[:f]} %>
-        <%- else -%>
-          <%= render :partial => 'catalog/_index_partials/items', :locals => {:content => "component", :document_list => document_list, :asset_id=>params[:id], :response=>response, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context], :f => params[:f]} %>
-        <%- end -%>
-      </div>
-      <div class="pagination">
-        <%= will_paginate response.docs, :page_links => false, :class => 'prev_next_links' %>
-        <%= will_paginate response.docs, :container => false %>
-      </div>
-    <%- else -%>
-      <p>No child components available to display</p>
+    <%- if @document_fedora.class.respond_to?(:child_type_relationships) -%>
+      <h2 class="section-title">Child Components</h2>
+      <%- relationship_names = @document_fedora.class.child_type_relationships.values -%>
+      <%- (response,document_list) = get_search_results_outbound_relationship(@document_fedora,relationship_names) -%>
+      <% if(document_list.size > 0 ) -%>
+        <div class="pagination">
+          <%= will_paginate response.docs, :page_links => false, :class => 'prev_next_links' %>
+          <%= will_paginate response.docs, :container => false %>
+        </div>
+        <div id="documents" class="exhibit-listing">
+          <%- if(@document_fedora.type.to_s.eql? "Collection") -%>
+            <%= render :partial => 'catalog/_index_partials/subcollections', :locals => {:content => "component", :document_list => document_list, :asset_id=>params[:id], :response=>response, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context], :f => params[:f]} %>
+          <%- else -%>
+            <%= render :partial => 'catalog/_index_partials/items', :locals => {:content => "component", :document_list => document_list, :asset_id=>params[:id], :response=>response, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context], :f => params[:f]} %>
+          <%- end -%>
+        </div>
+        <div class="pagination">
+          <%= will_paginate response.docs, :page_links => false, :class => 'prev_next_links' %>
+          <%= will_paginate response.docs, :container => false %>
+        </div>
+      <%- else -%>
+        <p>No child components available to display</p>
+      <%- end -%>
     <%- end -%>
   </div>
 </div>

@@ -97,5 +97,10 @@ class Collection < ActiveFedora::Base
   def to_solr_desc_metadata(solr_doc = Solr::Document.new)
     datastreams["descMetadata"].to_solr(solr_doc)
   end
+
+  #Returns a hash of child type mapped to relationship name
+  def self.child_type_relationships
+    {:member=>"members"}
+  end
   
 end

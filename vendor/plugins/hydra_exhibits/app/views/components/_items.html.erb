@@ -1,4 +1,4 @@
-<% childern = @document_fedora.list_childern(params[:id],"subcollection") %>
+<% childern = @document_fedora.list_childern(params[:id]) %>
 <% if(childern.size > 0) %>
   <table>
   <% childern.each {|child| %>

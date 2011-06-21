@@ -6,9 +6,10 @@
         <p>Parent: </p>
       </dt>
       <dd class="parent">
-        <%- parent_id = @document_fedora.item_ids.first -%>
+        <%- parent_id = @document_fedora.image_part_of_ids.first -%>
         <%- parent = Component.load_instance_from_solr(parent_id)-%>
-        <%= link_to "#{parent.title}", catalog_path(parent_id, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context], :f => params[:f]) %>
+        <%- title = (!parent.title.nil? && !parent.title.empty? ? parent.title : parent.pid) -%>
+        <%= link_to "#{title}", catalog_path(parent_id, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context], :f => params[:f]) %>
       </dd>
       <dt>
         <%= fedora_field_label("properties", [:name], "Name:") %>

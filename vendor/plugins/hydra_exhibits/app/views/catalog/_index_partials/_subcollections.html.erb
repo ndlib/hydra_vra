@@ -1,10 +1,9 @@
   <%- document_list = @document_list if document_list.nil?-%>
   <%- response = @response if response.nil?-%>
+  <%- title_solr_field = Component.title_solr_field_name -%>
   <%- document_list.each_with_index do |document,counter| -%>
-    <%- title_solr_field = Component.title_solr_field_name("subcollection") -%>
     <%- document[title_solr_field] ? title = document[title_solr_field] : title = document[:id] -%>
     <div class="document<%= thumbnail_class( document ) %>">
-      
       <%# # header bar for doc items in index view -%>
       <div class="documentHeader yui-g">
         <%# # main title container for doc partial view -%>
@@ -14,7 +13,7 @@
       </div>
       
       <%# # main container for doc partial view -%>
-      <%= render_document_index_partial(SolrDocument.new(document), title, counter, :index) %>  
+      <%= render_document_index_partial(SolrDocument.new(document), title, counter, :index) %>
 
     </div>
     

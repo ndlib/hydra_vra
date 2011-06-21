@@ -1,0 +1,109 @@
+<form id="document_metadata" action="<%= url_for(:action=>"update", :controller=>"components", :content_type=>content)%>" method="post" data-resourceType="<%= content %>" accept-charset="utf-8">
+  <%- if current_user -%>
+    <input id="re-run-action" class="nobutton" type="button" onclick=" location.href='<%=url_for(:action => "new", :controller => "pages", :content_type => "page", :label => "page", :component_id => params[:id], :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :f => params[:f], :viewing_context => params[:viewing_context])%>' " value="Add Image"/>
+  <%- end -%>
+  <fieldset id="work_fields">
+    <%- legend = get_values_from_datastream(@document_fedora,"descMetadata", [:component, :component_level]) -%>
+    <%- legend = ["Component"] unless legend -%>
+    <legend><%= legend.first.capitalize %></legend>
+      <input id="content_type" type="hidden" name="content_type" value="<%= content %>" />
+    <dl>
+      <dt>
+        <p> Parent: </p>
+      </dt>
+      <dd class="parent">
+        <%- (response, parent_docs) = get_search_results_inbound_relationship(@document_fedora,Component.inbound_parent_predicates)-%>
+        <%- parent_docs.each do |parent_doc| -%>
+          <%- af_model = get_af_model(parent_doc) -%>
+          <%- if af_model == "Collection" && parent_doc[Collection.title_solr_field_name] && !parent_doc[Collection.title_solr_field_name].empty?-%>
+            <%- title = parent_doc[Collection.title_solr_field_name].first -%>
+          <%- elsif af_model == "Component" && parent_doc[Component.title_solr_field_name] && !parent_doc[Component.title_solr_field_name].empty?-%>
+            <%- title = parent_doc[Component.title_solr_field_name] -%>
+          <%- else -%>
+            <%- title = parent_doc[:id] -%>
+          <%- end -%>
+          <%= link_to title, catalog_path(parent_doc[:id], :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :viewing_context => params[:viewing_context], :f => params[:f]) %>  
+        <%- end -%>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:component, :did, :unittitle, :unittitle_label], "Display Title:") %>
+      </dt>
+      <dd class="display_title">
+        <%= fedora_text_field(document_fedora,"descMetadata", [:component, :did, :unittitle, :unittitle_label], :multiple=>false) %>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:component, :did, :unittitle, :unittitle_content], "Title:") %>
+      </dt>
+      <dd class="title">
+        <%= fedora_text_field(document_fedora,"descMetadata", [:component, :did, :unittitle, :unittitle_content], :multiple=>false) %>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:component, :did, :unittitle, :num], "Serial Number:") %>
+      </dt>
+      <dd class="serial_number">
+        <%= fedora_text_field(document_fedora,"descMetadata", [:component, :did, :unittitle, :num]) %>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:component, :did, :origination, :persname, :persname_normal], "Signers:") %>
+      </dt>
+      <dd class="signers">
+        <%= fedora_text_field(document_fedora,"descMetadata", [:component, :did, :origination, :persname, :persname_normal], :multiple=>true) %>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:component, :did, :origination, :persname], "Display Signers:") %>
+      </dt>
+      <dd class="display_signers">
+        <%= fedora_text_field(document_fedora,"descMetadata", [:component, :did, :origination, :persname], :multiple=>false) %>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:component, :did, :physdesc, :dimensions], "Physical Description:") %>
+      </dt>
+      <dd id="physdesc">
+        <%=fedora_text_area(document_fedora,"descMetadata", [:component, :did, :physdesc, :dimensions], :multiple=>true) %>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:component, :controlaccess, :genreform], "Page Turn:")%>
+      </dt>
+      <dd id="page_turn">
+        <%= fedora_text_area(document_fedora,"descMetadata", [:component, :controlaccess, :genreform])%>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:component, :acqinfo], "Provenance:")%>
+      </dt>
+       <dd id="provenance">
+        <%= fedora_text_field(document_fedora,"descMetadata", [:component, :acqinfo])%>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:component, :odd], "Plate Letter:")%>
+      </dt>
+       <dd id="plate_letter">
+        <%= fedora_text_area(document_fedora,"descMetadata", [:component, :odd])%>
+      </dd>
+      <dt>
+        <%= fedora_field_label("descMetadata", [:component, :scopecontent], "Description:")%>
+      </dt>
+       <dd id="description">
+        <%= fedora_text_area(document_fedora,"descMetadata", [:component, :scopecontent])%>
+      </dd>
+      <%= render :partial => "shared/review", :locals => {:content_type=>"component", :document_fedora=>@document_fedora} %>
+      <dt>
+        <%= fedora_field_label("properties", [:main_page], "Display Image:")%>
+      </dt>
+      <dd>
+	<%- childern = document_fedora.list_images(params[:id]) -%>
+	<%- image_names = Hash.new -%>
+	<%- image_names[""] = "" -%>
+        <%- childern.each do |child| -%>   
+          <%- name = (!child.name.nil? && !child.name.empty? ? child.name : child.pid) -%>       
+          <%- image_names[name] = child.pid -%>
+        <%- end -%>
+        <%= fedora_select(@document_fedora,"properties", [:main_page], :choices=> image_names)%>
+      </dd>
+    </dl>
+  </fieldset>
+  <fieldset id="work_fields">
+    <legend> Images </legend>
+       <%= render :partial => "components/pages", :locals => {:content => "component", :document_fedora => @document_fedora, :asset_id=>params[:id], :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :f => params[:f], :viewing_context => params[:viewing_context]} %>
+  </fieldset>
+</form>
+

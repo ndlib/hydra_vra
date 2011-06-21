@@ -1,8 +1,8 @@
-  <%- document_list = @document_list if document_list.nil? -%>
-  <%- response = @response if response.nil? -%>
-  <%- title_solr_field_name = Component.title_solr_field_name("item") -%>
+  <%- document_list = @document_list if document_list.nil?-%>
+  <%- response = @response if response.nil?-%>
+  <%- title_solr_field = Component.title_solr_field_name -%>
   <%- document_list.each_with_index do |document,counter| -%>
-    <%- document[title_solr_field_name] ? title = document[title_solr_field_name] : title = document[:id] -%>
+    <%- document[title_solr_field] ? title = document[title_solr_field] : title = document[:id] -%>
     <div class="document">
       <%# # header bar for doc items in index view -%>
       <div class="documentHeader yui-g">

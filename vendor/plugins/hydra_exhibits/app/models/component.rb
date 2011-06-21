@@ -118,61 +118,32 @@ class Component < ActiveFedora::Base
     field_keys[:descMetadata][type] rescue nil
   end
 
-  def self.title_solr_field_name(co_type=type)
-    (!co_type.nil? && co_type.eql?("item")) ? term_pointer = [:item, :did, :unittitle, :unittitle_content] : term_pointer = [:collection, :did, :unittitle, :unittitle_content] 
+  def self.title_solr_field_name
+    term_pointer = [:component, :did, :unittitle, :unittitle_content]
     field_name_base = OM::XML::Terminology.term_generic_name(*term_pointer)
     ActiveFedora::SolrService.solr_name(field_name_base,:string)
   end
 
-  def item_title
-    return @item_title if (defined? @item_title)
-    values = self.datastreams["descMetadata"].term_values(:item, :did, :unittitle, :unittitle_content)
-    @item_title = values.any? ? values.first : ""
-  end
-
-  def sub_collection_title
-    return @sub_collection_title if (defined? @sub_collection_title)
-    values = self.datastreams["descMetadata"].term_values(:collection, :did, :unittitle, :unittitle_content)
-    @sub_collection_title = values.any? ? values.first : ""
-  end
-
-  def formatted_title
-    self.item_id.blank? ? title = sub_collection_title : title = item_title
+  def self.level_solr_field_name
+    term_pointer = [:component, :component_level]
+    field_name_base = OM::XML::Terminology.term_generic_name(*term_pointer)
+    ActiveFedora::SolrService.solr_name(field_name_base,:string)
   end
 
   # Used this method to display parent's title as the link in the catalog view of C02 level
   def title
     return @title if (defined? @title)
-    if((self.type.to_s.eql? "collection") && !(self.datastreams["descMetadata"].term_values(:collection, :did, :unittitle, :unittitle_content).empty?))  
-      values = self.datastreams["descMetadata"].term_values(:collection, :did, :unittitle, :unittitle_content)
-    else
-      values = self.datastreams["descMetadata"].term_values(:item, :did, :unittitle, :unittitle_content)
-    end
-    logger.debug(@title)
+    values = self.datastreams["descMetadata"].term_values(:component, :did, :unittitle, :unittitle_content)
     @title = values.any? ? values.first : ""
   end
 
-  def list_childern(item_id, type)
+  def list_images(item_id)
     #@asset = Component.load_instance_from_solr(item_id)
     arr = Array.new
-    if(type.eql?"item")
-      childern = image_parts #inbound_relationships[:is_part_of]
-      if(!(childern.nil?) && childern.size > 0)
-        childern.each { |child|
-          arr.push(child)
-        }
-      end
-    elsif(type.eql?"series")
-      ids = series_members_ids
-      ids.each do |id|
-child_obj = Component.load_instance_from_solr(id)
-        arr.push(child_obj)
-      end
-    else #if(type.eql?"subcollection")
-      ids = series_members_ids
-      ids.each { |id|
-child_obj = Component.load_instance_from_solr(id)
-        arr.push(child_obj)
+    childern = image_parts #inbound_relationships[:is_part_of]
+    if(!(childern.nil?) && childern.size > 0)
+      childern.each { |child|
+        arr.push(child)
       }
     end
     return arr
@@ -236,9 +207,19 @@ child_obj = Component.load_instance_from_solr(id)
     end
   end
 
-  #Returns hash of all parent predicates 
+  #Returns array of all parent predicates 
   def self.inbound_parent_predicates
     [:has_component_collection_member, :has_series_member, :has_class_member, :has_file_member, :has_fonds_member, :has_item_member, :has_otherlevel_member, :has_recordgrp_member, :has_subfonds_member, :has_subseries_member, :has_member]
+  end
+
+  #Returns array of all child types
+  def self.child_types
+    self.child_type_relationships.keys
+  end
+
+  #Returns a hash of child type mapped to relationship name
+  def self.child_type_relationships
+    {:collection=>"collection_members", :series=>"series_members", :class=>"class_members", :file=>"file_members", :fonds=>"fonds_members", :item=>"item_members", :otherlevel=>"otherlevel_members", :recordgrp=>"recordgrp_members", :subfonds=>"subfonds_members", :subseries=>"subseries_members"}
   end
 
   #Calls to solr on the descMetadata datastream locally and any parents

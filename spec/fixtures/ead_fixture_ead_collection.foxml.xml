@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<foxml:digitalObject VERSION="1.1" PID="ead:fixture_ead_collection"
+xmlns:foxml="info:fedora/fedora-system:def/foxml#"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="info:fedora/fedora-system:def/foxml# http://www.fedora.info/definitions/1/0/foxml1-1.xsd">
+<foxml:objectProperties>
+<foxml:property NAME="info:fedora/fedora-system:def/model#state" VALUE="Active"/>
+<foxml:property NAME="info:fedora/fedora-system:def/model#label" VALUE=""/>
+<foxml:property NAME="info:fedora/fedora-system:def/model#ownerId" VALUE="fedoraAdmin"/>
+<foxml:property NAME="info:fedora/fedora-system:def/model#createdDate" VALUE="2011-04-13T19:09:25.111Z"/>
+<foxml:property NAME="info:fedora/fedora-system:def/view#lastModifiedDate" VALUE="2011-06-20T19:58:52.766Z"/>
+</foxml:objectProperties>
+<foxml:datastream ID="AUDIT" STATE="A" CONTROL_GROUP="X" VERSIONABLE="false">
+<foxml:datastreamVersion ID="AUDIT.0" LABEL="Audit Trail for this object" CREATED="2011-04-13T19:09:25.111Z" MIMETYPE="text/xml" FORMAT_URI="info:fedora/fedora-system:format/xml.fedora.audit">
+<foxml:xmlContent>
+<audit:auditTrail xmlns:audit="info:fedora/fedora-system:def/audit#">
+<audit:record ID="AUDREC1">
+<audit:process type="Fedora API-M"/>
+<audit:action>addDatastream</audit:action>
+<audit:componentID>descMetadata</audit:componentID>
+<audit:responsibility>fedoraAdmin</audit:responsibility>
+<audit:date>2011-04-13T19:09:25.238Z</audit:date>
+<audit:justification></audit:justification>
+</audit:record>
+<audit:record ID="AUDREC2">
+<audit:process type="Fedora API-M"/>
+<audit:action>addDatastream</audit:action>
+<audit:componentID>RELS-EXT</audit:componentID>
+<audit:responsibility>fedoraAdmin</audit:responsibility>
+<audit:date>2011-04-13T19:09:25.320Z</audit:date>
+<audit:justification></audit:justification>
+</audit:record>
+</audit:auditTrail>
+</foxml:xmlContent>
+</foxml:datastreamVersion>
+</foxml:datastream>
+<foxml:datastream ID="DC" STATE="A" CONTROL_GROUP="X" VERSIONABLE="true">
+<foxml:datastreamVersion ID="DC1.0" LABEL="Dublin Core Record for this object" CREATED="2011-04-13T19:09:25.111Z" MIMETYPE="text/xml" FORMAT_URI="http://www.openarchives.org/OAI/2.0/oai_dc/" SIZE="344">
+<foxml:xmlContent>
+<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd">
+  <dc:identifier>ead:fixture_ead_collection</dc:identifier>
+</oai_dc:dc>
+</foxml:xmlContent>
+</foxml:datastreamVersion>
+</foxml:datastream>
+<foxml:datastream ID="descMetadata" STATE="A" CONTROL_GROUP="X" VERSIONABLE="true">
+<foxml:datastreamVersion ID="descMetadata.0" LABEL="" CREATED="2011-04-13T19:09:25.238Z" MIMETYPE="text/xml" SIZE="2091">
+<foxml:xmlContent>
+<ead xmlns="currency-collection" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <eadheader audience="internal" countryencoding="iso3166-1" dateencoding="iso8601" findaidstatus="edited-full-draft" id="a0" langencoding="iso639-2b" relatedencoding="MARC21" repositoryencoding="iso15511" scriptencoding="iso15924">
+    <eadid countrycode="US" encodinganalog="856" mainagencycode="inndhl" publicid="???"></eadid>
+    <filedesc>
+      <titlestmt>
+        <titleproper type="filing"></titleproper>
+        <author></author>
+      </titlestmt>
+      <publicationstmt>
+        <publisher></publisher>
+        <address>
+          <addressline></addressline>
+        </address>
+        <date calendar="gregorian" era="ce"></date>
+      </publicationstmt>
+    </filedesc>
+    <profiledesc>
+      <creation>
+        <date></date>
+      </creation>
+      <languages>
+        <language encodinganalog="546" langcode="eng"></language>
+      </languages>
+    </profiledesc>
+  </eadheader>
+  <frontmatter>
+    <titlepage>
+      <titleproper></titleproper>
+    </titlepage>
+  </frontmatter>
+  <archdesc level="collection" relatedencoding="MARC21" type="register">
+    <did>
+      <head></head>
+      <unittitle encodinganalog="245$a" label="Title:"></unittitle>
+      <unitid countrycode="US" encodinganalog="590" repositorycode="inndhl"></unitid>
+      <unitdate normal="1700/1800" type="bulk"></unitdate>
+      <langmaterial label="Language:">
+        <language></language>
+      </langmaterial>
+      <repository encodinganalog="852" label="Repository:">
+        <corpname>
+          <subarea></subarea>
+        </corpname>
+        <address>
+          <addressline></addressline>
+        </address>
+      </repository>
+    </did>
+    <accessrestrict encodinganalog="506">
+      <head></head>
+    </accessrestrict>
+    <acqinfo encodinganalog="583">
+      <head></head>
+    </acqinfo>
+    <prefercite encodinganalog="524">
+      <head></head>
+    </prefercite>
+    <dsc>
+      <head></head>
+      <c01 level="item"></c01>
+    </dsc>
+  </archdesc>
+</ead>
+</foxml:xmlContent>
+</foxml:datastreamVersion>
+<foxml:datastreamVersion ID="descMetadata.1" LABEL="" CREATED="2011-04-13T19:09:26.064Z" MIMETYPE="text/xml" SIZE="3046">
+<foxml:xmlContent>
+<ead xmlns="currency-collection" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <eadheader audience="internal" countryencoding="iso3166-1" dateencoding="iso8601" findaidstatus="edited-full-draft" id="a0" langencoding="iso639-2b" relatedencoding="MARC21" repositoryencoding="iso15511" scriptencoding="iso15924">
+    <eadid countrycode="US" encodinganalog="856" mainagencycode="inndhl" publicid="???">american_colonial_currency</eadid>
+    <filedesc>
+      <titlestmt>
+        <titleproper type="filing">Guide to the American Colonial Currency Collection</titleproper>
+        <author>Louis Jordan</author>
+      </titlestmt>
+      <publicationstmt>
+        <publisher>Department of Special Collections, Hesburgh Libraries of Notre Dame</publisher>
+        <address>
+          <addressline>102 Hesburgh Library, Notre Dame, IN 46556</addressline>
+        </address>
+        <date calendar="gregorian" era="ce">October 2010</date>
+      </publicationstmt>
+    </filedesc>
+    <profiledesc>
+      <creation>Finding aid encoded in EAD, version 2002 by Tracy Bergstrom,<date>2010</date>
+      </creation>
+      <languages>
+        <language encodinganalog="546" langcode="eng"></language>
+      </languages>
+      <langusage>Finding aid written in<language>English</language>
+      </langusage>
+    </profiledesc>
+  </eadheader>
+  <frontmatter>
+    <titlepage>
+      <titleproper>Guide to the American Colonial Currency Collection</titleproper>
+    </titlepage>
+  </frontmatter>
+  <archdesc level="collection" relatedencoding="MARC21" type="register">
+    <did>
+      <head>Collection Summary</head>
+      <unittitle encodinganalog="245$a" label="Title:">American Colonial Currency Collection</unittitle>
+      <unitid countrycode="US" encodinganalog="590" repositorycode="inndhl">COL</unitid>
+      <unitdate normal="1700/1800" type="bulk">[bulk: 1700-1800]</unitdate>
+      <langmaterial label="Language:">
+        <language>Collection material in English and French.</language>
+      </langmaterial>
+      <repository encodinganalog="852" label="Repository:">
+        <corpname>University of Notre Dame<subarea>Hesburgh Libraries, Department of Special Collections.</subarea>
+        </corpname>
+        <address>
+          <addressline>102 Hesburgh Library, Notre Dame, IN 46556</addressline>
+        </address>
+      </repository>
+    </did>
+    <accessrestrict encodinganalog="506">There are no access restrictions on this collection.<head>Restrictions</head>
+    </accessrestrict>
+    <acqinfo encodinganalog="583">The Inquisition collection is described by Louis Jordan as materials are acquired.<head>Acquisition and Processing Note</head>
+    </acqinfo>
+    <prefercite encodinganalog="524">Researchers wishing to cite this collection should include the following information: Department of Special Collections, Hesburgh Libraries of Notre Dame.Preferred Citation</prefercite>
+    <dsc>
+      <head></head>
+      <c01 level="item"></c01>
+    </dsc>
+  </archdesc>
+</ead>
+</foxml:xmlContent>
+</foxml:datastreamVersion>
+</foxml:datastream>
+<foxml:datastream ID="RELS-EXT" STATE="A" CONTROL_GROUP="X" VERSIONABLE="true">
+<foxml:datastreamVersion ID="RELS-EXT.0" LABEL="" CREATED="2011-04-13T19:09:25.320Z" MIMETYPE="text/xml" SIZE="276">
+<foxml:xmlContent>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <rdf:Description rdf:about="info:fedora/ead:fixture_ead_collection">
+    <hasModel xmlns="info:fedora/fedora-system:def/model#" rdf:resource="info:fedora/afmodel:Collection"></hasModel>
+  </rdf:Description>
+</rdf:RDF>
+</foxml:xmlContent>
+</foxml:datastreamVersion>
+</foxml:datastream>
+<foxml:datastream ID="rightsMetadata" STATE="A" CONTROL_GROUP="X" VERSIONABLE="true">
+<foxml:datastreamVersion ID="rightsMetadata.0" LABEL="" CREATED="2011-04-13T19:09:25.378Z" MIMETYPE="text/xml" SIZE="476">
+<foxml:xmlContent>
+<rightsMetadata xmlns="http://hydra-collab.stanford.edu/schemas/rightsMetadata/v1" version="0.1">
+  <copyright>
+    <human></human>
+  </copyright>
+  <access type="discover">
+    <human></human>
+    <machine></machine>
+  </access>
+  <access type="read">
+    <human></human>
+    <machine></machine>
+  </access>
+  <access type="edit">
+    <human></human>
+    <machine></machine>
+  </access>
+  <embargo>
+    <human></human>
+    <machine></machine>
+  </embargo>
+</rightsMetadata>
+</foxml:xmlContent>
+</foxml:datastreamVersion>
+<foxml:datastreamVersion ID="rightsMetadata.1" LABEL="" CREATED="2011-04-13T19:09:26.149Z" MIMETYPE="text/xml" SIZE="545">
+<foxml:xmlContent>
+<rightsMetadata xmlns="http://hydra-collab.stanford.edu/schemas/rightsMetadata/v1" version="0.1">
+  <copyright>
+    <human></human>
+  </copyright>
+  <access type="discover">
+    <human></human>
+    <machine></machine>
+  </access>
+  <access type="read">
+    <human></human>
+    <machine>
+      <group>public</group>
+    </machine>
+  </access>
+  <access type="edit">
+    <human></human>
+    <machine>
+      <group>archivist</group>
+    </machine>
+  </access>
+  <embargo>
+    <human></human>
+    <machine></machine>
+  </embargo>
+</rightsMetadata>
+</foxml:xmlContent>
+</foxml:datastreamVersion>
+</foxml:datastream>
+<foxml:datastream ID="properties" STATE="A" CONTROL_GROUP="X" VERSIONABLE="true">
+<foxml:datastreamVersion ID="properties.0" LABEL="" CREATED="2011-04-13T19:09:25.439Z" MIMETYPE="text/xml" SIZE="19">
+<foxml:xmlContent>
+<fields></fields>
+</foxml:xmlContent>
+</foxml:datastreamVersion>
+</foxml:datastream>
+</foxml:digitalObject>

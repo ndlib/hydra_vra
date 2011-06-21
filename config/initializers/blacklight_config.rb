@@ -116,6 +116,31 @@ Blacklight.configure(:shared) do |config|
     }
   }
 
+  config[:series_index_fields] = {
+    :field_names => [
+      "date_t",
+      "title_t",
+      "medium_t",
+      "location_t",
+      "collection_did_unitid_t",      
+      "collection_did_unittitle_unittitle_content_t",
+      "collection_did_unittitle_imprint_publisher_t",
+      "collection_controlaccess_genreform_t",
+      "ead_ead_header_filedesc_titlestmt_titleproper_t"
+      ],
+    :labels => {
+      "date_t"=>"Date",
+      "title_t"=>"Title",
+      "medium_t"=>"Content Type",
+      "location_t"=>"Location",      
+      "collection_did_unitid_t"                      => "ID",
+      "collection_did_unittitle_unittitle_content_t" => "Print Date",
+      "collection_did_unittitle_imprint_publisher_t" => "Publisher",
+      "collection_controlaccess_genreform_t"         => "Genre",
+      "ead_ead_header_filedesc_titlestmt_titleproper_t" => "Parent Collection"
+    }
+  }
+
   config[:collections_index_fields] = {
     :field_names => [        
         "ead_ead_header_filedesc_titlestmt_titleproper_t",
@@ -135,7 +160,7 @@ Blacklight.configure(:shared) do |config|
     }
   }
 
-  config[:items_index_fields] = {
+  config[:item_index_fields] = {
     :field_names => [
       "item_did_unittitle_unittitle_content_t",
       "item_did_unitid_t",
@@ -154,6 +179,31 @@ Blacklight.configure(:shared) do |config|
       "item_0_did_0_origination_0_persname_0_persname_normal_t" => "Signers" ,
       "item_did_physdesc_dimensions_t"                          => "Physical Dimensions",
       "item_ref_0_acqinfo_t"                                    => "Provenance",
+      "collection_did_unittitle_imprint_publisher_t"        => "Publisher",
+      "collection_did_unittitle_unittitle_content_t"        => "Print Date",
+      "ead_ead_header_filedesc_titlestmt_titleproper_t"         => "Parent Collection"
+    }
+  }
+
+  config[:components_index_fields] = {
+    :field_names => [
+      "component_did_unittitle_unittitle_content_t",
+      "component_did_unitid_t",
+      "collection_0_did_0_origination_0_engraver_t",
+      "component_0_did_0_origination_0_persname_0_persname_normal_t",
+      "component_did_physdesc_dimensions_t",
+      "component_ref_0_acqinfo_t",
+      "collection_did_unittitle_imprint_publisher_t",
+      "collection_did_unittitle_unittitle_content_t",
+      "ead_ead_header_filedesc_titlestmt_titleproper_t"
+      ],
+    :labels => {
+      "component_did_unittitle_unittitle_content_t"                  => "Title",
+      "component_did_unitid_t"                                       => "ID",
+      "collection_0_did_0_origination_0_engraver_t"       => "Engraver",
+      "component_0_did_0_origination_0_persname_0_persname_normal_t" => "Signers" ,
+      "component_did_physdesc_dimensions_t"                          => "Physical Dimensions",
+      "component_ref_0_acqinfo_t"                                    => "Provenance",
       "collection_did_unittitle_imprint_publisher_t"        => "Publisher",
       "collection_did_unittitle_unittitle_content_t"        => "Print Date",
       "ead_ead_header_filedesc_titlestmt_titleproper_t"         => "Parent Collection"
@@ -204,6 +254,17 @@ Blacklight.configure(:shared) do |config|
       "item_acqinfo_t",
       "item_odd_t",
       "item_daogrp_daoloc_daoloc_href_t",
+      "component_did_unittitle_unittitle_content_t",
+      "component_did_unittitle_t",
+      "component_did_unitid_t",
+      "component_did_unittitle_num_t",
+      "component_did_origination_signer_persname_normal_t",
+      "component_did_origination_signer_t",
+      "component_did_physdesc_dimensions_t",
+      "component_controlaccess_genreform_t",
+      "component_acqinfo_t",
+      "component_odd_t",
+      "component_daogrp_daoloc_daoloc_href_t",
       "rights_t",
       "access_t"
     ],
@@ -230,6 +291,17 @@ Blacklight.configure(:shared) do |config|
       "item_acqinfo_t"                                   => "Provenance",
       "item_odd_t"                                       => "Plate Letter",
       "item_daogrp_daoloc_daoloc_href_t"                 => "Images",
+      "component_did_unittitle_unittitle_content_t"           => "Display Title",
+      "component_did_unittitle_t"                             => "Title",
+      "component_did_unitid_t"                                => "ID",
+      "component_did_unittitle_num_t"                         => "Serial Number",
+      "component_did_origination_signer_persname_normal_t"    => "Display Signers",
+      "component_did_origination_signer_t"                    => "Signers",
+      "component_did_physdesc_dimensions_t"                   => "Physical Description",
+      "component_controlaccess_genreform_t"                   => "Page Turn",
+      "component_acqinfo_t"                                   => "Provenance",
+      "component_odd_t"                                       => "Plate Letter",
+      "component_daogrp_daoloc_daoloc_href_t"                 => "Images",
       "rights_t"  => "Copyright:",
       "access_t" => "Access:"
     }

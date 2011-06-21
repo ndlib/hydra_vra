@@ -8,7 +8,8 @@ class UserSessionsController < ApplicationController
     if @user_session.save
       flash[:notice] = "Welcome #{@user_session.login}!"
       #redirect_to root_path
-      redirect_to(params[:user_session][:redirect_url]) 
+      redirect_url = (params[:user_session][:redirect_url] ? params[:user_session][:redirect_url] : root_path)
+      redirect_to(redirect_url) 
     else
       flash.now[:error] =  "Couldn't locate a user with those credentials"
       render :action => :new

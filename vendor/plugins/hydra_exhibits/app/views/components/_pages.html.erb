@@ -1,4 +1,4 @@
-<% childern = @document_fedora.list_childern(params[:id],"item") %>
+<% childern = @document_fedora.list_images(params[:id]) %>
 <table>
 <% if(childern.size > 0) %>
   <% childern.each {|child| %>
@@ -6,7 +6,7 @@
     <td>
       <%= link_to image_tag(child.datastream_url('thumbnail')), child.datastream_url('screen'), :title => child.name, :class => 'thumbnail' %>
     </td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-    <td><%= link_to (child.title.nil? ? child.pid : child.title), page_path(child.pid, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :f => params[:f], :viewing_context => params[:viewing_context]) %><br/>
+    <td><%= link_to (!child.title.nil? && !child.title.empty? ? child.title : child.pid), page_path(child.pid, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :f => params[:f], :viewing_context => params[:viewing_context]) %><br/>
     <%= child.name %></td>
   <% } %>
 <% end %>

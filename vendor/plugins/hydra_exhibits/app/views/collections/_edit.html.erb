@@ -52,7 +52,9 @@
         <%= render :partial => "permissions/index", :locals => {:document => document, :asset_id=>params[:id]} %>
       </div>
     </div>
-
+    <%- if current_user -%>
+      <%=render :partial=>'components/add_component_form', :locals=>{:parent_id=>params[:id], :parent_content_type=>"collection"} %>
+    <%- end -%>
     <%#
     // This hidden form really belongs elsewhere, but putting it inside of an
     // accordion section un-hides it, so I stuck it here for now. -MZ

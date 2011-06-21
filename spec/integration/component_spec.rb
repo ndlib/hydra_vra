@@ -26,11 +26,11 @@ describe Component do
 
   describe "#is_member_of_component_collection" do
     it "should return array of component objects for is member of component collection relationship" do
-      @comp1.is_member_of_component_collection_append(@comp2)
-      @comp1.is_member_of_component_collection_ids.should == [@comp2.pid]
+      @comp1.member_of_component_collection_append(@comp2)
+      @comp1.member_of_component_collection_ids.should == [@comp2.pid]
       @comp1.save
       @comp3 = Component.load_instance(@comp1.pid)
-      @comp3.is_member_of_component_collection_ids.should ==  @comp1.is_member_of_component_collection_ids
+      @comp3.member_of_component_collection_ids.should ==  @comp1.member_of_component_collection_ids
     end
     it "should return array of component objects for component collection member relationship" do
       @comp1.component_collection_members_append(@comp2)
@@ -42,11 +42,11 @@ describe Component do
 
     #series
     it "should return array of component objects for is member of series relationship" do
-      @comp1.is_member_of_series_append(@comp2)
-      @comp1.is_member_of_series_ids.should == [@comp2.pid]
+      @comp1.member_of_series_append(@comp2)
+      @comp1.member_of_series_ids.should == [@comp2.pid]
       @comp1.save
       @comp3 = Component.load_instance(@comp1.pid)
-      @comp3.is_member_of_series_ids.should ==  @comp1.is_member_of_series_ids
+      @comp3.member_of_series_ids.should ==  @comp1.member_of_series_ids
     end
     it "should return array of component objects for series member relationship" do
       @comp1.series_members_append(@comp2)
@@ -58,11 +58,11 @@ describe Component do
 
     #class
     it "should return array of component objects for is member of class relationship" do
-      @comp1.is_member_of_class_append(@comp2)
-      @comp1.is_member_of_class_ids.should == [@comp2.pid]
+      @comp1.member_of_class_append(@comp2)
+      @comp1.member_of_class_ids.should == [@comp2.pid]
       @comp1.save
       @comp3 = Component.load_instance(@comp1.pid)
-      @comp3.is_member_of_class_ids.should ==  @comp1.is_member_of_class_ids
+      @comp3.member_of_class_ids.should ==  @comp1.member_of_class_ids
     end
     it "should return array of component objects for class member relationship" do
       @comp1.class_members_append(@comp2)
@@ -74,11 +74,11 @@ describe Component do
   
     #file
     it "should return array of component objects for is member of file relationship" do
-      @comp1.is_member_of_file_append(@comp2)
-      @comp1.is_member_of_file_ids.should == [@comp2.pid]
+      @comp1.member_of_file_append(@comp2)
+      @comp1.member_of_file_ids.should == [@comp2.pid]
       @comp1.save
       @comp3 = Component.load_instance(@comp1.pid)
-      @comp3.is_member_of_file_ids.should ==  @comp1.is_member_of_file_ids
+      @comp3.member_of_file_ids.should ==  @comp1.member_of_file_ids
     end
     it "should return array of component objects for file member relationship" do
       @comp1.file_members_append(@comp2)
@@ -90,11 +90,11 @@ describe Component do
 
     #fonds
     it "should return array of component objects for is member of fonds relationship" do
-      @comp1.is_member_of_fonds_append(@comp2)
-      @comp1.is_member_of_fonds_ids.should == [@comp2.pid]
+      @comp1.member_of_fonds_append(@comp2)
+      @comp1.member_of_fonds_ids.should == [@comp2.pid]
       @comp1.save
       @comp3 = Component.load_instance(@comp1.pid)
-      @comp3.is_member_of_fonds_ids.should ==  @comp1.is_member_of_fonds_ids
+      @comp3.member_of_fonds_ids.should ==  @comp1.member_of_fonds_ids
     end
     it "should return array of component objects for fonds member relationship" do
       @comp1.fonds_members_append(@comp2)
@@ -106,11 +106,11 @@ describe Component do
 
     #item
     it "should return array of component objects for is member of item relationship" do
-      @comp1.is_member_of_item_append(@comp2)
-      @comp1.is_member_of_item_ids.should == [@comp2.pid]
+      @comp1.member_of_item_append(@comp2)
+      @comp1.member_of_item_ids.should == [@comp2.pid]
       @comp1.save
       @comp3 = Component.load_instance(@comp1.pid)
-      @comp3.is_member_of_item_ids.should ==  @comp1.is_member_of_item_ids
+      @comp3.member_of_item_ids.should ==  @comp1.member_of_item_ids
     end
     it "should return array of component objects for item member relationship" do
       @comp1.item_members_append(@comp2)
@@ -122,11 +122,11 @@ describe Component do
 
     #otherlevel
     it "should return array of component objects for is member of otherlevel relationship" do
-      @comp1.is_member_of_otherlevel_append(@comp2)
-      @comp1.is_member_of_otherlevel_ids.should == [@comp2.pid]
+      @comp1.member_of_otherlevel_append(@comp2)
+      @comp1.member_of_otherlevel_ids.should == [@comp2.pid]
       @comp1.save
       @comp3 = Component.load_instance(@comp1.pid)
-      @comp3.is_member_of_otherlevel_ids.should ==  @comp1.is_member_of_otherlevel_ids
+      @comp3.member_of_otherlevel_ids.should ==  @comp1.member_of_otherlevel_ids
     end
     it "should return array of component objects for otherlevel member relationship" do
       @comp1.otherlevel_members_append(@comp2)
@@ -138,11 +138,11 @@ describe Component do
 
     #recordgrp
     it "should return array of component objects for is member of recordgrp relationship" do
-      @comp1.is_member_of_recordgrp_append(@comp2)
-      @comp1.is_member_of_recordgrp_ids.should == [@comp2.pid]
+      @comp1.member_of_recordgrp_append(@comp2)
+      @comp1.member_of_recordgrp_ids.should == [@comp2.pid]
       @comp1.save
       @comp3 = Component.load_instance(@comp1.pid)
-      @comp3.is_member_of_recordgrp_ids.should ==  @comp1.is_member_of_recordgrp_ids
+      @comp3.member_of_recordgrp_ids.should ==  @comp1.member_of_recordgrp_ids
     end
     it "should return array of component objects for recordgrp member relationship" do
       @comp1.recordgrp_members_append(@comp2)
@@ -154,11 +154,11 @@ describe Component do
 
     #subfonds
     it "should return array of component objects for is member of subfonds relationship" do
-      @comp1.is_member_of_subfonds_append(@comp2)
-      @comp1.is_member_of_subfonds_ids.should == [@comp2.pid]
+      @comp1.member_of_subfonds_append(@comp2)
+      @comp1.member_of_subfonds_ids.should == [@comp2.pid]
       @comp1.save
       @comp3 = Component.load_instance(@comp1.pid)
-      @comp3.is_member_of_subfonds_ids.should ==  @comp1.is_member_of_subfonds_ids
+      @comp3.member_of_subfonds_ids.should ==  @comp1.member_of_subfonds_ids
     end
     it "should return array of component objects for subfonds member relationship" do
       @comp1.subfonds_members_append(@comp2)
@@ -170,11 +170,11 @@ describe Component do
 
     #subgrp
     it "should return array of component objects for is member of subgrp relationship" do
-      @comp1.is_member_of_subgrp_append(@comp2)
-      @comp1.is_member_of_subgrp_ids.should == [@comp2.pid]
+      @comp1.member_of_subgrp_append(@comp2)
+      @comp1.member_of_subgrp_ids.should == [@comp2.pid]
       @comp1.save
       @comp3 = Component.load_instance(@comp1.pid)
-      @comp3.is_member_of_subgrp_ids.should ==  @comp1.is_member_of_subgrp_ids
+      @comp3.member_of_subgrp_ids.should ==  @comp1.member_of_subgrp_ids
     end
     it "should return array of component objects for subgrp member relationship" do
       @comp1.subgrp_members_append(@comp2)
@@ -186,11 +186,11 @@ describe Component do
 
     #subseries
     it "should return array of component objects for is member of subseries relationship" do
-      @comp1.is_member_of_subseries_append(@comp2)
-      @comp1.is_member_of_subseries_ids.should == [@comp2.pid]
+      @comp1.member_of_subseries_append(@comp2)
+      @comp1.member_of_subseries_ids.should == [@comp2.pid]
       @comp1.save
       @comp3 = Component.load_instance(@comp1.pid)
-      @comp3.is_member_of_subseries_ids.should ==  @comp1.is_member_of_subseries_ids
+      @comp3.member_of_subseries_ids.should ==  @comp1.member_of_subseries_ids
     end
     it "should return array of component objects for subseries member relationship" do
       @comp1.subseries_members_append(@comp2)

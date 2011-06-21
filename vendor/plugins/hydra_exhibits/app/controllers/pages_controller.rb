@@ -100,17 +100,10 @@ class PagesController < ApplicationController
 #        logger.debug "#########: af_model = #{af_model.to_s}"
         generic_content_object = Page.load_instance(params[:container_id])
         generic_content_object.update_indexed_attributes({[:name]=>{"0"=>params[:Filename].sub(".jpg", "")}})
-        item_pid = generic_content_object.item.first.pid
+        item_pid = generic_content_object.image_part_of.first.pid
         item_obj = Component.load_instance(item_pid)
-	image = ''
-	img_term = []
-        if(item_obj.member_of.first.instance_of? Component)
-          image = 'image'
-          img_term = [:item, :daogrp, :daoloc, :daoloc_href]
-        else
-          image = 'subcol_image'
-          img_term = [:collection, :daogrp, :daoloc, :daoloc_href]
-        end
+        image = 'image'
+        img_term = [:component, :daogrp, :daoloc, :daoloc_href]
         inserted_node, new_node_index = item_obj.insert_new_node(image, opts={})
 	item_obj.save
 	no_of_images = 0
@@ -136,10 +129,8 @@ class PagesController < ApplicationController
       content_type = params[:content_type]
       af_model = retrieve_af_model(content_type)
       if af_model
-        if(!params[:item_id].nil?)
-          @asset = create_and_save_page(params[:item_id], content_type)
-        elsif(!params[:subcollection_id].nil?)
-          @asset = create_and_save_page(params[:subcollection_id], content_type)
+        if(!params[:component_id].nil?)
+          @asset = create_and_save_page(params[:component_id], content_type)
 	end
       end
       redirect_to url_for(:action=>"edit", :controller=>"catalog", :label => params[:label], :id=>@asset.pid, :exhibit_id => params[:exhibit_id], :render_search => params[:render_search], :f => params[:f], :viewing_context => params[:viewing_context])
