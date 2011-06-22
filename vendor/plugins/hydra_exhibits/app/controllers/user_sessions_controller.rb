@@ -23,19 +23,23 @@ require 'casclient'
 require 'casclient/frameworks/rails/filter'
 
 class UserSessionsController < ApplicationController
+  before_filter :link_back
   before_filter ::CASClient::Frameworks::Rails::Filter, :only => :new unless RAILS_ENV == "test"
 
   def new
-    logger.debug("previous page: #{request.referer}")
+    logger.debug("previous page: #{session['target_path']}")
     @user_session = UserSession.new
-    #session['target_path'] ? redirect_to( session['target_path'] ) : redirect_to( root_path )
+    session['target_path'] ? redirect_to( session['target_path'] ) : redirect_to( root_path )
     flash[:notice] = "Welcome #{current_user.login}!"
-    redirect_to root_path
   end
 
   def destroy
     current_user_session.destroy rescue nil
     reset_session
+  end
+
+  def link_back
+    session['target_path'] = request.referer
   end
 
 end
