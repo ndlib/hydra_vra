@@ -77,7 +77,6 @@ Blacklight.configure(:shared) do |config|
       "region_facet",
       "site_facet",
       "ecosystem_facet",
-      "id",
       "active_fedora_model_s"
       ],
     :labels => {
@@ -91,8 +90,7 @@ Blacklight.configure(:shared) do |config|
       "region_facet"=>"Region",
       "site_facet"=>"Site",
       "ecosystem_facet"=>"Ecosystem",
-      "id"=>"Pid",
-      "active_fedora_model_s"=>"Model"
+      "active_fedora_model_s"=>"Location Type"
     },
     :limits=> {nil=>10}
   }

@@ -195,8 +195,8 @@
          $(lot_selector).last().after(data);
          $inserted = $(lot_selector).last();
          $(".editable-container", $inserted).hydraTextField();
-         $("a.destructive", $inserted).lotDeleteButton();
-         $lotNode.remove()
+         $("a.destructive", $inserted).lotDeleteButton(); 
+         $lotNode.remove();
        });
      },
 
