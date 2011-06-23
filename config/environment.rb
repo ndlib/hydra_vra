@@ -27,7 +27,8 @@ Rails::Initializer.run do |config|
   # in vendor/plugins are loaded in alphabetical order.
   # :all can be used as a placeholder for all plugins not explicitly named
   config.plugin_paths += ["#{RAILS_ROOT}/vendor/plugins/blacklight/vendor/plugins"]  
-  config.plugins = %W(engines blacklight acts_as_taggable_on_steroids resource_controller haml fluid-infusion hydra_repository stanford_salt white_list hydrangea_articles hydrangea_datasets)
+  #config.plugins = %W(engines blacklight acts_as_taggable_on_steroids resource_controller haml fluid-infusion hydra_repository stanford_salt white_list hydrangea_articles hydrangea_datasets)
+config.plugins = %W(engines blacklight acts_as_taggable_on_steroids resource_controller haml fluid-infusion hydra_repository white_list hydra_vra)
 
 
   # Add additional load paths for your own custom dirs
