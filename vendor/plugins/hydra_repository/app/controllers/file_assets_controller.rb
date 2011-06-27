@@ -24,6 +24,7 @@ class FileAssetsController < ApplicationController
       @solr_result = FileAsset.find_by_solr(:all)
       puts @solr_result.inspect
     end
+    logger.error("About to render page with following params: #{params.inspect}")
     render :action=>params[:action], :layout=>layout
   end
   

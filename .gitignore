@@ -12,7 +12,10 @@ fedora.yml
 *.log
 *~
 *.swp
-
+.idea/hydrangea.iml
+.idea/*
+jetty/*
+jetty
 vendor/plugins/haml/init.rb
 
 log/*
@@ -32,10 +35,15 @@ db/schema.rb
 .project
 .buildpath
 .rvmrc
-jcameron-key.asc
 
-.bundle/*
+/.bundle
 .idea/
 spec/fixtures/Seaside Architect.csv
 spec/fixtures/seaside.csv
-vendor/plugins/hydra_exhibits/app/models/ead_xml_banu.rb
+
+.svn
+**/.svn/**
+.svn/
+jetty
+jetty/
+

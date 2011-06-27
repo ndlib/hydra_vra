@@ -3,6 +3,7 @@ module Hydra::ModelMethods
   # Adds metadata about the depositor to the asset 
   #
   def apply_depositor_metadata(depositor_id)
+    logger.error("Need to give permission to #{depositor_id}")
     prop_ds = self.datastreams_in_memory["properties"]
     rights_ds = self.datastreams_in_memory["rightsMetadata"]
   

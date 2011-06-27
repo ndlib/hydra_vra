@@ -1,14 +1,14 @@
-  (function($) {
-   /*  Initialize the form for inserting new Person (individual) permissions
-   *  ex. $("#add-contributor-box").hydraNewContributorForm
-   */
+(function($) {
+   /* Initialize the form for inserting new Person (individual) permissions
+* ex. $("#add-contributor-box").hydraNewContributorForm
+*/
   $.fn.hydraNewAgentForm = function(settings) {
      var config = {};
       //alert("Init HydraNewAgent");
      if (settings) $.extend(config, settings);
      this.each(function() {
-       $("#re-run-add-agent-action", this).click(function() {
          //alert("Need add new agent tag");
+       $("#re-run-add-agent-action", this).click(function() {
          $.fn.vraMetadata.addAgent("agent");
        });
      });
@@ -16,11 +16,13 @@
   };
 
    $.fn.hydraNewImageForm = function(settings) {
-     //alert("Inside hydraNewImageForm....");
      var config = {};
      if (settings) $.extend(config, settings);
+
      this.each(function() {
-       $(this).click(function() {
+       //alert("Add image this function");
+       $("#re-run-add-image-action", this).click(function() {
+         //alert("Need add new image tag");
          $.fn.vraMetadata.addImageTag("image_tag");
        });
      });
@@ -31,8 +33,8 @@
      var config = {};
      //alert("lotCreateButtton")
      if (settings) $.extend(config, settings);
-     this.each(function() {
-       $("#add_lot", this).click(function() {
+        $("#add_lot", this).live("click", function(){
+         alert("lotCreateButtton live")
          var lot_key = $("input#lot_key").first().attr("value");
          //alert("Lot key enter: "+ lot_key)
          if (lot_key == "" || lot_key.length ==0) {
@@ -42,33 +44,27 @@
          //alert("Calling create lot on click")
          $.fn.vraMetadata.createLot(this);
        });
-     });
+   /*this.each(function() {
+$("#add_lot", this).click(function(e) {
+var lot_key = $("input#lot_key").first().attr("value");
+//alert("Lot key enter: "+ lot_key)
+if (lot_key == "" || lot_key.length ==0) {
+alert("Please enter lot id before adding new lot")
+return false;
+}
+//alert("Calling create lot on click")
+$.fn.vraMetadata.createLot(this);
+e.preventDefault();
+});
+});*/
      return this;
    };
 
-   /*$.fn.lotCreateButton = function(settings) {
-     var config = {};
-     alert("lotCreateButtton")
-     if (settings) $.extend(config, settings);
-     this.each(function() {
-       alert("this lotCreateButtton")
-       $("re-run-add-lot-action", this).click(function() {
-         var lot_key = $("input#lot_key").first().attr("value");
-         alert("Lot key enter: "+ lot_key)
-         if (lot_key == "" || lot_key.length ==0) {
-            alert("Please enter lot id before adding new lot")
-            return false;
-         };
-         $.fn.vraMetadata.createLot(this)
-       });
-     });
-     return this;
-   };*/
    $.fn.agentDeleteButton = function(settings) {
      var config = {};
      if (settings) $.extend(config, settings);
      this.each(function() {
-       alert("Agent this function");
+       //alert("Agent this function");
        $(this).unbind('click.hydra').bind('click.hydra', function(e) {
           $.fn.vraMetadata.deleteAgent(this, e);
           e.preventDefault();
@@ -91,17 +87,22 @@
    };
 
    $.fn.lotDeleteButton = function(settings) {
-     //alert("lotDeleteButtton")
+     alert("lotDeleteButtton")
      var config = {};
      if (settings) $.extend(config, settings);
      //alert("before this function");
-     this.each(function() {
-       //alert("this function");
-       $(this).unbind('click.hydra').bind('click.hydra', function(e) {
-         $.fn.vraMetadata.deleteLot(this, e);
-         e.preventDefault();
-       })
-     });
+     /*this.each(function() {
+//alert("this function");
+$(this).unbind('click.hydra').bind('click.hydra', function(e) {
+$.fn.vraMetadata.deleteLot(this, e);
+e.preventDefault();
+})
+});*/
+      $("a.destroy_lot", this).live("click", function(){
+         alert("lotDeleteButtton live")
+         $.fn.vraMetadata.deleteLot(this);
+         //e.preventDefault();
+      });
      return this;
    };
 
@@ -122,7 +123,6 @@
      },
 
      addImageTag: function(type) {
-     alert("Need to add image");
        var content_type = $("form#new_image_tag > input#content_type").first().attr("value");
        var image_selector = ".image_tag";
        var url = $("form#new_image_tag").attr("action");
@@ -131,7 +131,7 @@
          $(image_selector).last().after(data);
          $inserted = $(image_selector).last();
          $(".editable-container", $inserted).hydraTextField();
-         $("a.destructive", $inserted).agentDeleteButton();
+         $("a.destructive", $inserted).imageDeleteButton();
        });
      },
 
@@ -147,7 +147,7 @@
          dataType: "html",
          beforeSend: function() {
             //alert("change color")
-   			$agentNode.animate({'backgroundColor':'#fb6c6c'},300);
+    $agentNode.animate({'backgroundColor':'#fb6c6c'},300);
          },
          success: function() {
            //alert("trying to hide")
@@ -159,7 +159,6 @@
      },
 
      deleteImage: function(element) {
-     alert("Need to delete image....");
        var content_type = $("form#new_image_tag > input#content_type").first().attr("value");
        var url = $(element).attr("href");
        var $imageNode = $(element).closest(".image_tag")
@@ -171,7 +170,7 @@
          dataType: "html",
          beforeSend: function() {
             //alert("change color")
-   			$imageNode.animate({'backgroundColor':'#fb6c6c'},300);
+    $imageNode.animate({'backgroundColor':'#fb6c6c'},300);
          },
          success: function() {
            //alert("trying to hide")
@@ -187,7 +186,7 @@
        //alert("Lot id: "+lot_id)
        var url = $("input#create_lot_url").first().attr("value");//$(el).attr("action");
        var pid = $("div#lot").attr("data-pid");
-       var params =  "&building_pid="+pid+"&key="+lot_id;
+       var params = "&building_pid="+pid+"&key="+lot_id;
        url=url+params;
        var lot_selector = ".lot_remove_test";
        var $lotNode = $(el).closest(".lot_remove_test");
@@ -197,18 +196,18 @@
          $inserted = $(lot_selector).last();
          $(".editable-container", $inserted).hydraTextField();
          $("a.destructive", $inserted).lotDeleteButton();
-         $lotNode.remove()
+         $lotNode.remove();
        });
      },
 
      deleteLot: function(element) {
-       //alert("Into Delete Lot"+$(element).html)
+       alert("Into Delete Lot"+$(element))
        var $lotNode = $(element).closest(".lot_tag")
-       var url = $(element).attr("href");
+       var url = $(element).attr("action");
        var building_pid = $("div#lot").attr("data-pid");
        var building_content_type = $("div#lot").attr("data-content-type");
        var content_model="Lot"
-       var params =  "?content_model="+content_model+"&building_pid="+building_pid+"&building_content_type="+building_content_type;
+       var params = "?content_model="+content_model+"&building_pid="+building_pid+"&building_content_type="+building_content_type;
        url=url+params;
        //alert("URL: "+url);
        $.ajax({
@@ -217,7 +216,7 @@
          dataType: "html",
          beforeSend: function() {
             //alert("change color")
-   			$lotNode.animate({'backgroundColor':'#fb6c6c'},300);
+    $lotNode.animate({'backgroundColor':'#fb6c6c'},300);
          },
          success: function() {
            //alert("trying to hide")

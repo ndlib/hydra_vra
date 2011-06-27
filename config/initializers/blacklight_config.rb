@@ -67,26 +67,31 @@ Blacklight.configure(:shared) do |config|
   #   The ordering of the field names is the order of the display 
   config[:facet] = {
     :field_names => [
-      "collection_0_did_0_unittitle_0_imprint_0_publisher_facet",
-      "collection_0_did_0_unittitle_0_unittitle_content_facet",
-      "collection_0_did_0_unittitle_0_imprint_0_geogname_facet",
-      "collection_0_did_0_origination_0_printer_facet",
-      "collection_0_did_0_origination_0_engraver_facet",
-      "item_0_did_0_physdesc_0_dimensions_facet",
-      "item_0_acqinfo_facet",
-      "item_0_did_0_origination_0_persname_0_persname_normal_facet",
-      "active_fedora_model_s",
-      "date_s"
+      "object_type_facet",
+      "person_full_name_facet",
+      "mods_organization_facet",
+      "topic_tag_facet",
+      "language_lang_code_facet",
+      "mods_journal_title_info_facet",
+      "gps_facet",
+      "region_facet",
+      "site_facet",
+      "ecosystem_facet",
+      "active_fedora_model_s"
       ],
     :labels => {
-      "collection_0_did_0_unittitle_0_imprint_0_publisher_facet"=>"Publisher",
-      "collection_0_did_0_unittitle_0_unittitle_content_facet"=>"Print Date",
-      "collection_0_did_0_unittitle_0_imprint_0_geogname_facet"=>"Printing Location",
-      "collection_0_did_0_origination_0_printer_facet"=>"Printer",
-      "collection_0_did_0_origination_0_engraver_facet"=>"Engraver",
-      "item_0_did_0_origination_0_persname_0_persname_normal_facet"=>"Signers",
-      "active_fedora_model_s" => "Description",
-      "date_s"=>"Print Year"
+      "object_type_facet"=>"Type",
+      "person_full_name_facet"=>"Person",
+      "mods_organization_facet"=>"Organization",
+      "topic_tag_facet"=>"Topic",
+      "language_lang_code_facet"=>"Language",
+      "mods_journal_title_info_facet"=>"Journal",
+      "gps_facet"=>"GPS Coordinates",
+      "region_facet"=>"Region",
+      "site_facet"=>"Site",
+      "ecosystem_facet"=>"Ecosystem",
+      "active_fedora_model_s"=>"Location Type"
+
     },
     :limits=> {nil=>10}
   }

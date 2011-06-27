@@ -1,0 +1,43 @@
+<% agents = edit_agent %>
+<% agent_counter = edit_agent_counter %>
+<% base_id = "agent_#{agent_counter}" %>
+<% agent_name = "#{get_values_from_datastream(@document_fedora,'descMetadata', [:work,  :agent_set, {:agent => agent_counter},:name])}" %>
+<li>
+  <dl class="agent_set" id="<%= base_id %>">
+  <dd>
+    <ul>
+        <li class="agent_name">
+          <%= fedora_field_label("descMetadata", [:work,  :agent_set, {:agent => agent_counter}, :name], "Agent Name:") %>
+          <%= fedora_text_field(@document_fedora,"descMetadata", [:work,  :agent_set, {:agent => agent_counter},:name], :multiple=>false) %>
+        </li>
+        <li class="ref_id">
+          <%= fedora_field_label("descMetadata", [:work,  :agent_set, {:agent => agent_counter}, :name], "Agent Ref id:") %>
+          <%= fedora_text_field(@document_fedora,"descMetadata", [:work,  :agent_set, {:agent => agent_counter},:name, :name_refid], :multiple=>false) %>
+        </li>
+        <li class="start_year">
+          <%= fedora_field_label("descMetadata", [:work,  :agent_set, {:agent => agent_counter}, :dates, :earliestDate], "Start Year:") %>
+          <%= fedora_text_field(@document_fedora,"descMetadata", [:work,  :agent_set, {:agent => agent_counter}, :dates, :earliestDate], :multiple=>false) %>
+        </li>
+        <li class="end_year">
+          <%= fedora_field_label("descMetadata", [:work,  :agent_set, {:agent => agent_counter}, :dates, :latestDate], "End Year:") %>
+          <%= fedora_text_field(@document_fedora,"descMetadata", [:work,  :agent_set, {:agent => agent_counter}, :dates, :latestDate], :multiple=>false) %>
+        </li>
+        <li class="agent_culture">
+          <%= fedora_field_label("descMetadata", [:work,  :agent_set, {:agent => agent_counter}, :culture], "Culture:") %>
+          <%= fedora_text_field(@document_fedora,"descMetadata", [:work,  :agent_set, {:agent => agent_counter}, :culture], :multiple=>false) %>
+        </li>
+        <li class="agent_role">
+          <%= fedora_field_label("descMetadata", [:work,  :agent_set, {:agent => agent_counter}, :agent_role], "Role:") %>
+          <%= fedora_text_field(@document_fedora,"descMetadata", [:work,  :agent_set, {:agent => agent_counter}, :agent_role], :multiple=>false) %>
+        </li>
+      </ul>
+    <% if ( (params[:action] == "edit" || params[:action] == "create")) %>
+        <%= field_selectors_for("descMetadata", [{:agent=>agent_counter}]) %>
+        <a class="destructive destroy_agent" href="<%= agent_path(@document_fedora.pid, :agent=>agent_counter) %>" title="Delete Image"> Delete</a>
+    <% end %>
+  </dd>
+  </dl>
+</li>
+<hr/>
+
+

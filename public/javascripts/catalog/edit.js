@@ -24,16 +24,12 @@
       $(".custom-editable-container").exhibitTextField();
       setUpDatePicker();
       setUpSliders();
-      setUpNewPermissionsForm();      
-      $("#add-contributor-box").hydraNewContributorForm();      
-      $("div.description_div").insertTextareaValue();
-
-//      $("div.add-image-box").hydraNewImageForm();
-      $("dd.remove-description-div").descriptionDeleteButton();
-//      $(".image_tag a.destructive").imageDeleteButton();
-//      $("#add-image-box").hydraNewImageForm();
-      $("div.remove-description-div").descriptionDeleteButton();
-
+      setUpNewPermissionsForm();
+      $("#add-contributor-box").hydraNewContributorForm();
+      $("#add-agent-box").hydraNewAgentForm();
+      $("#add-image-box").hydraNewImageForm();
+      $("#add-lot-div").lotCreateButton();
+      $(".lot_tag").lotDeleteButton();
       $("a.inline").fancybox({
       		'hideOnContentClick': true,
       		'autoDimensions' : false
@@ -63,10 +59,11 @@
       //   e.preventDefault();
       // });
       $(".contributor a.destructive").hydraContributorDeleteButton();
-//      $(".image_tag a.destructive").imageDeleteButton();
-      $(".grant a.destructive").hydraGrantDeleteButton();     
 
-      
+      $(".agent_set a.destructive").agentDeleteButton();
+      $(".image_tag a.destructive").imageDeleteButton();
+      $(".grant a.destructive").hydraGrantDeleteButton();      
+
       $metaDataForm.delegate('select.metadata-dd', 'change', function(e) {
         saveSelect(this);
       });

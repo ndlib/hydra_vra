@@ -8,18 +8,12 @@ ActionController::Routing::Routes.draw do |map|
   # map.resources :assets do |assets|
   #   assets.resources :downloads, :only=>[:index]
   # end
-  map.resources :get, :only=>:show  
+  map.resources :get, :only=>:show
   map.resources :webauths, :protocol => ((defined?(SSL_ENABLED) and SSL_ENABLED) ? 'https' : 'http')
-  map.resources :components, {:member => {:review_comments => :post, :delete_image => :get}}
-  map.resources :images_tag
-  map.resources :descriptions, {:member => {:add=> :put, :update_title => :put } }
-  map.resources :collections, {:member => {:review_comments => :post}}
-  map.resources :sub_exhibits
-  map.resources :exhibits, {:member => {:update_embedded_search=> :post, :add_main_description=> :put, :add_collection=> :put, :remove_collection=> :post, :refresh_setting=> :get}}
-  map.resources :pages, {:member => {:review_comments => :post}}
-#  map.static 'static/:permalink', :controller => 'finding_aid', :action => 'show'
-  map.resources :finding_aid, :controller => 'finding_aid' , :action => 'show', :finding_aid => /show|collection/
-  map.resources :reviews
+
+  map.resources :agents, :only=>[:new, :create, :destroy]
+  map.resources :images_tag, :only=>[:create, :destroy]
+  map.resources :lots
 
   map.login "login", :controller => "webauth_sessions", :action => "new"
   map.logout "logout", :controller => "webauth_sessions", :action => "destroy"

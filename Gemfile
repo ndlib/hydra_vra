@@ -32,6 +32,7 @@ gem 'RedCloth', '4.2.7'
 gem 'rubycas-client'
 gem 'ruby-xslt', '0.9.8'
 
+
 gem 'rcov', '0.9.9'
 gem 'rsolr', '0.12.1'
 gem 'rsolr-ext', '0.12.1'
@@ -55,6 +56,11 @@ group :development, :test do
   gem 'gherkin'
 end
 
+
 group :local do
   gem 'sqlite3-ruby', '1.3.1'
+end
+group :pre_production do
+  gem 'thin'
+
 end

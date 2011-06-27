@@ -1,0 +1,17 @@
+Gems
+====
+On Ubuntu systems curb requires libcurl3, libcurl3-gnutls, and libcurl4-openssl-dev to be installed:
+ $ sudo apt-get install libcurl3 libcurl3-gnutls libcurl4-openssl-dev
+For RHEL:
+ $ yum install curl curl-devel
+The sqlite3-ruby gem also requires sqlite3 to be installed. I found no package to do this on RHEL so I built it from source:
+ $ yum install gcc-c++
+ $ cd /usr/local/src
+ $ wget http://www.sqlite.org/sqlite-amalgamation-3.7.3.tar.gz
+ $ cd sqlite-3.7.3
+ $ ./configure
+ $ /usr/bin/make
+ $ /usr/bin/make install
+
+The most recent version of ruby-debug-base19 that works with Ruby 1.9.1p378 is version 0.11.23
+ $ gem install ruby-debug-base19 --version=0.11.23

@@ -49,6 +49,7 @@ class CatalogController
       the_model = DcDocument
     end
     @document_fedora = the_model.load_instance(params[:id])
+    #logger.debug("Fedora Xml: #{@document_fedora.inspect}")
     params = {:qt=>"dismax",:q=>"*:*",:rows=>"0",:facet=>"true", :facets=>{:fields=>Blacklight.config[:facet][:field_names]}}
     @facet_lookup = Blacklight.solr.find params
     enforce_read_permissions
