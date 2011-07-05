@@ -1,0 +1,30 @@
+jquery.vraMetadata.js has following methods
+* hydraNewAgentForm
+	calls vraMetadata.addAgent onClick of addAgent button
+		
+* hydraNewImageForm
+	calls vraMetadata.addImageTag onClick of addImageTag button
+*lotCreateButtton
+	calls vraMetadata.createLot onClick of add lot button
+*agentDeleteButton
+	calls vraMetadata.deleteAgent on click of delete lot ("X" image) button
+*imageDeleteButton
+	calls vraMetadata.deleteImage on click of delete Image ("X" image) button
+*lotDeleteButton
+	calls vraMetadata.deleteLot on click of delete lot ("X" image) button
+*addAgent
+	Insert new agent node to the VRA Xml template using {:controller=>"agents", :action=>"create"}.
+	Controller calls  insert_new_node method in models/agent.rb to insert new agent tag
+	insert_new_node method calls insert_node method in terminology (models/vra_xml.rb) which might call agent_template		
+*addImageTag
+	Insert new agent node to the VRA Xml template using {:controller=>"agents", :action=>"create"}.
+	Controller calls  insert_new_node method in models/building.rb to insert image tag
+	insert_new_node method calls insert_node method in terminology (models/vra_xml.rb) which might call image_template
+*deleteAgent
+	Delete the given agent tag using destroy in agent controller
+*deleteImage
+	Delete the given image tag using destroy in image controller
+*createLot
+	To create lot new lot if lot is not available else just add the relationship (calls create method in lot controller) 
+*deleteLot	
+	To delete relationship between lot and associated building (calls destroy method in lot controller) 
